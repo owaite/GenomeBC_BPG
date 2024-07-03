@@ -1,12 +1,11 @@
---- 
+---
 title: "Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials"
 author: "Jake King*, Olivia Waite, Miriam Isaac-Renton, Nicholas C. Coops, Samuel Grubinger, Liam Irwin, Lise Van Der Merwe, Jon Degner, Alex Liu"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
   bookdown::gitbook:  
     split_by:"section"
+    number_sections: true
     split_bib:no
 ---
-
-# Down the rabbit-hole
 
