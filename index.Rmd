@@ -4,7 +4,7 @@ author: "Jake King*, Olivia Waite, Miriam Isaac-Renton, Nicholas C. Coops, Samue
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
   bookdown::gitbook:  
-    split_by:"section" # bookdown gitbook added by OW
+    split_by:"section"
     split_bib:no
 ---
 
