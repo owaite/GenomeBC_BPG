@@ -6,8 +6,3 @@ view: https://github.com/owaite/GenomeBC_BPG/blob/main/%s
 language:
   ui:
     chapter_name: "Chapter "
-rmd_files:
-  - index.Rmd
-  - 000-Contents.Rmd
-  - 00-Glossary.Rmd
-  - 00-M300-SOP.Rmd
