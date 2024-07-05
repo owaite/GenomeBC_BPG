@@ -1,5 +1,4 @@
-glossary
-contents
+standard-operating-procedures-for-dji-m300-mapping-flights
 background-and-basis-of-knowledge
 overview-of-methodologies
 range-of-sites-assessed

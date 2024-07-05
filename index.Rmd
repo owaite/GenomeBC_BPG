@@ -4,4 +4,9 @@ author: "Jake King*, Olivia Waite, Miriam Isaac-Renton, Nicholas C. Coops, Samue
 date: "`r Sys.Date()`"
 output: bookdown::gitbook
 ---
+# Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials {-}
 
+## Acknowledgements {-}
+These guidelines were made possible thanks for project funding from Genome British Columbia’s GeneSolve program, the Canadian Forest Service’s Fibre Solutions, 2 Billion Tree programs, and Assistant Deputy Minister’s Innovation Fund. For administrative assistance, we thank Adam Dick, Olivier van Lier, Marlene Francis, Annick Pelletier, Lise Carron, Guy Smith and Amélie Roberge. For practical input, we thank Bill Lakeland, Alec Wilson, Eric Saczuk, Keenan Rudichuk and David Huntley. 
+
+## How to cite this report:{-}
