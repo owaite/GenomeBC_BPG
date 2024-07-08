@@ -17,19 +17,24 @@ Run the raw ########### files in DJI Terra using the below settings:
 
 
 ## Register the LiDAR to the DAP point cloud
+	
+Convention is generally to register DAP to LiDAR however for this specific project it made more sense to register the LiDAR to the DAP because:
+- We were flying biweekly multispectral and RGB imagery and only 2-3 LiDAR acquisitions a year. 
+- We could not load the LiDAR point cloud into Agisoft Metashape to use as a reference for registration however could register all DAP clouds to a reference DAP cloud in Agisoft.
+- This allowed us to more easily register the many multispectral and RGB acquisitions to a defined template in Agisoft Metashape and use the exported point cloud of the template DAP to register the LiDAR in CloudCompare.
+- This process worked well for us since our priority was centimeter-level registration of orthomosaics and LiDAR between many dates and across multiple sensors. 
 
-Given we were flying biweekly multispectral and RGB imagery and only 2-3 LiDAR aquisitions a year, we organized our workflow so that the LiDAR is aligned to the DAP. This allowed us to more easily align the many multispectral and RGB acquisitions to a defined template in Agisoft Metashape. 
 
 ### Prepare LiDAR for registration
 
-Below are snipets of a script written in LAStools that is used to ensure the LiDAR and DAP clouds are in the proper proection, filters out points in the LiDAR that are above a defined threshold, and clips the LiDAR to a boudnary polygon to speed up registration by avoiding working with excess data in CloudCompare.
+Below are snipets of a script written in LAStools that is used to ensure the LiDAR and DAP clouds are in the proper projection, filters out points in the LiDAR that are above a defined threshold, and clips the LiDAR to a boundary polygon to speed up registration by avoiding working with excess data in CloudCompare.
 
-The unparsed script can be found on the project GitHub, see \@ref(GitHub-link) 
+The unparsed script can be found on the project GitHub, see [GitHub link](index.html#github-link) 
 
-- Ensures both the DAP point cloud and LiDAR file are in the proper projection (NAD83 UTM 10N in our case) 
-  - path_to_L1_las is the path to the LiDAR .las file from DJI terra.
-  - path_to_write is where the path the projected .laz file will be written to. The files will be saved out with the same file name as the origianl LiDAR file with a "_nad83" suffix.
-  - "REM" works to comment out a line in LAStools as "#" does in R
+1. Ensures both the DAP point cloud and LiDAR file are in the proper projection (NAD83 UTM 10N in our case) 
+    - path_to_L1_las is the path to the LiDAR .las file from DJI terra.
+    - path_to_write is where the path the projected .laz file will be written to. The files will be saved out with the same file name as the origianl LiDAR file with a "_nad83" suffix.
+    - "REM" works to comment out a line in LAStools as "#" does in R.
   
 ```{LAStools eval=FALSE, include=TRUE}
 REM Project DAP and save out as a .laz
@@ -55,19 +60,36 @@ las2las -i path_to_L1_las ^
 ```
 
 
-- Drops points in the LiDAR file above a threshold to remove noisy points that are not from the canopy. To determine this height threshold, we recommend visualizing the las files in Potree. 
+2. Drops points in the LiDAR point cloud above a user defined threshold to remove noisy points that are not from the canopy (i.e. due to air moisture, birds, etc.). To determine this height threshold you can plot a histogram of Z values or visualize the point cloud in a software that allows 3D point cloud visualization to ensure that the threshold will not result in any top canopy points being removed. Though we use CloudCompare for point cloud registration, we recommend Potree to visualize point clouds as it handles large point clouds quickly and with ease. Both Potree and CloudCompare are open-source software.
+    - If you do not have any point above the canopy or below the ground that need removing you can skip this step.
+    - path_to_projected_L1 is the path to the projected LiDAR .laz file from above
+```{LAStools eval=FALSE, include=TRUE}
+REM dropping points above 160m (160m is the height cutoff for this dataset)
+las2las -i path_to_projected_L1 ^
+	-odir path_to_write ^
+	-odix _droppedPtsAbove160m ^
+	-olaz ^
+	-drop_z_above 160 ^
+	-cpu64 ^
+	-v
+```
 
-- Lastly we clip the LiDAR file to a boundary polygon of the site to remove excess surrounding data that can slow processing in CloudCompare. 
+3. Lastly we clip the LiDAR file to a boundary polygon of the site to remove excess surrounding data that can slow processing in CloudCompare.
+    - path_to_shp is the path to the site shapefile.
+    - path_to_projected_below160m_L1 is the path to .laz file that has been projected and filtered for points above a set threshold in steps 1 and 2 above.
+    - "-odix _clipped" will save the new laz file with the same name as the input file with "_clipped" attached to the end, change the "_clipped" to work with your naming system.
 
-
+```{LAStools eval=FALSE, include=TRUE}
+lasclip -i path_to_projected_below160m_L1 -merged -path_to_shp -odir path_to_write -odix _clipped -olaz
+```
 
 ### Register LiDAR to DAP cloud in CloudCompare
-Import both the LiDAR and DAP clouds into Cloud Compare (CC).  This can take up to twenty minutes.  Allow all for the first two warnings. 
+Import both the LiDAR and DAP clouds into CloudCompare (CC).  This can take up to twenty minutes.  Allow all for the first two warnings. 
 
 #### Examine the point clouds for artifacts.  
 The L1 will reflect flight lines when there is moisture in the air.  Below is an example point cloud from a damp day on the coast just after a fog past through. For sake of the example, it was not filtered in LAStools with a height threshold. 
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_1.PNG")
 ```
 
@@ -81,59 +103,112 @@ The goal is to roughly align (move) the LiDAR to our reference “template” DA
 
 Problem: Manually moving the LiDAR cloud to roughly align with the DAP cloud caused Cloud Compare to crash or hang when working with larger data sets.   
 
-Solution: Use the Apply Transformation function in Cloud Compare – Highlight the LiDAR layer in the DB tree - Hit ctrl T or Apply Transformation in the Edit menu. 
+Solution: Use the Apply Transformation function in CloudCompare – Highlight the LiDAR layer in the DB tree - Hit ctrl T or Apply Transformation in the Edit menu. 
 
 
 In this example the LiDAR is the lower. 
-```{r echo=FALSE}
+```{r echo=FALSE,fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_2.PNG")
 ```
 
 
-First apply a z transformation. It is best to do this while viewing the edge of the plot. 
+First apply a Z transformation. It is best to do this while viewing the edge of the plot. Here we applied a Z transformation of +6. 
 
-```{r echo=FALSE}
+```{r echo=FALSE,fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_3.PNG")
 ```
 
-
-I applied 6 to the Z.   
 
 Next Apply transformations in the x and y axis.   
 
 Find a section of the clouds where you can easily see the alignment.  In this case there is a single large leave tree in the centre of the plot.  The LiDAR is the one on the left. 
 
-Here I see the LiDAR is offset to the left (negative) on the Y(green) axis and up (positive) on the x(red) axis.  
+Here we see the LiDAR is offset to the left (negative) on the Y(green) axis and up (positive) on the x(red) axis.  
 
-```{r echo=FALSE}
+```{r echo=FALSE,fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_4.PNG")
 ```
 
 Be careful not to rotate, only transform. 
 
-```{r echo=FALSE}
+```{r echo=FALSE,fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_5.PNG")
 ```
 
-In this case I shifted the ALS -5 in the X and +5 in the Y axis.  It took Three smaller iterations to get to this point. 
+In this case the LiDAR was shifted -5 in the X and +5 in the Y axis in total.  The shift was done in three smaller iterations to achieve the alignment seen in the above screen capture. 
 
 #### Fine Registration: Iterative Closest Point (ICP) 
 
 Highlight both clouds in the DB tree and apply the fine registration (ICP) algorithm using the following settings. Careful to set a max thread count that matches the resources you have available. 
 
-```{r echo=FALSE}
+```{r echo=FALSE,fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_6.PNG")
 ```
 
+Save out the registered LiDAR point clouda at the highest resolution
 
 ### Rescale and tile the registered LiDAR: 
 
-Below is a script written in LAStools that:
-- Ensures the data is still in the proper projection (NAD83 UTM 10N).
-- Rescales the data which is necessary to later load into R for normalization and metric calculations.
-- Lastly the code tiles the LiDAR to allow for parallel processing in the following R steps.
+Below are snipets of a script written in LAStools that is used to proeject, rescale and tile the registered LiDAR point cloud.
 
-### Normalization and individual tree metric calculations: 
+The unparsed script can be found on the project GitHub, see [GitHub link](index.html#github-link)
+
+1. Projecting the registered LiDAR to the proper projection (NAD83 UTM 10N). 
+    - If you are working with already tiled data or multiple .laz/.las files on a multi-core computer than you can use the cores command shown below. Here we defined cores=4 which allows 4 cores to work on the command simultaneously on different files. If you are only working with one .laz/.las file at this point there is no need to specify the number of cores and the "^  -cores %cores%" following the "-v ^" should be removed from the below code
+    - Change "path_to_registered_lidar" to the path to the registered LiDAR data exported from CloudCompare.
+    - "\*.las" takes the las file in that folder, change to the file name if have more than one .las in the folder and you want to specify a specific file.
+    - Change "path_to_write\01_proj_NAD83" to the path you would like the new projected  .laz file to be written to.
+
+```{LAStools eval=FALSE, include=TRUE}
+set cores=4
+
+las2las -i path_to_registered_lidar\*.las ^
+    -odir path_to_write\01_proj_NAD83 ^
+    -odix _nad83 ^
+    -olaz ^
+    -nad83 ^
+    -utm 10north ^
+    -cpu64 ^
+    -v ^
+    -cores %cores% 
+```
+
+2. Rescales the data which is necessary to later load into R for normalization and metric calculations.
+    - Registered LiDAR is exported from CloudCompare at the highest resolution which changes the scale of the data, hence rescaling the x,y,z to 0.01 is necessary to avoid warnings/errors in R
+    - "path_to_write" is in the input dir and the output dir because its the main folder we are now working in
+    - "path_to_write\01_proj_NAD83\*.laz" selects the .laz file in the "path_to_write\01_proj_NAD83" folder, if there are more than one .laz file in your folder and you want to specify which to call, change the "*" to the name of the file.
+    - The output .laz file will be written to the "path_to_write\02_rescaled" folder with the same name as the original file.
+```{LAStools eval=FALSE, include=TRUE}
+las2las -i path_to_write\01_proj_NAD83\*.laz ^
+        -rescale 0.01 0.01 0.01 ^
+        -cpu64 ^
+        -utm 10north ^
+        -v ^
+        -odir path_to_write\02_rescaled ^
+        -olaz
+```
+
+3. Next the code indexes the LiDAR data. Indexing creates a ".lax" file for a given .las or .laz file that contains spatial indexing information. When this LAX file is present it will be used to speed up access to the relevant areas of the LAS/LAZ file for spatial queries.
+```{LAStools eval=FALSE, include=TRUE}
+REM Indexing
+lasindex -i path_to_write\02_rescaled\*.laz
+```
+
+4. Lastly tiling divides the point clouds into tiles to allow for parallel processing in the following R steps.
+    - "tile_size 15" sets the size of the tiles to 15m.
+    - "buffer 4 " sets the size of the buffer surrounding the tiles to 4m.
+    - "flag_as_withheld " flags the buffer points so that they can be easily filtered out in the following steps in R.
+```{LAStools eval=FALSE, include=TRUE}
+REM Creating 15m tiles 
+lastile -i path_to_write\02_rescaled\*.laz ^
+    -tile_size 15 ^
+    -buffer 4 ^
+    -flag_as_withheld ^
+    -odir path_to_write\03_tile ^
+    -olaz 
+```
+
+## Normalization and individual tree point clouds
 
 Below is an R script that: 
 
@@ -143,8 +218,21 @@ Below is an R script that:
 - Segments the tiles to only retain the top 25% of each tree using the crown polygons. Threshold can change dependent on study needs, 25% was set given the trees were mature with crown closure  
 - Merges segmented tiles to create one large las file containing the top 25% of each tree 
 - Clips las file to an individual point cloud containing the top 25% of point per tree using the crown polygons 
+
+## Individual Tree Metrics
+
 - Calculates metrics on indiviual tree point clouds: 
    - Height percentiles: 99, 97.5, 95, 92.5, mean height 
    - Volumes: Convex, concave, volume from an alpha shape of 0.5 
    - Crown complexity: rumple, canopy rugosity ratio, coefficient of variation of height 
+   
+
+```{r echo=FALSE,out.width='50%', fig.align='center'}
+knitr::include_graphics(c("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Individual_tree_point_cloud_resize_bookdown.png", 
+                          "C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Individual_tree_volume_resized_bookdown.gif"))
+
+```
+   
+   
+  
 .

@@ -19,4 +19,5 @@ examine-the-point-clouds-for-artifacts.
 rough-alignment
 fine-registration-iterative-closest-point-icp
 rescale-and-tile-the-registered-lidar
-normalization-and-individual-tree-metric-calculations
+normalization-and-individual-tree-point-clouds
+individual-tree-metrics
