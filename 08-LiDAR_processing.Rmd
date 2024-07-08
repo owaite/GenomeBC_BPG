@@ -1,0 +1,116 @@
+#LiDAR Processing Workflow
+
+## DJI Terra 
+**Input:** 
+
+Run the raw ########### files in DJI Terra using the below settings:
+- 
+- 
+- 
+  - 
+  
+
+
+
+
+**Output:**
+
+
+## Register the LiDAR to the DAP point cloud
+
+Given we were flying biweekly multispectral and RGB imagery and only 2-3 LiDAR aquisitions a year, we organized our workflow so that the LiDAR is aligned to the DAP. This allowed us to more easily align the many multispectral and RGB acquisitions to a defined template in Agisoft Metashape. 
+
+### Prepare LiDAR for registration
+
+Below is a script written in LAStools that:
+- Ensures both the DAP point cloud and LiDAR file are in the proper projection (NAD83 UTM 10N in our case) 
+_ Drops points in the LiDAR file above a threshold to remove noisy points that are not from the canopy. To determine this height threshold, we recommend visualizing the las files in Potree. 
+- Lastly we clip the LiDAR file to a boundary polygon of the site to remove excess surrounding data that can slow processing in CloudCompare. 
+
+### Register LiDAR to DAP cloud in CloudCompare
+Import both the LiDAR and DAP clouds into Cloud Compare (CC).  This can take up to twenty minutes.  Allow all for the first two warnings. 
+
+#### Examine the point clouds for artifacts.  
+The L1 will reflect flight lines when there is moisture in the air.  Below is an example point cloud from a damp day on the coast just after a fog past through. For sake of the example, it was not filtered in LAStools with a height threshold. 
+
+```{r echo=FALSE}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_1.PNG")
+```
+
+The residual fog patches seen above the canopy can be clipped out using the cross section or segment tool.
+
+######## ** IMAGE of TOOLS MENTIONED ** ##########
+
+#### Rough Alignment 
+
+The goal is to roughly align (move) the LiDAR to our reference “template” DAP dense cloud ahead of the ICP fine adjustment algorithm.  
+
+Problem: Manually moving the LiDAR cloud to roughly align with the DAP cloud caused Cloud Compare to crash or hang when working with larger data sets.   
+
+Solution: Use the Apply Transformation function in Cloud Compare – Highlight the LiDAR layer in the DB tree - Hit ctrl T or Apply Transformation in the Edit menu. 
+
+
+In this example the LiDAR is the lower. 
+```{r echo=FALSE}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_2.PNG")
+```
+
+
+First apply a z transformation. It is best to do this while viewing the edge of the plot. 
+
+```{r echo=FALSE}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_3.PNG")
+```
+
+
+I applied 6 to the Z.   
+
+Next Apply transformations in the x and y axis.   
+
+Find a section of the clouds where you can easily see the alignment.  In this case there is a single large leave tree in the centre of the plot.  The LiDAR is the one on the left. 
+
+Here I see the LiDAR is offset to the left (negative) on the Y(green) axis and up (positive) on the x(red) axis.  
+
+```{r echo=FALSE}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_4.PNG")
+```
+
+Be careful not to rotate, only transform. 
+
+```{r echo=FALSE}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_5.PNG")
+```
+
+In this case I shifted the ALS -5 in the X and +5 in the Y axis.  It took Three smaller iterations to get to this point. 
+
+#### Fine Registration: Iterative Closest Point (ICP) 
+
+Highlight both clouds in the DB tree and apply the fine registration (ICP) algorithm using the following settings. Careful to set a max thread count that matches the resources you have available. 
+
+```{r echo=FALSE}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_6.PNG")
+```
+
+
+### Rescale and tile the registered LiDAR: 
+
+Below is a script written in LAStools that:
+- Ensures the data is still in the proper projection (NAD83 UTM 10N).
+- Rescales the data which is necessary to later load into R for normalization and metric calculations.
+- Lastly the code tiles the LiDAR to allow for parallel processing in the following R steps.
+
+### Normalization and individual tree metric calculations: 
+
+Below is an R script that: 
+
+- Creates a 10cm DTM from the tiles  
+- Normalizes the tiles using the DTM 
+- Creates a 4cm CHM from the max Z values in each pixel 
+- Segments the tiles to only retain the top 25% of each tree using the crown polygons. Threshold can change dependent on study needs, 25% was set given the trees were mature with crown closure  
+- Merges segmented tiles to create one large las file containing the top 25% of each tree 
+- Clips las file to an individual point cloud containing the top 25% of point per tree using the crown polygons 
+- Calculates metrics on indiviual tree point clouds: 
+   - Height percentiles: 99, 97.5, 95, 92.5, mean height 
+   - Volumes: Convex, concave, volume from an alpha shape of 0.5 
+   - Crown complexity: rumple, canopy rugosity ratio, coefficient of variation of height 
+.
