@@ -26,6 +26,27 @@ Below is the link to the GitHub where you can access full scripts referenced in 
 
 **GitHub Link: ** [PARSER-GBC-GitHub](https://github.com/owaite/PARSER-GBC-GitHub.git)
 
+```{r echo=FALSE, results='asis'}
+# Define the image paths
+img_paths <- c(
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/IRSS.png",
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/NRCan_english.PNG",
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GeneSolve.png",
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GenomeBC.jpg"
+)
+
+# Create the HTML for the images
+html <- paste0(
+  '<div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">',
+  paste0('<img src="', img_paths, '" style="height: 60px; margin: 0 10px;" />', collapse = ""),
+  '</div>'
+)
+
+# Print the HTML
+cat(html)
+```
+
+
 ## Acknowledgements {-}
 These guidelines were made possible thanks for project funding from Genome British Columbia’s GeneSolve program, the Canadian Forest Service’s Fibre Solutions, 2 Billion Tree programs, and Assistant Deputy Minister’s Innovation Fund. For administrative assistance, we thank Adam Dick, Olivier van Lier, Marlene Francis, Annick Pelletier, Lise Carron, Guy Smith and Amélie Roberge. For practical input, we thank Bill Lakeland, Alec Wilson, Eric Saczuk, Keenan Rudichuk and David Huntley. 
 
