@@ -1,5 +1,5 @@
-standard-operating-procedures-for-dji-m300-mapping-flights
 background-and-basis-of-knowledge
+standard-operating-procedures-for-dji-m300-mapping-flights
 overview-of-methodologies
 range-of-sites-assessed
 preflight-planning
@@ -9,3 +9,14 @@ ground-control-points-gcps
 absolute-and-relative-reference-with-precise-point-positioning
 terrain-following-on-sites-with-elevation-gain
 site-selection-considerations
+lidar-processing-workflow
+dji-terra
+run-the-raw-files-in-dji-terra-using-the-below-settings
+register-the-lidar-to-the-dap-point-cloud
+prepare-lidar-for-registration
+register-lidar-to-dap-cloud-in-cloudcompare
+examine-the-point-clouds-for-artifacts.
+rough-alignment
+fine-registration-iterative-closest-point-icp
+rescale-and-tile-the-registered-lidar
+normalization-and-individual-tree-metric-calculations

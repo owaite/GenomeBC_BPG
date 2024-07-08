@@ -1,4 +1,4 @@
-#LiDAR Processing Workflow
+# LiDAR Processing Workflow
 
 ## DJI Terra 
 **Input:** 
@@ -6,8 +6,8 @@
 Run the raw ########### files in DJI Terra using the below settings:
 - 
 - 
-- 
-  - 
+- large bullet
+  - sub bullet
   
 
 
@@ -22,10 +22,44 @@ Given we were flying biweekly multispectral and RGB imagery and only 2-3 LiDAR a
 
 ### Prepare LiDAR for registration
 
-Below is a script written in LAStools that:
+Below are snipets of a script written in LAStools that is used to ensure the LiDAR and DAP clouds are in the proper proection, filters out points in the LiDAR that are above a defined threshold, and clips the LiDAR to a boudnary polygon to speed up registration by avoiding working with excess data in CloudCompare.
+
+The unparsed script can be found on the project GitHub, see \@ref(GitHub-link) 
+
 - Ensures both the DAP point cloud and LiDAR file are in the proper projection (NAD83 UTM 10N in our case) 
-_ Drops points in the LiDAR file above a threshold to remove noisy points that are not from the canopy. To determine this height threshold, we recommend visualizing the las files in Potree. 
+  - path_to_L1_las is the path to the LiDAR .las file from DJI terra.
+  - path_to_write is where the path the projected .laz file will be written to. The files will be saved out with the same file name as the origianl LiDAR file with a "_nad83" suffix.
+  - "REM" works to comment out a line in LAStools as "#" does in R
+  
+```{LAStools eval=FALSE, include=TRUE}
+REM Project DAP and save out as a .laz
+las2las -i path_to_DAP_las_file ^
+	-odir path_to_write ^
+	-odix _nad83 ^
+	-olaz ^
+	-nad83 ^
+	-utm 10north ^
+	-cpu64 ^
+	-v
+
+REM Project LiDAR and save out as a .laz
+las2las -i path_to_L1_las ^
+	-odir path_to_write ^
+	-odix _nad83 ^
+	-olaz ^
+	-nad83 ^
+	-utm 10north ^
+	-cpu64 ^
+	-v
+
+```
+
+
+- Drops points in the LiDAR file above a threshold to remove noisy points that are not from the canopy. To determine this height threshold, we recommend visualizing the las files in Potree. 
+
 - Lastly we clip the LiDAR file to a boundary polygon of the site to remove excess surrounding data that can slow processing in CloudCompare. 
+
+
 
 ### Register LiDAR to DAP cloud in CloudCompare
 Import both the LiDAR and DAP clouds into Cloud Compare (CC).  This can take up to twenty minutes.  Allow all for the first two warnings. 
@@ -39,7 +73,7 @@ knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\G
 
 The residual fog patches seen above the canopy can be clipped out using the cross section or segment tool.
 
-######## ** IMAGE of TOOLS MENTIONED ** ##########
+ ** IMAGE of TOOLS MENTIONED ** ******************************************
 
 #### Rough Alignment 
 
