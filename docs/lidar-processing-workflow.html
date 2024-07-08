@@ -101,15 +101,14 @@
 <li class="chapter" data-level="6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>6</b> LiDAR Processing Workflow</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>6.1</b> DJI Terra</a></li>
-<li class="chapter" data-level="6.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#run-the-raw-files-in-dji-terra-using-the-below-settings"><i class="fa fa-check"></i><b>6.2</b> Run the raw ########### files in DJI Terra using the below settings:</a></li>
-<li class="chapter" data-level="6.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>6.3</b> Register the LiDAR to the DAP point cloud</a>
+<li class="chapter" data-level="6.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>6.2</b> Register the LiDAR to the DAP point cloud</a>
 <ul>
-<li class="chapter" data-level="6.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>6.3.1</b> Prepare LiDAR for registration</a></li>
-<li class="chapter" data-level="6.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>6.3.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
-<li class="chapter" data-level="6.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>6.3.3</b> Rescale and tile the registered LiDAR:</a></li>
+<li class="chapter" data-level="6.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>6.2.1</b> Prepare LiDAR for registration</a></li>
+<li class="chapter" data-level="6.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>6.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
+<li class="chapter" data-level="6.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>6.2.3</b> Rescale and tile the registered LiDAR:</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>6.4</b> Normalization and individual tree point clouds</a></li>
-<li class="chapter" data-level="6.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>6.5</b> Individual Tree Metrics</a></li>
+<li class="chapter" data-level="6.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>6.3</b> Normalization and individual tree point clouds</a></li>
+<li class="chapter" data-level="6.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>6.4</b> Individual Tree Metrics</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -134,28 +133,25 @@
 <h1><span class="header-section-number">Chapter 6</span> LiDAR Processing Workflow<a href="lidar-processing-workflow.html#lidar-processing-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="dji-terra" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> DJI Terra<a href="lidar-processing-workflow.html#dji-terra" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><strong>Input:</strong></p>
-</div>
-<div id="run-the-raw-files-in-dji-terra-using-the-below-settings" class="section level2 hasAnchor" number="6.2">
-<h2><span class="header-section-number">6.2</span> Run the raw ########### files in DJI Terra using the below settings:<a href="lidar-processing-workflow.html#run-the-raw-files-in-dji-terra-using-the-below-settings" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li></li>
-<li>large bullet
+<li>Open DJI Terra and start a LiDAR Point Cloud Processing session</li>
+<li>Import the flight files, including imagery if you would like a colorized point cloud</li>
+<li>Below are the settings we use to process the point cloud:
 <ul>
-<li>sub bullet</li>
+<li>We use the deafult settings set by DJI with the exception of setting the DEM resolution to 10cm</li>
 </ul></li>
 </ul>
-<p><strong>Output:</strong></p>
+<p><img src="Photos_&_gifs/DJI_settings.png" width="449" style="display: block; margin: auto;" /></p>
 </div>
-<div id="register-the-lidar-to-the-dap-point-cloud" class="section level2 hasAnchor" number="6.3">
-<h2><span class="header-section-number">6.3</span> Register the LiDAR to the DAP point cloud<a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="register-the-lidar-to-the-dap-point-cloud" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Register the LiDAR to the DAP point cloud<a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Convention is generally to register DAP to LiDAR however for this specific project it made more sense to register the LiDAR to the DAP because:
 - We were flying biweekly multispectral and RGB imagery and only 2-3 LiDAR acquisitions a year.
 - We could not load the LiDAR point cloud into Agisoft Metashape to use as a reference for registration however could register all DAP clouds to a reference DAP cloud in Agisoft.
 - This allowed us to more easily register the many multispectral and RGB acquisitions to a defined template in Agisoft Metashape and use the exported point cloud of the template DAP to register the LiDAR in CloudCompare.
 - This process worked well for us since our priority was centimeter-level registration of orthomosaics and LiDAR between many dates and across multiple sensors.</p>
-<div id="prepare-lidar-for-registration" class="section level3 hasAnchor" number="6.3.1">
-<h3><span class="header-section-number">6.3.1</span> Prepare LiDAR for registration<a href="lidar-processing-workflow.html#prepare-lidar-for-registration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="prepare-lidar-for-registration" class="section level3 hasAnchor" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> Prepare LiDAR for registration<a href="lidar-processing-workflow.html#prepare-lidar-for-registration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below are snipets of a script written in LAStools that is used to ensure the LiDAR and DAP clouds are in the proper projection, filters out points in the LiDAR that are above a defined threshold, and clips the LiDAR to a boundary polygon to speed up registration by avoiding working with excess data in CloudCompare.</p>
 <p>The unparsed script can be found on the project GitHub, see <a href="index.html#github-link">GitHub link</a></p>
 <ol style="list-style-type: decimal">
@@ -211,18 +207,18 @@ las2las -i path_to_projected_L1 ^
 </ol>
 <pre class="lastools"><code>lasclip -i path_to_projected_below160m_L1 -merged -path_to_shp -odir path_to_write -odix _clipped -olaz</code></pre>
 </div>
-<div id="register-lidar-to-dap-cloud-in-cloudcompare" class="section level3 hasAnchor" number="6.3.2">
-<h3><span class="header-section-number">6.3.2</span> Register LiDAR to DAP cloud in CloudCompare<a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="register-lidar-to-dap-cloud-in-cloudcompare" class="section level3 hasAnchor" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> Register LiDAR to DAP cloud in CloudCompare<a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Import both the LiDAR and DAP clouds into CloudCompare (CC). This can take up to twenty minutes. Allow all for the first two warnings.</p>
-<div id="examine-the-point-clouds-for-artifacts." class="section level4 hasAnchor" number="6.3.2.1">
-<h4><span class="header-section-number">6.3.2.1</span> Examine the point clouds for artifacts.<a href="lidar-processing-workflow.html#examine-the-point-clouds-for-artifacts." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="examine-the-point-clouds-for-artifacts." class="section level4 hasAnchor" number="6.2.2.1">
+<h4><span class="header-section-number">6.2.2.1</span> Examine the point clouds for artifacts.<a href="lidar-processing-workflow.html#examine-the-point-clouds-for-artifacts." class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The L1 will reflect flight lines when there is moisture in the air. Below is an example point cloud from a damp day on the coast just after a fog past through. For sake of the example, it was not filtered in LAStools with a height threshold.</p>
 <p><img src="CloudCompare_1.PNG" width="810" style="display: block; margin: auto;" /></p>
 <p>The residual fog patches seen above the canopy can be clipped out using the cross section or segment tool.</p>
 <p>** IMAGE of TOOLS MENTIONED ** ******************************************</p>
 </div>
-<div id="rough-alignment" class="section level4 hasAnchor" number="6.3.2.2">
-<h4><span class="header-section-number">6.3.2.2</span> Rough Alignment<a href="lidar-processing-workflow.html#rough-alignment" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="rough-alignment" class="section level4 hasAnchor" number="6.2.2.2">
+<h4><span class="header-section-number">6.2.2.2</span> Rough Alignment<a href="lidar-processing-workflow.html#rough-alignment" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The goal is to roughly align (move) the LiDAR to our reference “template” DAP dense cloud ahead of the ICP fine adjustment algorithm.</p>
 <p>Problem: Manually moving the LiDAR cloud to roughly align with the DAP cloud caused Cloud Compare to crash or hang when working with larger data sets.</p>
 <p>Solution: Use the Apply Transformation function in CloudCompare – Highlight the LiDAR layer in the DB tree - Hit ctrl T or Apply Transformation in the Edit menu.</p>
@@ -238,15 +234,15 @@ las2las -i path_to_projected_L1 ^
 <p><img src="CloudCompare_5.PNG" width="643" style="display: block; margin: auto;" /></p>
 <p>In this case the LiDAR was shifted -5 in the X and +5 in the Y axis in total. The shift was done in three smaller iterations to achieve the alignment seen in the above screen capture.</p>
 </div>
-<div id="fine-registration-iterative-closest-point-icp" class="section level4 hasAnchor" number="6.3.2.3">
-<h4><span class="header-section-number">6.3.2.3</span> Fine Registration: Iterative Closest Point (ICP)<a href="lidar-processing-workflow.html#fine-registration-iterative-closest-point-icp" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="fine-registration-iterative-closest-point-icp" class="section level4 hasAnchor" number="6.2.2.3">
+<h4><span class="header-section-number">6.2.2.3</span> Fine Registration: Iterative Closest Point (ICP)<a href="lidar-processing-workflow.html#fine-registration-iterative-closest-point-icp" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Highlight both clouds in the DB tree and apply the fine registration (ICP) algorithm using the following settings. Careful to set a max thread count that matches the resources you have available.</p>
 <p><img src="CloudCompare_6.PNG" width="362" style="display: block; margin: auto;" /></p>
 <p>Save out the registered LiDAR point clouda at the highest resolution</p>
 </div>
 </div>
-<div id="rescale-and-tile-the-registered-lidar" class="section level3 hasAnchor" number="6.3.3">
-<h3><span class="header-section-number">6.3.3</span> Rescale and tile the registered LiDAR:<a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="rescale-and-tile-the-registered-lidar" class="section level3 hasAnchor" number="6.2.3">
+<h3><span class="header-section-number">6.2.3</span> Rescale and tile the registered LiDAR:<a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below are snipets of a script written in LAStools that is used to proeject, rescale and tile the registered LiDAR point cloud.</p>
 <p>The unparsed script can be found on the project GitHub, see <a href="index.html#github-link">GitHub link</a></p>
 <ol style="list-style-type: decimal">
@@ -307,8 +303,8 @@ lastile -i path_to_write\02_rescaled\*.laz ^
     -olaz </code></pre>
 </div>
 </div>
-<div id="normalization-and-individual-tree-point-clouds" class="section level2 hasAnchor" number="6.4">
-<h2><span class="header-section-number">6.4</span> Normalization and individual tree point clouds<a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="normalization-and-individual-tree-point-clouds" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Normalization and individual tree point clouds<a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Below is an R script that:</p>
 <ul>
 <li>Creates a 10cm DTM from the tiles<br />
@@ -321,8 +317,8 @@ lastile -i path_to_write\02_rescaled\*.laz ^
 <li>Clips las file to an individual point cloud containing the top 25% of point per tree using the crown polygons</li>
 </ul>
 </div>
-<div id="individual-tree-metrics" class="section level2 hasAnchor" number="6.5">
-<h2><span class="header-section-number">6.5</span> Individual Tree Metrics<a href="lidar-processing-workflow.html#individual-tree-metrics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="individual-tree-metrics" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Individual Tree Metrics<a href="lidar-processing-workflow.html#individual-tree-metrics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>Calculates metrics on indiviual tree point clouds:
 <ul>

@@ -11,7 +11,6 @@ terrain-following-on-sites-with-elevation-gain
 site-selection-considerations
 lidar-processing-workflow
 dji-terra
-run-the-raw-files-in-dji-terra-using-the-below-settings
 register-the-lidar-to-the-dap-point-cloud
 prepare-lidar-for-registration
 register-lidar-to-dap-cloud-in-cloudcompare

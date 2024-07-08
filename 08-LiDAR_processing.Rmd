@@ -1,19 +1,16 @@
 # LiDAR Processing Workflow
 
 ## DJI Terra 
-**Input:** 
 
-Run the raw ########### files in DJI Terra using the below settings:
-- 
-- 
-- large bullet
-  - sub bullet
+
+- Open DJI Terra and start a LiDAR Point Cloud Processing session
+- Import the flight files, including imagery if you would like a colorized point cloud
+- Below are the settings we use to process the point cloud:
+  - We use the deafult settings set by DJI with the exception of setting the DEM resolution to 10cm
   
-
-
-
-
-**Output:**
+```{r echo=FALSE, fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\DJI_settings.PNG")
+```
 
 
 ## Register the LiDAR to the DAP point cloud
