@@ -207,14 +207,98 @@ lastile -i path_to_write\02_rescaled\*.laz ^
 
 ## Normalization and individual tree point clouds
 
-Below is an R script that: 
+The below workflow includes explanations and code where applicable for each of the following:
 
-- Creates a 10cm DTM from the tiles  
-- Normalizes the tiles using the DTM 
-- Creates a 4cm CHM from the max Z values in each pixel 
-- Segments the tiles to only retain the top 25% of each tree using the crown polygons. Threshold can change dependent on study needs, 25% was set given the trees were mature with crown closure  
-- Merges segmented tiles to create one large las file containing the top 25% of each tree 
-- Clips las file to an individual point cloud containing the top 25% of point per tree using the crown polygons 
+1. Creating a 10cm DTM from the registered LiDAR tiles
+
+2. Normalizing the tiles using the DTM 
+
+3. Creating a 4cm CHM from the max Z values in each pixel 
+
+4. Segmenting the tiles to only retain the top 25% of each tree using the crown polygons. The threshold will be site and age dependent. We set our threshold to the top 25% given that the trees were mature with crown closure and we were not confident the lower 75% of the point cloud did not contain any invading neighboring branches. 
+
+5. Merging segmented tiles to create one large point cloud containing the top 25% of each tree 
+
+6. Clipping the point cloud into individual point clouds per tree
+
+Note: The full code that can be found on the project [GitHub](index.html#github-link) runs through the above steps in a for loop. For sake of this guide we have rearranged the ordering of some steps (i.e. functions will be defined as we go in this guide, however are defined at the beginning in the full R script to allow the for loop to run). 
+
+### Creating a DTM from the registered LiDAR tiles 
+
+To being, when working with LiDAR data in R, an incredibly useful package is the lidR package. We highly recommend taking a look at the [lidR bookdown](https://r-lidar.github.io/lidRbook/) for useful tips and examples on using the package. 
+
+The packages required for our workflow are:
+```{r eval=FALSE, include=TRUE}
+library(tidyverse)
+library(sf)
+library(sp)
+library(spatial)
+library(raster) # working with raster data
+library(terra)
+library(lidR) # reading and processing LiDAR data
+library(sp) # defines and allows us to work with spatial objects
+library(nngeo)
+library(future)
+library(rmapshaper)
+library(concaveman)
+library(parallel)
+library(foreach)
+library(smoothr)
+library(ForestTools)
+library(gdalUtilities)
+library(exactextractr)
+library(alphashape3d) # Creates alpha shapes used to calculate crown volume 
+library(lwgeom)
+library(dplyr)
+```
+
+
+Here we are reading in the output tiles from the [tiling and rescaling step above](index.html#Rescale-and-tile-the-registered-LiDAR). We then drop the buffer points that were flagged as withheld in the LAStools tiling stage, set the new chunk buffer to 0.5m and set the opt_output_files to empty given that we do not want to save DTMs for the individual tiles but rather one for the entire site.
+
+```{r, eval=FALSE, echo=TRUE}
+dir <- "set_path_to_folders"
+
+TILES = readLAScatalog(folder = paste0(dir, "\\03_tile\\"), filter = "drop_withheld")
+opt_filter(TILES) <- "-drop_withheld"   # set filtering options for the LAScatalog object to drop withheld points
+opt_chunk_buffer(TILES) = .5   # set the buffer size for chunks in the LAScatalog object to 0.5m
+opt_laz_compression(TILES) = TRUE   # enable LAZ compression for the LAScatalog object
+opt_output_files(TILES) = ""   # set output file options for the LAScatalog object to empty
+opt_progress(TILES) = TRUE # enable progress tracking for processing
+```
+
+Next we create a 10cm DTM using the tin() algorithm and smooth the raster by using the mean focal statistic and a focal window of 25m by 25m over the DTM. As the focal window shifts over the raster, it updates the pixel that sits at its center to the mean value within the 25m by 25m window. We then assigned the proper CRS and exported the raster as a tif.
+
+```{r, eval=FALSE, echo=TRUE}
+# Create a DTM
+DTM = grid_terrain(TILES, res = 0.1, tin(), full_raster = FALSE) %>% 
+  # applying a focal operation to the DTM raster: computing the mean value within a moving window defined by a matrix.
+  focal(w = matrix(1, 25, 25),  # define a 25x25 window with all values as 1
+        fun = mean,             # use the mean function to compute the focal statistic
+        na.rm = TRUE,           # remove NA values from computation
+        pad = TRUE)             # pad the edges of the raster with NAs to maintain the original extent
+  
+crs(DTM) <- CRS("+proj=utm +zone=10 +datum=NAD83") # assign a CRS to the raster using the proj4 string representation
+
+writeRaster(DTM, paste0(dir, "\\04_RASTER\\", site, "_DTM_0.1m.tif"), overwrite = TRUE) #save the DTM
+```
+
+
+
+### Normalizing the tiles using the DTM 
+
+
+### Creating a 4cm CHM from the max Z values in each pixel 
+
+
+### Segmenting the tiles to only retain the top 25% of each tree using the crown polygons. The threshold will be site and age dependent. We set our threshold to the top 25% given that the trees were mature with crown closure and we were not confident the lower 75% of the point cloud did not contain any invading neighboring branches. 
+
+### Merging segmented tiles to create one large point cloud containing the top 25% of each tree 
+
+### Clipping the point cloud into individual point clouds per tree
+
+
+
+
 
 ## Individual Tree Metrics
 
@@ -222,14 +306,24 @@ Below is an R script that:
    - Height percentiles: 99, 97.5, 95, 92.5, mean height 
    - Volumes: Convex, concave, volume from an alpha shape of 0.5 
    - Crown complexity: rumple, canopy rugosity ratio, coefficient of variation of height 
+  
    
+```{r echo=FALSE, results='asis'}
+# Define the image paths
+img_paths <- c(
+  "C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Individual_tree_point_cloud_resize_bookdown.png", 
+                          "C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Individual_tree_volume_resized_bookdown.gif"
+)
 
-```{r echo=FALSE,out.width='50%', fig.align='center'}
-knitr::include_graphics(c("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Individual_tree_point_cloud_resize_bookdown.png", 
-                          "C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Individual_tree_volume_resized_bookdown.gif"))
+# Create the HTML for the images
+html <- paste0(
+  '<div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">',
+  paste0('<img src="', img_paths, '" style="height: 300px; margin: 0 10px;" />', collapse = ""),
+  '</div>'
+)
 
+# Print the HTML
+cat(html)
 ```
-   
-   
   
 .

@@ -19,4 +19,11 @@ rough-alignment
 fine-registration-iterative-closest-point-icp
 rescale-and-tile-the-registered-lidar
 normalization-and-individual-tree-point-clouds
+creating-a-dtm-from-the-registered-lidar-tiles
+normalizing-the-tiles-using-the-dtm
+creating-a-4cm-chm-from-the-max-z-values-in-each-pixel
+segmenting-the-tiles-to-only-retain-the-top-25-of-each-tree-using-the-crown-polygons.-the-threshold-will-be-site-and-age-dependent.-we-set-our-threshold-to-the-top-25-given-that-the-trees-were-mature-with-crown-closure-and-we-were-not-confident-the-lower-75-of-the-point-cloud-did-not-contain-any-invading-neighboring-branches.
+merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-25-of-each-tree
+clipping-the-point-cloud-into-individual-point-clouds-per-tree
 individual-tree-metrics
+crown-segmentation
