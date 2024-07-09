@@ -256,46 +256,179 @@ library(dplyr)
 Here we are reading in the output tiles from the [tiling and rescaling step above](index.html#Rescale-and-tile-the-registered-LiDAR). We then drop the buffer points that were flagged as withheld in the LAStools tiling stage, set the new chunk buffer to 0.5m and set the opt_output_files to empty given that we do not want to save DTMs for the individual tiles but rather one for the entire site.
 
 ```{r, eval=FALSE, echo=TRUE}
-dir <- "set_path_to_folders"
-
-TILES = readLAScatalog(folder = paste0(dir, "\\03_tile\\"), filter = "drop_withheld")
-opt_filter(TILES) <- "-drop_withheld"   # set filtering options for the LAScatalog object to drop withheld points
-opt_chunk_buffer(TILES) = .5   # set the buffer size for chunks in the LAScatalog object to 0.5m
-opt_laz_compression(TILES) = TRUE   # enable LAZ compression for the LAScatalog object
-opt_output_files(TILES) = ""   # set output file options for the LAScatalog object to empty
-opt_progress(TILES) = TRUE # enable progress tracking for processing
+  dir <- "set_path_to_folders"
+  
+  TILES = readLAScatalog(folder = paste0(dir, "\\03_tile\\"), filter = "drop_withheld")
+  opt_filter(TILES) <- "-drop_withheld"   # set filtering options for the LAScatalog object to drop withheld points
+  opt_chunk_buffer(TILES) = .5   # set the buffer size for chunks in the LAScatalog object to 0.5m
+  opt_laz_compression(TILES) = TRUE   # enable LAZ compression for the LAScatalog object
+  opt_output_files(TILES) = ""   # set output file options for the LAScatalog object to empty
+  opt_progress(TILES) = TRUE # enable progress tracking for processing
 ```
 
 Next we create a 10cm DTM using the tin() algorithm and smooth the raster by using the mean focal statistic and a focal window of 25m by 25m over the DTM. As the focal window shifts over the raster, it updates the pixel that sits at its center to the mean value within the 25m by 25m window. We then assigned the proper CRS and exported the raster as a tif.
 
 ```{r, eval=FALSE, echo=TRUE}
-# Create a DTM
-DTM = grid_terrain(TILES, res = 0.1, tin(), full_raster = FALSE) %>% 
-  # applying a focal operation to the DTM raster: computing the mean value within a moving window defined by a matrix.
-  focal(w = matrix(1, 25, 25),  # define a 25x25 window with all values as 1
-        fun = mean,             # use the mean function to compute the focal statistic
-        na.rm = TRUE,           # remove NA values from computation
-        pad = TRUE)             # pad the edges of the raster with NAs to maintain the original extent
+  # Create a DTM
+  DTM = grid_terrain(TILES, res = 0.1, tin(), full_raster = FALSE) %>% 
+    # applying a focal operation to the DTM raster: computing the mean value within a moving window defined by a matrix.
+    focal(w = matrix(1, 25, 25),  # define a 25x25 window with all values as 1
+          fun = mean,             # use the mean function to compute the focal statistic
+          na.rm = TRUE,           # remove NA values from computation
+          pad = TRUE)             # pad the edges of the raster with NAs to maintain the original extent
+    
+  crs(DTM) <- CRS("+proj=utm +zone=10 +datum=NAD83") # assign a CRS to the raster using the proj4 string representation
   
-crs(DTM) <- CRS("+proj=utm +zone=10 +datum=NAD83") # assign a CRS to the raster using the proj4 string representation
-
-writeRaster(DTM, paste0(dir, "\\04_RASTER\\", site, "_DTM_0.1m.tif"), overwrite = TRUE) #save the DTM
+  writeRaster(DTM, paste0(dir, "\\04_RASTER\\", site, "_DTM_0.1m.tif"), overwrite = TRUE) #save the DTM
 ```
 
 
 
-### Normalizing the tiles using the DTM 
+### Normalization & CHM creation
 
+The R code below reads in the tiled registered LiDAR as a LAScatalog and normalizes the tiles to the DTM made in the previous step. The normalized tiles are then saved out and read back into R to filter out points below "ground" designated to be -0.25m. Here we save out the "cleaned" normalized tiles in a new folder, however for space saving reasons you can also overwrite the original normalized tiles by setting the "opt_output_files()" parameter in the filtering step to the same path as that set for the normalization step. Finally a 4cm CHM was made using max Z values. We chose a resolution of 4cm as it gave us a good looking (no holes, no visible noise) high resolution CHM. We recommend testing out multiple resolutions at this stage to narrow down parameters that work for your data.
 
-### Creating a 4cm CHM from the max Z values in each pixel 
+```{r,eval=FALSE, echo=TRUE}
+# Read the tiles again, but with high-res parameters
+  CTG = readLAScatalog(folder = paste0(dir, "\\03_tile\\"))
+  opt_chunk_buffer(CTG) = .5 # small buffer; we're just normalizing
+  opt_laz_compression(CTG) = TRUE
+  opt_filter(CTG) = "-thin_with_voxel 0.01" # 1cm voxel thinning
+  opt_output_files(CTG) = paste0(dir, "\\05_NORM\\{*}_NORM") #saving out normalized individual laz files with an extension of _NORM to the 05_NORM folder
+  opt_progress(CTG) = TRUE
+  
+  # Normalizing the tiles in the catalog using the DTM, tiles will be saved to the location designated in the above "opt_output_files" as they are processed
+  NORM = normalize_height(CTG, DTM, na.rm = TRUE)#normalizing the laz files in the CTG to the previously made DTM
+  
+  # Read in the normalized laz files and filter out points below -0.25 (below ground)
+  NORM = readLAScatalog(paste0(dir, "\\05_NORM\\"))
+  opt_chunk_buffer(NORM) = 0  # no buffer, just filtering
+  opt_laz_compression(NORM) = TRUE
+  opt_filter(NORM) = "-drop_z_below -.25" #drop points below -25cm
+  opt_output_files(NORM) = paste0(dir, "\\06_NORM_clean\\{*}") #save the filtered normalized filed to the "06..." folder, here you can also choose to overwrite the original normalized laz files by setting the output location to the "05_norm" folder designated as the output in the normalization step
+  opt_progress(NORM) = TRUE #show the progress
+  
+  NORM_clean = catalog_retile(NORM) # applying the filter to all files in the catalog
+  
+  # Making CHMS
+  CHM_max = grid_metrics(NORM_clean, #NORM_clean is the catalog the CHM is being made from
+                         res = 0.04, #4cm resolution
+                         func = ~max(Z)) #using max Z values
+  
+  crs(CHM_max) <- CRS("+proj=utm +zone=10 +datum=NAD83") # assign a CRS to the raster using the proj4 string representation
+  writeRaster(CHM_max, paste0(dir, "\\04_RASTER\\", site, "_CHM_max_0.04m.tif"), overwrite = TRUE) #saving out the CHM
+  
+```
 
+### Segmenting tiles
 
-### Segmenting the tiles to only retain the top 25% of each tree using the crown polygons. The threshold will be site and age dependent. We set our threshold to the top 25% given that the trees were mature with crown closure and we were not confident the lower 75% of the point cloud did not contain any invading neighboring branches. 
+The normalized tiles were then segmented to only retain the top 25% of each tree. This was done using a shapefile (.shp) containing a polygon for each tree crown, see the chapter on [crown segmentation](09-Crown_segmentation#Crown-segmentation) for a detailed workflow showing how to create crown polygons. 
+
+The threshold set for segmentation will be site specific. We chose to only retain the top 25% of the point cloud for each tree in our mature (~25 years old) sites with crown closure in order to:
+  1. limit the chance of capturing invading branches in our LiDAR data
+  2. Capture a similar scope of the trees in both the LiDAR and photogrametic data, given that the aerial imagery is limited to branches that can be seen from an aerial perspective. 
+
+A range a thresholds, from 50% (for ~10 year old trees that were around ~8m in height) to 80% (for ~4 year old trees that were around ~1m in height), were used for the younger sites we worked with depending on the proportion of tree visible from an aerial perspective.
+
+To begin, we must first define the function that will segment the trees. Here "zq" is the threshold for the height segmentation and can either be set in the polys_to_las function (if you would like it to be the same value each time the function is run) or defined as a variable prior to initiating the function (use this option if the function will be called for different sites that have different zq values). 
+
+The polys_to_las function works by:
+1. Identifying points that fall within a tree crown and labeling the points with the unique treeID for that crown
+2. Labels points within the crown that fall below the defined height threshold to have a treeID of zero 
+3. Filters to only keep points with a treeID value greater than zero
+
+Important:
+- If zq = 0.75, then the points in the bottom 75% of the tree will be removed, leaving a point cloud for the top 25% only.
+- "treeID" is a column in our dataset that functions as a unique identifier per tree within the site, ensure you change each instance of treeID to a column containing a unique identifying for your trees. The unique identifiers can come from the experimental site setup or the [crown segmentation](09-Crown_segmentation#Crown-segmentation) step.
+
+```{r, eval=FALSE, echo=TRUE}
+# Function that will segment the LiDAR tiles to only retain points above a defined cutoff
+polys_to_las = function(chunk, zq = zq, polygons = pols) { #edit zq = zq here if you would like the function to always use the same zq value, ie zq = 0.75, otherwise leave zq = zq as you will be able to define zq in the next code chunk
+  
+  las = readLAS(chunk)                  
+  if (lidR::is.empty(las)) {
+    return(NULL) }# If the LAS file is empty, return NULL
+  
+  las2 = merge_spatial(las, polygons, "treeID") # Merge the LAS points with the polygons based on the treeID attribute, change the "treeID" attribute to a unique identifier for the trees you are working with
+  las_df = las2@data %>%
+    dplyr::group_by(treeID) %>%
+    dplyr::mutate(Zq999 = quantile(Z, 0.999)) %>% # compute Zq999 (the 99.9th percentile of Z) for each tree 
+    dplyr::mutate(treeID = if_else(Z > quantile(Z, 0.999) * zq, as.numeric(treeID), 0))# assign points below the top zq% of the tree height a treeID of zero to filter them out later
+
+  las3 = las2 %>% 
+    add_lasattribute(las_df$treeID, name = "treeID", desc = "treeID") %>% #add treeID las a lasattribute
+    filter_poi(treeID > 0) #filter for points with a treeID greater than 0 
+  
+  if (lidR::is.empty(las3)) {
+    return(NULL)#return NULL is the las3 is empty
+  } else {
+    return(las3)#return the las file that has a treeID associated with it and only contains points in the top zq%
+  }
+  
+}
+```
+
+Next we read in the normalized files, set our zq threshold and run the tiles through the polys_to_las segmentation function using the catalog_apply function.
+
+```{r, eval=FALSE, echo=TRUE}
+
+  # Read in the normalized cloud from the end of the last step
+  NORM = readLAScatalog(paste0(dir, "\\06_NORM_clean\\"))
+  crs(NORM) <- st_crs(26910) # setting CRS
+  opt_chunk_buffer(NORM) = 0 # no buffer
+  opt_laz_compression(NORM) = TRUE # compress output files to .laz objects
+  opt_output_files(NORM) = paste0(dir, "\\07_SEGMENTED\\{*}_SEGMENTED") # write output files to "07_SEG..." folder and name with suffix "_SEGMENTED"
+  opt_progress(NORM) = TRUE # show progress
+  
+  zq = 0.75 # Height percentile to drop, here we will be filtering for the top 25% of the tree 
+  # New tiles have only segmented portions of tree crowns
+  SEGMENTED = catalog_apply(NORM, polys_to_las) # apply the poly_to_las function to the NORM catalog
+
+```
 
 ### Merging segmented tiles to create one large point cloud containing the top 25% of each tree 
 
+
+```{r, eval=FALSE, echo=TRUE}
+  SEGMENTED = readLAScatalog(paste0(dir, "\\07_SEGMENTED\\"))
+  opt_chunk_buffer(SEGMENTED) = 0 #zero buffer
+  opt_chunk_size(SEGMENTED) = 10000 #set the chunk size for the LAScatalog object to 10000 points so that all laz files are merged into one large laz file
+  opt_laz_compression(SEGMENTED) = TRUE
+  opt_progress(SEGMENTED) = TRUE
+  opt_output_files(SEGMENTED) = paste0(dir, "\\08_MERGED\\", site, "_HULLS_merged") #write output files to "08_M..." with the suffix "_HULLS_merged"
+  
+  # merge all the segmented trees into a single point cloud 
+  MERGED = catalog_retile(SEGMENTED) #apply the above opt_ commands
+  print("merged") #print statement to show where the code is at
+```
+
+
+
+
+
+
+
 ### Clipping the point cloud into individual point clouds per tree
 
+```{r, eval=FALSE, echo=TRUE}
+  ##############################################################################
+  #(3.6) Clip merged cloud to individual trees and "clean" the tree point clouds
+  ##############################################################################
+  # save each individual tree as a point cloud
+  print("making crowns")#print statement to show where the code is at
+  opt_output_files(MERGED) = paste0(dir, "\\09_CROWNS\\", site, "_fam{fam}_rep{rep}_tag{tag}_treeID{treeID}") #where the indivdual crown point clouds will be written to and the suffix they will have. Note values assoaciated with the laz file will replace the names in {}
+  CROWNS = clip_roi(MERGED, pols) #clip the MERGED laz file to individual crowns using the crown polygons 
+  
+  ## CLEANING crowns
+  CROWNS = readLAScatalog(paste0(dir, "\\09_CROWNS\\"), filter = "-drop_withheld") #read in the clipped crown point clouds
+  opt_chunk_size(CROWNS) = 0 # processing by files
+  opt_laz_compression(CROWNS) = TRUE
+  opt_chunk_buffer(CROWNS) = 0 # no buffer
+  opt_wall_to_wall(CROWNS) = TRUE # disable internal checks to ensure a valid output. Free wheel mode
+  opt_output_files(CROWNS) = paste0(dir, "\\10_CROWNS_clean\\{*}") #location for output files
+  print("cleaning crowns")
+  CROWNS_clean = catalog_apply(CROWNS, clean_crowns) #applying the clean_crowns function on the CROWNS
+```
 
 
 
@@ -307,6 +440,94 @@ writeRaster(DTM, paste0(dir, "\\04_RASTER\\", site, "_DTM_0.1m.tif"), overwrite 
    - Volumes: Convex, concave, volume from an alpha shape of 0.5 
    - Crown complexity: rumple, canopy rugosity ratio, coefficient of variation of height 
   
+  
+```{r, eval=FALSE, echo=TRUE}
+      Z = las@data$Z # Z values of each point in the .laz cloud
+      
+      chm = grid_metrics(las, func = ~max(Z,na.rm = TRUE), res = 0.05) # 5cm CHM with max Z values #grid_metrics, replaced by pixel_metrics :https://github.com/r-lidar/lidR/releases
+      chm_mean = grid_metrics(las, func = ~mean(Z,na.rm = TRUE), res = 0.2) # 20cm CHM with mean Z values
+      chm_mean[chm_mean < (maxValue(chm_mean))] = NA # pixels of chm_mean that are less than the max value of chm_mean are set to NA
+      chm_mean_trim = raster::trim(chm_mean) # creating a new raster (chm_mean_raster) with teh extent of chm_mean
+      #chm_mean_trim = terra::trim(chm_mean) #using terra instead of trim from raster
+      
+      #apex angles are a measure of concality
+      # Extract points from the las that fall within the extent of 'chm_mean_trim',
+      apex = clip_roi(las, extent(chm_mean_trim))@data %>% #clipping #ext instead of extent if using a SpatRaster from terra
+        dplyr::filter(Z == max(.$Z))# filter the extracted points to retain only those with Z (height) equal to the maximum height value in the dataset.
+
+      origin = c(apex$X, apex$Y, apex$Z)# Define the coordinates of the apex point extracted from the LAS data
+      a_point = c(apex$X, apex$Y, 0)# Define the coordinates of a point lying on the same XY plane as the apex but at a Z coordinate of 0
+
+      # function 'myangle3d' to calculate the 3D angle between vectors defined by three points
+      myangle3d = function(b1, b2, b3) {
+        # Use the 'angle3d' function from the 'aRchi' package to calculate the angle in 3D space
+        # between the vectors formed by points 'origin' (apex), 'a_point', and 'b1', 'b2', 'b3'
+        aRchi::angle3d(o = c(origin[1], origin[2], origin[3]),
+                       a = c(a_point[1], a_point[2], a_point[3]),
+                       b = c(b1, b2, b3))
+      }
+      
+      library(dplyr) #needed to re read in the package in the loop here for vars() to work
+      # Extract the X, Y, and Z coordinates from the LAS data and calculate the angle for each point
+      # using the custom function 'myangle3d'. Then summarize the angle values.
+      ang = las@data %>%
+        dplyr::select(X, Y, Z) %>%
+        rowwise() %>%
+        mutate(angle = myangle3d(b1 = X, b2 = Y, b3 = Z)) %>%
+        dplyr::ungroup() %>%
+        dplyr::summarise_at(vars(angle), list <- c(mean, sd), na.rm = TRUE) #vars() has been updated to across() starting with dplyr version 1.0.0
+
+      # Extract X, Y, and Z coordinates from the LAS data and create a matrix 'a3d'
+      a3d <-  cbind(las@data$X, las@data$Y, las@data$Z)
+      
+      # Center the points around the origin (0,0,0) by subtracting the mean of each dimension
+      a3d[,1] = a3d[,1] - mean(a3d[,1],na.rm = TRUE) #center x values
+      a3d[,2] = a3d[,2] - mean(a3d[,2],na.rm = TRUE) #center y values
+      a3d[,3] = a3d[,3] - mean(a3d[,3],na.rm = TRUE) #center z values # sams orginal code did not center the Z values, but that is the only way we found to not get an error thrown in the ashape3d function.
+      
+      # Generate different shapes using the alphashape3d package
+      shape_convex = alphashape3d::ashape3d(x = a3d, alpha = Inf, pert = TRUE,eps = 1e-09)# Compute a convex hull using alpha = Inf (convex hull) #USED PERT= TRUE : https://cran.r-project.org/web/packages/alphashape3d/alphashape3d.pdf
+      shape_concave = alphashape3d::ashape3d(x = a3d, alpha = 1, pert = TRUE,eps = 1e-09)# Compute a concave hull using alpha = 1 (concave hull)
+      shape_a05 = alphashape3d::ashape3d(x = a3d, alpha = 0.5, pert = TRUE,eps = 1e-09)# Compute a shape for alpha = 0.5 (balanced between convex and concave)
+      
+      structural_metrics_df <- data.frame(
+        treeID = unique(las@data$treeID), 
+        tag = tag_value,
+        n_points = length(las@data$Z),
+        
+        #### Crown height
+        Zq99 = as.numeric(quantile(Z, 0.990,na.rm = TRUE)),# 99th percentile
+        Zq975 = as.numeric(quantile(Z, 0.975,na.rm = TRUE)), # 97.5th percentile
+        Zq95 = as.numeric(quantile(Z, 0.95,na.rm = TRUE)),# 95th percentile
+        Zq925 = as.numeric(quantile(Z, 0.925,na.rm = TRUE)), # 92.5th percentile
+        Z_mean = mean(Z,na.rm = TRUE), #mean crown height
+        
+        ### Crown volume
+        vol_convex = alphashape3d::volume_ashape3d(shape_convex), # convex volume
+        vol_concave = alphashape3d::volume_ashape3d(shape_concave), # concave volume
+        vol_a05= alphashape3d::volume_ashape3d(shape_a05), #volume with alpha = 0.5 (balance between concave and convex)
+        
+        #apex_angle = ang$fn1,
+        #apex_sd = ang$fn2,
+        
+        #### Crown complexity
+        CV_Z = sd(Z,na.rm = TRUE) / mean(Z,na.rm = TRUE),# Compute the coefficient of variation (CV) of Z values, representing the variability of heights relative to the mean height
+        rumple = lidR::rumple_index(chm), #rumple: ratio of canopy outer surface area to ground surface area as measured by the CHM and DTM
+        CRR = (mean(Z,na.rm = TRUE) - min(Z,na.rm = TRUE)) / (max(Z,na.rm = TRUE) - min(Z,na.rm = TRUE))# Compute the Canopy Rugosity Ratio (CRR), 
+        # representing the ruggedness or roughness of the canopy surface
+      )
+      
+
+    #Create structural metrics folder
+    if (!dir.exists(paste0(dir,"\\10_CROWNS_clean\\Structural_metrics\\"))) {
+      dir.create(paste0(dir,"\\10_CROWNS_clean\\Structural_metrics\\"), recursive = TRUE)
+    }
+    #writing out .rds files
+    saveRDS(structural_metrics_df, paste0(dir,"\\10_CROWNS_clean\\Structural_metrics\\",name,"_", date,"_structuralMetrics_tag",tag_value,".rds")) #USED PERT= TRUE : https://cran.r-project.org/web/packages/alphashape3d/alphashape3d.pdf
+    
+```
+
+Below are a individual tree point cloud (left), clipped to the top 25% of the tree and its corresponding alphashape used for volume (right).
    
 ```{r echo=FALSE, results='asis'}
 # Define the image paths
