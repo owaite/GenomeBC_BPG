@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 LiDAR Processing Workflow | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
-  <meta name="description" content="Chapter 6 LiDAR Processing Workflow | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <title>Chapter 1 LiDAR Processing Workflow | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
+  <meta name="description" content="Chapter 1 LiDAR Processing Workflow | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 LiDAR Processing Workflow | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta property="og:title" content="Chapter 1 LiDAR Processing Workflow | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 LiDAR Processing Workflow | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta name="twitter:title" content="Chapter 1 LiDAR Processing Workflow | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   
   
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="preflight-planning.html"/>
-<link rel="next" href="crown-segmentation.html"/>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="photogrametric-processing.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -145,50 +145,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-cite-this-report"><i class="fa fa-check"></i>How to cite this report:</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="glossary.html"><a href="glossary.html"><i class="fa fa-check"></i>Glossary</a></li>
-<li class="chapter" data-level="" data-path="contents.html"><a href="contents.html"><i class="fa fa-check"></i>Contents</a></li>
-<li class="chapter" data-level="1" data-path="background-and-basis-of-knowledge.html"><a href="background-and-basis-of-knowledge.html"><i class="fa fa-check"></i><b>1</b> Background and basis of knowledge</a></li>
-<li class="chapter" data-level="2" data-path="standard-operating-procedures-for-dji-m300-mapping-flights.html"><a href="standard-operating-procedures-for-dji-m300-mapping-flights.html"><i class="fa fa-check"></i><b>2</b> Standard Operating Procedures for DJI M300 Mapping Flights</a></li>
-<li class="chapter" data-level="3" data-path="overview-of-methodologies.html"><a href="overview-of-methodologies.html"><i class="fa fa-check"></i><b>3</b> Overview of Methodologies</a></li>
-<li class="chapter" data-level="4" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html"><i class="fa fa-check"></i><b>4</b> Range of Sites Assessed</a></li>
-<li class="chapter" data-level="5" data-path="preflight-planning.html"><a href="preflight-planning.html"><i class="fa fa-check"></i><b>5</b> Preflight Planning</a>
+<li class="chapter" data-level="1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>1</b> LiDAR Processing Workflow</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="preflight-planning.html"><a href="preflight-planning.html#aligning-and-registering-data-from-different-time-points-and-sensors"><i class="fa fa-check"></i><b>5.1</b> Aligning and registering data from different time points and sensors</a>
+<li class="chapter" data-level="1.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>1.1</b> DJI Terra</a></li>
+<li class="chapter" data-level="1.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>1.2</b> Register the LiDAR to the DAP point cloud</a>
 <ul>
-<li class="chapter" data-level="5.1.1" data-path="preflight-planning.html"><a href="preflight-planning.html#kinematic-processing-rtkppk"><i class="fa fa-check"></i><b>5.1.1</b> Kinematic processing: RTK/PPK</a></li>
-<li class="chapter" data-level="5.1.2" data-path="preflight-planning.html"><a href="preflight-planning.html#ground-control-points-gcps"><i class="fa fa-check"></i><b>5.1.2</b> Ground Control Points (GCPs)</a></li>
-<li class="chapter" data-level="5.1.3" data-path="preflight-planning.html"><a href="preflight-planning.html#absolute-and-relative-reference-with-precise-point-positioning"><i class="fa fa-check"></i><b>5.1.3</b> Absolute and Relative Reference with Precise Point Positioning</a></li>
-<li class="chapter" data-level="5.1.4" data-path="preflight-planning.html"><a href="preflight-planning.html#terrain-following-on-sites-with-elevation-gain"><i class="fa fa-check"></i><b>5.1.4</b> Terrain Following on Sites with Elevation Gain</a></li>
+<li class="chapter" data-level="1.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>1.2.1</b> Prepare LiDAR for registration</a></li>
+<li class="chapter" data-level="1.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>1.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
+<li class="chapter" data-level="1.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>1.2.3</b> Rescale and tile the registered LiDAR:</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="preflight-planning.html"><a href="preflight-planning.html#site-selection-considerations"><i class="fa fa-check"></i><b>5.2</b> Site Selection Considerations</a></li>
+<li class="chapter" data-level="1.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>1.3</b> Normalization and individual tree point clouds</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>1.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
+<li class="chapter" data-level="1.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>1.3.2</b> Normalizing the tiles using the DTM</a></li>
+<li class="chapter" data-level="1.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>1.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
+<li class="chapter" data-level="1.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>1.3.4</b> Segmenting tiles</a></li>
+<li class="chapter" data-level="1.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>1.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
+<li class="chapter" data-level="1.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>1.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>6</b> LiDAR Processing Workflow</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>6.1</b> DJI Terra</a></li>
-<li class="chapter" data-level="6.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>6.2</b> Register the LiDAR to the DAP point cloud</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>6.2.1</b> Prepare LiDAR for registration</a></li>
-<li class="chapter" data-level="6.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>6.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
-<li class="chapter" data-level="6.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>6.2.3</b> Rescale and tile the registered LiDAR:</a></li>
+<li class="chapter" data-level="1.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>1.4</b> Individual Tree Metrics</a></li>
 </ul></li>
-<li class="chapter" data-level="6.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>6.3</b> Normalization and individual tree point clouds</a>
+<li class="chapter" data-level="2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html"><i class="fa fa-check"></i><b>2</b> Photogrametric Processing</a>
 <ul>
-<li class="chapter" data-level="6.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>6.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
-<li class="chapter" data-level="6.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-chm-creation"><i class="fa fa-check"></i><b>6.3.2</b> Normalization &amp; CHM creation</a></li>
-<li class="chapter" data-level="6.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>6.3.3</b> Segmenting tiles</a></li>
-<li class="chapter" data-level="6.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-25-of-each-tree"><i class="fa fa-check"></i><b>6.3.4</b> Merging segmented tiles to create one large point cloud containing the top 25% of each tree</a></li>
-<li class="chapter" data-level="6.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>6.3.5</b> Clipping the point cloud into individual point clouds per tree</a></li>
-</ul></li>
-<li class="chapter" data-level="6.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>6.4</b> Individual Tree Metrics</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="crown-segmentation.html"><a href="crown-segmentation.html"><i class="fa fa-check"></i><b>7</b> Crown segmentation</a></li>
-<li class="chapter" data-level="8" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html"><i class="fa fa-check"></i><b>8</b> Photogrametric Processing</a>
+<li class="chapter" data-level="2.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#processing-orthomosaics"><i class="fa fa-check"></i><b>2.1</b> Processing Orthomosaics</a></li>
+<li class="chapter" data-level="2.2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#shadow-masks"><i class="fa fa-check"></i><b>2.2</b> Shadow Masks</a></li>
+<li class="chapter" data-level="2.3" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#crown-level-vegetation-indicies"><i class="fa fa-check"></i><b>2.3</b> Crown-level Vegetation Indicies</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#processing-orthomosaics"><i class="fa fa-check"></i><b>8.1</b> Processing Orthomosaics</a></li>
-<li class="chapter" data-level="8.2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#shadow-masks"><i class="fa fa-check"></i><b>8.2</b> Shadow Masks</a></li>
-<li class="chapter" data-level="8.3" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#crown-level-vegetation-indicies"><i class="fa fa-check"></i><b>8.3</b> Crown-level Vegetation Indicies</a>
-<ul>
-<li class="chapter" data-level="8.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>8.3.1</b> VI Workflow</a></li>
+<li class="chapter" data-level="2.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>2.3.1</b> VI Workflow</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -210,10 +193,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="lidar-processing-workflow" class="section level1 hasAnchor" number="6">
-<h1><span class="header-section-number">Chapter 6</span> LiDAR Processing Workflow<a href="lidar-processing-workflow.html#lidar-processing-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="dji-terra" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> DJI Terra<a href="lidar-processing-workflow.html#dji-terra" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="lidar-processing-workflow" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> LiDAR Processing Workflow<a href="lidar-processing-workflow.html#lidar-processing-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="dji-terra" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> DJI Terra<a href="lidar-processing-workflow.html#dji-terra" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>Open DJI Terra and start a LiDAR Point Cloud Processing session</li>
 <li>Import the flight files, including imagery if you would like a colorized point cloud</li>
@@ -224,15 +207,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p><img src="Photos_&_gifs/DJI_settings.png" width="449" style="display: block; margin: auto;" /></p>
 </div>
-<div id="register-the-lidar-to-the-dap-point-cloud" class="section level2 hasAnchor" number="6.2">
-<h2><span class="header-section-number">6.2</span> Register the LiDAR to the DAP point cloud<a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="register-the-lidar-to-the-dap-point-cloud" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Register the LiDAR to the DAP point cloud<a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Convention is generally to register DAP to LiDAR however for this specific project it made more sense to register the LiDAR to the DAP because:
 - We were flying biweekly multispectral and RGB imagery and only 2-3 LiDAR acquisitions a year.
 - We could not load the LiDAR point cloud into Agisoft Metashape to use as a reference for registration however could register all DAP clouds to a reference DAP cloud in Agisoft.
 - This allowed us to more easily register the many multispectral and RGB acquisitions to a defined template in Agisoft Metashape and use the exported point cloud of the template DAP to register the LiDAR in CloudCompare.
 - This process worked well for us since our priority was centimeter-level registration of orthomosaics and LiDAR between many dates and across multiple sensors.</p>
-<div id="prepare-lidar-for-registration" class="section level3 hasAnchor" number="6.2.1">
-<h3><span class="header-section-number">6.2.1</span> Prepare LiDAR for registration<a href="lidar-processing-workflow.html#prepare-lidar-for-registration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="prepare-lidar-for-registration" class="section level3 hasAnchor" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Prepare LiDAR for registration<a href="lidar-processing-workflow.html#prepare-lidar-for-registration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below are snipets of a script written in LAStools that is used to ensure the LiDAR and DAP clouds are in the proper projection, filters out points in the LiDAR that are above a defined threshold, and clips the LiDAR to a boundary polygon to speed up registration by avoiding working with excess data in CloudCompare.</p>
 <p>The unparsed script can be found on the project GitHub, see <a href="index.html#github-link">GitHub link</a></p>
 <ol style="list-style-type: decimal">
@@ -288,18 +271,18 @@ las2las -i path_to_projected_L1 ^
 </ol>
 <pre class="lastools"><code>lasclip -i path_to_projected_below160m_L1 -merged -path_to_shp -odir path_to_write -odix _clipped -olaz</code></pre>
 </div>
-<div id="register-lidar-to-dap-cloud-in-cloudcompare" class="section level3 hasAnchor" number="6.2.2">
-<h3><span class="header-section-number">6.2.2</span> Register LiDAR to DAP cloud in CloudCompare<a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="register-lidar-to-dap-cloud-in-cloudcompare" class="section level3 hasAnchor" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> Register LiDAR to DAP cloud in CloudCompare<a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Import both the LiDAR and DAP clouds into CloudCompare (CC). This can take up to twenty minutes. Allow all for the first two warnings.</p>
-<div id="examine-the-point-clouds-for-artifacts." class="section level4 hasAnchor" number="6.2.2.1">
-<h4><span class="header-section-number">6.2.2.1</span> Examine the point clouds for artifacts.<a href="lidar-processing-workflow.html#examine-the-point-clouds-for-artifacts." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="examine-the-point-clouds-for-artifacts." class="section level4 hasAnchor" number="1.2.2.1">
+<h4><span class="header-section-number">1.2.2.1</span> Examine the point clouds for artifacts.<a href="lidar-processing-workflow.html#examine-the-point-clouds-for-artifacts." class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The L1 will reflect flight lines when there is moisture in the air. Below is an example point cloud from a damp day on the coast just after a fog past through. For sake of the example, it was not filtered in LAStools with a height threshold.</p>
 <p><img src="CloudCompare_1.PNG" width="810" style="display: block; margin: auto;" /></p>
 <p>The residual fog patches seen above the canopy can be clipped out using the cross section or segment tool.</p>
 <p>** IMAGE of TOOLS MENTIONED ** ******************************************</p>
 </div>
-<div id="rough-alignment" class="section level4 hasAnchor" number="6.2.2.2">
-<h4><span class="header-section-number">6.2.2.2</span> Rough Alignment<a href="lidar-processing-workflow.html#rough-alignment" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="rough-alignment" class="section level4 hasAnchor" number="1.2.2.2">
+<h4><span class="header-section-number">1.2.2.2</span> Rough Alignment<a href="lidar-processing-workflow.html#rough-alignment" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The goal is to roughly align (move) the LiDAR to our reference “template” DAP dense cloud ahead of the ICP fine adjustment algorithm.</p>
 <p>Problem: Manually moving the LiDAR cloud to roughly align with the DAP cloud caused Cloud Compare to crash or hang when working with larger data sets.</p>
 <p>Solution: Use the Apply Transformation function in CloudCompare – Highlight the LiDAR layer in the DB tree - Hit ctrl T or Apply Transformation in the Edit menu.</p>
@@ -315,16 +298,16 @@ las2las -i path_to_projected_L1 ^
 <p><img src="CloudCompare_5.PNG" width="643" style="display: block; margin: auto;" /></p>
 <p>In this case the LiDAR was shifted -5 in the X and +5 in the Y axis in total. The shift was done in three smaller iterations to achieve the alignment seen in the above screen capture.</p>
 </div>
-<div id="fine-registration-iterative-closest-point-icp" class="section level4 hasAnchor" number="6.2.2.3">
-<h4><span class="header-section-number">6.2.2.3</span> Fine Registration: Iterative Closest Point (ICP)<a href="lidar-processing-workflow.html#fine-registration-iterative-closest-point-icp" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="fine-registration-iterative-closest-point-icp" class="section level4 hasAnchor" number="1.2.2.3">
+<h4><span class="header-section-number">1.2.2.3</span> Fine Registration: Iterative Closest Point (ICP)<a href="lidar-processing-workflow.html#fine-registration-iterative-closest-point-icp" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Highlight both clouds in the DB tree and apply the fine registration (ICP) algorithm using the following settings. Careful to set a max thread count that matches the resources you have available.</p>
 <p><img src="CloudCompare_6.PNG" width="362" style="display: block; margin: auto;" /></p>
-<p>Save out the registered LiDAR point clouda at the highest resolution</p>
+<p>Save out the registered LiDAR point clouds at the highest resolution</p>
 </div>
 </div>
-<div id="rescale-and-tile-the-registered-lidar" class="section level3 hasAnchor" number="6.2.3">
-<h3><span class="header-section-number">6.2.3</span> Rescale and tile the registered LiDAR:<a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Below are snipets of a script written in LAStools that is used to proeject, rescale and tile the registered LiDAR point cloud.</p>
+<div id="rescale-and-tile-the-registered-lidar" class="section level3 hasAnchor" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> Rescale and tile the registered LiDAR:<a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Below are snipets of a script written in LAStools that is used to project, rescale and tile the registered LiDAR point cloud.</p>
 <p>The unparsed script can be found on the project GitHub, see <a href="index.html#github-link">GitHub link</a></p>
 <ol style="list-style-type: decimal">
 <li>Projecting the registered LiDAR to the proper projection (NAD83 UTM 10N).
@@ -384,8 +367,8 @@ lastile -i path_to_write\02_rescaled\*.laz ^
     -olaz </code></pre>
 </div>
 </div>
-<div id="normalization-and-individual-tree-point-clouds" class="section level2 hasAnchor" number="6.3">
-<h2><span class="header-section-number">6.3</span> Normalization and individual tree point clouds<a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="normalization-and-individual-tree-point-clouds" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Normalization and individual tree point clouds<a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The below workflow includes explanations and code where applicable for each of the following:</p>
 <ol style="list-style-type: decimal">
 <li><p>Creating a 10cm DTM from the registered LiDAR tiles</p></li>
@@ -396,8 +379,8 @@ lastile -i path_to_write\02_rescaled\*.laz ^
 <li><p>Clipping the point cloud into individual point clouds per tree</p></li>
 </ol>
 <p>Note: The full code that can be found on the project <a href="index.html#github-link">GitHub</a> runs through the above steps in a for loop. For sake of this guide we have rearranged the ordering of some steps (i.e. functions will be defined as we go in this guide, however are defined at the beginning in the full R script to allow the for loop to run).</p>
-<div id="creating-a-dtm-from-the-registered-lidar-tiles" class="section level3 hasAnchor" number="6.3.1">
-<h3><span class="header-section-number">6.3.1</span> Creating a DTM from the registered LiDAR tiles<a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="creating-a-dtm-from-the-registered-lidar-tiles" class="section level3 hasAnchor" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> Creating a DTM from the registered LiDAR tiles<a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To being, when working with LiDAR data in R, an incredibly useful package is the lidR package. We highly recommend taking a look at the <a href="https://r-lidar.github.io/lidRbook/">lidR bookdown</a> for useful tips and examples on using the package.</p>
 <p>The packages required for our workflow are:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="lidar-processing-workflow.html#cb8-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -443,9 +426,9 @@ lastile -i path_to_write\02_rescaled\*.laz ^
 <span id="cb10-10"><a href="lidar-processing-workflow.html#cb10-10" tabindex="-1"></a>  </span>
 <span id="cb10-11"><a href="lidar-processing-workflow.html#cb10-11" tabindex="-1"></a>  <span class="fu">writeRaster</span>(DTM, <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">04_RASTER</span><span class="sc">\\</span><span class="st">&quot;</span>, site, <span class="st">&quot;_DTM_0.1m.tif&quot;</span>), <span class="at">overwrite =</span> <span class="cn">TRUE</span>) <span class="co">#save the DTM</span></span></code></pre></div>
 </div>
-<div id="normalization-chm-creation" class="section level3 hasAnchor" number="6.3.2">
-<h3><span class="header-section-number">6.3.2</span> Normalization &amp; CHM creation<a href="lidar-processing-workflow.html#normalization-chm-creation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The R code below reads in the tiled registered LiDAR as a LAScatalog and normalizes the tiles to the DTM made in the previous step. The normalized tiles are then saved out and read back into R to filter out points below “ground” designated to be -0.25m. Here we save out the “cleaned” normalized tiles in a new folder, however for space saving reasons you can also overwrite the original normalized tiles by setting the “opt_output_files()” parameter in the filtering step to the same path as that set for the normalization step. Finally a 4cm CHM was made using max Z values. We chose a resolution of 4cm as it gave us a good looking (no holes, no visible noise) high resolution CHM. We recommend testing out multiple resolutions at this stage to narrow down parameters that work for your data.</p>
+<div id="normalizing-the-tiles-using-the-dtm" class="section level3 hasAnchor" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Normalizing the tiles using the DTM<a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The R code below reads in the tiled registered LiDAR as a LAScatalog and normalizes the tiles to the DTM made in the previous step. The normalized tiles are then saved out and read back into R to filter out points below “ground” designated to be -0.25m. Here we save out the “cleaned” normalized tiles in a new folder, however for space saving reasons you can also overwrite the original normalized tiles by setting the “opt_output_files()” parameter in the filtering step to the same path as that set for the normalization step.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="lidar-processing-workflow.html#cb11-1" tabindex="-1"></a><span class="co"># Read the tiles again, but with high-res parameters</span></span>
 <span id="cb11-2"><a href="lidar-processing-workflow.html#cb11-2" tabindex="-1"></a>  CTG <span class="ot">=</span> <span class="fu">readLAScatalog</span>(<span class="at">folder =</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">03_tile</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
 <span id="cb11-3"><a href="lidar-processing-workflow.html#cb11-3" tabindex="-1"></a>  <span class="fu">opt_chunk_buffer</span>(CTG) <span class="ot">=</span> .<span class="dv">5</span> <span class="co"># small buffer; we&#39;re just normalizing</span></span>
@@ -465,18 +448,21 @@ lastile -i path_to_write\02_rescaled\*.laz ^
 <span id="cb11-17"><a href="lidar-processing-workflow.html#cb11-17" tabindex="-1"></a>  <span class="fu">opt_output_files</span>(NORM) <span class="ot">=</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">06_NORM_clean</span><span class="sc">\\</span><span class="st">{*}&quot;</span>) <span class="co">#save the filtered normalized filed to the &quot;06...&quot; folder, here you can also choose to overwrite the original normalized laz files by setting the output location to the &quot;05_norm&quot; folder designated as the output in the normalization step</span></span>
 <span id="cb11-18"><a href="lidar-processing-workflow.html#cb11-18" tabindex="-1"></a>  <span class="fu">opt_progress</span>(NORM) <span class="ot">=</span> <span class="cn">TRUE</span> <span class="co">#show the progress</span></span>
 <span id="cb11-19"><a href="lidar-processing-workflow.html#cb11-19" tabindex="-1"></a>  </span>
-<span id="cb11-20"><a href="lidar-processing-workflow.html#cb11-20" tabindex="-1"></a>  NORM_clean <span class="ot">=</span> <span class="fu">catalog_retile</span>(NORM) <span class="co"># applying the filter to all files in the catalog</span></span>
-<span id="cb11-21"><a href="lidar-processing-workflow.html#cb11-21" tabindex="-1"></a>  </span>
-<span id="cb11-22"><a href="lidar-processing-workflow.html#cb11-22" tabindex="-1"></a>  <span class="co"># Making CHMS</span></span>
-<span id="cb11-23"><a href="lidar-processing-workflow.html#cb11-23" tabindex="-1"></a>  CHM_max <span class="ot">=</span> <span class="fu">grid_metrics</span>(NORM_clean, <span class="co">#NORM_clean is the catalog the CHM is being made from</span></span>
-<span id="cb11-24"><a href="lidar-processing-workflow.html#cb11-24" tabindex="-1"></a>                         <span class="at">res =</span> <span class="fl">0.04</span>, <span class="co">#4cm resolution</span></span>
-<span id="cb11-25"><a href="lidar-processing-workflow.html#cb11-25" tabindex="-1"></a>                         <span class="at">func =</span> <span class="sc">~</span><span class="fu">max</span>(Z)) <span class="co">#using max Z values</span></span>
-<span id="cb11-26"><a href="lidar-processing-workflow.html#cb11-26" tabindex="-1"></a>  </span>
-<span id="cb11-27"><a href="lidar-processing-workflow.html#cb11-27" tabindex="-1"></a>  <span class="fu">crs</span>(CHM_max) <span class="ot">&lt;-</span> <span class="fu">CRS</span>(<span class="st">&quot;+proj=utm +zone=10 +datum=NAD83&quot;</span>) <span class="co"># assign a CRS to the raster using the proj4 string representation</span></span>
-<span id="cb11-28"><a href="lidar-processing-workflow.html#cb11-28" tabindex="-1"></a>  <span class="fu">writeRaster</span>(CHM_max, <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">04_RASTER</span><span class="sc">\\</span><span class="st">&quot;</span>, site, <span class="st">&quot;_CHM_max_0.04m.tif&quot;</span>), <span class="at">overwrite =</span> <span class="cn">TRUE</span>) <span class="co">#saving out the CHM</span></span></code></pre></div>
+<span id="cb11-20"><a href="lidar-processing-workflow.html#cb11-20" tabindex="-1"></a>  NORM_clean <span class="ot">=</span> <span class="fu">catalog_retile</span>(NORM) <span class="co"># applying the filter to all files in the catalog</span></span></code></pre></div>
 </div>
-<div id="segmenting-tiles" class="section level3 hasAnchor" number="6.3.3">
-<h3><span class="header-section-number">6.3.3</span> Segmenting tiles<a href="lidar-processing-workflow.html#segmenting-tiles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="creating-a-4cm-chm-from-the-max-z-values" class="section level3 hasAnchor" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> Creating a 4cm CHM from the max Z values<a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A 4cm CHM was made using max Z values. We chose a resolution of 4cm as it gave us a good looking (no holes, no visible noise) high resolution CHM. We recommend testing out multiple resolutions at this stage to narrow down parameters that work for your data.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="lidar-processing-workflow.html#cb12-1" tabindex="-1"></a><span class="co"># Making a 4cm resolution CHM</span></span>
+<span id="cb12-2"><a href="lidar-processing-workflow.html#cb12-2" tabindex="-1"></a>CHM_max <span class="ot">=</span> <span class="fu">grid_metrics</span>(NORM_clean, <span class="co">#NORM_clean is the catalog the CHM is being made from</span></span>
+<span id="cb12-3"><a href="lidar-processing-workflow.html#cb12-3" tabindex="-1"></a>                        <span class="at">res =</span> <span class="fl">0.04</span>, <span class="co">#4cm resolution</span></span>
+<span id="cb12-4"><a href="lidar-processing-workflow.html#cb12-4" tabindex="-1"></a>                        <span class="at">func =</span> <span class="sc">~</span><span class="fu">max</span>(Z)) <span class="co">#using max Z values</span></span>
+<span id="cb12-5"><a href="lidar-processing-workflow.html#cb12-5" tabindex="-1"></a>  </span>
+<span id="cb12-6"><a href="lidar-processing-workflow.html#cb12-6" tabindex="-1"></a><span class="fu">crs</span>(CHM_max) <span class="ot">&lt;-</span> <span class="fu">CRS</span>(<span class="st">&quot;+proj=utm +zone=10 +datum=NAD83&quot;</span>) <span class="co"># assign a CRS to the raster using the proj4 string representation</span></span>
+<span id="cb12-7"><a href="lidar-processing-workflow.html#cb12-7" tabindex="-1"></a><span class="fu">writeRaster</span>(CHM_max, <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">04_RASTER</span><span class="sc">\\</span><span class="st">&quot;</span>, site, <span class="st">&quot;_CHM_max_0.04m.tif&quot;</span>), <span class="at">overwrite =</span> <span class="cn">TRUE</span>) <span class="co">#saving out the CHM</span></span></code></pre></div>
+</div>
+<div id="segmenting-tiles" class="section level3 hasAnchor" number="1.3.4">
+<h3><span class="header-section-number">1.3.4</span> Segmenting tiles<a href="lidar-processing-workflow.html#segmenting-tiles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The normalized tiles were then segmented to only retain the top 25% of each tree. This was done using a shapefile (.shp) containing a polygon for each tree crown, see the chapter on <a href="09-Crown_delineation#Crown-delineation">crown delineation</a> for a detailed workflow showing how to create crown polygons.</p>
 <p>The threshold set for segmentation will be site specific. We chose to only retain the top 25% of the point cloud for each tree in our mature (~25 years old) sites with crown closure in order to:
 1. limit the chance of capturing invading branches in our LiDAR data
@@ -490,169 +476,172 @@ lastile -i path_to_write\02_rescaled\*.laz ^
 <p>Important:
 - If zq = 0.75, then the points in the bottom 75% of the tree will be removed, leaving a point cloud for the top 25% only.
 - “treeID” is a column in our dataset that functions as a unique identifier per tree within the site, ensure you change each instance of treeID to a column containing a unique identifying for your trees. The unique identifiers can come from the experimental site setup or the <a href="09-Crown_delineation#Crown-delineation">crown delineation</a> step.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="lidar-processing-workflow.html#cb12-1" tabindex="-1"></a><span class="co"># Function that will segment the LiDAR tiles to only retain points above a defined cutoff</span></span>
-<span id="cb12-2"><a href="lidar-processing-workflow.html#cb12-2" tabindex="-1"></a>polys_to_las <span class="ot">=</span> <span class="cf">function</span>(chunk, <span class="at">zq =</span> zq, <span class="at">polygons =</span> pols) { <span class="co">#edit zq = zq here if you would like the function to always use the same zq value, ie zq = 0.75, otherwise leave zq = zq as you will be able to define zq in the next code chunk</span></span>
-<span id="cb12-3"><a href="lidar-processing-workflow.html#cb12-3" tabindex="-1"></a>  </span>
-<span id="cb12-4"><a href="lidar-processing-workflow.html#cb12-4" tabindex="-1"></a>  las <span class="ot">=</span> <span class="fu">readLAS</span>(chunk)                  </span>
-<span id="cb12-5"><a href="lidar-processing-workflow.html#cb12-5" tabindex="-1"></a>  <span class="cf">if</span> (lidR<span class="sc">::</span><span class="fu">is.empty</span>(las)) {</span>
-<span id="cb12-6"><a href="lidar-processing-workflow.html#cb12-6" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>) }<span class="co"># If the LAS file is empty, return NULL</span></span>
-<span id="cb12-7"><a href="lidar-processing-workflow.html#cb12-7" tabindex="-1"></a>  </span>
-<span id="cb12-8"><a href="lidar-processing-workflow.html#cb12-8" tabindex="-1"></a>  las2 <span class="ot">=</span> <span class="fu">merge_spatial</span>(las, polygons, <span class="st">&quot;treeID&quot;</span>) <span class="co"># Merge the LAS points with the polygons based on the treeID attribute, change the &quot;treeID&quot; attribute to a unique identifier for the trees you are working with</span></span>
-<span id="cb12-9"><a href="lidar-processing-workflow.html#cb12-9" tabindex="-1"></a>  las_df <span class="ot">=</span> las2<span class="sc">@</span>data <span class="sc">%&gt;%</span></span>
-<span id="cb12-10"><a href="lidar-processing-workflow.html#cb12-10" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(treeID) <span class="sc">%&gt;%</span></span>
-<span id="cb12-11"><a href="lidar-processing-workflow.html#cb12-11" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Zq999 =</span> <span class="fu">quantile</span>(Z, <span class="fl">0.999</span>)) <span class="sc">%&gt;%</span> <span class="co"># compute Zq999 (the 99.9th percentile of Z) for each tree </span></span>
-<span id="cb12-12"><a href="lidar-processing-workflow.html#cb12-12" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">treeID =</span> <span class="fu">if_else</span>(Z <span class="sc">&gt;</span> <span class="fu">quantile</span>(Z, <span class="fl">0.999</span>) <span class="sc">*</span> zq, <span class="fu">as.numeric</span>(treeID), <span class="dv">0</span>))<span class="co"># assign points below the top zq% of the tree height a treeID of zero to filter them out later</span></span>
-<span id="cb12-13"><a href="lidar-processing-workflow.html#cb12-13" tabindex="-1"></a></span>
-<span id="cb12-14"><a href="lidar-processing-workflow.html#cb12-14" tabindex="-1"></a>  las3 <span class="ot">=</span> las2 <span class="sc">%&gt;%</span> </span>
-<span id="cb12-15"><a href="lidar-processing-workflow.html#cb12-15" tabindex="-1"></a>    <span class="fu">add_lasattribute</span>(las_df<span class="sc">$</span>treeID, <span class="at">name =</span> <span class="st">&quot;treeID&quot;</span>, <span class="at">desc =</span> <span class="st">&quot;treeID&quot;</span>) <span class="sc">%&gt;%</span> <span class="co">#add treeID las a lasattribute</span></span>
-<span id="cb12-16"><a href="lidar-processing-workflow.html#cb12-16" tabindex="-1"></a>    <span class="fu">filter_poi</span>(treeID <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="co">#filter for points with a treeID greater than 0 </span></span>
-<span id="cb12-17"><a href="lidar-processing-workflow.html#cb12-17" tabindex="-1"></a>  </span>
-<span id="cb12-18"><a href="lidar-processing-workflow.html#cb12-18" tabindex="-1"></a>  <span class="cf">if</span> (lidR<span class="sc">::</span><span class="fu">is.empty</span>(las3)) {</span>
-<span id="cb12-19"><a href="lidar-processing-workflow.html#cb12-19" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>)<span class="co">#return NULL is the las3 is empty</span></span>
-<span id="cb12-20"><a href="lidar-processing-workflow.html#cb12-20" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb12-21"><a href="lidar-processing-workflow.html#cb12-21" tabindex="-1"></a>    <span class="fu">return</span>(las3)<span class="co">#return the las file that has a treeID associated with it and only contains points in the top zq%</span></span>
-<span id="cb12-22"><a href="lidar-processing-workflow.html#cb12-22" tabindex="-1"></a>  }</span>
-<span id="cb12-23"><a href="lidar-processing-workflow.html#cb12-23" tabindex="-1"></a>  </span>
-<span id="cb12-24"><a href="lidar-processing-workflow.html#cb12-24" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="lidar-processing-workflow.html#cb13-1" tabindex="-1"></a><span class="co"># Function that will segment the LiDAR tiles to only retain points above a defined cutoff</span></span>
+<span id="cb13-2"><a href="lidar-processing-workflow.html#cb13-2" tabindex="-1"></a>polys_to_las <span class="ot">=</span> <span class="cf">function</span>(chunk, <span class="at">zq =</span> zq, <span class="at">polygons =</span> pols) { <span class="co">#edit zq = zq here if you would like the function to always use the same zq value, ie zq = 0.75, otherwise leave zq = zq as you will be able to define zq in the next code chunk</span></span>
+<span id="cb13-3"><a href="lidar-processing-workflow.html#cb13-3" tabindex="-1"></a>  </span>
+<span id="cb13-4"><a href="lidar-processing-workflow.html#cb13-4" tabindex="-1"></a>  las <span class="ot">=</span> <span class="fu">readLAS</span>(chunk)                  </span>
+<span id="cb13-5"><a href="lidar-processing-workflow.html#cb13-5" tabindex="-1"></a>  <span class="cf">if</span> (lidR<span class="sc">::</span><span class="fu">is.empty</span>(las)) {</span>
+<span id="cb13-6"><a href="lidar-processing-workflow.html#cb13-6" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>) }<span class="co"># If the LAS file is empty, return NULL</span></span>
+<span id="cb13-7"><a href="lidar-processing-workflow.html#cb13-7" tabindex="-1"></a>  </span>
+<span id="cb13-8"><a href="lidar-processing-workflow.html#cb13-8" tabindex="-1"></a>  las2 <span class="ot">=</span> <span class="fu">merge_spatial</span>(las, polygons, <span class="st">&quot;treeID&quot;</span>) <span class="co"># Merge the LAS points with the polygons based on the treeID attribute, change the &quot;treeID&quot; attribute to a unique identifier for the trees you are working with</span></span>
+<span id="cb13-9"><a href="lidar-processing-workflow.html#cb13-9" tabindex="-1"></a>  las_df <span class="ot">=</span> las2<span class="sc">@</span>data <span class="sc">%&gt;%</span></span>
+<span id="cb13-10"><a href="lidar-processing-workflow.html#cb13-10" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(treeID) <span class="sc">%&gt;%</span></span>
+<span id="cb13-11"><a href="lidar-processing-workflow.html#cb13-11" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Zq999 =</span> <span class="fu">quantile</span>(Z, <span class="fl">0.999</span>)) <span class="sc">%&gt;%</span> <span class="co"># compute Zq999 (the 99.9th percentile of Z) for each tree </span></span>
+<span id="cb13-12"><a href="lidar-processing-workflow.html#cb13-12" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">treeID =</span> <span class="fu">if_else</span>(Z <span class="sc">&gt;</span> <span class="fu">quantile</span>(Z, <span class="fl">0.999</span>) <span class="sc">*</span> zq, <span class="fu">as.numeric</span>(treeID), <span class="dv">0</span>))<span class="co"># assign points below the top zq% of the tree height a treeID of zero to filter them out later</span></span>
+<span id="cb13-13"><a href="lidar-processing-workflow.html#cb13-13" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="lidar-processing-workflow.html#cb13-14" tabindex="-1"></a>  las3 <span class="ot">=</span> las2 <span class="sc">%&gt;%</span> </span>
+<span id="cb13-15"><a href="lidar-processing-workflow.html#cb13-15" tabindex="-1"></a>    <span class="fu">add_lasattribute</span>(las_df<span class="sc">$</span>treeID, <span class="at">name =</span> <span class="st">&quot;treeID&quot;</span>, <span class="at">desc =</span> <span class="st">&quot;treeID&quot;</span>) <span class="sc">%&gt;%</span> <span class="co">#add treeID las a lasattribute</span></span>
+<span id="cb13-16"><a href="lidar-processing-workflow.html#cb13-16" tabindex="-1"></a>    <span class="fu">filter_poi</span>(treeID <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="co">#filter for points with a treeID greater than 0 </span></span>
+<span id="cb13-17"><a href="lidar-processing-workflow.html#cb13-17" tabindex="-1"></a>  </span>
+<span id="cb13-18"><a href="lidar-processing-workflow.html#cb13-18" tabindex="-1"></a>  <span class="cf">if</span> (lidR<span class="sc">::</span><span class="fu">is.empty</span>(las3)) {</span>
+<span id="cb13-19"><a href="lidar-processing-workflow.html#cb13-19" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>)<span class="co">#return NULL is the las3 is empty</span></span>
+<span id="cb13-20"><a href="lidar-processing-workflow.html#cb13-20" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb13-21"><a href="lidar-processing-workflow.html#cb13-21" tabindex="-1"></a>    <span class="fu">return</span>(las3)<span class="co">#return the las file that has a treeID associated with it and only contains points in the top zq%</span></span>
+<span id="cb13-22"><a href="lidar-processing-workflow.html#cb13-22" tabindex="-1"></a>  }</span>
+<span id="cb13-23"><a href="lidar-processing-workflow.html#cb13-23" tabindex="-1"></a>  </span>
+<span id="cb13-24"><a href="lidar-processing-workflow.html#cb13-24" tabindex="-1"></a>}</span></code></pre></div>
 <p>Next we read in the normalized files, set our zq threshold and run the tiles through the polys_to_las segmentation function using the catalog_apply function.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="lidar-processing-workflow.html#cb13-1" tabindex="-1"></a>  <span class="co"># Read in the normalized cloud from the end of the last step</span></span>
-<span id="cb13-2"><a href="lidar-processing-workflow.html#cb13-2" tabindex="-1"></a>  NORM <span class="ot">=</span> <span class="fu">readLAScatalog</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">06_NORM_clean</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
-<span id="cb13-3"><a href="lidar-processing-workflow.html#cb13-3" tabindex="-1"></a>  <span class="fu">crs</span>(NORM) <span class="ot">&lt;-</span> <span class="fu">st_crs</span>(<span class="dv">26910</span>) <span class="co"># setting CRS</span></span>
-<span id="cb13-4"><a href="lidar-processing-workflow.html#cb13-4" tabindex="-1"></a>  <span class="fu">opt_chunk_buffer</span>(NORM) <span class="ot">=</span> <span class="dv">0</span> <span class="co"># no buffer</span></span>
-<span id="cb13-5"><a href="lidar-processing-workflow.html#cb13-5" tabindex="-1"></a>  <span class="fu">opt_laz_compression</span>(NORM) <span class="ot">=</span> <span class="cn">TRUE</span> <span class="co"># compress output files to .laz objects</span></span>
-<span id="cb13-6"><a href="lidar-processing-workflow.html#cb13-6" tabindex="-1"></a>  <span class="fu">opt_output_files</span>(NORM) <span class="ot">=</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">07_SEGMENTED</span><span class="sc">\\</span><span class="st">{*}_SEGMENTED&quot;</span>) <span class="co"># write output files to &quot;07_SEG...&quot; folder and name with suffix &quot;_SEGMENTED&quot;</span></span>
-<span id="cb13-7"><a href="lidar-processing-workflow.html#cb13-7" tabindex="-1"></a>  <span class="fu">opt_progress</span>(NORM) <span class="ot">=</span> <span class="cn">TRUE</span> <span class="co"># show progress</span></span>
-<span id="cb13-8"><a href="lidar-processing-workflow.html#cb13-8" tabindex="-1"></a>  </span>
-<span id="cb13-9"><a href="lidar-processing-workflow.html#cb13-9" tabindex="-1"></a>  zq <span class="ot">=</span> <span class="fl">0.75</span> <span class="co"># Height percentile to drop, here we will be filtering for the top 25% of the tree </span></span>
-<span id="cb13-10"><a href="lidar-processing-workflow.html#cb13-10" tabindex="-1"></a>  <span class="co"># New tiles have only segmented portions of tree crowns</span></span>
-<span id="cb13-11"><a href="lidar-processing-workflow.html#cb13-11" tabindex="-1"></a>  SEGMENTED <span class="ot">=</span> <span class="fu">catalog_apply</span>(NORM, polys_to_las) <span class="co"># apply the poly_to_las function to the NORM catalog</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="lidar-processing-workflow.html#cb14-1" tabindex="-1"></a><span class="co"># Read in the normalized cloud from the end of the last step</span></span>
+<span id="cb14-2"><a href="lidar-processing-workflow.html#cb14-2" tabindex="-1"></a>NORM <span class="ot">=</span> <span class="fu">readLAScatalog</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">06_NORM_clean</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
+<span id="cb14-3"><a href="lidar-processing-workflow.html#cb14-3" tabindex="-1"></a><span class="fu">crs</span>(NORM) <span class="ot">&lt;-</span> <span class="fu">st_crs</span>(<span class="dv">26910</span>) <span class="co"># setting CRS</span></span>
+<span id="cb14-4"><a href="lidar-processing-workflow.html#cb14-4" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(NORM) <span class="ot">=</span> <span class="dv">0</span> <span class="co"># no buffer</span></span>
+<span id="cb14-5"><a href="lidar-processing-workflow.html#cb14-5" tabindex="-1"></a><span class="fu">opt_laz_compression</span>(NORM) <span class="ot">=</span> <span class="cn">TRUE</span> <span class="co"># compress output files to .laz objects</span></span>
+<span id="cb14-6"><a href="lidar-processing-workflow.html#cb14-6" tabindex="-1"></a><span class="fu">opt_output_files</span>(NORM) <span class="ot">=</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">07_SEGMENTED</span><span class="sc">\\</span><span class="st">{*}_SEGMENTED&quot;</span>) <span class="co"># write output files to &quot;07_SEG...&quot; folder and name with suffix &quot;_SEGMENTED&quot;</span></span>
+<span id="cb14-7"><a href="lidar-processing-workflow.html#cb14-7" tabindex="-1"></a><span class="fu">opt_progress</span>(NORM) <span class="ot">=</span> <span class="cn">TRUE</span> <span class="co"># show progress</span></span>
+<span id="cb14-8"><a href="lidar-processing-workflow.html#cb14-8" tabindex="-1"></a>  </span>
+<span id="cb14-9"><a href="lidar-processing-workflow.html#cb14-9" tabindex="-1"></a>zq <span class="ot">=</span> <span class="fl">0.75</span> <span class="co"># Height percentile to drop, here we will be filtering for the top 25% of the tree </span></span>
+<span id="cb14-10"><a href="lidar-processing-workflow.html#cb14-10" tabindex="-1"></a><span class="co"># New tiles have only segmented portions of tree crowns</span></span>
+<span id="cb14-11"><a href="lidar-processing-workflow.html#cb14-11" tabindex="-1"></a>SEGMENTED <span class="ot">=</span> <span class="fu">catalog_apply</span>(NORM, polys_to_las) <span class="co"># apply the poly_to_las function to the NORM catalog</span></span></code></pre></div>
 </div>
-<div id="merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-25-of-each-tree" class="section level3 hasAnchor" number="6.3.4">
-<h3><span class="header-section-number">6.3.4</span> Merging segmented tiles to create one large point cloud containing the top 25% of each tree<a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-25-of-each-tree" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="lidar-processing-workflow.html#cb14-1" tabindex="-1"></a>  SEGMENTED <span class="ot">=</span> <span class="fu">readLAScatalog</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">07_SEGMENTED</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
-<span id="cb14-2"><a href="lidar-processing-workflow.html#cb14-2" tabindex="-1"></a>  <span class="fu">opt_chunk_buffer</span>(SEGMENTED) <span class="ot">=</span> <span class="dv">0</span> <span class="co">#zero buffer</span></span>
-<span id="cb14-3"><a href="lidar-processing-workflow.html#cb14-3" tabindex="-1"></a>  <span class="fu">opt_chunk_size</span>(SEGMENTED) <span class="ot">=</span> <span class="dv">10000</span> <span class="co">#set the chunk size for the LAScatalog object to 10000 points so that all laz files are merged into one large laz file</span></span>
-<span id="cb14-4"><a href="lidar-processing-workflow.html#cb14-4" tabindex="-1"></a>  <span class="fu">opt_laz_compression</span>(SEGMENTED) <span class="ot">=</span> <span class="cn">TRUE</span></span>
-<span id="cb14-5"><a href="lidar-processing-workflow.html#cb14-5" tabindex="-1"></a>  <span class="fu">opt_progress</span>(SEGMENTED) <span class="ot">=</span> <span class="cn">TRUE</span></span>
-<span id="cb14-6"><a href="lidar-processing-workflow.html#cb14-6" tabindex="-1"></a>  <span class="fu">opt_output_files</span>(SEGMENTED) <span class="ot">=</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">08_MERGED</span><span class="sc">\\</span><span class="st">&quot;</span>, site, <span class="st">&quot;_HULLS_merged&quot;</span>) <span class="co">#write output files to &quot;08_M...&quot; with the suffix &quot;_HULLS_merged&quot;</span></span>
-<span id="cb14-7"><a href="lidar-processing-workflow.html#cb14-7" tabindex="-1"></a>  </span>
-<span id="cb14-8"><a href="lidar-processing-workflow.html#cb14-8" tabindex="-1"></a>  <span class="co"># merge all the segmented trees into a single point cloud </span></span>
-<span id="cb14-9"><a href="lidar-processing-workflow.html#cb14-9" tabindex="-1"></a>  MERGED <span class="ot">=</span> <span class="fu">catalog_retile</span>(SEGMENTED) <span class="co">#apply the above opt_ commands</span></span>
-<span id="cb14-10"><a href="lidar-processing-workflow.html#cb14-10" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">&quot;merged&quot;</span>) <span class="co">#print statement to show where the code is at</span></span></code></pre></div>
-</div>
-<div id="clipping-the-point-cloud-into-individual-point-clouds-per-tree" class="section level3 hasAnchor" number="6.3.5">
-<h3><span class="header-section-number">6.3.5</span> Clipping the point cloud into individual point clouds per tree<a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="lidar-processing-workflow.html#cb15-1" tabindex="-1"></a>  <span class="do">##############################################################################</span></span>
-<span id="cb15-2"><a href="lidar-processing-workflow.html#cb15-2" tabindex="-1"></a>  <span class="co">#(3.6) Clip merged cloud to individual trees and &quot;clean&quot; the tree point clouds</span></span>
-<span id="cb15-3"><a href="lidar-processing-workflow.html#cb15-3" tabindex="-1"></a>  <span class="do">##############################################################################</span></span>
-<span id="cb15-4"><a href="lidar-processing-workflow.html#cb15-4" tabindex="-1"></a>  <span class="co"># save each individual tree as a point cloud</span></span>
-<span id="cb15-5"><a href="lidar-processing-workflow.html#cb15-5" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">&quot;making crowns&quot;</span>)<span class="co">#print statement to show where the code is at</span></span>
-<span id="cb15-6"><a href="lidar-processing-workflow.html#cb15-6" tabindex="-1"></a>  <span class="fu">opt_output_files</span>(MERGED) <span class="ot">=</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">09_CROWNS</span><span class="sc">\\</span><span class="st">&quot;</span>, site, <span class="st">&quot;_fam{fam}_rep{rep}_tag{tag}_treeID{treeID}&quot;</span>) <span class="co">#where the indivdual crown point clouds will be written to and the suffix they will have. Note values assoaciated with the laz file will replace the names in {}</span></span>
-<span id="cb15-7"><a href="lidar-processing-workflow.html#cb15-7" tabindex="-1"></a>  CROWNS <span class="ot">=</span> <span class="fu">clip_roi</span>(MERGED, pols) <span class="co">#clip the MERGED laz file to individual crowns using the crown polygons </span></span>
-<span id="cb15-8"><a href="lidar-processing-workflow.html#cb15-8" tabindex="-1"></a>  </span>
-<span id="cb15-9"><a href="lidar-processing-workflow.html#cb15-9" tabindex="-1"></a>  <span class="do">## CLEANING crowns</span></span>
-<span id="cb15-10"><a href="lidar-processing-workflow.html#cb15-10" tabindex="-1"></a>  CROWNS <span class="ot">=</span> <span class="fu">readLAScatalog</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">09_CROWNS</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">filter =</span> <span class="st">&quot;-drop_withheld&quot;</span>) <span class="co">#read in the clipped crown point clouds</span></span>
-<span id="cb15-11"><a href="lidar-processing-workflow.html#cb15-11" tabindex="-1"></a>  <span class="fu">opt_chunk_size</span>(CROWNS) <span class="ot">=</span> <span class="dv">0</span> <span class="co"># processing by files</span></span>
-<span id="cb15-12"><a href="lidar-processing-workflow.html#cb15-12" tabindex="-1"></a>  <span class="fu">opt_laz_compression</span>(CROWNS) <span class="ot">=</span> <span class="cn">TRUE</span></span>
-<span id="cb15-13"><a href="lidar-processing-workflow.html#cb15-13" tabindex="-1"></a>  <span class="fu">opt_chunk_buffer</span>(CROWNS) <span class="ot">=</span> <span class="dv">0</span> <span class="co"># no buffer</span></span>
-<span id="cb15-14"><a href="lidar-processing-workflow.html#cb15-14" tabindex="-1"></a>  <span class="fu">opt_wall_to_wall</span>(CROWNS) <span class="ot">=</span> <span class="cn">TRUE</span> <span class="co"># disable internal checks to ensure a valid output. Free wheel mode</span></span>
-<span id="cb15-15"><a href="lidar-processing-workflow.html#cb15-15" tabindex="-1"></a>  <span class="fu">opt_output_files</span>(CROWNS) <span class="ot">=</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">10_CROWNS_clean</span><span class="sc">\\</span><span class="st">{*}&quot;</span>) <span class="co">#location for output files</span></span>
-<span id="cb15-16"><a href="lidar-processing-workflow.html#cb15-16" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">&quot;cleaning crowns&quot;</span>)</span>
-<span id="cb15-17"><a href="lidar-processing-workflow.html#cb15-17" tabindex="-1"></a>  CROWNS_clean <span class="ot">=</span> <span class="fu">catalog_apply</span>(CROWNS, clean_crowns) <span class="co">#applying the clean_crowns function on the CROWNS</span></span></code></pre></div>
-</div>
-</div>
-<div id="individual-tree-metrics" class="section level2 hasAnchor" number="6.4">
-<h2><span class="header-section-number">6.4</span> Individual Tree Metrics<a href="lidar-processing-workflow.html#individual-tree-metrics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree" class="section level3 hasAnchor" number="1.3.5">
+<h3><span class="header-section-number">1.3.5</span> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree<a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This is done to facilitate clipping out individual tree point clouds in the next step.</p>
+<p><strong>Note:</strong></p>
 <ul>
-<li>Calculates metrics on indiviual tree point clouds:
+<li><p>The <em>opt_chunk_size(SEGMENTED) = 10000</em> step sets the new chunk size to 10,000 points, meaning that chunks of 10,000 points will be managed at a time. If there are more than 10,000 points in your point cloud than data will be handled in chunks of 10,000 points at a time to not overload memory.</p></li>
+<li><p>The <em>catalog_retile</em> function merges the point clouds into one large point cloud</p></li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="lidar-processing-workflow.html#cb15-1" tabindex="-1"></a>SEGMENTED <span class="ot">=</span> <span class="fu">readLAScatalog</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">07_SEGMENTED</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
+<span id="cb15-2"><a href="lidar-processing-workflow.html#cb15-2" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(SEGMENTED) <span class="ot">=</span> <span class="dv">0</span> <span class="co">#zero buffer</span></span>
+<span id="cb15-3"><a href="lidar-processing-workflow.html#cb15-3" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(SEGMENTED) <span class="ot">=</span> <span class="dv">10000</span> <span class="co">#set the chunk size for the LAScatalog object to 10000 points so that all laz files are merged into one large laz file</span></span>
+<span id="cb15-4"><a href="lidar-processing-workflow.html#cb15-4" tabindex="-1"></a><span class="fu">opt_laz_compression</span>(SEGMENTED) <span class="ot">=</span> <span class="cn">TRUE</span></span>
+<span id="cb15-5"><a href="lidar-processing-workflow.html#cb15-5" tabindex="-1"></a><span class="fu">opt_progress</span>(SEGMENTED) <span class="ot">=</span> <span class="cn">TRUE</span></span>
+<span id="cb15-6"><a href="lidar-processing-workflow.html#cb15-6" tabindex="-1"></a><span class="fu">opt_output_files</span>(SEGMENTED) <span class="ot">=</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">08_MERGED</span><span class="sc">\\</span><span class="st">&quot;</span>, site, <span class="st">&quot;_HULLS_merged&quot;</span>) <span class="co">#write output files to &quot;08_M...&quot; with the suffix &quot;_HULLS_merged&quot;</span></span>
+<span id="cb15-7"><a href="lidar-processing-workflow.html#cb15-7" tabindex="-1"></a>  </span>
+<span id="cb15-8"><a href="lidar-processing-workflow.html#cb15-8" tabindex="-1"></a><span class="co"># merge all the segmented trees into a single point cloud </span></span>
+<span id="cb15-9"><a href="lidar-processing-workflow.html#cb15-9" tabindex="-1"></a>MERGED <span class="ot">=</span> <span class="fu">catalog_retile</span>(SEGMENTED) <span class="co">#apply the above opt_ commands</span></span>
+<span id="cb15-10"><a href="lidar-processing-workflow.html#cb15-10" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;merged&quot;</span>) <span class="co">#print statement to show where the code is at</span></span></code></pre></div>
+</div>
+<div id="clipping-the-point-cloud-into-individual-point-clouds-per-tree" class="section level3 hasAnchor" number="1.3.6">
+<h3><span class="header-section-number">1.3.6</span> Clipping the point cloud into individual point clouds per tree<a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This step results in individual tree point clouds that represent the top #% of the tree, where # is the height percentile defined in the segmentation step above.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="lidar-processing-workflow.html#cb16-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(MERGED) <span class="ot">=</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">09_CROWNS</span><span class="sc">\\</span><span class="st">&quot;</span>, site, <span class="st">&quot;_fam{fam}_rep{rep}_tag{tag}_treeID{treeID}&quot;</span>) <span class="co">#where the individual crown point clouds will be written to and the suffix they will have. Note values associated with the laz file will replace the names in {}</span></span>
+<span id="cb16-2"><a href="lidar-processing-workflow.html#cb16-2" tabindex="-1"></a>CROWNS <span class="ot">=</span> <span class="fu">clip_roi</span>(MERGED, pols) <span class="co">#clip the MERGED laz file to individual crowns using the crown polygons </span></span></code></pre></div>
+<p>Below we define the clean_crowns function that ensures that only points:
+- with the correct treeID remain in each individual tree point cloud.
+- that pass the defined height percentile threshold remain in the point cloud</p>
+<p>This function was added to double check that only the points that meet the criteria remain in the point clouds</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="lidar-processing-workflow.html#cb17-1" tabindex="-1"></a>clean_crowns <span class="ot">=</span> <span class="cf">function</span>(chunk) {</span>
+<span id="cb17-2"><a href="lidar-processing-workflow.html#cb17-2" tabindex="-1"></a>  las <span class="ot">=</span> <span class="fu">readLAS</span>(chunk) <span class="co">#reading in las file                 </span></span>
+<span id="cb17-3"><a href="lidar-processing-workflow.html#cb17-3" tabindex="-1"></a>  <span class="cf">if</span>(lidR<span class="sc">::</span><span class="fu">is.empty</span>(las)) <span class="fu">return</span>(<span class="cn">NULL</span>) <span class="co">#removing empty</span></span>
+<span id="cb17-4"><a href="lidar-processing-workflow.html#cb17-4" tabindex="-1"></a>  </span>
+<span id="cb17-5"><a href="lidar-processing-workflow.html#cb17-5" tabindex="-1"></a>  <span class="co">#ensuring all points in the cloud have the same/right tree ID</span></span>
+<span id="cb17-6"><a href="lidar-processing-workflow.html#cb17-6" tabindex="-1"></a>  treeID_true <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">names</span>(<span class="fu">sort</span>(<span class="fu">table</span>(las<span class="sc">@</span>data<span class="sc">$</span>treeID), <span class="at">decreasing =</span> <span class="cn">TRUE</span>))[<span class="dv">1</span>])</span>
+<span id="cb17-7"><a href="lidar-processing-workflow.html#cb17-7" tabindex="-1"></a>  las2 <span class="ot">=</span> <span class="fu">filter_poi</span>(las, treeID <span class="sc">==</span> treeID_true)</span>
+<span id="cb17-8"><a href="lidar-processing-workflow.html#cb17-8" tabindex="-1"></a>  </span>
+<span id="cb17-9"><a href="lidar-processing-workflow.html#cb17-9" tabindex="-1"></a>  <span class="co">#(added to Sam&#39;s code) filter points below the 75% threshold that were not dropped previously</span></span>
+<span id="cb17-10"><a href="lidar-processing-workflow.html#cb17-10" tabindex="-1"></a>  las_df <span class="ot">=</span> las2<span class="sc">@</span>data <span class="sc">%&gt;%</span></span>
+<span id="cb17-11"><a href="lidar-processing-workflow.html#cb17-11" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(treeID) <span class="sc">%&gt;%</span></span>
+<span id="cb17-12"><a href="lidar-processing-workflow.html#cb17-12" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Zq99 =</span> <span class="fu">quantile</span>(Z, <span class="fl">0.99</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-13"><a href="lidar-processing-workflow.html#cb17-13" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Zq999 =</span> <span class="fu">quantile</span>(Z, <span class="fl">0.999</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-14"><a href="lidar-processing-workflow.html#cb17-14" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span>
+<span id="cb17-15"><a href="lidar-processing-workflow.html#cb17-15" tabindex="-1"></a>  </span>
+<span id="cb17-16"><a href="lidar-processing-workflow.html#cb17-16" tabindex="-1"></a>  las3 <span class="ot">=</span> <span class="fu">filter_poi</span>(las2, Z <span class="sc">&gt;=</span> <span class="fu">quantile</span>(Z, <span class="fl">0.99</span>)<span class="sc">*</span>zq) <span class="co">#only keeping points above 99%*zq height percentile</span></span>
+<span id="cb17-17"><a href="lidar-processing-workflow.html#cb17-17" tabindex="-1"></a>  las4 <span class="ot">=</span> <span class="fu">filter_poi</span>(las3, Z <span class="sc">&lt;=</span> <span class="fu">quantile</span>(Z, <span class="fl">0.999</span>)) <span class="co">#removing points too high</span></span>
+<span id="cb17-18"><a href="lidar-processing-workflow.html#cb17-18" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="lidar-processing-workflow.html#cb18-1" tabindex="-1"></a><span class="do">## CLEANING crowns</span></span>
+<span id="cb18-2"><a href="lidar-processing-workflow.html#cb18-2" tabindex="-1"></a>CROWNS <span class="ot">=</span> <span class="fu">readLAScatalog</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">09_CROWNS</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">filter =</span> <span class="st">&quot;-drop_withheld&quot;</span>) <span class="co">#read in the clipped crown point clouds</span></span>
+<span id="cb18-3"><a href="lidar-processing-workflow.html#cb18-3" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(CROWNS) <span class="ot">=</span> <span class="dv">0</span> <span class="co"># processing by files</span></span>
+<span id="cb18-4"><a href="lidar-processing-workflow.html#cb18-4" tabindex="-1"></a><span class="fu">opt_laz_compression</span>(CROWNS) <span class="ot">=</span> <span class="cn">TRUE</span></span>
+<span id="cb18-5"><a href="lidar-processing-workflow.html#cb18-5" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(CROWNS) <span class="ot">=</span> <span class="dv">0</span> <span class="co"># no buffer</span></span>
+<span id="cb18-6"><a href="lidar-processing-workflow.html#cb18-6" tabindex="-1"></a><span class="fu">opt_wall_to_wall</span>(CROWNS) <span class="ot">=</span> <span class="cn">TRUE</span> <span class="co"># disable internal checks to ensure a valid output</span></span>
+<span id="cb18-7"><a href="lidar-processing-workflow.html#cb18-7" tabindex="-1"></a><span class="fu">opt_output_files</span>(CROWNS) <span class="ot">=</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">10_CROWNS_clean</span><span class="sc">\\</span><span class="st">{*}&quot;</span>) <span class="co">#location for output files</span></span>
+<span id="cb18-8"><a href="lidar-processing-workflow.html#cb18-8" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;cleaning crowns&quot;</span>)</span>
+<span id="cb18-9"><a href="lidar-processing-workflow.html#cb18-9" tabindex="-1"></a>CROWNS_clean <span class="ot">=</span> <span class="fu">catalog_apply</span>(CROWNS, clean_crowns) <span class="co">#applying the clean_crowns function on the CROWNS</span></span></code></pre></div>
+</div>
+</div>
+<div id="individual-tree-metrics" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Individual Tree Metrics<a href="lidar-processing-workflow.html#individual-tree-metrics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This script calculates the following metrics for each tree:</p>
 <ul>
-<li>Height percentiles: 99, 97.5, 95, 92.5, mean height</li>
-<li>Volumes: Convex, concave, volume from an alpha shape of 0.5</li>
-<li>Crown complexity: rumple, canopy rugosity ratio, coefficient of variation of height</li>
+<li><strong>Height percentiles</strong>: 99, 97.5, 95, 92.5, mean height
+<ul>
+<li>To create new height percentiles, change the “X” here:<br />
+</li>
+<li>as.numeric(quantile(Z, X, na.rm = TRUE))</li>
+</ul></li>
+<li><strong>Volumes</strong>: convex and two variations of concave (α = 1, α = 0.5)
+<ul>
+<li>Volume calculations are dependent on the alpha shape created. The larger the alpha parameter used to create the alpha shape the more convex the hull shape, whereas the smaller the alpha the more concave the shape.</li>
+<li>Very small alpha values can result in capturing holes in the point cloud as it will hug tightly to the points</li>
+<li>The alpha shape for convex (lines curving outward) hull volume requires an α = inf and represents the tightest convex boundary around all points in the point cloud</li>
+<li>Concave volume often uses α = 1, however below we also calculate concave volume with α = 0.5 for a more defined shape</li>
+<li>To create a new alpha shape with a new alpha value change the “α_value” below:
+alphashape3d::ashape3d(x = a3d, alpha = “α_value, pert = TRUE,eps = 1e-09)</li>
+</ul></li>
+<li><strong>Crown complexity</strong>: rumple, canopy rugosity ratio (CRR), coefficient of variation of height
+<ul>
+<li>Rumple measures the ratio of canopy surface area to ground surface area to give an idea of complexity.</li>
+<li>Canopy Rugosity Ratio (CRR) quantifies the vertical complexity of the canopy or crown.</li>
+<li>Coefficient of variation of height quantifies the variability of points in the point cloud. This metric is often used to look at structural diversity of a stand, however we added it to look at variation in point distribution within individual trees, to give an idea of variation in vegetation density between crowns.</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="lidar-processing-workflow.html#cb16-1" tabindex="-1"></a>      Z <span class="ot">=</span> las<span class="sc">@</span>data<span class="sc">$</span>Z <span class="co"># Z values of each point in the .laz cloud</span></span>
-<span id="cb16-2"><a href="lidar-processing-workflow.html#cb16-2" tabindex="-1"></a>      </span>
-<span id="cb16-3"><a href="lidar-processing-workflow.html#cb16-3" tabindex="-1"></a>      chm <span class="ot">=</span> <span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">max</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">res =</span> <span class="fl">0.05</span>) <span class="co"># 5cm CHM with max Z values #grid_metrics, replaced by pixel_metrics :https://github.com/r-lidar/lidR/releases</span></span>
-<span id="cb16-4"><a href="lidar-processing-workflow.html#cb16-4" tabindex="-1"></a>      chm_mean <span class="ot">=</span> <span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">res =</span> <span class="fl">0.2</span>) <span class="co"># 20cm CHM with mean Z values</span></span>
-<span id="cb16-5"><a href="lidar-processing-workflow.html#cb16-5" tabindex="-1"></a>      chm_mean[chm_mean <span class="sc">&lt;</span> (<span class="fu">maxValue</span>(chm_mean))] <span class="ot">=</span> <span class="cn">NA</span> <span class="co"># pixels of chm_mean that are less than the max value of chm_mean are set to NA</span></span>
-<span id="cb16-6"><a href="lidar-processing-workflow.html#cb16-6" tabindex="-1"></a>      chm_mean_trim <span class="ot">=</span> raster<span class="sc">::</span><span class="fu">trim</span>(chm_mean) <span class="co"># creating a new raster (chm_mean_raster) with teh extent of chm_mean</span></span>
-<span id="cb16-7"><a href="lidar-processing-workflow.html#cb16-7" tabindex="-1"></a>      <span class="co">#chm_mean_trim = terra::trim(chm_mean) #using terra instead of trim from raster</span></span>
-<span id="cb16-8"><a href="lidar-processing-workflow.html#cb16-8" tabindex="-1"></a>      </span>
-<span id="cb16-9"><a href="lidar-processing-workflow.html#cb16-9" tabindex="-1"></a>      <span class="co">#apex angles are a measure of concality</span></span>
-<span id="cb16-10"><a href="lidar-processing-workflow.html#cb16-10" tabindex="-1"></a>      <span class="co"># Extract points from the las that fall within the extent of &#39;chm_mean_trim&#39;,</span></span>
-<span id="cb16-11"><a href="lidar-processing-workflow.html#cb16-11" tabindex="-1"></a>      apex <span class="ot">=</span> <span class="fu">clip_roi</span>(las, <span class="fu">extent</span>(chm_mean_trim))<span class="sc">@</span>data <span class="sc">%&gt;%</span> <span class="co">#clipping #ext instead of extent if using a SpatRaster from terra</span></span>
-<span id="cb16-12"><a href="lidar-processing-workflow.html#cb16-12" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">filter</span>(Z <span class="sc">==</span> <span class="fu">max</span>(.<span class="sc">$</span>Z))<span class="co"># filter the extracted points to retain only those with Z (height) equal to the maximum height value in the dataset.</span></span>
-<span id="cb16-13"><a href="lidar-processing-workflow.html#cb16-13" tabindex="-1"></a></span>
-<span id="cb16-14"><a href="lidar-processing-workflow.html#cb16-14" tabindex="-1"></a>      origin <span class="ot">=</span> <span class="fu">c</span>(apex<span class="sc">$</span>X, apex<span class="sc">$</span>Y, apex<span class="sc">$</span>Z)<span class="co"># Define the coordinates of the apex point extracted from the LAS data</span></span>
-<span id="cb16-15"><a href="lidar-processing-workflow.html#cb16-15" tabindex="-1"></a>      a_point <span class="ot">=</span> <span class="fu">c</span>(apex<span class="sc">$</span>X, apex<span class="sc">$</span>Y, <span class="dv">0</span>)<span class="co"># Define the coordinates of a point lying on the same XY plane as the apex but at a Z coordinate of 0</span></span>
-<span id="cb16-16"><a href="lidar-processing-workflow.html#cb16-16" tabindex="-1"></a></span>
-<span id="cb16-17"><a href="lidar-processing-workflow.html#cb16-17" tabindex="-1"></a>      <span class="co"># function &#39;myangle3d&#39; to calculate the 3D angle between vectors defined by three points</span></span>
-<span id="cb16-18"><a href="lidar-processing-workflow.html#cb16-18" tabindex="-1"></a>      myangle3d <span class="ot">=</span> <span class="cf">function</span>(b1, b2, b3) {</span>
-<span id="cb16-19"><a href="lidar-processing-workflow.html#cb16-19" tabindex="-1"></a>        <span class="co"># Use the &#39;angle3d&#39; function from the &#39;aRchi&#39; package to calculate the angle in 3D space</span></span>
-<span id="cb16-20"><a href="lidar-processing-workflow.html#cb16-20" tabindex="-1"></a>        <span class="co"># between the vectors formed by points &#39;origin&#39; (apex), &#39;a_point&#39;, and &#39;b1&#39;, &#39;b2&#39;, &#39;b3&#39;</span></span>
-<span id="cb16-21"><a href="lidar-processing-workflow.html#cb16-21" tabindex="-1"></a>        aRchi<span class="sc">::</span><span class="fu">angle3d</span>(<span class="at">o =</span> <span class="fu">c</span>(origin[<span class="dv">1</span>], origin[<span class="dv">2</span>], origin[<span class="dv">3</span>]),</span>
-<span id="cb16-22"><a href="lidar-processing-workflow.html#cb16-22" tabindex="-1"></a>                       <span class="at">a =</span> <span class="fu">c</span>(a_point[<span class="dv">1</span>], a_point[<span class="dv">2</span>], a_point[<span class="dv">3</span>]),</span>
-<span id="cb16-23"><a href="lidar-processing-workflow.html#cb16-23" tabindex="-1"></a>                       <span class="at">b =</span> <span class="fu">c</span>(b1, b2, b3))</span>
-<span id="cb16-24"><a href="lidar-processing-workflow.html#cb16-24" tabindex="-1"></a>      }</span>
-<span id="cb16-25"><a href="lidar-processing-workflow.html#cb16-25" tabindex="-1"></a>      </span>
-<span id="cb16-26"><a href="lidar-processing-workflow.html#cb16-26" tabindex="-1"></a>      <span class="fu">library</span>(dplyr) <span class="co">#needed to re read in the package in the loop here for vars() to work</span></span>
-<span id="cb16-27"><a href="lidar-processing-workflow.html#cb16-27" tabindex="-1"></a>      <span class="co"># Extract the X, Y, and Z coordinates from the LAS data and calculate the angle for each point</span></span>
-<span id="cb16-28"><a href="lidar-processing-workflow.html#cb16-28" tabindex="-1"></a>      <span class="co"># using the custom function &#39;myangle3d&#39;. Then summarize the angle values.</span></span>
-<span id="cb16-29"><a href="lidar-processing-workflow.html#cb16-29" tabindex="-1"></a>      ang <span class="ot">=</span> las<span class="sc">@</span>data <span class="sc">%&gt;%</span></span>
-<span id="cb16-30"><a href="lidar-processing-workflow.html#cb16-30" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(X, Y, Z) <span class="sc">%&gt;%</span></span>
-<span id="cb16-31"><a href="lidar-processing-workflow.html#cb16-31" tabindex="-1"></a>        <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb16-32"><a href="lidar-processing-workflow.html#cb16-32" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">angle =</span> <span class="fu">myangle3d</span>(<span class="at">b1 =</span> X, <span class="at">b2 =</span> Y, <span class="at">b3 =</span> Z)) <span class="sc">%&gt;%</span></span>
-<span id="cb16-33"><a href="lidar-processing-workflow.html#cb16-33" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb16-34"><a href="lidar-processing-workflow.html#cb16-34" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">summarise_at</span>(<span class="fu">vars</span>(angle), list <span class="ot">&lt;-</span> <span class="fu">c</span>(mean, sd), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#vars() has been updated to across() starting with dplyr version 1.0.0</span></span>
-<span id="cb16-35"><a href="lidar-processing-workflow.html#cb16-35" tabindex="-1"></a></span>
-<span id="cb16-36"><a href="lidar-processing-workflow.html#cb16-36" tabindex="-1"></a>      <span class="co"># Extract X, Y, and Z coordinates from the LAS data and create a matrix &#39;a3d&#39;</span></span>
-<span id="cb16-37"><a href="lidar-processing-workflow.html#cb16-37" tabindex="-1"></a>      a3d <span class="ot">&lt;-</span>  <span class="fu">cbind</span>(las<span class="sc">@</span>data<span class="sc">$</span>X, las<span class="sc">@</span>data<span class="sc">$</span>Y, las<span class="sc">@</span>data<span class="sc">$</span>Z)</span>
-<span id="cb16-38"><a href="lidar-processing-workflow.html#cb16-38" tabindex="-1"></a>      </span>
-<span id="cb16-39"><a href="lidar-processing-workflow.html#cb16-39" tabindex="-1"></a>      <span class="co"># Center the points around the origin (0,0,0) by subtracting the mean of each dimension</span></span>
-<span id="cb16-40"><a href="lidar-processing-workflow.html#cb16-40" tabindex="-1"></a>      a3d[,<span class="dv">1</span>] <span class="ot">=</span> a3d[,<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">mean</span>(a3d[,<span class="dv">1</span>],<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#center x values</span></span>
-<span id="cb16-41"><a href="lidar-processing-workflow.html#cb16-41" tabindex="-1"></a>      a3d[,<span class="dv">2</span>] <span class="ot">=</span> a3d[,<span class="dv">2</span>] <span class="sc">-</span> <span class="fu">mean</span>(a3d[,<span class="dv">2</span>],<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#center y values</span></span>
-<span id="cb16-42"><a href="lidar-processing-workflow.html#cb16-42" tabindex="-1"></a>      a3d[,<span class="dv">3</span>] <span class="ot">=</span> a3d[,<span class="dv">3</span>] <span class="sc">-</span> <span class="fu">mean</span>(a3d[,<span class="dv">3</span>],<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#center z values # sams orginal code did not center the Z values, but that is the only way we found to not get an error thrown in the ashape3d function.</span></span>
-<span id="cb16-43"><a href="lidar-processing-workflow.html#cb16-43" tabindex="-1"></a>      </span>
-<span id="cb16-44"><a href="lidar-processing-workflow.html#cb16-44" tabindex="-1"></a>      <span class="co"># Generate different shapes using the alphashape3d package</span></span>
-<span id="cb16-45"><a href="lidar-processing-workflow.html#cb16-45" tabindex="-1"></a>      shape_convex <span class="ot">=</span> alphashape3d<span class="sc">::</span><span class="fu">ashape3d</span>(<span class="at">x =</span> a3d, <span class="at">alpha =</span> <span class="cn">Inf</span>, <span class="at">pert =</span> <span class="cn">TRUE</span>,<span class="at">eps =</span> <span class="fl">1e-09</span>)<span class="co"># Compute a convex hull using alpha = Inf (convex hull) #USED PERT= TRUE : https://cran.r-project.org/web/packages/alphashape3d/alphashape3d.pdf</span></span>
-<span id="cb16-46"><a href="lidar-processing-workflow.html#cb16-46" tabindex="-1"></a>      shape_concave <span class="ot">=</span> alphashape3d<span class="sc">::</span><span class="fu">ashape3d</span>(<span class="at">x =</span> a3d, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">pert =</span> <span class="cn">TRUE</span>,<span class="at">eps =</span> <span class="fl">1e-09</span>)<span class="co"># Compute a concave hull using alpha = 1 (concave hull)</span></span>
-<span id="cb16-47"><a href="lidar-processing-workflow.html#cb16-47" tabindex="-1"></a>      shape_a05 <span class="ot">=</span> alphashape3d<span class="sc">::</span><span class="fu">ashape3d</span>(<span class="at">x =</span> a3d, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">pert =</span> <span class="cn">TRUE</span>,<span class="at">eps =</span> <span class="fl">1e-09</span>)<span class="co"># Compute a shape for alpha = 0.5 (balanced between convex and concave)</span></span>
-<span id="cb16-48"><a href="lidar-processing-workflow.html#cb16-48" tabindex="-1"></a>      </span>
-<span id="cb16-49"><a href="lidar-processing-workflow.html#cb16-49" tabindex="-1"></a>      structural_metrics_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb16-50"><a href="lidar-processing-workflow.html#cb16-50" tabindex="-1"></a>        <span class="at">treeID =</span> <span class="fu">unique</span>(las<span class="sc">@</span>data<span class="sc">$</span>treeID), </span>
-<span id="cb16-51"><a href="lidar-processing-workflow.html#cb16-51" tabindex="-1"></a>        <span class="at">tag =</span> tag_value,</span>
-<span id="cb16-52"><a href="lidar-processing-workflow.html#cb16-52" tabindex="-1"></a>        <span class="at">n_points =</span> <span class="fu">length</span>(las<span class="sc">@</span>data<span class="sc">$</span>Z),</span>
-<span id="cb16-53"><a href="lidar-processing-workflow.html#cb16-53" tabindex="-1"></a>        </span>
-<span id="cb16-54"><a href="lidar-processing-workflow.html#cb16-54" tabindex="-1"></a>        <span class="do">#### Crown height</span></span>
-<span id="cb16-55"><a href="lidar-processing-workflow.html#cb16-55" tabindex="-1"></a>        <span class="at">Zq99 =</span> <span class="fu">as.numeric</span>(<span class="fu">quantile</span>(Z, <span class="fl">0.990</span>,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)),<span class="co"># 99th percentile</span></span>
-<span id="cb16-56"><a href="lidar-processing-workflow.html#cb16-56" tabindex="-1"></a>        <span class="at">Zq975 =</span> <span class="fu">as.numeric</span>(<span class="fu">quantile</span>(Z, <span class="fl">0.975</span>,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)), <span class="co"># 97.5th percentile</span></span>
-<span id="cb16-57"><a href="lidar-processing-workflow.html#cb16-57" tabindex="-1"></a>        <span class="at">Zq95 =</span> <span class="fu">as.numeric</span>(<span class="fu">quantile</span>(Z, <span class="fl">0.95</span>,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)),<span class="co"># 95th percentile</span></span>
-<span id="cb16-58"><a href="lidar-processing-workflow.html#cb16-58" tabindex="-1"></a>        <span class="at">Zq925 =</span> <span class="fu">as.numeric</span>(<span class="fu">quantile</span>(Z, <span class="fl">0.925</span>,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)), <span class="co"># 92.5th percentile</span></span>
-<span id="cb16-59"><a href="lidar-processing-workflow.html#cb16-59" tabindex="-1"></a>        <span class="at">Z_mean =</span> <span class="fu">mean</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co">#mean crown height</span></span>
-<span id="cb16-60"><a href="lidar-processing-workflow.html#cb16-60" tabindex="-1"></a>        </span>
-<span id="cb16-61"><a href="lidar-processing-workflow.html#cb16-61" tabindex="-1"></a>        <span class="do">### Crown volume</span></span>
-<span id="cb16-62"><a href="lidar-processing-workflow.html#cb16-62" tabindex="-1"></a>        <span class="at">vol_convex =</span> alphashape3d<span class="sc">::</span><span class="fu">volume_ashape3d</span>(shape_convex), <span class="co"># convex volume</span></span>
-<span id="cb16-63"><a href="lidar-processing-workflow.html#cb16-63" tabindex="-1"></a>        <span class="at">vol_concave =</span> alphashape3d<span class="sc">::</span><span class="fu">volume_ashape3d</span>(shape_concave), <span class="co"># concave volume</span></span>
-<span id="cb16-64"><a href="lidar-processing-workflow.html#cb16-64" tabindex="-1"></a>        <span class="at">vol_a05=</span> alphashape3d<span class="sc">::</span><span class="fu">volume_ashape3d</span>(shape_a05), <span class="co">#volume with alpha = 0.5 (balance between concave and convex)</span></span>
-<span id="cb16-65"><a href="lidar-processing-workflow.html#cb16-65" tabindex="-1"></a>        </span>
-<span id="cb16-66"><a href="lidar-processing-workflow.html#cb16-66" tabindex="-1"></a>        <span class="co">#apex_angle = ang$fn1,</span></span>
-<span id="cb16-67"><a href="lidar-processing-workflow.html#cb16-67" tabindex="-1"></a>        <span class="co">#apex_sd = ang$fn2,</span></span>
-<span id="cb16-68"><a href="lidar-processing-workflow.html#cb16-68" tabindex="-1"></a>        </span>
-<span id="cb16-69"><a href="lidar-processing-workflow.html#cb16-69" tabindex="-1"></a>        <span class="do">#### Crown complexity</span></span>
-<span id="cb16-70"><a href="lidar-processing-workflow.html#cb16-70" tabindex="-1"></a>        <span class="at">CV_Z =</span> <span class="fu">sd</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">mean</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="co"># Compute the coefficient of variation (CV) of Z values, representing the variability of heights relative to the mean height</span></span>
-<span id="cb16-71"><a href="lidar-processing-workflow.html#cb16-71" tabindex="-1"></a>        <span class="at">rumple =</span> lidR<span class="sc">::</span><span class="fu">rumple_index</span>(chm), <span class="co">#rumple: ratio of canopy outer surface area to ground surface area as measured by the CHM and DTM</span></span>
-<span id="cb16-72"><a href="lidar-processing-workflow.html#cb16-72" tabindex="-1"></a>        <span class="at">CRR =</span> (<span class="fu">mean</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">min</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> (<span class="fu">max</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">min</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>))<span class="co"># Compute the Canopy Rugosity Ratio (CRR), </span></span>
-<span id="cb16-73"><a href="lidar-processing-workflow.html#cb16-73" tabindex="-1"></a>        <span class="co"># representing the ruggedness or roughness of the canopy surface</span></span>
-<span id="cb16-74"><a href="lidar-processing-workflow.html#cb16-74" tabindex="-1"></a>      )</span>
-<span id="cb16-75"><a href="lidar-processing-workflow.html#cb16-75" tabindex="-1"></a>      </span>
-<span id="cb16-76"><a href="lidar-processing-workflow.html#cb16-76" tabindex="-1"></a></span>
-<span id="cb16-77"><a href="lidar-processing-workflow.html#cb16-77" tabindex="-1"></a>    <span class="co">#Create structural metrics folder</span></span>
-<span id="cb16-78"><a href="lidar-processing-workflow.html#cb16-78" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">10_CROWNS_clean</span><span class="sc">\\</span><span class="st">Structural_metrics</span><span class="sc">\\</span><span class="st">&quot;</span>))) {</span>
-<span id="cb16-79"><a href="lidar-processing-workflow.html#cb16-79" tabindex="-1"></a>      <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">10_CROWNS_clean</span><span class="sc">\\</span><span class="st">Structural_metrics</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-80"><a href="lidar-processing-workflow.html#cb16-80" tabindex="-1"></a>    }</span>
-<span id="cb16-81"><a href="lidar-processing-workflow.html#cb16-81" tabindex="-1"></a>    <span class="co">#writing out .rds files</span></span>
-<span id="cb16-82"><a href="lidar-processing-workflow.html#cb16-82" tabindex="-1"></a>    <span class="fu">saveRDS</span>(structural_metrics_df, <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">10_CROWNS_clean</span><span class="sc">\\</span><span class="st">Structural_metrics</span><span class="sc">\\</span><span class="st">&quot;</span>,name,<span class="st">&quot;_&quot;</span>, date,<span class="st">&quot;_structuralMetrics_tag&quot;</span>,tag_value,<span class="st">&quot;.rds&quot;</span>)) <span class="co">#USED PERT= TRUE : https://cran.r-project.org/web/packages/alphashape3d/alphashape3d.pdf</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="lidar-processing-workflow.html#cb19-1" tabindex="-1"></a>Z <span class="ot">=</span> las<span class="sc">@</span>data<span class="sc">$</span>Z <span class="co"># Z values of each point in the .laz cloud</span></span>
+<span id="cb19-2"><a href="lidar-processing-workflow.html#cb19-2" tabindex="-1"></a>chm <span class="ot">=</span> <span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">max</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">res =</span> <span class="fl">0.05</span>) <span class="co"># 5cm CHM with max Z values #grid_metrics, replaced by pixel_metrics :https://github.com/r-lidar/lidR/releases</span></span>
+<span id="cb19-3"><a href="lidar-processing-workflow.html#cb19-3" tabindex="-1"></a>      <span class="co"># Extract X, Y, and Z coordinates from the LAS data and create a matrix &#39;a3d&#39;</span></span>
+<span id="cb19-4"><a href="lidar-processing-workflow.html#cb19-4" tabindex="-1"></a>a3d <span class="ot">&lt;-</span>  <span class="fu">cbind</span>(las<span class="sc">@</span>data<span class="sc">$</span>X, las<span class="sc">@</span>data<span class="sc">$</span>Y, las<span class="sc">@</span>data<span class="sc">$</span>Z)</span>
+<span id="cb19-5"><a href="lidar-processing-workflow.html#cb19-5" tabindex="-1"></a>      </span>
+<span id="cb19-6"><a href="lidar-processing-workflow.html#cb19-6" tabindex="-1"></a><span class="co"># Center the points around the origin (0,0,0) by subtracting the mean of each dimension</span></span>
+<span id="cb19-7"><a href="lidar-processing-workflow.html#cb19-7" tabindex="-1"></a>a3d[,<span class="dv">1</span>] <span class="ot">=</span> a3d[,<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">mean</span>(a3d[,<span class="dv">1</span>],<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#center x values</span></span>
+<span id="cb19-8"><a href="lidar-processing-workflow.html#cb19-8" tabindex="-1"></a>a3d[,<span class="dv">2</span>] <span class="ot">=</span> a3d[,<span class="dv">2</span>] <span class="sc">-</span> <span class="fu">mean</span>(a3d[,<span class="dv">2</span>],<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#center y values</span></span>
+<span id="cb19-9"><a href="lidar-processing-workflow.html#cb19-9" tabindex="-1"></a>a3d[,<span class="dv">3</span>] <span class="ot">=</span> a3d[,<span class="dv">3</span>] <span class="sc">-</span> <span class="fu">mean</span>(a3d[,<span class="dv">3</span>],<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#center z values # sams orginal code did not center the Z values, but that is the only way we found to not get an error thrown in the ashape3d function.</span></span>
+<span id="cb19-10"><a href="lidar-processing-workflow.html#cb19-10" tabindex="-1"></a>      </span>
+<span id="cb19-11"><a href="lidar-processing-workflow.html#cb19-11" tabindex="-1"></a><span class="co"># Generate different shapes using the alphashape3d package</span></span>
+<span id="cb19-12"><a href="lidar-processing-workflow.html#cb19-12" tabindex="-1"></a>shape_convex <span class="ot">=</span> alphashape3d<span class="sc">::</span><span class="fu">ashape3d</span>(<span class="at">x =</span> a3d, <span class="at">alpha =</span> <span class="cn">Inf</span>, <span class="at">pert =</span> <span class="cn">TRUE</span>,<span class="at">eps =</span> <span class="fl">1e-09</span>)<span class="co"># Compute a convex hull using alpha = Inf (convex hull) #USED PERT= TRUE : https://cran.r-project.org/web/packages/alphashape3d/alphashape3d.pdf</span></span>
+<span id="cb19-13"><a href="lidar-processing-workflow.html#cb19-13" tabindex="-1"></a>shape_concave <span class="ot">=</span> alphashape3d<span class="sc">::</span><span class="fu">ashape3d</span>(<span class="at">x =</span> a3d, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">pert =</span> <span class="cn">TRUE</span>,<span class="at">eps =</span> <span class="fl">1e-09</span>)<span class="co"># Compute a concave hull using alpha = 1 (concave hull)</span></span>
+<span id="cb19-14"><a href="lidar-processing-workflow.html#cb19-14" tabindex="-1"></a>shape_a05 <span class="ot">=</span> alphashape3d<span class="sc">::</span><span class="fu">ashape3d</span>(<span class="at">x =</span> a3d, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">pert =</span> <span class="cn">TRUE</span>,<span class="at">eps =</span> <span class="fl">1e-09</span>)<span class="co"># Compute a shape for alpha = 0.5 (balanced between convex and concave)</span></span>
+<span id="cb19-15"><a href="lidar-processing-workflow.html#cb19-15" tabindex="-1"></a>      </span>
+<span id="cb19-16"><a href="lidar-processing-workflow.html#cb19-16" tabindex="-1"></a>structural_metrics_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb19-17"><a href="lidar-processing-workflow.html#cb19-17" tabindex="-1"></a>  <span class="at">treeID =</span> <span class="fu">unique</span>(las<span class="sc">@</span>data<span class="sc">$</span>treeID), </span>
+<span id="cb19-18"><a href="lidar-processing-workflow.html#cb19-18" tabindex="-1"></a>  <span class="at">tag =</span> tag_value,</span>
+<span id="cb19-19"><a href="lidar-processing-workflow.html#cb19-19" tabindex="-1"></a>  <span class="at">n_points =</span> <span class="fu">length</span>(las<span class="sc">@</span>data<span class="sc">$</span>Z),</span>
+<span id="cb19-20"><a href="lidar-processing-workflow.html#cb19-20" tabindex="-1"></a>        </span>
+<span id="cb19-21"><a href="lidar-processing-workflow.html#cb19-21" tabindex="-1"></a>  <span class="co"># Crown height</span></span>
+<span id="cb19-22"><a href="lidar-processing-workflow.html#cb19-22" tabindex="-1"></a>  <span class="at">Zq99 =</span> <span class="fu">as.numeric</span>(<span class="fu">quantile</span>(Z, <span class="fl">0.990</span>,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)),<span class="co"># 99th percentile</span></span>
+<span id="cb19-23"><a href="lidar-processing-workflow.html#cb19-23" tabindex="-1"></a>  <span class="at">Zq975 =</span> <span class="fu">as.numeric</span>(<span class="fu">quantile</span>(Z, <span class="fl">0.975</span>,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)), <span class="co"># 97.5th percentile</span></span>
+<span id="cb19-24"><a href="lidar-processing-workflow.html#cb19-24" tabindex="-1"></a>  <span class="at">Zq95 =</span> <span class="fu">as.numeric</span>(<span class="fu">quantile</span>(Z, <span class="fl">0.95</span>,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)),<span class="co"># 95th percentile</span></span>
+<span id="cb19-25"><a href="lidar-processing-workflow.html#cb19-25" tabindex="-1"></a>  <span class="at">Zq925 =</span> <span class="fu">as.numeric</span>(<span class="fu">quantile</span>(Z, <span class="fl">0.925</span>,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)), <span class="co"># 92.5th percentile</span></span>
+<span id="cb19-26"><a href="lidar-processing-workflow.html#cb19-26" tabindex="-1"></a>  <span class="at">Z_mean =</span> <span class="fu">mean</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co">#mean crown height</span></span>
+<span id="cb19-27"><a href="lidar-processing-workflow.html#cb19-27" tabindex="-1"></a>        </span>
+<span id="cb19-28"><a href="lidar-processing-workflow.html#cb19-28" tabindex="-1"></a>  <span class="co"># Crown volume</span></span>
+<span id="cb19-29"><a href="lidar-processing-workflow.html#cb19-29" tabindex="-1"></a>  <span class="at">vol_convex =</span> alphashape3d<span class="sc">::</span><span class="fu">volume_ashape3d</span>(shape_convex), <span class="co"># convex volume</span></span>
+<span id="cb19-30"><a href="lidar-processing-workflow.html#cb19-30" tabindex="-1"></a>  <span class="at">vol_concave =</span> alphashape3d<span class="sc">::</span><span class="fu">volume_ashape3d</span>(shape_concave), <span class="co"># concave volume</span></span>
+<span id="cb19-31"><a href="lidar-processing-workflow.html#cb19-31" tabindex="-1"></a>  <span class="at">vol_a05=</span> alphashape3d<span class="sc">::</span><span class="fu">volume_ashape3d</span>(shape_a05), <span class="co">#volume with alpha = 0.5 (balance between concave and convex)</span></span>
+<span id="cb19-32"><a href="lidar-processing-workflow.html#cb19-32" tabindex="-1"></a></span>
+<span id="cb19-33"><a href="lidar-processing-workflow.html#cb19-33" tabindex="-1"></a>  <span class="co"># Crown complexity</span></span>
+<span id="cb19-34"><a href="lidar-processing-workflow.html#cb19-34" tabindex="-1"></a>  <span class="at">CV_Z =</span> <span class="fu">sd</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">mean</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="co"># Compute the coefficient of variation (CV) of Z values, representing the variability of heights relative to the mean height</span></span>
+<span id="cb19-35"><a href="lidar-processing-workflow.html#cb19-35" tabindex="-1"></a>  <span class="at">rumple =</span> lidR<span class="sc">::</span><span class="fu">rumple_index</span>(chm), <span class="co">#rumple: ratio of canopy outer surface area to ground surface area as measured by the CHM and DTM</span></span>
+<span id="cb19-36"><a href="lidar-processing-workflow.html#cb19-36" tabindex="-1"></a>  <span class="at">CRR =</span> (<span class="fu">mean</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">min</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> (<span class="fu">max</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">min</span>(Z,<span class="at">na.rm =</span> <span class="cn">TRUE</span>))<span class="co"># Compute the Canopy Rugosity Ratio (CRR), </span></span>
+<span id="cb19-37"><a href="lidar-processing-workflow.html#cb19-37" tabindex="-1"></a>  <span class="co"># representing the ruggedness or roughness of the canopy surface</span></span>
+<span id="cb19-38"><a href="lidar-processing-workflow.html#cb19-38" tabindex="-1"></a>)</span>
+<span id="cb19-39"><a href="lidar-processing-workflow.html#cb19-39" tabindex="-1"></a>      </span>
+<span id="cb19-40"><a href="lidar-processing-workflow.html#cb19-40" tabindex="-1"></a><span class="co">#Create structural metrics folder</span></span>
+<span id="cb19-41"><a href="lidar-processing-workflow.html#cb19-41" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">10_CROWNS_clean</span><span class="sc">\\</span><span class="st">Structural_metrics</span><span class="sc">\\</span><span class="st">&quot;</span>))) {</span>
+<span id="cb19-42"><a href="lidar-processing-workflow.html#cb19-42" tabindex="-1"></a>      <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">10_CROWNS_clean</span><span class="sc">\\</span><span class="st">Structural_metrics</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-43"><a href="lidar-processing-workflow.html#cb19-43" tabindex="-1"></a>}</span>
+<span id="cb19-44"><a href="lidar-processing-workflow.html#cb19-44" tabindex="-1"></a></span>
+<span id="cb19-45"><a href="lidar-processing-workflow.html#cb19-45" tabindex="-1"></a><span class="co">#writing out .rds files</span></span>
+<span id="cb19-46"><a href="lidar-processing-workflow.html#cb19-46" tabindex="-1"></a><span class="fu">saveRDS</span>(structural_metrics_df, <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">10_CROWNS_clean</span><span class="sc">\\</span><span class="st">Structural_metrics</span><span class="sc">\\</span><span class="st">&quot;</span>,name,<span class="st">&quot;_&quot;</span>, date,<span class="st">&quot;_structuralMetrics_tag&quot;</span>,tag_value,<span class="st">&quot;.rds&quot;</span>)) <span class="co">#USED PERT= TRUE : https://cran.r-project.org/web/packages/alphashape3d/alphashape3d.pdf</span></span></code></pre></div>
 <p>Below are a individual tree point cloud (left), clipped to the top 25% of the tree and its corresponding alphashape used for volume (right).</p>
 <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
 <img src="Photos_&_gifs/Individual_tree_point_cloud_resize_bookdown.png" style="height: 300px; margin: 0 10px;" /><img src="Photos_&_gifs/Individual_tree_volume_resized_bookdown.gif" style="height: 300px; margin: 0 10px;" />
@@ -666,8 +655,8 @@ lastile -i path_to_write\02_rescaled\*.laz ^
           </div>
         </div>
       </div>
-<a href="preflight-planning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="crown-segmentation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="photogrametric-processing.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

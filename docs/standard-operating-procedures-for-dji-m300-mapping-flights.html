@@ -151,17 +151,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="standard-operating-procedures-for-dji-m300-mapping-flights.html"><a href="standard-operating-procedures-for-dji-m300-mapping-flights.html"><i class="fa fa-check"></i><b>2</b> Standard Operating Procedures for DJI M300 Mapping Flights</a></li>
 <li class="chapter" data-level="3" data-path="overview-of-methodologies.html"><a href="overview-of-methodologies.html"><i class="fa fa-check"></i><b>3</b> Overview of Methodologies</a></li>
 <li class="chapter" data-level="4" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html"><i class="fa fa-check"></i><b>4</b> Range of Sites Assessed</a></li>
-<li class="chapter" data-level="5" data-path="preflight-planning.html"><a href="preflight-planning.html"><i class="fa fa-check"></i><b>5</b> Preflight Planning</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="preflight-planning.html"><a href="preflight-planning.html#aligning-and-registering-data-from-different-time-points-and-sensors"><i class="fa fa-check"></i><b>5.1</b> Aligning and registering data from different time points and sensors</a>
-<ul>
-<li class="chapter" data-level="5.1.1" data-path="preflight-planning.html"><a href="preflight-planning.html#kinematic-processing-rtkppk"><i class="fa fa-check"></i><b>5.1.1</b> Kinematic processing: RTK/PPK</a></li>
-<li class="chapter" data-level="5.1.2" data-path="preflight-planning.html"><a href="preflight-planning.html#ground-control-points-gcps"><i class="fa fa-check"></i><b>5.1.2</b> Ground Control Points (GCPs)</a></li>
-<li class="chapter" data-level="5.1.3" data-path="preflight-planning.html"><a href="preflight-planning.html#absolute-and-relative-reference-with-precise-point-positioning"><i class="fa fa-check"></i><b>5.1.3</b> Absolute and Relative Reference with Precise Point Positioning</a></li>
-<li class="chapter" data-level="5.1.4" data-path="preflight-planning.html"><a href="preflight-planning.html#terrain-following-on-sites-with-elevation-gain"><i class="fa fa-check"></i><b>5.1.4</b> Terrain Following on Sites with Elevation Gain</a></li>
-</ul></li>
-<li class="chapter" data-level="5.2" data-path="preflight-planning.html"><a href="preflight-planning.html#site-selection-considerations"><i class="fa fa-check"></i><b>5.2</b> Site Selection Considerations</a></li>
-</ul></li>
+<li class="chapter" data-level="5" data-path="preflight-planning.html"><a href="preflight-planning.html"><i class="fa fa-check"></i><b>5</b> Preflight Planning</a></li>
 <li class="chapter" data-level="6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>6</b> LiDAR Processing Workflow</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>6.1</b> DJI Terra</a></li>
@@ -174,10 +164,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>6.3</b> Normalization and individual tree point clouds</a>
 <ul>
 <li class="chapter" data-level="6.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>6.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
-<li class="chapter" data-level="6.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-chm-creation"><i class="fa fa-check"></i><b>6.3.2</b> Normalization &amp; CHM creation</a></li>
-<li class="chapter" data-level="6.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>6.3.3</b> Segmenting tiles</a></li>
-<li class="chapter" data-level="6.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-25-of-each-tree"><i class="fa fa-check"></i><b>6.3.4</b> Merging segmented tiles to create one large point cloud containing the top 25% of each tree</a></li>
-<li class="chapter" data-level="6.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>6.3.5</b> Clipping the point cloud into individual point clouds per tree</a></li>
+<li class="chapter" data-level="6.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>6.3.2</b> Normalizing the tiles using the DTM</a></li>
+<li class="chapter" data-level="6.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>6.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
+<li class="chapter" data-level="6.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>6.3.4</b> Segmenting tiles</a></li>
+<li class="chapter" data-level="6.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>6.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
+<li class="chapter" data-level="6.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>6.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
 </ul></li>
 <li class="chapter" data-level="6.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>6.4</b> Individual Tree Metrics</a></li>
 </ul></li>
@@ -214,7 +205,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 2</span> Standard Operating Procedures for DJI M300 Mapping Flights<a href="standard-operating-procedures-for-dji-m300-mapping-flights.html#standard-operating-procedures-for-dji-m300-mapping-flights" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Overview:</p>
 <p>This is for DJI M300 mapping flights above forestry research trials and does not extend to flying within 30m of bystanders or over buildings. All relevant Transport Canada drone regulations will be adhered to.</p>
-<p>Emergency procedures:</p>
 
 </div>
             </section>

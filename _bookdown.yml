@@ -6,3 +6,9 @@ view: https://github.com/owaite/GenomeBC_BPG/blob/main/%s
 language:
   ui:
     chapter_name: "Chapter "
+rmd_files:
+  - index.Rmd
+  - 08-LiDAR_processing.Rmd
+  - Photogrametric_processing.Rmd
+
+  

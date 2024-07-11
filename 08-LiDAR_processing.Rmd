@@ -472,11 +472,24 @@ CROWNS_clean = catalog_apply(CROWNS, clean_crowns) #applying the clean_crowns fu
 
 ## Individual Tree Metrics
 
-This script calculates the following metrics for each tree:  
-- Height percentiles: 99, 97.5, 95, 92.5, mean height 
-- Volumes: Convex, concave, volume from an alpha shape of 0.5 
-- Crown complexity: rumple, canopy rugosity ratio (CRR), coefficient of variation of height 
-  
+This script calculates the following metrics for each tree: 
+
+- **Height percentiles**: 99, 97.5, 95, 92.5, mean height  
+  - To create new height percentiles, change the “X” here:  
+  - as.numeric(quantile(Z, X, na.rm = TRUE)) 
+
+- **Volumes**: convex and two variations of concave (α = 1, α = 0.5) 
+  - Volume calculations are dependent on the alpha shape created. The larger the alpha parameter used to create the alpha shape the more convex the hull shape, whereas the smaller the alpha the more concave the shape. 
+  - Very small alpha values can result in capturing holes in the point cloud as it will hug tightly to the points 
+  - The alpha shape for convex (lines curving outward) hull volume requires an α = inf and represents the tightest convex boundary around all points in the point cloud 
+  - Concave volume often uses α = 1, however below we also calculate concave volume with α = 0.5 for a more defined shape 
+  - To create a new alpha shape with a new alpha value change the “α_value” below:
+    alphashape3d::ashape3d(x = a3d, alpha = “α_value, pert = TRUE,eps = 1e-09) 
+
+- **Crown complexity**: rumple, canopy rugosity ratio (CRR), coefficient of variation of height  
+  - Rumple measures the ratio of canopy surface area to ground surface area to give an idea of complexity. 
+  - Canopy Rugosity Ratio (CRR) quantifies the vertical complexity of the canopy or crown. 
+  - Coefficient of variation of height quantifies the variability of points in the point cloud. This metric is often used to look at structural diversity of a stand, however we added it to look at variation in point distribution within individual trees, to give an idea of variation in vegetation density between crowns. 
   
 ```{r, eval=FALSE, echo=TRUE}
 Z = las@data$Z # Z values of each point in the .laz cloud

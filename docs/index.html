@@ -30,7 +30,7 @@
   
   
 
-<link rel="next" href="glossary.html"/>
+<link rel="next" href="lidar-processing-workflow.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -145,50 +145,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-cite-this-report"><i class="fa fa-check"></i>How to cite this report:</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="glossary.html"><a href="glossary.html"><i class="fa fa-check"></i>Glossary</a></li>
-<li class="chapter" data-level="" data-path="contents.html"><a href="contents.html"><i class="fa fa-check"></i>Contents</a></li>
-<li class="chapter" data-level="1" data-path="background-and-basis-of-knowledge.html"><a href="background-and-basis-of-knowledge.html"><i class="fa fa-check"></i><b>1</b> Background and basis of knowledge</a></li>
-<li class="chapter" data-level="2" data-path="standard-operating-procedures-for-dji-m300-mapping-flights.html"><a href="standard-operating-procedures-for-dji-m300-mapping-flights.html"><i class="fa fa-check"></i><b>2</b> Standard Operating Procedures for DJI M300 Mapping Flights</a></li>
-<li class="chapter" data-level="3" data-path="overview-of-methodologies.html"><a href="overview-of-methodologies.html"><i class="fa fa-check"></i><b>3</b> Overview of Methodologies</a></li>
-<li class="chapter" data-level="4" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html"><i class="fa fa-check"></i><b>4</b> Range of Sites Assessed</a></li>
-<li class="chapter" data-level="5" data-path="preflight-planning.html"><a href="preflight-planning.html"><i class="fa fa-check"></i><b>5</b> Preflight Planning</a>
+<li class="chapter" data-level="1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>1</b> LiDAR Processing Workflow</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="preflight-planning.html"><a href="preflight-planning.html#aligning-and-registering-data-from-different-time-points-and-sensors"><i class="fa fa-check"></i><b>5.1</b> Aligning and registering data from different time points and sensors</a>
+<li class="chapter" data-level="1.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>1.1</b> DJI Terra</a></li>
+<li class="chapter" data-level="1.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>1.2</b> Register the LiDAR to the DAP point cloud</a>
 <ul>
-<li class="chapter" data-level="5.1.1" data-path="preflight-planning.html"><a href="preflight-planning.html#kinematic-processing-rtkppk"><i class="fa fa-check"></i><b>5.1.1</b> Kinematic processing: RTK/PPK</a></li>
-<li class="chapter" data-level="5.1.2" data-path="preflight-planning.html"><a href="preflight-planning.html#ground-control-points-gcps"><i class="fa fa-check"></i><b>5.1.2</b> Ground Control Points (GCPs)</a></li>
-<li class="chapter" data-level="5.1.3" data-path="preflight-planning.html"><a href="preflight-planning.html#absolute-and-relative-reference-with-precise-point-positioning"><i class="fa fa-check"></i><b>5.1.3</b> Absolute and Relative Reference with Precise Point Positioning</a></li>
-<li class="chapter" data-level="5.1.4" data-path="preflight-planning.html"><a href="preflight-planning.html#terrain-following-on-sites-with-elevation-gain"><i class="fa fa-check"></i><b>5.1.4</b> Terrain Following on Sites with Elevation Gain</a></li>
+<li class="chapter" data-level="1.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>1.2.1</b> Prepare LiDAR for registration</a></li>
+<li class="chapter" data-level="1.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>1.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
+<li class="chapter" data-level="1.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>1.2.3</b> Rescale and tile the registered LiDAR:</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="preflight-planning.html"><a href="preflight-planning.html#site-selection-considerations"><i class="fa fa-check"></i><b>5.2</b> Site Selection Considerations</a></li>
+<li class="chapter" data-level="1.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>1.3</b> Normalization and individual tree point clouds</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>1.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
+<li class="chapter" data-level="1.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>1.3.2</b> Normalizing the tiles using the DTM</a></li>
+<li class="chapter" data-level="1.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>1.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
+<li class="chapter" data-level="1.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>1.3.4</b> Segmenting tiles</a></li>
+<li class="chapter" data-level="1.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>1.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
+<li class="chapter" data-level="1.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>1.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>6</b> LiDAR Processing Workflow</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>6.1</b> DJI Terra</a></li>
-<li class="chapter" data-level="6.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>6.2</b> Register the LiDAR to the DAP point cloud</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>6.2.1</b> Prepare LiDAR for registration</a></li>
-<li class="chapter" data-level="6.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>6.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
-<li class="chapter" data-level="6.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>6.2.3</b> Rescale and tile the registered LiDAR:</a></li>
+<li class="chapter" data-level="1.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>1.4</b> Individual Tree Metrics</a></li>
 </ul></li>
-<li class="chapter" data-level="6.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>6.3</b> Normalization and individual tree point clouds</a>
+<li class="chapter" data-level="2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html"><i class="fa fa-check"></i><b>2</b> Photogrametric Processing</a>
 <ul>
-<li class="chapter" data-level="6.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>6.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
-<li class="chapter" data-level="6.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-chm-creation"><i class="fa fa-check"></i><b>6.3.2</b> Normalization &amp; CHM creation</a></li>
-<li class="chapter" data-level="6.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>6.3.3</b> Segmenting tiles</a></li>
-<li class="chapter" data-level="6.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-25-of-each-tree"><i class="fa fa-check"></i><b>6.3.4</b> Merging segmented tiles to create one large point cloud containing the top 25% of each tree</a></li>
-<li class="chapter" data-level="6.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>6.3.5</b> Clipping the point cloud into individual point clouds per tree</a></li>
-</ul></li>
-<li class="chapter" data-level="6.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>6.4</b> Individual Tree Metrics</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="crown-segmentation.html"><a href="crown-segmentation.html"><i class="fa fa-check"></i><b>7</b> Crown segmentation</a></li>
-<li class="chapter" data-level="8" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html"><i class="fa fa-check"></i><b>8</b> Photogrametric Processing</a>
+<li class="chapter" data-level="2.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#processing-orthomosaics"><i class="fa fa-check"></i><b>2.1</b> Processing Orthomosaics</a></li>
+<li class="chapter" data-level="2.2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#shadow-masks"><i class="fa fa-check"></i><b>2.2</b> Shadow Masks</a></li>
+<li class="chapter" data-level="2.3" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#crown-level-vegetation-indicies"><i class="fa fa-check"></i><b>2.3</b> Crown-level Vegetation Indicies</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#processing-orthomosaics"><i class="fa fa-check"></i><b>8.1</b> Processing Orthomosaics</a></li>
-<li class="chapter" data-level="8.2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#shadow-masks"><i class="fa fa-check"></i><b>8.2</b> Shadow Masks</a></li>
-<li class="chapter" data-level="8.3" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#crown-level-vegetation-indicies"><i class="fa fa-check"></i><b>8.3</b> Crown-level Vegetation Indicies</a>
-<ul>
-<li class="chapter" data-level="8.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>8.3.1</b> VI Workflow</a></li>
+<li class="chapter" data-level="2.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>2.3.1</b> VI Workflow</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -217,8 +200,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="guidelines-and-procedures-for-drone-based-phenotyping-in-forest-research-trials" class="section level1 unnumbered hasAnchor">
 <h1>Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials<a href="index.html#guidelines-and-procedures-for-drone-based-phenotyping-in-forest-research-trials" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><img src="Photos_&_gifs/Aerial_P1.PNG" width="1566" style="display: block; margin: auto;" /></p>
-<p>Date last updated: 2024-07-10</p>
-<p><em>“Jake King<sup>1</sup>, Olivia Waite<sup>1</sup>, Alex Liu<sup>1</sup>, Miriam Isaac-Renton<sup>1</sup>, Nicholas C. Coops<sup>2</sup>, Samuel Grubinger<sup>2</sup>, Liam Irwin<sup>2</sup>, Lise Van Der Merwe<sup>3</sup>, Jon Degner<sup>3</sup>, Alvin Yanchuk<sup>3</sup>”</em></p>
+<p>Date last updated: 2024-07-11</p>
+<p><em>“Jake King<sup>1</sup>, Olivia Waite<sup>1</sup>, Samuel Grubinger<sup>2</sup>, Alex Liu<sup>1</sup>, Miriam Isaac-Renton<sup>1</sup>, Nicholas C. Coops<sup>2</sup>, Liam Irwin<sup>2</sup>, Lise Van Der Merwe<sup>3</sup>, Jon Degner<sup>3</sup>, Alvin Yanchuk<sup>3</sup>”</em></p>
 <p><sup>1</sup> Natural Resources Canada, Canadian Forest Services, Canadian Wood Fibre Center, 506 Burnside Road West, Victoria, British Columbia, V8Z 1MZ.</p>
 <p><sup>2</sup> Integrated Remote Sensing Studio, Faculty of Forestry, University of British Columbia,2424 Main Mall, Vancouver, BC V6T 1Z4, Canada.</p>
 <p><sup>3</sup> BC Ministry of Forests, Cowichan Lake Research Station, 7060 Forestry Rd, Mesachie Lake, BC V0R 2N0.</p>
@@ -245,7 +228,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 
-<a href="glossary.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="lidar-processing-workflow.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
