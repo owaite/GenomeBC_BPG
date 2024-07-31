@@ -8,7 +8,10 @@ language:
     chapter_name: "Chapter "
 rmd_files:
   - index.Rmd
-  - 08-LiDAR_processing.Rmd
-  - Photogrametric_processing.Rmd
+  - 0_LiDAR_processing.Rmd
+  - 0_Photogrametric_processing.Rmd
+  - 0_MicaSense_Irradiance_Correction.Rmd
 
   
+#bookdown::render_book("index.Rmd")
+#Check what book looks like: broswURL("docs/index.html")

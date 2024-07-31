@@ -20,3 +20,6 @@ processing-orthomosaics
 shadow-masks
 crown-level-vegetation-indicies
 vi-workflow
+micasense-irradiance-correction
+is-correction-needed
+correcting-the-iradiance-values

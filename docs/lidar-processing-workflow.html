@@ -174,6 +174,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>2.3.1</b> VI Workflow</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html"><i class="fa fa-check"></i><b>3</b> MicaSense Irradiance Correction</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>3.1</b> Is correction needed?</a></li>
+<li class="chapter" data-level="3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-the-iradiance-values"><i class="fa fa-check"></i><b>3.2</b> Correcting the iradiance values</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -209,11 +214,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="register-the-lidar-to-the-dap-point-cloud" class="section level2 hasAnchor" number="1.2">
 <h2><span class="header-section-number">1.2</span> Register the LiDAR to the DAP point cloud<a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Convention is generally to register DAP to LiDAR however for this specific project it made more sense to register the LiDAR to the DAP because:
-- We were flying biweekly multispectral and RGB imagery and only 2-3 LiDAR acquisitions a year.
-- We could not load the LiDAR point cloud into Agisoft Metashape to use as a reference for registration however could register all DAP clouds to a reference DAP cloud in Agisoft.
-- This allowed us to more easily register the many multispectral and RGB acquisitions to a defined template in Agisoft Metashape and use the exported point cloud of the template DAP to register the LiDAR in CloudCompare.
-- This process worked well for us since our priority was centimeter-level registration of orthomosaics and LiDAR between many dates and across multiple sensors.</p>
+<p>Convention is generally to register DAP to LiDAR however for this specific project it made more sense to register the LiDAR to the DAP because:</p>
+<ul>
+<li><p>We were flying biweekly multispectral and RGB imagery and only 2-3 LiDAR acquisitions a year.</p></li>
+<li><p>We could not load the LiDAR point cloud into Agisoft Metashape to use as a reference for registration however could register all DAP clouds to a reference DAP cloud in Agisoft.</p></li>
+<li><p>This allowed us to more easily register the many multispectral and RGB acquisitions to a defined template in Agisoft Metashape and use the exported point cloud of the template DAP to register the LiDAR in CloudCompare.</p></li>
+<li><p>This process worked well for us since our priority was centimeter-level registration of orthomosaics and LiDAR between many dates and across multiple sensors.</p></li>
+</ul>
 <div id="prepare-lidar-for-registration" class="section level3 hasAnchor" number="1.2.1">
 <h3><span class="header-section-number">1.2.1</span> Prepare LiDAR for registration<a href="lidar-processing-workflow.html#prepare-lidar-for-registration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below are snipets of a script written in LAStools that is used to ensure the LiDAR and DAP clouds are in the proper projection, filters out points in the LiDAR that are above a defined threshold, and clips the LiDAR to a boundary polygon to speed up registration by avoiding working with excess data in CloudCompare.</p>
@@ -687,7 +694,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/owaite/GenomeBC_BPG/edit/main/08-LiDAR_processing.Rmd",
+"link": "https://github.com/owaite/GenomeBC_BPG/edit/main/0_LiDAR_processing.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -695,7 +702,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/owaite/GenomeBC_BPG/blob/main/08-LiDAR_processing.Rmd",
+"link": "https://github.com/owaite/GenomeBC_BPG/blob/main/0_LiDAR_processing.Rmd",
 "text": null
 },
 "download": null,

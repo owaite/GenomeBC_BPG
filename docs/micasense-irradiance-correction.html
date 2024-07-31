@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
-  <meta name="description" content="Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <title>Chapter 3 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
+  <meta name="description" content="Chapter 3 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta property="og:title" content="Chapter 3 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta name="twitter:title" content="Chapter 3 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   
   
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="photogrametric-processing.html"/>
 
-<link rel="next" href="lidar-processing-workflow.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -198,32 +198,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</h1>
-<p class="author"><em>Jake King*, Olivia Waite, Miriam Isaac-Renton, Nicholas C. Coops, Samuel Grubinger, Liam Irwin, Lise Van Der Merwe, Jon Degner, Alex Liu</em></p>
+<div id="micasense-irradiance-correction" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> MicaSense Irradiance Correction<a href="micasense-irradiance-correction.html#micasense-irradiance-correction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="is-correction-needed" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Is correction needed?<a href="micasense-irradiance-correction.html#is-correction-needed" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
-<div id="guidelines-and-procedures-for-drone-based-phenotyping-in-forest-research-trials" class="section level1 unnumbered hasAnchor">
-<h1>Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials<a href="index.html#guidelines-and-procedures-for-drone-based-phenotyping-in-forest-research-trials" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><img src="Photos_&_gifs/Aerial_P1.PNG" width="1566" style="display: block; margin: auto;" /></p>
-<p>Date last updated: 2024-07-31</p>
-<p><em>“Jake King<sup>1</sup>, Olivia Waite<sup>1</sup>, Samuel Grubinger<sup>2</sup>, Alex Liu<sup>1</sup>, Miriam Isaac-Renton<sup>1</sup>, Nicholas C. Coops<sup>2</sup>, Liam Irwin<sup>2</sup>, Lise Van Der Merwe<sup>3</sup>, Jon Degner<sup>3</sup>, Alvin Yanchuk<sup>3</sup>”</em></p>
-<p><sup>1</sup> Natural Resources Canada, Canadian Forest Services, Canadian Wood Fibre Center, 506 Burnside Road West, Victoria, British Columbia, V8Z 1MZ.</p>
-<p><sup>2</sup> Integrated Remote Sensing Studio, Faculty of Forestry, University of British Columbia,2424 Main Mall, Vancouver, BC V6T 1Z4, Canada.</p>
-<p><sup>3</sup> BC Ministry of Forests, Cowichan Lake Research Station, 7060 Forestry Rd, Mesachie Lake, BC V0R 2N0.</p>
-<div id="github-link" class="section level2 unnumbered hasAnchor">
-<h2>GitHub link<a href="index.html#github-link" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Below is the link to the GitHub where you can access full scripts referenced in this document</p>
-<p><strong>GitHub Link: </strong> <a href="https://github.com/owaite/PARSER-GBC-GitHub.git">PARSER-GBC-GitHub</a></p>
-<div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-<img src="Photos_&_gifs/IRSS.png" style="height: 60px; margin: 0 10px;" /><img src="Photos_&_gifs/NRCan_english.PNG" style="height: 60px; margin: 0 10px;" /><img src="Photos_&_gifs/GeneSolve.png" style="height: 60px; margin: 0 10px;" /><img src="Photos_&_gifs/GenomeBC.jpg" style="height: 60px; margin: 0 10px;" />
-</div>
-</div>
-<div id="acknowledgements" class="section level2 unnumbered hasAnchor">
-<h2>Acknowledgements<a href="index.html#acknowledgements" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>These guidelines were made possible thanks for project funding from Genome British Columbia’s GeneSolve program, the Canadian Forest Service’s Fibre Solutions, 2 Billion Tree programs, and Assistant Deputy Minister’s Innovation Fund. For administrative assistance, we thank Adam Dick, Olivier van Lier, Marlene Francis, Annick Pelletier, Lise Carron, Guy Smith and Amélie Roberge. For practical input, we thank Bill Lakeland, Alec Wilson, Eric Saczuk, Keenan Rudichuk and David Huntley.</p>
-</div>
-<div id="how-to-cite-this-report" class="section level2 unnumbered hasAnchor">
-<h2>How to cite this report:<a href="index.html#how-to-cite-this-report" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="correcting-the-iradiance-values" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Correcting the iradiance values<a href="micasense-irradiance-correction.html#correcting-the-iradiance-values" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 
 </div>
 </div>
@@ -232,8 +213,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
+<a href="photogrametric-processing.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="lidar-processing-workflow.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -264,7 +245,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/owaite/GenomeBC_BPG/edit/main/index.Rmd",
+"link": "https://github.com/owaite/GenomeBC_BPG/edit/main/0_MicaSense_Irradiance_Correction.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -272,7 +253,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/owaite/GenomeBC_BPG/blob/main/index.Rmd",
+"link": "https://github.com/owaite/GenomeBC_BPG/blob/main/0_MicaSense_Irradiance_Correction.Rmd",
 "text": null
 },
 "download": null,

@@ -16,9 +16,13 @@ knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\G
 ## Register the LiDAR to the DAP point cloud
 	
 Convention is generally to register DAP to LiDAR however for this specific project it made more sense to register the LiDAR to the DAP because:
+
 - We were flying biweekly multispectral and RGB imagery and only 2-3 LiDAR acquisitions a year. 
+
 - We could not load the LiDAR point cloud into Agisoft Metashape to use as a reference for registration however could register all DAP clouds to a reference DAP cloud in Agisoft.
+
 - This allowed us to more easily register the many multispectral and RGB acquisitions to a defined template in Agisoft Metashape and use the exported point cloud of the template DAP to register the LiDAR in CloudCompare.
+
 - This process worked well for us since our priority was centimeter-level registration of orthomosaics and LiDAR between many dates and across multiple sensors. 
 
 
