@@ -1,5 +1,807 @@
 # MicaSense Irradiance Correction
 
+
+## Background
+The MicaSense system measures radiance at the camera, which needs to be transformed into surface reflectance. The basic relationship is given by:
+
+$$
+R = \frac{L}{I_{\text{hor}}}
+$$
+
+where \(L\) is the at-camera radiance and \(I_{\text{hor}}\) is the horizontal irradiance.
+
+### Deriving Horizontal Irradiance
+
+Below we go through the derivation to compute \(I_{\text{hor}}\).
+
+The MicaSense system includes both the camera and a downwelling light sensor (DLS). Since the DLS is tilted at the angle of the drone during flight, it measures non-horizontal irradiance, referred to as spectral irradiance (\(I_{\text{spec}}\)). Spectral irradiance is a function of direct irradiance (\(I_{\text{direct}}\)), scattered irradiance (\(I_{\text{scattered}}\)), and the angle between the sun and the sensor ( \(\theta_{\text{sun-sensor}}\)):
+
+$$
+I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}
+$$
+
+Given that \( r = \frac{I_{\text{scattered}}}{I_{\text{direct}}} \), we can substitute \( I_{\text{scattered}} = r \cdot I_{\text{direct}} \) into the equation:
+
+$$
+I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + r \cdot I_{\text{direct}}
+$$
+
+Next, by factoring out \( I_{\text{direct}} \) from the equation:
+
+$$
+I_{\text{spec}} = I_{\text{direct}} \cdot \left( \cos(\theta_{\text{sun-sensor}}) + r \right)
+$$
+
+We can solve for \( I_{\text{direct}} \) by dividing both sides of the equation by \( \cos(\theta_{\text{sun-sensor}}) + r \):
+
+$$
+I_{\text{direct}} = \frac{I_{\text{spec}}}{\cos(\theta_{\text{sun-sensor}}) + r}
+$$
+
+If we assume that \( I_{\text{hor}} \) can be expressed in terms of \( I_{\text{direct}} \) with a similar function involving the zenith angle, we can express this as:
+
+$$
+I_{\text{hor}} = I_{\text{direct}} \cdot \left( \cos(\theta_{\text{zenith}}) + r \right)
+$$
+
+Substituting the equation for \( I_{\text{direct}} \) into the equation for \( I_{\text{hor}} \) gives:
+
+$$
+I_{\text{hor}} = \frac{I_{\text{spec}}}{\cos(\theta_{\text{sun-sensor}}) + r} \cdot \left( \cos(\theta_{\text{zenith}}) + r \right)
+$$
+
+### Calculating Reflectance
+Finally, substituting \( I_{\text{hor}} \) into the equation for reflectance, we obtain:
+
+$$
+R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \left( \cos(\theta_{\text{zenith}}) + r \right)}
+$$
+
+Thus we see that reflectance is highly dependent on the ratio of scattered to direct irradiance as well as the sun-sensor angle. This is important for understanding the issue we have found when working with the DLS2 and the MicaSense MX Dual camera system.
+
+## Issue
+To begin, let us first look at the difference between the historic DLS1 and the current DLS2 system. 
+
+The DLS1:
+
+- has ### sensor on the surface
+
+- the sun zenith angle is calculated using the GPS location of the drone and the time of acquisition 
+
+- the sun-sensor angle is calculated from the yaw/pitch/roll of the drone
+
+- scattered/direct irradiance ratio was assumed to perform the atmospheric correction
+
+The DLS2:
+
+- uses a proprietary method that takes in information from the #### sensors on the surface and calculated the sun-sensor angle, the direct irradiance and the scattered irradiance
+
+The issue we have noticed is that the sun-sensor angle can be absurdly high or low, especially in strong illumination conditions. This leads to absurd values for direct and scattered irradiance, that can be multiples higher than the direct solar irradiance. 
+
+############# INSERT EXAMPLE GRAPHS###############################################
+
 ## Is correction needed?
 
-## Correcting the iradiance values
+
+## Correcting Irradiance Values for Micasense Cameras
+
+
+To fix the sun-sensor angle and irradiance values we have taken the methodology used by the DLS1. 
+
+???????????????? from thomas below##########:
+
+- The idea is to use the GPS location and time of acquisition to determine the solar angle, and determine the sun-sensor angle using the yaw/pitch/roll of the drone
+
+- However, we do not want to assume the scattered/direct ratio: a quick sensitivity analysis on the effect of drone tilt on the horizontal irradiance value derived from the spectral irradiance showed that in sunny conditions, during summer (sun zenith angle of 40 deg), the difference was at most 30%
+
+- We assume that all irradiance values computed by the DLS2 are correct as long as the final horizontal irradiance values are within 30% of the spectral irradiances, and derive the scattered/direct ratio of the whole flight from the DLS2 measurements
+
+- We then employ the formulas present in slide 2 to compute the horizontal irradiance from the spectral irradiance
+
+- We edit the exif data of the images so that they can be processed by Metashape with the correct irradiance values
+
+
+
+
+################ FROM CHAT ##########:
+### Initial Setup and Data Loading
+
+This chapter explains the process of correcting irradiance values for Micasense cameras using R. The correction involves several steps, including filtering and mutating data, calculating solar angles, and estimating scattered to direct light ratios. Each step is crucial for ensuring accurate irradiance readings, which are essential for downstream analyses.
+
+
+First, we define the site and date variables. These are used to specify the data for the current analysis. We then load the XMP metadata for all bands and calibration panels.
+
+
+```{r eval=FALSE, include=TRUE}
+
+xmp_all <- readRDS(paste0("Q:\\SNC\\Data\\", site, "\\Flights\\", date, "\\1_Data\\", camera, "\\CSV\\XMP_data_", camera, "_", date, "_AllBands_CalPanelsLabelled.rds")) %>% 
+  filter(str_detect(SourceFile, camera))
+
+
+```
+
+### Calculating Solar Angle
+
+Below we check that the calibration panels are flagged and convert the DateTimeOrgiianl to a date object. The date time and average lat and lon are then used to calucalte solar angle:
+
+```{r eval=FALSE, include=TRUE}
+
+unique(xmp_all$panel_flag[xmp_all$site == site])
+
+xmp_all_filtered <- xmp_all %>%
+  mutate(Date_time = ymd_hms(DateTimeOriginal),
+         BandName_Wavelength = paste0(BandName, "_", CentralWavelength),
+         Date = as.Date(Date_time),
+         Time = format(Date_time, format = "%H:%M:%S"),
+         img_name = str_split(FileName, "\\.tif", simplify = TRUE)[, 1],
+         img_root = sub("_(\\d+)$", "", img_name)) %>%
+  drop_na(DateTimeOriginal) %>% 
+  group_by(site) %>%
+  dplyr::mutate(
+    site_avg_lat = median(GPSLatitude, na.rm = TRUE),
+    site_avg_long = median(GPSLongitude, na.rm = TRUE),
+    solar_angle = photobiology::sun_zenith_angle(time = ymd_hms(DateTimeOriginal),
+                                                 geocode = tibble::tibble(lon = unique(site_avg_long),
+                                                                          lat = unique(site_avg_lat),
+                                                                          address = "Greenwich")))
+```
+
+Next, we check for any missing timestamps in image metadata as this usually indicates that the image was not saved properly and cant be opened which will throw errors later in the workflow. In our experience, these images are few and far between, so we remove them from the analysis.
+
+```{r eval=FALSE, include=TRUE}
+missing_imgs <- xmp_all[is.na(as.Date(xmp_all$CreateDate, format = "%Y:%m:%d"))]$FileName
+missing_imgs_roots <- sub("_[^_]*$", "", missing_imgs)
+
+xmp_all_filtered_mis <- xmp_all_filtered %>%
+  filter(!FileName %in% c(missing_imgs))
+
+```
+
+### Caluclating Solar Angles
+
+The solar position and irradiance values are necessary to understand whether or not DLS acquired values are reasonable. We calculate the direct normal irradaiance using the average lattitude and longitude from the GPS coordinates of the imagery and the time of the acquisition. 
+
+```{r eval=FALSE, include=TRUE}
+(lat <- unique(xmp_all_filtered$site_avg_lat))
+(lon <- unique(xmp_all_filtered$site_avg_long))
+(time <- mean(xmp_all_filtered$Date_time, na.rm = TRUE))
+
+sun_pos <- getSunlightPosition(date = time, lat = lat, lon = lon)
+elevation_angle <- sun_pos$altitude
+turbidity <- 2.5
+solar_constant <- 1367
+
+air_mass <- 1 / cos(pi/2 - elevation_angle)
+dni <- solar_constant * exp(-0.2 * air_mass * turbidity)
+
+print(dni)
+```
+
+### Caluclating Sun-Sensor Angles
+
+Here we explain the difference between the archived DLS1 method and the current DLS2 method. 
+
+*DSL1:*
+
+```{r eval=FALSE, include=TRUE}
+compute_sun_angle <- function(SolarElevation, SolarAzimuth, Roll, Pitch, Yaw) {
+    ori <- c(0, 0, -1)
+    SolarElevation <- as.numeric(SolarElevation)
+    SolarAzimuth <- as.numeric(SolarAzimuth)
+    Roll <- as.numeric(Roll)
+    Pitch <- as.numeric(Pitch)
+    Yaw <- as.numeric(Yaw)
+  
+    elements <- c(cos(SolarAzimuth) * cos(SolarElevation),
+                  sin(SolarAzimuth) * cos(SolarElevation),
+                  -sin(SolarElevation))
+  
+    nSun <- t(matrix(elements, ncol = 3))
+  
+    c1 <- cos(-Yaw)
+    s1 <- sin(-Yaw)
+    c2 <- cos(-Pitch)
+    s2 <- sin(-Pitch)
+    c3 <- cos(-Roll)
+    s3 <- sin(-Roll)
+  
+    Ryaw <- matrix(c(c1, s1, 0, -s1, c1, 0, 0, 0, 1), ncol = 3, byrow = TRUE)
+    Rpitch <- matrix(c(c2, 0, -s2, 0, 1, 0, s2, 0, c2), ncol = 3, byrow = TRUE)
+    Rroll <- matrix(c(1, 0, 0, 0, c3, s3, 0, -s3, c3), ncol = 3, byrow = TRUE)
+  
+    R_sensor <- Ryaw %*% Rpitch %*% Rroll
+    nSensor <- R_sensor %*% ori
+  
+    angle <- acos(sum(nSun * nSensor))
+    return(angle)
+}
+
+SSA_xmp_all_filtered <- xmp_all_filtered %>%
+  rowwise() %>% 
+  mutate(SunSensorAngle_DLS1_rad = compute_sun_angle(SolarElevation, SolarAzimuth, Roll, Pitch, Yaw),
+         SunSensorAngle_DLS1_deg = SunSensorAngle_DLS1_rad * 180 / pi)
+
+saveRDS(SSA_xmp_all_filtered,paste0("Q:\\SNC\\Data\\",site,"\\Flights\\",date,"\\1_Data\\",camera,"\\CSV\\XMP_", date_range,"_with_SSA.rds")) # Save XMP rds file with sun sensor angle added
+
+```
+
+
+*DLS2:*
+```{r eval=FALSE, include=TRUE}
+xmp_all_filtered$SunSensorAngle_DLS2_rad <- sapply(xmp_all_filtered$EstimatedDirectLightVector, function(vec) acos(-1 * as.numeric(vec[[3]])))
+xmp_all_filtered$SunSensorAngle_DLS2_deg <- as.numeric(xmp_all_filtered$SunSensorAngle_DLS2_rad) / pi * 180
+```
+
+
+
+???????????????????
+```{r eval=FALSE, include=TRUE}
+xmp_all_ssa = SSA_xmp_all_filtered %>%
+  # Converting from radians to degrees
+  mutate(Yaw_deg = as.numeric(Yaw)*180/pi,
+         Roll_deg = as.numeric(Roll)*180/pi,
+         Pitch_deg = as.numeric(Pitch)*180/pi) %>% 
+  # Grouping images by Date and band
+  group_by(Date, BandName) %>% 
+  arrange(ymd_hms(DateTimeOriginal)) %>% # Converting DateTimeOriginal to a Date and Time object and arranging in order 
+  mutate(GPSLatitude_plot = scale(as.numeric(GPSLatitude)), # These are for clean ggplotting, no other reason to scale
+         GPSLongitude_plot = scale(as.numeric(GPSLongitude)),
+         cos_SSA = cos(SunSensorAngle_DLS1_rad),
+         Irradiance = as.numeric(Irradiance),
+         Date2 = ymd_hms(DateTimeOriginal)) # this is the date/time we will use moving forward 
+
+```
+
+
+
+Check that the sun-sensor angles are within a reasonable range. They should range from 30ish degrees mid summer to 80 ish degrees mid winter
+
+```{r eval=FALSE, include=TRUE}
+(SSA_plot <- xmp_all_ssa %>%
+    filter(
+      site == site_to_plot,
+      camera == camera_to_plot,
+    )%>%
+    # filter(BandName %in% c("Blue","Green","Red","Red edge")) %>%
+    ggplot(aes(Date_time)) +
+    geom_line(aes(y = SunSensorAngle_DLS2_deg, color = "DLS2 (from metadata)"), linewidth = 1) +
+    geom_line(aes(y = SunSensorAngle_DLS1_deg, color = "DLS1 (calculated)"), linewidth = 1) +
+    geom_vline(data = subset(xmp_all_ssa, panel_flag == 1), aes(xintercept = as.numeric(Date_time)), color = "grey", alpha = 0.3) +
+    geom_line(aes(y = solar_angle), color = "black", linewidth = 1, alpha = 1) +
+    scale_x_datetime(date_breaks = "10 min", date_labels = "%H:%M") +
+    labs(x = "Time", y = "Sun Sensor Anlge", title = paste0("SSA, Site: ",site_to_plot,", Date: ", date_to_plot, ", Camera: ", camera_to_plot))+
+    labs(subtitle = "Grey vertical lines are calibration panel images, black hoirzontal lines are solar angle (calculated from lat, long, and flight time)", size = 10) + 
+    scale_color_manual(values = c("blue", "red"),
+                       labels = c("DLS2 (from metadata)", "DLS1 (calculated)"),
+                       name = "Sun Sesnor Angle Comparison")+
+    # facet_grid(BandName ~ camera, scales = "free_x")+
+    facet_wrap(. ~BandName_Wavelength, 
+               scales = "free_x", ncol = 2)+
+    
+    theme_bw()
+  
+)
+ggsave(plot = SSA_plot,
+       # filename = paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot), "\\1_Data\\CSV_Mica_MicaP\\SSA_plot.jpeg"),
+       filename = paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot), "\\1_Data\\",camera_to_plot, "\\0_SSA_plot.jpeg"),
+       device = jpeg,
+       width = 15,
+       height = 10,
+       units = 'in',
+       dpi = 300,
+       bg = 'white')
+```
+
+
+### Scattered/Direct Ratio Estimate
+
+Here we estimate scattered:direct ratio for each flight by relating cosine of the sun-sensor angle to spectral irradiance measured by the DLS. This relationship, in a perfect world, should give you the scattered irradiance as the intercept, which is independent of angle, and the direct irradiance, which is the slope, and therefore perfectly proportional to sun angle. In reality, these relationships are extremely messy and most data needs to be discarded.
+
+Below are three main steps to find the estimated scattered:direct ratio:
+1) First, generate a rolling regression of this linear relationship over a certain time window.
+2) Second, eliminate all models with poor fits using the R^2 value.
+3) Third, drop any models with negative slopes or intercepts (physically impossible).
+
+First, we generate a rolling regression of the linear relationship \(I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}\) via a regression of irradiance on \(\cos(\theta_{\text{sun-sensor}})\) over a specified time window (we used 30 seconds here). 
+
+```{r eval=FALSE, include=TRUE}
+#### (1) 
+# via a regression of Irradiance on cos_SSA over a specified time window (30s here)
+mod_frame = xmp_all_ssa_site_date %>%
+  drop_na(Date2) %>% 
+  drop_na(cos_SSA) %>% 
+  drop_na(Irradiance) %>% 
+  # Fit a rolling regression
+  # for each image, fit a linear model of all images (of the same band) within 30 seconds of the image
+  tidyfit::regress(Irradiance ~ cos_SSA, m("lm"),
+                   .cv = "sliding_index", .cv_args = list(lookback = lubridate::seconds(30), index = "Date2"),
+                   .force_cv = TRUE, .return_slices = TRUE)
+
+
+# df : summary of models, adding R sqaured and Dates
+df = mod_frame %>% 
+  # Get a summary of each model and extract the r squared value
+  mutate(R2 = map(model_object, function(obj) summary(obj)$adj.r.squared)) %>% 
+  # Extract the slope and intercept
+  coef() %>% 
+  unnest(model_info) %>% 
+  mutate(Date2 = ymd_hms(slice_id)) 
+
+# df_params : adding slope (direct irradiance) and y-intercept (scatterd irradiance) values
+df_params = df %>%
+  dplyr::select(Date:estimate, Date2) %>% 
+  # we will have to go from long, with 2 observations per model, to wide
+  pivot_wider(names_from = term, values_from = estimate, values_fn = {first}) %>% 
+  dplyr::rename("Intercept" = `(Intercept)`,
+                "Slope" = "cos_SSA")
+
+# Cleaning up the df
+df_p = df %>%
+  filter(term == "cos_SSA") %>% 
+  dplyr::select(Date:model, R2, p.value, Date2)
+
+# Joining model info, parameter (slope, y intercept) info and XMP data with sun sensor angle and using the linear relationship 
+# (spectral_irr = direct_irr * cos(SSA) + scattered_irr) to create % scattered and scattered/direct ratios
+df_filtered = df_params %>% 
+  left_join(df_p) %>% 
+  left_join(xmp_all_ssa_site_date) %>% 
+  mutate(percent_scattered = Intercept / (Slope + Intercept),
+         dir_diff = Intercept/Slope)
+
+df_filtered$SourceFile
+df_filtered$percent_scattered
+```
+
+Next, we eliminate all models with poor fits. In this case we eliminate models with R^2 < 0.4 (R^2) and drop any models with negative slopes or intercepts (physically impossible)
+
+```{r eval=FALSE, include=TRUE}
+df_to_use = df_filtered %>% 
+  mutate(R2 = as.numeric(R2)) %>% 
+  filter(R2 > .4 
+         & Slope > 0 & Intercept > 0) %>% 
+  group_by(Date) %>% 
+  mutate(mean_scattered = mean(percent_scattered),
+         dir_diff_ratio = mean(dir_diff))
+
+saveRDS(df_to_use,paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot),"\\1_Data\\",camera_to_plot,"\\CSV\\",site_to_plot,"_",gsub("-", "_", date_to_plot),"_rolling_regression_filteredModels_used_plot1.rds"))  #SET PATH to save the rds to 
+df_to_use = read_rds(paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot),"\\1_Data\\",camera_to_plot,"\\CSV\\",site_to_plot,"_",gsub("-", "_", date_to_plot),"_rolling_regression_filteredModels_used_plot1.rds")) # read in rds that was just saved
+
+```
+
+Below we plot the pattern in the rolling regression and make sure you're keeping enough models. If you are loosing too many models, adjust the filters.
+
+```{r eval=FALSE, include=TRUE}
+(RR_params <- df_to_use %>%
+    group_by(Date, BandName) %>% 
+    ggplot(aes(x = Date2, y = percent_scattered, color = R2)) +
+    geom_point(data = df_filtered, color = "grey") +
+    geom_point(#data = filter(df_filtered, Slope > 0)
+    ) +
+    geom_hline(yintercept = 1, linetype = 2) +
+    geom_hline(yintercept = 0, linetype = 2) +
+    geom_hline(aes(yintercept = mean_scattered), color = "red4", linewidth = 1) +
+    scale_y_continuous(breaks = seq(0, 1, .2), limits = c(0,1)) +
+    ggnewscale::new_scale_color() +
+    labs(title = paste0("Site: ",site_to_plot,", Date: ", date_to_plot, ", Camera: ", camera_to_plot))+
+    theme_bw(base_size = 16) +
+    facet_wrap(. ~ Date, 
+               scales = "free"))
+
+ggsave(plot = RR_params,
+       filename = paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot), "\\1_Data\\",camera_to_plot, "\\1_CheckRollingRegressionParams_plot.jpeg"),
+       device = jpeg,
+       width = 15,
+       height = 10,
+       units = 'in',
+       dpi = 300,
+       bg = 'white')
+```
+
+Next, check that the linear relationships you're keeping look realistic. The slope should be steeper for sunny days (ie more direct irradiance) and shallower for overcast days. 
+
+```{r eval=FALSE, include=TRUE}
+(linear_plots <- df_to_use %>%
+    filter(BandName == "Blue") %>% 
+    ggplot(aes(x = cos_SSA, y = Irradiance, color = R2)) +
+    geom_point(data = filter(df_filtered, BandName == "Blue"), color = "grey30", alpha = .4) +
+    geom_point(data = filter(df_filtered, BandName == "Blue" & R2 > .4), aes(color = as.numeric(R2))) +
+    geom_smooth(method = "lm", se = FALSE, aes(group = BandName)) +
+    lims(x = c(0, 1),
+         y = c(0, max(df_to_use$Irradiance))) +
+    geom_abline(aes(slope = Slope, intercept = Intercept, color = R2), alpha = .3) +
+    labs(title = paste0("Site: ",site_to_plot,", Date: ", date_to_plot, ", Camera: ", camera_to_plot))+
+    theme_bw(base_size = 16) +
+    scale_color_viridis_c() +
+    facet_wrap(. ~ Date, 
+               scales = "free_y"))
+
+ggsave(plot = linear_plots,
+       filename = paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot), "\\1_Data\\",camera_to_plot,"\\2_LinearRegression_plot.jpeg"),
+       device = jpeg,
+       width = 15,
+       height = 10,
+       units = 'in',
+       dpi = 300,
+       bg = 'white')
+```
+
+Here, check that there is no excessive spatial pattern in the data 
+
+```{r eval=FALSE, include=TRUE}
+(photos_kept <- df_to_use %>%
+    filter(GPSLongitude != 0 & GPSLatitude != 0) %>% # Filter out imgs with GPSLongitude and GPSLatitude of zero, 
+    # this is rare and in my experience were corrupted imgs where the XMP could not be properly read
+    ggplot(aes(x = GPSLongitude, y = GPSLatitude, color = SunSensorAngle_DLS1_deg)) +
+    geom_point(data = df_filtered, color = "grey60") +
+    geom_point(size = 3) +
+    labs(title = paste0("Site: ",site_to_plot,", Date: ", date_to_plot, ", Camera: ", camera_to_plot))+
+    theme_bw() +
+    scale_color_viridis_c() +
+    facet_wrap(. ~ Date, scales = "free"))
+
+ggsave(plot = photos_kept,
+       filename = paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot), "\\1_Data\\",camera_to_plot,"\\3_GPSphotosKept_plot.jpeg"),
+       device = jpeg,
+       width = 15,
+       height = 10,
+       units = 'in',
+       dpi = 300,
+       bg = 'white')
+```
+
+Create the final ratios df from the df of filtered models 
+
+```{r eval=FALSE, include=TRUE}
+(ratios = df_to_use %>% 
+    dplyr::select(Date, mean_scattered, dir_diff_ratio,
+                  GPSLatitude, GPSLongitude, Date2) %>% 
+    group_by(Date) %>% 
+    mutate(Lat_mean = mean(GPSLatitude),
+           Long_mean = mean(GPSLongitude),
+           Date_mean = mean(Date2)) %>% 
+    distinct(Date, mean_scattered, dir_diff_ratio, Lat_mean, Long_mean, Date_mean))
+
+saveRDS(ratios,paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot),"\\1_Data\\",camera_to_plot,"\\CSV\\",site_to_plot,"_",gsub("-", "_", date_to_plot),"_ratios.rds"))  #SET PATH to save the rds to 
+
+ratios <- readRDS(paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot),"\\1_Data\\",camera_to_plot,"\\CSV\\",site_to_plot,"_",gsub("-", "_", date_to_plot),"_ratios.rds"))  #SET PATH to save the rds to 
+
+
+# Print the values to use in the calibration as a check (does this ratio looks reasonable?)
+round(ratios$dir_diff_ratio, 2)
+```
+
+### Compute horizontal (corrected) irradiance 
+This is the Fresnel correction, which adjusts for the DLS reflecting, rather than measuring, some of the irradiance that hits it. We aquired this code from the micasense github 
+
+
+??????????? linke micasens github above?????
+```{r eval=FALSE, include=TRUE}
+fresnel_transmission = function(phi, n1, n2, polarization) {
+  f1 = cos(phi)
+  f2 = sqrt(1 - (n1 / n2 * sin(phi))^2)
+  Rs = ((n1 * f1 - n2 * f2) / (n1 * f1 + n2 * f2))^2
+  Rp = ((n1 * f2 - n2 * f1) / (n1 * f2 + n2 * f1))^2
+  T = 1 - polarization[1] * Rs - polarization[2] * Rp
+  T = pmin(pmax(T, 0), 1)  # Clamp the value between 0 and 1
+  return(T)
+}
+
+multilayer_transmission = function(phi, n, polarization) {
+  T = 1.0
+  phi_eff = phi
+  for (i in 1:(length(n) - 1)) {
+    n1 = n[i]
+    n2 = n[i + 1]
+    phi_eff = asin(sin(phi_eff) / n1)
+    T = T * fresnel_transmission(phi_eff, n1, n2, polarization)
+  }
+  return(T)
+}
+
+# Defining the fresnel_correction function 
+fresnel_correction = function(x) {
+  
+  Irradiance = x$Irradiance
+  SunSensorAngle_DLS1_rad = x$SunSensorAngle_DLS1_rad
+  n1=1.000277
+  n2=1.38
+  polarization=c(0.5, 0.5)
+  
+  # Convert sun-sensor angle from radians to degrees
+  SunSensorAngle_DLS1_deg <- SunSensorAngle_DLS1_rad * (180 / pi)
+  
+  # Perform the multilayer Fresnel correction
+  Fresnel <- multilayer_transmission(SunSensorAngle_DLS1_rad, c(n1, n2), polarization)
+  return(Fresnel)
+}
+
+```
+
+Now we put it all together to compute the horizontal irradiance. Here the horizontal irradiance can be thought of as a corrected value for the irradiance that is reaching a point on the flat ground directly underneath the drone.
+
+#?? Below "xmp_all_ssa_site_date" was originally "xmp_all_ssa", it was changed to just filtered everything for one site and one date ???????????????
+
+```{r eval=FALSE, include=TRUE}
+xmp_corrected = xmp_all_ssa_site_date  %>% 
+  group_by(Date, BandName) %>% 
+  #filter(BandName == "Red") %>% 
+  #slice_head(n = 900) %>% 
+  nest(data = c(Irradiance, SunSensorAngle_DLS1_rad)) %>% # Creates a nested df where each group is stored as a list-column named data, containing the variables Irradiance and SunSensorAngle_DLS1_rad
+  mutate(Fresnel = as.numeric(map(.x = data, .f = fresnel_correction))) %>% # Applies the fresnel_correction function to each group of nested data
+  unnest(data) %>% #unnesting
+  # Joining the ratios
+  left_join(ratios, by = "Date") %>% 
+  mutate(SensorIrradiance = as.numeric(SpectralIrradiance) / Fresnel, # irradiance adjusted for some reflected light from the DLS diffuser
+         DirectIrradiance_new = SensorIrradiance / (dir_diff_ratio + cos(as.numeric(SunSensorAngle_DLS1_rad))), # adjusted for sun angle, 
+         HorizontalIrradiance_new = DirectIrradiance_new * (dir_diff_ratio + sin(as.numeric(SolarElevation))), 
+         ScatteredIrradiance_new = HorizontalIrradiance_new - DirectIrradiance_new)
+
+```
+
+Now we plot the sensor irradiance and horizontal/direct/scattered irradiance
+
+```{r eval=FALSE, include=TRUE}
+
+saveRDS(xmp_corrected,paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot),"\\1_Data\\",camera_to_plot,"\\CSV\\",site_to_plot,"_",gsub("-", "_", date_to_plot),"_xmp_corrected.rds"))  #SET PATH to save the rds to
+
+(Sensor_irr <- xmp_corrected %>% 
+    filter(BandName == "Blue") %>% 
+    ggplot(aes(x = Date2)) +
+    geom_point(aes(y = SensorIrradiance, color = "Sensor Irradiance"),size = 1,show.legend = TRUE) +
+    geom_point(aes(y = HorizontalIrradiance_new, color = "Horizontal_DLS1"), size = 1, show.legend = TRUE) +
+    geom_point(aes(y = DirectIrradiance_new, color = "Direct_DLS1"), size = 1, show.legend = TRUE) +
+    geom_point(aes(y = ScatteredIrradiance_new, color = "Scattered_DLS1"), size = 1, show.legend = TRUE) +
+    geom_hline(yintercept = 0) +
+    scale_color_manual(values = c("Sensor Irradiance"= "black", "Horizontal_DLS1" = "red", "Direct_DLS1" = "orange", "Scattered_DLS1" = "purple")) +
+    #lims(y = c(50, 150)) +
+    labs(y = "Irradiance", title = paste0("Site: ",site_to_plot,", Date: ", date_to_plot, ", Camera: ", camera_to_plot))+
+    theme_bw() +
+    facet_wrap(. ~ Date, scales = "free",
+               ncol = 3) +
+    labs(color = "Irradiance Type"))
+
+ggsave(plot = Sensor_irr,
+       filename = paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot), "\\1_Data\\",camera_to_plot,"\\4_SensorIrradiance_w_CorrectedIrradiance_plot.jpeg"),
+       device = jpeg,
+       width = 15,
+       height = 10,
+       units = 'in',
+       dpi = 300,
+       bg = 'white')
+```
+
+
+Looking at spatial distribution of SSA
+
+```{r eval=FALSE, include=TRUE}
+Spatial_distribution_SSA <- xmp_corrected %>%
+  filter(BandName == "NIR") %>% 
+  filter(GPSLongitude != 0 & GPSLatitude != 0)%>%
+  ggplot(aes(x = GPSLongitude, y = GPSLatitude, color = SunSensorAngle_DLS1_deg)) +
+  #geom_point(data = df_filtered, color = "grey60") +
+  geom_point(size = 4) +
+  labs(title = paste0("Site: ",site_to_plot,", Date: ", date_to_plot, ", Camera: ", camera_to_plot))+
+  theme_bw() +
+  scale_color_viridis_c() +
+  facet_wrap(. ~ Date, scales = "free")
+
+ggsave(plot = Spatial_distribution_SSA,
+       filename = paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot), "\\1_Data\\",camera_to_plot,"\\0_SSA_spatial_distribution_plot.jpeg"),
+       device = jpeg,
+       width = 15,
+       height = 10,
+       units = 'in',
+       dpi = 300,
+       bg = 'white')
+
+```
+
+Calculating direct/scat ratio per band: used in title of below _5 and _6 plots
+
+```{r eval=FALSE, include=TRUE}
+xmp_corrected <- readRDS(paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot),"\\1_Data\\",camera_to_plot,"\\CSV\\",site_to_plot,"_",gsub("-", "_", date_to_plot),"_xmp_corrected.rds"))  #SET PATH to save the rds to
+
+
+avg_ratio_data <- xmp_corrected %>%
+  filter(!is.na(BandName),!is.na(camera))%>%
+  group_by(BandName, camera) %>%
+  summarize(median_ScatteredDirectRatio_DLS2 = median(as.numeric(ScatteredIrradiance) /as.numeric(DirectIrradiance), na.rm = TRUE),
+            median_ScatteredDirectRatio_DLS1_calc = median(as.numeric(ScatteredIrradiance_new) /as.numeric(DirectIrradiance_new), na.rm = TRUE),
+            median_percent_scat_DLS2 = median(100*as.numeric(ScatteredIrradiance)/(as.numeric(ScatteredIrradiance)+as.numeric(DirectIrradiance))),
+            median_percent_scat_DLS1 = median(100*as.numeric(ScatteredIrradiance_new)/(as.numeric(ScatteredIrradiance_new)+as.numeric(DirectIrradiance_new))),
+            max_Date_time = max(Date_time),
+            max_dir = max(DirectIrradiance, na.rm = TRUE)) %>%
+  ungroup()%>%
+  mutate(
+    Scattered_To_Direct_Ratio_DLS2 = as.character(round(median_ScatteredDirectRatio_DLS2,2)),
+    Scattered_To_Direct_Ratio_DLS1 = as.character(round(median_ScatteredDirectRatio_DLS1_calc,2)),
+    Percent_Scat_DLS2 = as.character(round(median_percent_scat_DLS2,2)),
+    Percent_Scat_DLS1 = as.character(round(median_percent_scat_DLS1,2)),
+    x = max_Date_time,
+    y = max_dir,
+  )%>%
+  dplyr::select(c(Scattered_To_Direct_Ratio_DLS2,Scattered_To_Direct_Ratio_DLS1,Percent_Scat_DLS2,Percent_Scat_DLS1, x, y, BandName, camera))
+
+xmp_corrected$dir_diff_ratio
+unique(xmp_corrected$CenterWavelength)
+
+saveRDS(avg_ratio_data,paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot),"\\1_Data\\",camera_to_plot,"\\CSV\\",site_to_plot,"_",gsub("-", "_", date_to_plot),"_avg_ratio_data.rds"))  #SET PATH to save the rds to
+
+```
+
+Comparing original VS corrected data spectral data
+
+```{r eval=FALSE, include=TRUE}
+data = avg_ratio_data %>% filter(BandName %in% c("Blue"))
+
+
+(Dir_scat_irr_plot <- xmp_corrected %>%
+    filter(BandName %in% c("Blue")) %>%
+    mutate(DirectIrradiance = as.numeric(DirectIrradiance),
+           ScatteredIrradiance = as.numeric(ScatteredIrradiance),
+           Irradiance = as.numeric(Irradiance),
+           SpectralIrradiance = as.numeric(SpectralIrradiance),
+           HorizontalIrradiance = as.numeric(HorizontalIrradiance),
+           # Date_time = ymd_hms(CreateDate),
+           Time = format(Date_time, format = "%H:%M:%S"),
+           #scaled 
+           DirectIrradiance_scaled = as.numeric(DirectIrradiance)*0.01,
+           ScatteredIrradiance_scaled = as.numeric(ScatteredIrradiance)*0.01,
+           SpectralIrradiance_scaled = as.numeric(SpectralIrradiance)*0.01) %>%
+    
+    ggplot(aes(Date_time)) +
+    geom_line(aes(y = DirectIrradiance, color = "Direct"), linewidth = 1) +
+    geom_line(aes(y = DirectIrradiance_new, color = "Direct_DLS1"), linewidth = 1, linetype = "dashed") +
+    
+    geom_line(aes(y = ScatteredIrradiance, color = "Scattered"), linewidth = 1) +
+    geom_line(aes(y = ScatteredIrradiance_new, color = "Scattered_DLS1"), linewidth = 1,linetype = "dashed") +
+    
+    geom_line(aes(y = HorizontalIrradiance, color = "Horizontal"),linewidth = 1) +
+    geom_line(aes(y = HorizontalIrradiance_new, color = "Horizontal_DLS1"),linewidth = 1, linetype = "dashed") +
+    
+    geom_line(aes(y = Irradiance, color = "Irradiance"), linewidth = 1) +
+    geom_line(aes(y = HorizontalIrradiance, color = "Horizontal"),linewidth = 1) +
+    geom_line(aes(y = SpectralIrradiance, color = "Spectral"), linewidth = 1.5, linetype = "dotted") +
+    labs(x = "Time", y = "Irradiance", title = paste0("DLS1 (corrected) vs. DLS2 (metadata) Irradiance, Site: ",site_to_plot,", 
+                                                      \nDate: ", date_to_plot,", Camera: ", camera_to_plot,
+                                                      "\nScattered_To_Direct_Ratio_DLS1:", data$Scattered_To_Direct_Ratio_DLS1,
+                                                      "\nScattered_To_Direct_Ratio_DLS2:", data$Scattered_To_Direct_Ratio_DLS2,
+                                                      "\nPercent_Scat_DLS1:", data$Percent_Scat_DLS1,
+                                                      "\nPercent_Scat_DLS2:", data$Percent_Scat_DLS2
+                                                      )) +
+    scale_x_datetime(date_breaks = "10 min", date_labels = "%H:%M") +
+    scale_color_manual(values = c("Direct" = "blue", 
+                                  "Direct_DLS1" = "lightblue",
+                                  "Scattered" = "black",
+                                  "Scattered_DLS1" = "grey",
+                                  "Horizontal" = "red",
+                                  "Horizontal_DLS1" = "orange",
+                                  "Spectral" = "forestgreen",
+                                  "Irradiance" ="purple"
+    ),
+    name = "Irradiance (W/m2/nm)")+
+    facet_grid(BandName ~ camera, scales = "free")+
+    theme_bw()
+    # labs(subtitle = "Numbers within each plot are the median direct/scattered irradiance ratios from metadata, ..._new names are those calulcated using the DLS1 method", size = 10) + 
+    # labs(subtitle = "Numbers within each plot are the median direct/scattered irradiance ratios from metadata", size = 10) + 
+    
+    # geom_text(aes(x, y, label= SD_Ratio_DLS1),
+    #         # data = avg_ratio_data,
+    #          data = avg_ratio_data %>% filter(BandName %in% c("Blue")), 
+    #          vjust=1)
+    # geom_text(data = avg_ratio_data %>% filter(BandName %in% c("Blue")), 
+    #           aes(x = x, y = y, label = paste("Scattered_To_Direct_Ratio_DLS1:", Scattered_To_Direct_Ratio_DLS1)),
+    #           vjust = 2, hjust = 3) +
+    # geom_text(data = avg_ratio_data %>% filter(BandName %in% c("Blue")), 
+    #           aes(x = x, y = y, label = paste("Scattered_To_Direct_Ratio_DLS2:", Scattered_To_Direct_Ratio_DLS2)),
+    #           vjust = 4,hjust = 3) +
+    # geom_text(data = avg_ratio_data %>% filter(BandName %in% c("Blue")), 
+    #           aes(x = x, y = y, label = paste("Percent_Scat_DLS1:", Percent_Scat_DLS1)),
+    #           vjust = 6,hjust = 4.3) +
+    # geom_text(data = avg_ratio_data %>% filter(BandName %in% c("Blue")), 
+    #           aes(x = x, y = y, label = paste("Percent_Scat_DLS2:", Percent_Scat_DLS2)),
+    #           vjust = 8,hjust = 4.5)
+)
+
+ggsave(plot = Dir_scat_irr_plot,
+       filename = paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot), "\\1_Data\\",camera_to_plot,"\\5_Irradiance_DLS1_DLS2_plot.jpeg"),
+       device = jpeg,
+       width = 15,
+       height = 10,
+       units = 'in',
+       dpi = 300,
+       bg = 'white')
+```
+
+Looking at direct irradiance alone:
+
+```{r eval=FALSE, include=TRUE}
+
+(Dir_horiz_irr_plot <- xmp_corrected %>%
+    filter(BandName %in% c("Blue")) %>%
+    mutate(DirectIrradiance = as.numeric(DirectIrradiance),
+           ScatteredIrradiance = as.numeric(ScatteredIrradiance),
+           Irradiance = as.numeric(Irradiance),
+           SpectralIrradiance = as.numeric(SpectralIrradiance),
+           HorizontalIrradiance = as.numeric(HorizontalIrradiance),
+           # Date_time = ymd_hms(CreateDate),
+           Time = format(Date_time, format = "%H:%M:%S"),
+           #scaled 
+           DirectIrradiance_scaled = as.numeric(DirectIrradiance)*0.01,
+           ScatteredIrradiance_scaled = as.numeric(ScatteredIrradiance)*0.01,
+           SpectralIrradiance_scaled = as.numeric(SpectralIrradiance)*0.01) %>%
+    
+    ggplot(aes(Date_time)) +
+    geom_line(aes(y = DirectIrradiance, color = "Direct"), linewidth = 1) +
+    geom_line(aes(y = DirectIrradiance_new, color = "Direct_DLS1"), linewidth = 1, linetype = "dashed") +
+    
+    
+    geom_line(aes(y = HorizontalIrradiance, color = "Horizontal"),linewidth = 1) +
+    geom_line(aes(y = HorizontalIrradiance_new, color = "Horizontal_DLS1"),linewidth = 1, linetype = "dashed") +
+    
+    labs(x = "Time", y = "Irradiance", title = paste0("DLS1 (corrected) vs. DLS2 (metadata) Direct and Horizontal Irradiance, 
+                                                      \nSite: ",site_to_plot,", Date: ", date_to_plot,", Camera: ", camera_to_plot,
+                                                      "\nScattered_To_Direct_Ratio_DLS1:", data$Scattered_To_Direct_Ratio_DLS1,
+                                                      "\nScattered_To_Direct_Ratio_DLS2:", data$Scattered_To_Direct_Ratio_DLS2,
+                                                      "\nPercent_Scat_DLS1:", data$Percent_Scat_DLS1,
+                                                      "\nPercent_Scat_DLS2:", data$Percent_Scat_DLS2)) +
+    scale_x_datetime(date_breaks = "10 min", date_labels = "%H:%M") +
+    scale_color_manual(values = c("Direct" = "blue", 
+                                  "Direct_DLS1" = "lightblue",
+                                  "Scattered" = "black",
+                                  "Scattered_DLS1" = "grey",
+                                  "Horizontal" = "red",
+                                  "Horizontal_DLS1" = "orange",
+                                  "Spectral" = "forestgreen",
+                                  "Irradiance" ="purple"
+    ),
+    name = "Irradiance (W/m2/nm)") +
+    # facet_wrap(~ BandName, scales = "free", ncol = 2)+
+    theme_bw()
+    # labs(subtitle = "Numbers within each plot are the median direct/scattered irradiance ratios from metadata, ..._new names are those calulcated using the DLS1 method", size = 10) + 
+    # labs(subtitle = "Numbers within each plot are the median direct/scattered irradiance ratios from metadata", size = 10) + 
+    
+    # geom_text(aes(x, y, label= SD_Ratio_DLS1),
+    #         # data = avg_ratio_data,
+    #          data = avg_ratio_data %>% filter(BandName %in% c("Blue")), 
+    #          vjust=1)
+    # geom_text(data = avg_ratio_data %>% filter(BandName %in% c("Blue")), 
+    #           aes(x = x, y = y, label = paste("Scattered_To_Direct_Ratio_DLS2:", Scattered_To_Direct_Ratio_DLS1)),
+    #           vjust = 36, hjust = 4.5) +
+    # geom_text(data = avg_ratio_data %>% filter(BandName %in% c("Blue")), 
+    #           aes(x = x, y = y, label = paste("Scattered_To_Direct_Ratio_DLS2:", Scattered_To_Direct_Ratio_DLS2)),
+    #           vjust = 38,hjust = 4.5) +
+    # geom_text(data = avg_ratio_data %>% filter(BandName %in% c("Blue")), 
+    #           aes(x = x, y = y, label = paste("Percent_Scat_DLS1:", Percent_Scat_DLS1)),
+    #           vjust = 40,hjust = 6.5) +
+    # geom_text(data = avg_ratio_data %>% filter(BandName %in% c("Blue")), 
+    #           aes(x = x, y = y, label = paste("Percent_Scat_DLS2:", Percent_Scat_DLS2)),
+    #           vjust = 42,hjust = 6.5)
+  
+)
+
+
+ggsave(plot = Dir_horiz_irr_plot,
+       filename = paste0("Q:\\SNC\\Data\\", site_to_plot,"\\Flights\\",gsub("-", "_", date_to_plot), "\\1_Data\\",camera_to_plot,"\\6_Direct_Horiztonal_Irradiance_DLS1_DLS2_plot.jpeg"),
+       device = jpeg,
+       width = 15,
+       height = 10,
+       units = 'in',
+       dpi = 300,
+       bg = 'white')
+```
+
+
+
+
+
+
+```{r eval=FALSE, include=TRUE}
+
+
+```
+
+### Visualizing the 
+
+
+[derivation of ](09-Crown_delineation#Crown-delineation)

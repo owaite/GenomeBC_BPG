@@ -21,5 +21,16 @@ shadow-masks
 crown-level-vegetation-indicies
 vi-workflow
 micasense-irradiance-correction
+background
+deriving-horizontal-irradiance
+calculating-reflectance
+issue
 is-correction-needed
-correcting-the-iradiance-values
+correcting-irradiance-values-for-micasense-cameras
+initial-setup-and-data-loading
+calculating-solar-angle
+caluclating-solar-angles
+caluclating-sun-sensor-angles
+scattereddirect-ratio-estimate
+compute-horizontal-corrected-irradiance
+visualizing-the

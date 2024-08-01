@@ -176,8 +176,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html"><i class="fa fa-check"></i><b>3</b> MicaSense Irradiance Correction</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>3.1</b> Is correction needed?</a></li>
-<li class="chapter" data-level="3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-the-iradiance-values"><i class="fa fa-check"></i><b>3.2</b> Correcting the iradiance values</a></li>
+<li class="chapter" data-level="3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#background"><i class="fa fa-check"></i><b>3.1</b> Background</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>3.1.1</b> Deriving Horizontal Irradiance</a></li>
+<li class="chapter" data-level="3.1.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>3.1.2</b> Calculating Reflectance</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#issue"><i class="fa fa-check"></i><b>3.2</b> Issue</a></li>
+<li class="chapter" data-level="3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>3.3</b> Is correction needed?</a></li>
+<li class="chapter" data-level="3.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras"><i class="fa fa-check"></i><b>3.4</b> Correcting Irradiance Values for Micasense Cameras</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#initial-setup-and-data-loading"><i class="fa fa-check"></i><b>3.4.1</b> Initial Setup and Data Loading</a></li>
+<li class="chapter" data-level="3.4.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-solar-angle"><i class="fa fa-check"></i><b>3.4.2</b> Calculating Solar Angle</a></li>
+<li class="chapter" data-level="3.4.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#caluclating-solar-angles"><i class="fa fa-check"></i><b>3.4.3</b> Caluclating Solar Angles</a></li>
+<li class="chapter" data-level="3.4.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles"><i class="fa fa-check"></i><b>3.4.4</b> Caluclating Sun-Sensor Angles</a></li>
+<li class="chapter" data-level="3.4.5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>3.4.5</b> Scattered/Direct Ratio Estimate</a></li>
+<li class="chapter" data-level="3.4.6" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#compute-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>3.4.6</b> Compute horizontal (corrected) irradiance</a></li>
+<li class="chapter" data-level="3.4.7" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#visualizing-the"><i class="fa fa-check"></i><b>3.4.7</b> Visualizing the</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -205,7 +220,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="shadow-masks" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Shadow Masks<a href="photogrametric-processing.html#shadow-masks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Pixels containing shadows and openings in the canopy can introduce error in vegetation indices as reflectance values are often lower in shaded pixels or due to background noise (Malenovský et al., 2013; Zhang et al., 2024). Masking out shaded pixels and openings within the crown is necessary to calculate accurate vegetation indices. We found masking with NIR reflectance to be a consistent and effective approach for masking out shadows and gaps. We use the NIR reflectance band (842nm) from the MicaSense MX Dual and determine thresholds for the shadow masks using the shape of the NIR distribution of pixels within the crown. If the NIR distribution is bimodal, the threshold is set to the local minima, whereas if the distribution is unimodal, the threshold is set to the local maxima (Chen et al., 2007; D’Odorico et al., 2021; Otsu et al., 2019).</p>
+<p>Pixels containing shadows and openings in the canopy can introduce error in vegetation indices as reflectance values are often lower in shaded pixels or due to background noise (Malenovský et al., 2013; Zhang et al., 2024). Masking out shaded pixels and openings within the crown is necessary to calculate accurate vegetation indices. We found masking with NIR reflectance to be a consistent and effective approach for masking out shadows and gaps. We use the NIR reflectance band (842nm) from the MicaSense MX Dual. NIR thresholds are determined using the shape of the NIR distribution. If the NIR distribution is bimodal, the threshold is set to the local minima, whereas if the distribution is unimodal, the threshold is set to the local maxima (Chen et al., 2007; D’Odorico et al., 2021; Otsu et al., 2019).</p>
 <p>Below we define a function <em>find_local_min</em> that takes a list of first derivatives and returns a dataframe containing:</p>
 <ul>
 <li><p><strong>neg_value</strong>: The value of the first derivative directly before the minima (i.e. the negative derivative value to the left of the minima)</p></li>
@@ -249,9 +264,8 @@ The above parameters were added to describe each minima found by the function so
 <span id="cb20-30"><a href="photogrametric-processing.html#cb20-30" tabindex="-1"></a>      k <span class="ot">&lt;-</span> k <span class="sc">+</span> <span class="dv">1</span></span>
 <span id="cb20-31"><a href="photogrametric-processing.html#cb20-31" tabindex="-1"></a>    }</span>
 <span id="cb20-32"><a href="photogrametric-processing.html#cb20-32" tabindex="-1"></a>  }</span>
-<span id="cb20-33"><a href="photogrametric-processing.html#cb20-33" tabindex="-1"></a>  </span>
-<span id="cb20-34"><a href="photogrametric-processing.html#cb20-34" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">neg_value =</span> neg_slope, <span class="at">pos_value =</span> pos_slope, <span class="at">Index =</span> index_of_closest, <span class="at">definition =</span> definition, <span class="at">neg_def =</span> neg_sum, <span class="at">pos_def =</span> pos_sum))</span>
-<span id="cb20-35"><a href="photogrametric-processing.html#cb20-35" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb20-33"><a href="photogrametric-processing.html#cb20-33" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">neg_value =</span> neg_slope, <span class="at">pos_value =</span> pos_slope, <span class="at">Index =</span> index_of_closest, <span class="at">definition =</span> definition, <span class="at">neg_def =</span> neg_sum, <span class="at">pos_def =</span> pos_sum))</span>
+<span id="cb20-34"><a href="photogrametric-processing.html#cb20-34" tabindex="-1"></a>}</span></code></pre></div>
 <p>To begin, we load the necessary packages, the multispectral orthomosaic that contains the NIR (842nm) band, and the delineated crowns shapefile and create the folder where the shadow mask will be saved to:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="photogrametric-processing.html#cb21-1" tabindex="-1"></a><span class="co">#Required Packages</span></span>
 <span id="cb21-2"><a href="photogrametric-processing.html#cb21-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co"># to plot </span></span>
@@ -265,11 +279,11 @@ The above parameters were added to describe each minima found by the function so
 <span id="cb21-10"><a href="photogrametric-processing.html#cb21-10" tabindex="-1"></a><span class="co"># Setting directory </span></span>
 <span id="cb21-11"><a href="photogrametric-processing.html#cb21-11" tabindex="-1"></a>dir <span class="ot">=</span> <span class="st">&quot;Change to match your folder strucutre&quot;</span> <span class="co">#directory where shadow mask folder will be made. This dir is also used in path names for the orhtomosaics. Change up paths throughout the code to call your data.</span></span>
 <span id="cb21-12"><a href="photogrametric-processing.html#cb21-12" tabindex="-1"></a></span>
-<span id="cb21-13"><a href="photogrametric-processing.html#cb21-13" tabindex="-1"></a><span class="co"># Reading in  the multispectral orthomosaic</span></span>
+<span id="cb21-13"><a href="photogrametric-processing.html#cb21-13" tabindex="-1"></a><span class="co"># Reading in the multispectral orthomosaic</span></span>
 <span id="cb21-14"><a href="photogrametric-processing.html#cb21-14" tabindex="-1"></a>ms_temp <span class="ot">=</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;metashape</span><span class="sc">\\</span><span class="st">3_MS_ORTHO</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">pattern =</span> <span class="st">&quot;.*MS_Calibrated.*_bestPanel.tif$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) <span class="co"># here we read in the ortho that is in the set directory and contains &quot;MS_Calibrated&quot; in the name and end in &quot;_bestPanel.tif&quot;. We had multiple orthos in this folder, so did this to ensure the proper one was called. Change to match your ortho name, or remove the pattern if you only have one ortho in the defined path.</span></span>
 <span id="cb21-15"><a href="photogrametric-processing.html#cb21-15" tabindex="-1"></a>  </span>
 <span id="cb21-16"><a href="photogrametric-processing.html#cb21-16" tabindex="-1"></a>  </span>
-<span id="cb21-17"><a href="photogrametric-processing.html#cb21-17" tabindex="-1"></a><span class="co">#Reading in the shapefile containing delineated crowns and buffering inward by 5cm to limit any mixed pixels from neighboring vegetation</span></span>
+<span id="cb21-17"><a href="photogrametric-processing.html#cb21-17" tabindex="-1"></a><span class="co"># Reading in the shapefile containing delineated crowns and buffering inward by 5cm to limit any mixed pixels from neighboring vegetation</span></span>
 <span id="cb21-18"><a href="photogrametric-processing.html#cb21-18" tabindex="-1"></a>dir_crowns <span class="ot">&lt;-</span> <span class="st">&quot;D:</span><span class="sc">\\</span><span class="st">Sync</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Crowns.shp&quot;</span> <span class="co">#path to crowns shapefile</span></span>
 <span id="cb21-19"><a href="photogrametric-processing.html#cb21-19" tabindex="-1"></a>pols_spat <span class="ot">=</span> <span class="fu">st_read</span>(<span class="fu">paste0</span>(dir_crowns)) <span class="sc">%&gt;%</span> <span class="co"># reading in crown shp</span></span>
 <span id="cb21-20"><a href="photogrametric-processing.html#cb21-20" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(.)) <span class="sc">%&gt;%</span> <span class="co">#removing empty</span></span>
@@ -277,7 +291,7 @@ The above parameters were added to describe each minima found by the function so
 <span id="cb21-22"><a href="photogrametric-processing.html#cb21-22" tabindex="-1"></a>  <span class="fu">vect</span>()</span>
 <span id="cb21-23"><a href="photogrametric-processing.html#cb21-23" tabindex="-1"></a></span>
 <span id="cb21-24"><a href="photogrametric-processing.html#cb21-24" tabindex="-1"></a></span>
-<span id="cb21-25"><a href="photogrametric-processing.html#cb21-25" tabindex="-1"></a><span class="co">#making a folder for shadow masks</span></span>
+<span id="cb21-25"><a href="photogrametric-processing.html#cb21-25" tabindex="-1"></a><span class="co"># Creating a folder for shadow masks</span></span>
 <span id="cb21-26"><a href="photogrametric-processing.html#cb21-26" tabindex="-1"></a>Nir_shadow_folder_baseName <span class="ot">&lt;-</span> <span class="st">&quot;NIR_shadow_mask_localMinOrMax&quot;</span> <span class="co">#name of the folder shadow masks will be written to. We have the folder name defined outside the folder creation step below so that we could change the folder name once without having to change it throughout the code.</span></span>
 <span id="cb21-27"><a href="photogrametric-processing.html#cb21-27" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))) {</span>
 <span id="cb21-28"><a href="photogrametric-processing.html#cb21-28" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir,Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
@@ -308,7 +322,7 @@ The above parameters were added to describe each minima found by the function so
 <li><p>locating the largest density values in the NIR distribution</p></li>
 <li><p>finding the NIR value that that desnity value corresponds to and setting that NIR value as the threshold</p></li>
 </ol>
-<p>** Note:** for each method there are <strong>mode</strong> and <strong>thresh_name</strong> variables defined. These variables are used to annotate the histrogram made in the next step</p>
+<p><strong>Note:</strong> for each method there are <strong>mode</strong> and <strong>thresh_name</strong> variables defined. These variables are used to annotate the histrogram made in the next step</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="photogrametric-processing.html#cb24-1" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">is.multimodal</span>(NIR_na)){ <span class="co"># if the NIR distribution is multimodal, continue to the below steps</span></span>
 <span id="cb24-2"><a href="photogrametric-processing.html#cb24-2" tabindex="-1"></a>    </span>
 <span id="cb24-3"><a href="photogrametric-processing.html#cb24-3" tabindex="-1"></a>    dy_dt <span class="ot">&lt;-</span> pracma<span class="sc">::</span><span class="fu">gradient</span>(density_values<span class="sc">$</span>y) <span class="co">#list of first derivatives of NIR vector</span></span>
@@ -342,39 +356,37 @@ The above parameters were added to describe each minima found by the function so
 <span id="cb24-31"><a href="photogrametric-processing.html#cb24-31" tabindex="-1"></a>        mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal (False Multi with org thresh &gt; 0.7)&quot;</span></span>
 <span id="cb24-32"><a href="photogrametric-processing.html#cb24-32" tabindex="-1"></a>        thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
 <span id="cb24-33"><a href="photogrametric-processing.html#cb24-33" tabindex="-1"></a>      }</span>
-<span id="cb24-34"><a href="photogrametric-processing.html#cb24-34" tabindex="-1"></a>      </span>
-<span id="cb24-35"><a href="photogrametric-processing.html#cb24-35" tabindex="-1"></a>    }</span>
-<span id="cb24-36"><a href="photogrametric-processing.html#cb24-36" tabindex="-1"></a>  }<span class="cf">else</span>{ <span class="co">#if the NIR vector is NOT multimodal, continue to the below steps</span></span>
-<span id="cb24-37"><a href="photogrametric-processing.html#cb24-37" tabindex="-1"></a>    <span class="co">#Finding NIR value with the greatest frequency in the distribution - this max value will be the threshold for unimodal distributions </span></span>
-<span id="cb24-38"><a href="photogrametric-processing.html#cb24-38" tabindex="-1"></a>    max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb24-39"><a href="photogrametric-processing.html#cb24-39" tabindex="-1"></a>    threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
-<span id="cb24-40"><a href="photogrametric-processing.html#cb24-40" tabindex="-1"></a>    <span class="fu">print</span>(threshold)</span>
-<span id="cb24-41"><a href="photogrametric-processing.html#cb24-41" tabindex="-1"></a>    thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
-<span id="cb24-42"><a href="photogrametric-processing.html#cb24-42" tabindex="-1"></a>    mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal&quot;</span></span>
-<span id="cb24-43"><a href="photogrametric-processing.html#cb24-43" tabindex="-1"></a>  }</span></code></pre></div>
+<span id="cb24-34"><a href="photogrametric-processing.html#cb24-34" tabindex="-1"></a>    }</span>
+<span id="cb24-35"><a href="photogrametric-processing.html#cb24-35" tabindex="-1"></a>  }<span class="cf">else</span>{ <span class="co">#if the NIR vector is NOT multimodal, continue to the below steps</span></span>
+<span id="cb24-36"><a href="photogrametric-processing.html#cb24-36" tabindex="-1"></a>    <span class="co">#Finding NIR value with the greatest frequency in the distribution - this max value will be the threshold for unimodal distributions </span></span>
+<span id="cb24-37"><a href="photogrametric-processing.html#cb24-37" tabindex="-1"></a>    max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb24-38"><a href="photogrametric-processing.html#cb24-38" tabindex="-1"></a>    threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
+<span id="cb24-39"><a href="photogrametric-processing.html#cb24-39" tabindex="-1"></a>    <span class="fu">print</span>(threshold)</span>
+<span id="cb24-40"><a href="photogrametric-processing.html#cb24-40" tabindex="-1"></a>    thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
+<span id="cb24-41"><a href="photogrametric-processing.html#cb24-41" tabindex="-1"></a>    mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal&quot;</span></span>
+<span id="cb24-42"><a href="photogrametric-processing.html#cb24-42" tabindex="-1"></a>  }</span></code></pre></div>
 <p>Nest, we plot a histogram of the NIR values and annotate it to contain:</p>
 <ul>
 <li><p>a vertical line at the threshold</p></li>
 <li><p>the threshold value</p></li>
 <li><p>the mode (i.e. unimodal verse mulitmodal)</p></li>
 </ul>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="photogrametric-processing.html#cb25-1" tabindex="-1"></a>  (<span class="at">hist =</span> NIR <span class="sc">%&gt;%</span> <span class="co">#plotting a histogram of NIR values with a vertical red line for the defined threshold value</span></span>
-<span id="cb25-2"><a href="photogrametric-processing.html#cb25-2" tabindex="-1"></a>      <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb25-3"><a href="photogrametric-processing.html#cb25-3" tabindex="-1"></a>      <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb25-4"><a href="photogrametric-processing.html#cb25-4" tabindex="-1"></a>      <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> NIR), <span class="at">bins =</span> <span class="dv">150</span>) <span class="sc">+</span></span>
-<span id="cb25-5"><a href="photogrametric-processing.html#cb25-5" tabindex="-1"></a>      <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> threshold, <span class="at">color =</span> <span class="st">&quot;red3&quot;</span>) <span class="sc">+</span></span>
-<span id="cb25-6"><a href="photogrametric-processing.html#cb25-6" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(mode, <span class="st">&quot; , threshold: &quot;</span>,<span class="fu">round</span>(threshold, <span class="at">digits =</span> <span class="dv">2</span>)))<span class="sc">+</span></span>
-<span id="cb25-7"><a href="photogrametric-processing.html#cb25-7" tabindex="-1"></a>      <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb25-8"><a href="photogrametric-processing.html#cb25-8" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb25-9"><a href="photogrametric-processing.html#cb25-9" tabindex="-1"></a>            <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb25-10"><a href="photogrametric-processing.html#cb25-10" tabindex="-1"></a>            <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>,<span class="at">hjust =</span> <span class="fl">0.75</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">28</span>)))</span>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="photogrametric-processing.html#cb25-1" tabindex="-1"></a>(<span class="at">hist =</span> NIR <span class="sc">%&gt;%</span> <span class="co">#plotting a histogram of NIR values with a vertical red line for the defined threshold value</span></span>
+<span id="cb25-2"><a href="photogrametric-processing.html#cb25-2" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="photogrametric-processing.html#cb25-3" tabindex="-1"></a>    <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb25-4"><a href="photogrametric-processing.html#cb25-4" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> NIR), <span class="at">bins =</span> <span class="dv">150</span>) <span class="sc">+</span>      </span>
+<span id="cb25-5"><a href="photogrametric-processing.html#cb25-5" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> threshold, <span class="at">color =</span> <span class="st">&quot;red3&quot;</span>) <span class="sc">+</span></span>
+<span id="cb25-6"><a href="photogrametric-processing.html#cb25-6" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(mode, <span class="st">&quot; , threshold: &quot;</span>,<span class="fu">round</span>(threshold, <span class="at">digits =</span> <span class="dv">2</span>)))<span class="sc">+</span></span>
+<span id="cb25-7"><a href="photogrametric-processing.html#cb25-7" tabindex="-1"></a>    <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb25-8"><a href="photogrametric-processing.html#cb25-8" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),           </span>
+<span id="cb25-9"><a href="photogrametric-processing.html#cb25-9" tabindex="-1"></a>          <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-10"><a href="photogrametric-processing.html#cb25-10" tabindex="-1"></a>          <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>,<span class="at">hjust =</span> <span class="fl">0.75</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">28</span>)))</span>
 <span id="cb25-11"><a href="photogrametric-processing.html#cb25-11" tabindex="-1"></a>  </span>
-<span id="cb25-12"><a href="photogrametric-processing.html#cb25-12" tabindex="-1"></a>  </span>
-<span id="cb25-13"><a href="photogrametric-processing.html#cb25-13" tabindex="-1"></a>  <span class="fu">ggsave</span>(hist, <span class="co">#saving out the plot</span></span>
-<span id="cb25-14"><a href="photogrametric-processing.html#cb25-14" tabindex="-1"></a>         <span class="at">filename =</span> <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, date_list[x], <span class="st">&quot;_NIR_shadow_hist_localMin_orMax.jpeg&quot;</span>),</span>
-<span id="cb25-15"><a href="photogrametric-processing.html#cb25-15" tabindex="-1"></a>         <span class="at">device =</span> jpeg,</span>
-<span id="cb25-16"><a href="photogrametric-processing.html#cb25-16" tabindex="-1"></a>         <span class="at">width =</span> <span class="dv">8</span>,</span>
-<span id="cb25-17"><a href="photogrametric-processing.html#cb25-17" tabindex="-1"></a>         <span class="at">height =</span> <span class="dv">8</span>)</span></code></pre></div>
+<span id="cb25-12"><a href="photogrametric-processing.html#cb25-12" tabindex="-1"></a><span class="fu">ggsave</span>(hist, <span class="co">#saving out the plot</span></span>
+<span id="cb25-13"><a href="photogrametric-processing.html#cb25-13" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, date_list[x], <span class="st">&quot;_NIR_shadow_hist_localMin_orMax.jpeg&quot;</span>),</span>
+<span id="cb25-14"><a href="photogrametric-processing.html#cb25-14" tabindex="-1"></a>       <span class="at">device =</span> jpeg,</span>
+<span id="cb25-15"><a href="photogrametric-processing.html#cb25-15" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">8</span>,</span>
+<span id="cb25-16"><a href="photogrametric-processing.html#cb25-16" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">8</span>)</span></code></pre></div>
 <p>Here is an example of what this histogram will look like:</p>
 <p>** Insert graph example **</p>
 <p>We then isolate the NIR band from the multispectral orthomosaic and filter the raster to set pixels with NIR values greater than the threshold to NA and those that are less than or equal to the threshold to 1.</p>
@@ -600,6 +612,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
