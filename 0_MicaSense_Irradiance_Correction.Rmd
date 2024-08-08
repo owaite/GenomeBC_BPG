@@ -96,13 +96,41 @@ We will go into more detail into each of these questions but first will introduc
 
 Below we have plotted the sun to sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right). We have used the yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning. 
 
-### 1) Do the sun sensor angles make sense?
-
-This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line, the solar angle at the time of the flight was around 30°. 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Irradiance_flight_lines_with_turning_all_with_spatial_plot.PNG")
 ```
 
+### 1) Do the sun sensor angles make sense?
+
+This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line, the solar zenith angle at the time of the flight was around 30°. 
+
+
+
+****************EXPLAIN solar zenith and how the sun sensor anlge should be close to it:::
+
+
+
+```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_verse_solarZenith_diagram.PNG")
+```
+
+
+**************************Explain sun sensor anlges dependence on flight lines 
+
+```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_flight_direction_diagram.PNG")
+```
+
+**************** explain change in solar zenith over seasons and over the day ie why we need to fly +/- 2 hours from solar noon for shadows:
+
+```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Solar_zenith_solstice_flight.PNG")
+```
+
+
+******* therefore uncorrected SSA look ok? 
+
+********* graph of corrected and uncorrected SSA next to plot layout colored by flight lines and turns
 
 
 
