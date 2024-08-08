@@ -26,6 +26,7 @@ deriving-horizontal-irradiance
 calculating-reflectance
 issue
 is-correction-needed
+do-the-sun-sensor-angles-make-sense
 correcting-irradiance-values-for-micasense-cameras
 initial-setup-and-data-loading
 calculating-solar-angle

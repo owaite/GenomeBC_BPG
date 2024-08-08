@@ -182,7 +182,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>3.1.2</b> Calculating Reflectance</a></li>
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#issue"><i class="fa fa-check"></i><b>3.2</b> Issue</a></li>
-<li class="chapter" data-level="3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>3.3</b> Is correction needed?</a></li>
+<li class="chapter" data-level="3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>3.3</b> Is correction needed?</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>3.3.1</b> 1) Do the sun sensor angles make sense?</a></li>
+</ul></li>
 <li class="chapter" data-level="3.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras"><i class="fa fa-check"></i><b>3.4</b> Correcting Irradiance Values for Micasense Cameras</a>
 <ul>
 <li class="chapter" data-level="3.4.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#initial-setup-and-data-loading"><i class="fa fa-check"></i><b>3.4.1</b> Initial Setup and Data Loading</a></li>
@@ -262,13 +265,17 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <div id="issue" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Issue<a href="micasense-irradiance-correction.html#issue" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To begin, let us first look at the difference between the historic DLS1 and the current DLS2 system.</p>
-<p>The DLS1:
-- has ### sensor on the surface
-- the sun zenith angle is calculated using the GPS location of the drone and the time of acquisition
-- the sun-sensor angle is calculated from the yaw/pitch/roll of the drone
-- scattered/direct irradiance ratio was assumed to perform the atmospheric correction</p>
-<p>The DLS2:
-- uses a proprietary method that takes in information from the #### sensors on the surface and calculated the sun-sensor angle, the direct irradiance and the scattered irradiance</p>
+<p>The DLS1:</p>
+<ul>
+<li><p>has ### sensor on the surface</p></li>
+<li><p>the sun zenith angle is calculated using the GPS location of the drone and the time of acquisition</p></li>
+<li><p>the sun-sensor angle is calculated from the yaw/pitch/roll of the drone</p></li>
+<li><p>scattered/direct irradiance ratio was assumed to perform the atmospheric correction</p></li>
+</ul>
+<p>The DLS2:</p>
+<ul>
+<li>uses a proprietary method that takes in information from the #### sensors on the surface and calculated the sun-sensor angle, the direct irradiance and the scattered irradiance</li>
+</ul>
 <p>The issue we have noticed is that the sun-sensor angle can be absurdly high or low, especially in strong illumination conditions. This leads to absurd values for direct and scattered irradiance, that can be multiples higher than the direct solar irradiance.</p>
 <div id="insert-example-graphs" class="section level13" number="3.2.0.0.0.0.0.0.0.0.0.0.1">
 <p class="heading"><span class="header-section-number">3.2.0.0.0.0.0.0.0.0.0.0.1</span> INSERT EXAMPLE GRAPHS</p>
@@ -276,12 +283,25 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 </div>
 <div id="is-correction-needed" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Is correction needed?<a href="micasense-irradiance-correction.html#is-correction-needed" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Deciding whether data needs to be corrected can be challenging. We have found that looking at a few key metrics can be very helpful.</p>
+<ol style="list-style-type: decimal">
+<li><p>Do the sun sensor angles make sense?</p></li>
+<li><p>Does the scattered: direct ratio make sense for the lighting conditions of that day?</p></li>
+<li><p>Does the magnitude of irradiance values make sense?</p></li>
+<li><p>Do the relationships between direct and horizontal irradiance make sense?</p></li>
+</ol>
+<p>We will go into more detail into each of these questions but first will introduce how this data is affected by light conditions.</p>
+<p>Below we have plotted the sun to sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right). We have used the yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning.</p>
+<div id="do-the-sun-sensor-angles-make-sense" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> 1) Do the sun sensor angles make sense?<a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This flight was taken on June 25^{th}, 2024
+<img src="Photos_&_gifs/Irradiance_flight_lines_with_turning_all_with_spatial_plot.PNG" width="100%" style="display: block; margin: auto;" /></p>
+</div>
 </div>
 <div id="correcting-irradiance-values-for-micasense-cameras" class="section level2 hasAnchor" number="3.4">
 <h2><span class="header-section-number">3.4</span> Correcting Irradiance Values for Micasense Cameras<a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To fix the sun-sensor angle and irradiance values we have taken the methodology used by the DLS1.</p>
-<div id="from-thomas-below" class="section level17" number="3.4.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1">
-<p class="heading"><span class="header-section-number">3.4.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> from thomas below##########:</p>
+<p>???????????????? from thomas below##########:</p>
 <ul>
 <li><p>The idea is to use the GPS location and time of acquisition to determine the solar angle, and determine the sun-sensor angle using the yaw/pitch/roll of the drone</p></li>
 <li><p>However, we do not want to assume the scattered/direct ratio: a quick sensitivity analysis on the effect of drone tilt on the horizontal irradiance value derived from the spectral irradiance showed that in sunny conditions, during summer (sun zenith angle of 40 deg), the difference was at most 30%</p></li>
@@ -289,7 +309,6 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <li><p>We then employ the formulas present in slide 2 to compute the horizontal irradiance from the spectral irradiance</p></li>
 <li><p>We edit the exif data of the images so that they can be processed by Metashape with the correct irradiance values</p></li>
 </ul>
-</div>
 <div id="from-chat" class="section level16" number="3.4.0.0.0.0.0.0.0.0.0.0.0.0.0.1">
 <p class="heading"><span class="header-section-number">3.4.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> FROM CHAT ##########:</p>
 </div>
@@ -709,14 +728,14 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <span id="cb53-12"><a href="micasense-irradiance-correction.html#cb53-12" tabindex="-1"></a>            <span class="at">max_dir =</span> <span class="fu">max</span>(DirectIrradiance, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb53-13"><a href="micasense-irradiance-correction.html#cb53-13" tabindex="-1"></a>  <span class="fu">ungroup</span>()<span class="sc">%&gt;%</span></span>
 <span id="cb53-14"><a href="micasense-irradiance-correction.html#cb53-14" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb53-15"><a href="micasense-irradiance-correction.html#cb53-15" tabindex="-1"></a>    <span class="at">Scatteredt_To_Direct_Ratio_DLS2 =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(median_ScatteredDirectRatio_DLS2,<span class="dv">2</span>)),</span>
-<span id="cb53-16"><a href="micasense-irradiance-correction.html#cb53-16" tabindex="-1"></a>    <span class="at">Scatteredt_To_Direct_Ratio_DLS1 =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(median_ScatteredDirectRatio_DLS1_calc,<span class="dv">2</span>)),</span>
+<span id="cb53-15"><a href="micasense-irradiance-correction.html#cb53-15" tabindex="-1"></a>    <span class="at">Scattered_To_Direct_Ratio_DLS2 =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(median_ScatteredDirectRatio_DLS2,<span class="dv">2</span>)),</span>
+<span id="cb53-16"><a href="micasense-irradiance-correction.html#cb53-16" tabindex="-1"></a>    <span class="at">Scattered_To_Direct_Ratio_DLS1 =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(median_ScatteredDirectRatio_DLS1_calc,<span class="dv">2</span>)),</span>
 <span id="cb53-17"><a href="micasense-irradiance-correction.html#cb53-17" tabindex="-1"></a>    <span class="at">Percent_Scat_DLS2 =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(median_percent_scat_DLS2,<span class="dv">2</span>)),</span>
 <span id="cb53-18"><a href="micasense-irradiance-correction.html#cb53-18" tabindex="-1"></a>    <span class="at">Percent_Scat_DLS1 =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(median_percent_scat_DLS1,<span class="dv">2</span>)),</span>
 <span id="cb53-19"><a href="micasense-irradiance-correction.html#cb53-19" tabindex="-1"></a>    <span class="at">x =</span> max_Date_time,</span>
 <span id="cb53-20"><a href="micasense-irradiance-correction.html#cb53-20" tabindex="-1"></a>    <span class="at">y =</span> max_dir,</span>
 <span id="cb53-21"><a href="micasense-irradiance-correction.html#cb53-21" tabindex="-1"></a>  )<span class="sc">%&gt;%</span></span>
-<span id="cb53-22"><a href="micasense-irradiance-correction.html#cb53-22" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(Scatteredt_To_Direct_Ratio_DLS2,Scatteredt_To_Direct_Ratio_DLS1,Percent_Scat_DLS2,Percent_Scat_DLS1, x, y, BandName, camera))</span>
+<span id="cb53-22"><a href="micasense-irradiance-correction.html#cb53-22" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(Scattered_To_Direct_Ratio_DLS2,Scattered_To_Direct_Ratio_DLS1,Percent_Scat_DLS2,Percent_Scat_DLS1, x, y, BandName, camera))</span>
 <span id="cb53-23"><a href="micasense-irradiance-correction.html#cb53-23" tabindex="-1"></a></span>
 <span id="cb53-24"><a href="micasense-irradiance-correction.html#cb53-24" tabindex="-1"></a>xmp_corrected<span class="sc">$</span>dir_diff_ratio</span>
 <span id="cb53-25"><a href="micasense-irradiance-correction.html#cb53-25" tabindex="-1"></a><span class="fu">unique</span>(xmp_corrected<span class="sc">$</span>CenterWavelength)</span>
@@ -755,8 +774,8 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <span id="cb54-30"><a href="micasense-irradiance-correction.html#cb54-30" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> SpectralIrradiance, <span class="at">color =</span> <span class="st">&quot;Spectral&quot;</span>), <span class="at">linewidth =</span> <span class="fl">1.5</span>, <span class="at">linetype =</span> <span class="st">&quot;dotted&quot;</span>) <span class="sc">+</span></span>
 <span id="cb54-31"><a href="micasense-irradiance-correction.html#cb54-31" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Time&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Irradiance&quot;</span>, <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">&quot;DLS1 (corrected) vs. DLS2 (metadata) Irradiance, Site: &quot;</span>,site_to_plot,<span class="st">&quot;, </span></span>
 <span id="cb54-32"><a href="micasense-irradiance-correction.html#cb54-32" tabindex="-1"></a><span class="st">                                                      </span><span class="sc">\n</span><span class="st">Date: &quot;</span>, date_to_plot,<span class="st">&quot;, Camera: &quot;</span>, camera_to_plot,</span>
-<span id="cb54-33"><a href="micasense-irradiance-correction.html#cb54-33" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Scatteredt_To_Direct_Ratio_DLS2:&quot;</span>, data<span class="sc">$</span>Scatteredt_To_Direct_Ratio_DLS1,</span>
-<span id="cb54-34"><a href="micasense-irradiance-correction.html#cb54-34" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Scatteredt_To_Direct_Ratio_DLS2:&quot;</span>, data<span class="sc">$</span>Scatteredt_To_Direct_Ratio_DLS2,</span>
+<span id="cb54-33"><a href="micasense-irradiance-correction.html#cb54-33" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Scattered_To_Direct_Ratio_DLS1:&quot;</span>, data<span class="sc">$</span>Scattered_To_Direct_Ratio_DLS1,</span>
+<span id="cb54-34"><a href="micasense-irradiance-correction.html#cb54-34" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Scattered_To_Direct_Ratio_DLS2:&quot;</span>, data<span class="sc">$</span>Scattered_To_Direct_Ratio_DLS2,</span>
 <span id="cb54-35"><a href="micasense-irradiance-correction.html#cb54-35" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Percent_Scat_DLS1:&quot;</span>, data<span class="sc">$</span>Percent_Scat_DLS1,</span>
 <span id="cb54-36"><a href="micasense-irradiance-correction.html#cb54-36" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Percent_Scat_DLS2:&quot;</span>, data<span class="sc">$</span>Percent_Scat_DLS2</span>
 <span id="cb54-37"><a href="micasense-irradiance-correction.html#cb54-37" tabindex="-1"></a>                                                      )) <span class="sc">+</span></span>
@@ -781,10 +800,10 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <span id="cb54-56"><a href="micasense-irradiance-correction.html#cb54-56" tabindex="-1"></a>    <span class="co">#          data = avg_ratio_data %&gt;% filter(BandName %in% c(&quot;Blue&quot;)), </span></span>
 <span id="cb54-57"><a href="micasense-irradiance-correction.html#cb54-57" tabindex="-1"></a>    <span class="co">#          vjust=1)</span></span>
 <span id="cb54-58"><a href="micasense-irradiance-correction.html#cb54-58" tabindex="-1"></a>    <span class="co"># geom_text(data = avg_ratio_data %&gt;% filter(BandName %in% c(&quot;Blue&quot;)), </span></span>
-<span id="cb54-59"><a href="micasense-irradiance-correction.html#cb54-59" tabindex="-1"></a>    <span class="co">#           aes(x = x, y = y, label = paste(&quot;Scatteredt_To_Direct_Ratio_DLS2:&quot;, Scatteredt_To_Direct_Ratio_DLS1)),</span></span>
+<span id="cb54-59"><a href="micasense-irradiance-correction.html#cb54-59" tabindex="-1"></a>    <span class="co">#           aes(x = x, y = y, label = paste(&quot;Scattered_To_Direct_Ratio_DLS1:&quot;, Scattered_To_Direct_Ratio_DLS1)),</span></span>
 <span id="cb54-60"><a href="micasense-irradiance-correction.html#cb54-60" tabindex="-1"></a>    <span class="co">#           vjust = 2, hjust = 3) +</span></span>
 <span id="cb54-61"><a href="micasense-irradiance-correction.html#cb54-61" tabindex="-1"></a>    <span class="co"># geom_text(data = avg_ratio_data %&gt;% filter(BandName %in% c(&quot;Blue&quot;)), </span></span>
-<span id="cb54-62"><a href="micasense-irradiance-correction.html#cb54-62" tabindex="-1"></a>    <span class="co">#           aes(x = x, y = y, label = paste(&quot;Scatteredt_To_Direct_Ratio_DLS2:&quot;, Scatteredt_To_Direct_Ratio_DLS2)),</span></span>
+<span id="cb54-62"><a href="micasense-irradiance-correction.html#cb54-62" tabindex="-1"></a>    <span class="co">#           aes(x = x, y = y, label = paste(&quot;Scattered_To_Direct_Ratio_DLS2:&quot;, Scattered_To_Direct_Ratio_DLS2)),</span></span>
 <span id="cb54-63"><a href="micasense-irradiance-correction.html#cb54-63" tabindex="-1"></a>    <span class="co">#           vjust = 4,hjust = 3) +</span></span>
 <span id="cb54-64"><a href="micasense-irradiance-correction.html#cb54-64" tabindex="-1"></a>    <span class="co"># geom_text(data = avg_ratio_data %&gt;% filter(BandName %in% c(&quot;Blue&quot;)), </span></span>
 <span id="cb54-65"><a href="micasense-irradiance-correction.html#cb54-65" tabindex="-1"></a>    <span class="co">#           aes(x = x, y = y, label = paste(&quot;Percent_Scat_DLS1:&quot;, Percent_Scat_DLS1)),</span></span>
@@ -827,8 +846,8 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <span id="cb55-22"><a href="micasense-irradiance-correction.html#cb55-22" tabindex="-1"></a>    </span>
 <span id="cb55-23"><a href="micasense-irradiance-correction.html#cb55-23" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Time&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Irradiance&quot;</span>, <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">&quot;DLS1 (corrected) vs. DLS2 (metadata) Direct and Horizontal Irradiance, </span></span>
 <span id="cb55-24"><a href="micasense-irradiance-correction.html#cb55-24" tabindex="-1"></a><span class="st">                                                      </span><span class="sc">\n</span><span class="st">Site: &quot;</span>,site_to_plot,<span class="st">&quot;, Date: &quot;</span>, date_to_plot,<span class="st">&quot;, Camera: &quot;</span>, camera_to_plot,</span>
-<span id="cb55-25"><a href="micasense-irradiance-correction.html#cb55-25" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Scatteredt_To_Direct_Ratio_DLS2:&quot;</span>, data<span class="sc">$</span>Scatteredt_To_Direct_Ratio_DLS1,</span>
-<span id="cb55-26"><a href="micasense-irradiance-correction.html#cb55-26" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Scatteredt_To_Direct_Ratio_DLS2:&quot;</span>, data<span class="sc">$</span>Scatteredt_To_Direct_Ratio_DLS2,</span>
+<span id="cb55-25"><a href="micasense-irradiance-correction.html#cb55-25" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Scattered_To_Direct_Ratio_DLS1:&quot;</span>, data<span class="sc">$</span>Scattered_To_Direct_Ratio_DLS1,</span>
+<span id="cb55-26"><a href="micasense-irradiance-correction.html#cb55-26" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Scattered_To_Direct_Ratio_DLS2:&quot;</span>, data<span class="sc">$</span>Scattered_To_Direct_Ratio_DLS2,</span>
 <span id="cb55-27"><a href="micasense-irradiance-correction.html#cb55-27" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Percent_Scat_DLS1:&quot;</span>, data<span class="sc">$</span>Percent_Scat_DLS1,</span>
 <span id="cb55-28"><a href="micasense-irradiance-correction.html#cb55-28" tabindex="-1"></a>                                                      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Percent_Scat_DLS2:&quot;</span>, data<span class="sc">$</span>Percent_Scat_DLS2)) <span class="sc">+</span></span>
 <span id="cb55-29"><a href="micasense-irradiance-correction.html#cb55-29" tabindex="-1"></a>    <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">&quot;10 min&quot;</span>, <span class="at">date_labels =</span> <span class="st">&quot;%H:%M&quot;</span>) <span class="sc">+</span></span>
@@ -852,10 +871,10 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <span id="cb55-47"><a href="micasense-irradiance-correction.html#cb55-47" tabindex="-1"></a>    <span class="co">#          data = avg_ratio_data %&gt;% filter(BandName %in% c(&quot;Blue&quot;)), </span></span>
 <span id="cb55-48"><a href="micasense-irradiance-correction.html#cb55-48" tabindex="-1"></a>    <span class="co">#          vjust=1)</span></span>
 <span id="cb55-49"><a href="micasense-irradiance-correction.html#cb55-49" tabindex="-1"></a>    <span class="co"># geom_text(data = avg_ratio_data %&gt;% filter(BandName %in% c(&quot;Blue&quot;)), </span></span>
-<span id="cb55-50"><a href="micasense-irradiance-correction.html#cb55-50" tabindex="-1"></a>    <span class="co">#           aes(x = x, y = y, label = paste(&quot;Scatteredt_To_Direct_Ratio_DLS2:&quot;, Scatteredt_To_Direct_Ratio_DLS1)),</span></span>
+<span id="cb55-50"><a href="micasense-irradiance-correction.html#cb55-50" tabindex="-1"></a>    <span class="co">#           aes(x = x, y = y, label = paste(&quot;Scattered_To_Direct_Ratio_DLS2:&quot;, Scattered_To_Direct_Ratio_DLS1)),</span></span>
 <span id="cb55-51"><a href="micasense-irradiance-correction.html#cb55-51" tabindex="-1"></a>    <span class="co">#           vjust = 36, hjust = 4.5) +</span></span>
 <span id="cb55-52"><a href="micasense-irradiance-correction.html#cb55-52" tabindex="-1"></a>    <span class="co"># geom_text(data = avg_ratio_data %&gt;% filter(BandName %in% c(&quot;Blue&quot;)), </span></span>
-<span id="cb55-53"><a href="micasense-irradiance-correction.html#cb55-53" tabindex="-1"></a>    <span class="co">#           aes(x = x, y = y, label = paste(&quot;Scatteredt_To_Direct_Ratio_DLS2:&quot;, Scatteredt_To_Direct_Ratio_DLS2)),</span></span>
+<span id="cb55-53"><a href="micasense-irradiance-correction.html#cb55-53" tabindex="-1"></a>    <span class="co">#           aes(x = x, y = y, label = paste(&quot;Scattered_To_Direct_Ratio_DLS2:&quot;, Scattered_To_Direct_Ratio_DLS2)),</span></span>
 <span id="cb55-54"><a href="micasense-irradiance-correction.html#cb55-54" tabindex="-1"></a>    <span class="co">#           vjust = 38,hjust = 4.5) +</span></span>
 <span id="cb55-55"><a href="micasense-irradiance-correction.html#cb55-55" tabindex="-1"></a>    <span class="co"># geom_text(data = avg_ratio_data %&gt;% filter(BandName %in% c(&quot;Blue&quot;)), </span></span>
 <span id="cb55-56"><a href="micasense-irradiance-correction.html#cb55-56" tabindex="-1"></a>    <span class="co">#           aes(x = x, y = y, label = paste(&quot;Percent_Scat_DLS1:&quot;, Percent_Scat_DLS1)),</span></span>
