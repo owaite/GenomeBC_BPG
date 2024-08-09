@@ -292,10 +292,26 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 </ol>
 <p>We will go into more detail into each of these questions but first will introduce how this data is affected by light conditions.</p>
 <p>Below we have plotted the sun to sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right). We have used the yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning.</p>
+<p><img src="Photos_&_gifs/Irradiance_flight_lines_with_turning_all_with_spatial_plot.PNG" width="100%" style="display: block; margin: auto;" /></p>
 <div id="do-the-sun-sensor-angles-make-sense" class="section level3 hasAnchor" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> 1) Do the sun sensor angles make sense?<a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This flight was taken on June 25^{th}, 2024
-<img src="Photos_&_gifs/Irradiance_flight_lines_with_turning_all_with_spatial_plot.PNG" width="100%" style="display: block; margin: auto;" /></p>
+<p>This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line in the above figure, the solar zenith angle at the time of the flight was around 30°.</p>
+<p>Solar zenith angle is the angle between the normal (vertical from the Earths surface) at the location of interest and the position of the sun. Solar zenith changes seasonally as the Earth rotates around the sun throughout the year. Given the tilt of the Earth, the solar zenith reaches its maximum (i.e. greatest angle between the sun and the normal to the Earths surface) in the winter, as northern hemisphere is tilted away from the sun, and its minimum in the summer when the northern hemisphere is tilted towards the sun.</p>
+<p>Solar zenith also changes throughout the day, with its minimum occurring at solar noon, a.k.a. when the sun is at its highest. This is why it is suggested to fly within -/+ 2 hours of solar noon to avoid shadows in your imagery.</p>
+<p>Below we have graphed solar zenith angles over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024) to demonstrate the daily and seasonal change in values.</p>
+<p>The gray vertical bar highlights the flight time, which was just within the -/+ 2 hours of solar noon bounds and shows the solar zenith at around 30°, as we saw in the above figure.</p>
+<p><img src="Photos_&_gifs/Solar_zenith_solstice_flight.PNG" width="100%" style="display: block; margin: auto;" /></p>
+<p>Now that we’ve refreshed our understanding of the solar zenith, let’s dive into the sun sensor angle. The sun sensor angle is, as it sounds, the angle between the normal (perpendicular) of the sensor and the direction of the sun. Given that drone flights occur relatively close to the ground compared to the distance from the Earth to the sun, this difference is often negligible. Therefore, the solar zenith angle can serve as a rough estimate of the sun sensor angle for a sensor that is parallel to the Earth’s surface - making it a helpful check to see if the sun sensor angle recorded by the DLS2 is within a reasonable range.</p>
+<p><img src="Photos_&_gifs/SSA_verse_solarZenith_diagram.PNG" width="100%" style="display: block; margin: auto;" />
+However, drones often fly at an angle, which can cause a cyclical pattern in sun sensor angles depending on flight direction. This pattern is most defined when the flight lines are oriented to fly towards the sun and away from the sun. For example, let’s take a look at the diagram below. When the drone is flying in the general direction of the sun (left), the forward tilt of the drone mid-flight results in a smaller sun sensor angle compared to when the drone is flying away from the general direction of the sun, where the tilt of the drone away from the sun increases the sun sensor angle (right).</p>
+<p><img src="Photos_&_gifs/SSA_flight_direction_diagram.PNG" width="100%" style="display: block; margin: auto;" /></p>
+<p>This pattern of sun sensor angle dependence on drone orientation relative to the sun can be see for the June 25h flight. Below are the uncorrected sun sensor angles, derived from the DLS2 sensor located on the top of the drone, colored by flight line direction.</p>
+<p><img src="Photos_&_gifs/SSA_flightlines.PNG" width="100%" style="display: block; margin: auto;" />
+Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value (plotted as the horizontal black line) to make an informed decision on whether or not the values look logical.</p>
+<p>To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method which will be referred to as the “corrected” values.</p>
+<p><img src="Photos_&_gifs/SSA_DLS1_verse_DLS2.PNG" width="100%" style="display: block; margin: auto;" />
+The dashed horizontal lines are the moving averages for the DLS1 and DLS2. Here the moving average of the DLS2 is at times almost 10°lower than the solar zenith, whereas the moving average of the DLS1 (corrected method) is more or less consistently 2-3° lower than the solar zenith.</p>
+<p>Given this data, we would conclude that the DLS1 method gives more accurate sun sensor angles and continue to look at irradiance to confirm if correction is needed.</p>
 </div>
 </div>
 <div id="correcting-irradiance-values-for-micasense-cameras" class="section level2 hasAnchor" number="3.4">

@@ -86,11 +86,10 @@ Deciding whether data needs to be corrected can be challenging. We have found th
 
 1) Do the sun sensor angles make sense?
 
-2) Does the scattered: direct ratio make sense for the lighting conditions of that day?
+2) Do the relationships between direct and horizontal irradiance make sense?
 
-3) Does the magnitude of irradiance values make sense?
+3) Does the scattered: direct ratio make sense for the lighting conditions of that day?
 
-4) Do the relationships between direct and horizontal irradiance make sense?
 
 We will go into more detail into each of these questions but first will introduce how this data is affected by light conditions.
 
@@ -102,35 +101,61 @@ knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\G
 
 ### 1) Do the sun sensor angles make sense?
 
-This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line, the solar zenith angle at the time of the flight was around 30°. 
+This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line in the above figure, the solar zenith angle at the time of the flight was around 30°. 
 
+Solar zenith angle is the angle between the normal (vertical from the Earths surface) at the location of interest and the position of the sun. Given the tilt of the Earth, the solar zenith reaches its maximum (i.e. greatest angle between the sun and the normal to the Earths surface) in the winter, as the northern hemisphere is tilted away from the sun, and its minimum in the summer when the northern hemisphere is tilted towards the sun. 
 
+Solar zenith also changes throughout the day, with its minimum occurring at solar noon, a.k.a. when the sun is at its highest. This is why it is suggested to fly within -/+ 2 hours of solar noon to avoid shadows in your imagery.
 
-****************EXPLAIN solar zenith and how the sun sensor anlge should be close to it:::
+Below we have graphed solar zenith angles over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024) to demonstrate the daily and seasonal change in values. 
 
-
-
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_verse_solarZenith_diagram.PNG")
-```
-
-
-**************************Explain sun sensor anlges dependence on flight lines 
-
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_flight_direction_diagram.PNG")
-```
-
-**************** explain change in solar zenith over seasons and over the day ie why we need to fly +/- 2 hours from solar noon for shadows:
+The gray vertical bar highlights the flight time, which was just within the -/+ 2 hours of solar noon bounds and shows the solar zenith at around 30°, as we saw in the above figure.
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Solar_zenith_solstice_flight.PNG")
 ```
 
+Now that we've refreshed our understanding of the solar zenith, let's dive into the sun sensor angle. The sun sensor angle is, as it sounds, the angle between the normal (perpendicular) of the sensor and the direction of the sun. Given that drone flights occur relatively close to the ground compared to the distance from the Earth to the sun, this difference is often negligible. Therefore, the solar zenith angle can serve as a rough estimate of the sun sensor angle for a sensor that is parallel to the Earth's surface - making it a helpful check to see if the sun sensor angle recorded by the DLS2 is within a reasonable range.
 
-******* therefore uncorrected SSA look ok? 
 
-********* graph of corrected and uncorrected SSA next to plot layout colored by flight lines and turns
+```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_verse_solarZenith_diagram.PNG")
+```
+However, drones often fly at an angle, which can cause a cyclical pattern in sun sensor angles depending on flight direction. This pattern is most defined when the flight lines are oriented to fly towards the sun and away from the sun. For example, let's take a look at the diagram below. When the drone is flying in the general direction of the sun (left), the forward tilt of the drone mid-flight results in a smaller sun sensor angle compared to when the drone is flying away from the general direction of the sun, where the tilt of the drone away from the sun increases the sun sensor angle (right).
+
+
+```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_flight_direction_diagram.PNG")
+```
+
+This pattern of sun sensor angle dependence on drone orientation relative to the sun can be see for the June 25th flight. Below are the uncorrected sun sensor angles, derived from the DLS2 sensor located on the top of the drone, colored by flight line direction.
+
+```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_flightlines.PNG")
+```
+Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value (plotted as the horizontal black line) to make an informed decision on whether or not the values need correcting. 
+
+To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method which will be referred to as the "corrected" values.
+
+```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_DLS1_verse_DLS2.PNG")
+```
+The dashed horizontal lines are the moving averages for the DLS1 and DLS2. Here the moving average of the DLS2 is at times almost 10°lower than the solar zenith, whereas the moving average of the DLS1 (corrected method) is more or less consistently 2-3° lower than the solar zenith. 
+
+Given this data, we would conclude that the DLS1 method provides more accurate sun sensor angles compared to the DLS2. We will now continue to look at irradiance to confirm if correction is needed.
+
+### 2) Do the relationships between direct and horizontal irradiance make sense?
+
+### 3) Does the scattered: direct ratio make sense for the lighting conditions of that day?
+
+**Direct Irradiance**: The sunlight reaching the Earth's surface without being scattered or diffused. On a clear sunny day, this component is high.
+
+**Scattered Irradiance**: The sunlight that is scattered by particles in the atmosphere. This component is generally weaker on sunny days and higher on overcast days.
+
+For a sunny day in the summer: The ratio of scattered to direct irradiance can be relatively low, typically in the range of 0.05 to 0.2. This means that direct irradiance is 5 to 20 times stronger than scattered irradiance.
+
+For an overcast day: The ratio of scattered to direct irradiance is high, often exceeding 10, with scattered irradiance being the primary component of the total irradiance.
+
 
 
 
