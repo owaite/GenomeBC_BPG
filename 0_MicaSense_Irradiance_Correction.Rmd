@@ -84,11 +84,11 @@ The issue we have noticed is that the sun-sensor angle can be absurdly high or l
 
 Deciding whether data needs to be corrected can be challenging. We have found that looking at a few key metrics can be very helpful. 
 
-1) Do the sun sensor angles make sense?
+**1) Do the sun sensor angles make sense?**
 
-2) Do the relationships between direct and horizontal irradiance make sense?
+**2) Do the relationships between direct and horizontal irradiance make sense?**
 
-3) Does the scattered: direct ratio make sense for the lighting conditions of that day?
+**3) Does the scattered: direct ratio make sense for the lighting conditions of that day?**
 
 
 We will go into more detail into each of these questions but first will introduce how this data is affected by light conditions.
@@ -99,17 +99,17 @@ Below we have plotted the sun to sensor angle (top left), the position of each p
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Irradiance_flight_lines_with_turning_all_with_spatial_plot.PNG")
 ```
 
-### 1) Do the sun sensor angles make sense?
+### Do the sun sensor angles make sense?
 
 This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line in the above figure, the solar zenith angle at the time of the flight was around 30°. 
 
 Solar zenith angle is the angle between the normal (vertical from the Earths surface) at the location of interest and the position of the sun. Given the tilt of the Earth, the solar zenith reaches its maximum (i.e. greatest angle between the sun and the normal to the Earths surface) in the winter, as the northern hemisphere is tilted away from the sun, and its minimum in the summer when the northern hemisphere is tilted towards the sun. 
 
-Solar zenith also changes throughout the day, with its minimum occurring at solar noon, a.k.a. when the sun is at its highest. This is why it is suggested to fly within -/+ 2 hours of solar noon to avoid shadows in your imagery.
+Solar zenith also changes throughout the day, with its minimum occurring at solar noon, a.k.a. when the sun is at its highest. This is why it is suggested to fly within +/- 2 hours of solar noon to avoid shadows in your imagery.
 
 Below we have graphed solar zenith angles over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024) to demonstrate the daily and seasonal change in values. 
 
-The gray vertical bar highlights the flight time, which was just within the -/+ 2 hours of solar noon bounds and shows the solar zenith at around 30°, as we saw in the above figure.
+The gray vertical bar highlights the flight time, which was just within the +/- 2 hours of solar noon bounds and shows the solar zenith at around 30°, as we saw in the above figure.
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Solar_zenith_solstice_flight.PNG")
@@ -144,20 +144,41 @@ The dashed horizontal lines are the moving averages for the DLS1 and DLS2. Here 
 
 Given this data, we would conclude that the DLS1 method provides more accurate sun sensor angles compared to the DLS2. We will now continue to look at irradiance to confirm if correction is needed.
 
-### 2) Do the relationships between direct and horizontal irradiance make sense?
+### Does the relationship between direct and horizontal irradiance make sense?
+
+First, lets define direct and horizontal irradiance with respect to the DLS:
+
+**Direct Irradiance**: The direct component of the sunlight reaching the sensor's surface that is not being scattered. On a clear sunny day, this component is high.
+
+**Horiztonal Irradiance**: The total irradiance on a horizontal surface, including both direct sunlight (projected onto the horizontal plane) and diffuse light. If the sun is directly above the sensor and it is a clear sunny day, the direct irradiance component will likely be quite close to the horizontal irradiance. 
+
+Below, we have plotted the direct and horizontal irradiance from the DLS2 and values calculated with the DLS1 (corrected) method. Here, we can see that the direct irradiance from the DLS2 is greater than the horizontal irradiance, which is physically impossible. In contrast, the direct irradiance from the DLS1 method is approximately 50 W/m²/nm less than the horizontal irradiance. 
+Main explanations for the lower direct irradiance from the DLS1 compared to the horizontal irradiance include:
+
+- The ~30° sun sensor angle, which reduces the effective direct component captured by the sensor.
+
+- The portion of scattered irradiance in the horizontal irradiance signal that is not included in the direct irradiance value.
+
+
+```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Hor_dir_irradiance_DLS1_v_DLS2.PNG")
+```
+From this graph, we would recommend correcting the data using the DLS1 method outlined below
+
 
 ### 3) Does the scattered: direct ratio make sense for the lighting conditions of that day?
 
-**Direct Irradiance**: The sunlight reaching the Earth's surface without being scattered or diffused. On a clear sunny day, this component is high.
 
 **Scattered Irradiance**: The sunlight that is scattered by particles in the atmosphere. This component is generally weaker on sunny days and higher on overcast days.
 
-For a sunny day in the summer: The ratio of scattered to direct irradiance can be relatively low, typically in the range of 0.05 to 0.2. This means that direct irradiance is 5 to 20 times stronger than scattered irradiance.
+For a sunny day in the summer: The ratio of scattered to direct irradiance can be relatively low, a value of 1:6 is often used as an estimate. This means that direct irradiance is around 6 times stronger than scattered irradiance.
 
 For an overcast day: The ratio of scattered to direct irradiance is high, often exceeding 10, with scattered irradiance being the primary component of the total irradiance.
 
-
-
+```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Dir_Scat_irradiance_DLS1_v_DLS2.PNG")
+```
+The scattered: direct ratio for the data plotted above is 0.08 for the DLS2 and 0.46 for the DLS1. This means that the direct irradiance from the DSL2 is 12.5 times greater than the scattered component whereas the direct irradiance from the DLS1 is 2.17 greater than the scattered component. 
 
 ## Correcting Irradiance Values for Micasense Cameras
 

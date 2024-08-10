@@ -185,6 +185,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>3.3</b> Is correction needed?</a>
 <ul>
 <li class="chapter" data-level="3.3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>3.3.1</b> 1) Do the sun sensor angles make sense?</a></li>
+<li class="chapter" data-level="3.3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#do-the-relationships-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>3.3.2</b> 2) Do the relationships between direct and horizontal irradiance make sense?</a></li>
+<li class="chapter" data-level="3.3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>3.3.3</b> 3) Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras"><i class="fa fa-check"></i><b>3.4</b> Correcting Irradiance Values for Micasense Cameras</a>
 <ul>
@@ -286,9 +288,8 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <p>Deciding whether data needs to be corrected can be challenging. We have found that looking at a few key metrics can be very helpful.</p>
 <ol style="list-style-type: decimal">
 <li><p>Do the sun sensor angles make sense?</p></li>
-<li><p>Does the scattered: direct ratio make sense for the lighting conditions of that day?</p></li>
-<li><p>Does the magnitude of irradiance values make sense?</p></li>
 <li><p>Do the relationships between direct and horizontal irradiance make sense?</p></li>
+<li><p>Does the scattered: direct ratio make sense for the lighting conditions of that day?</p></li>
 </ol>
 <p>We will go into more detail into each of these questions but first will introduce how this data is affected by light conditions.</p>
 <p>Below we have plotted the sun to sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right). We have used the yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning.</p>
@@ -296,7 +297,7 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <div id="do-the-sun-sensor-angles-make-sense" class="section level3 hasAnchor" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> 1) Do the sun sensor angles make sense?<a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line in the above figure, the solar zenith angle at the time of the flight was around 30°.</p>
-<p>Solar zenith angle is the angle between the normal (vertical from the Earths surface) at the location of interest and the position of the sun. Solar zenith changes seasonally as the Earth rotates around the sun throughout the year. Given the tilt of the Earth, the solar zenith reaches its maximum (i.e. greatest angle between the sun and the normal to the Earths surface) in the winter, as northern hemisphere is tilted away from the sun, and its minimum in the summer when the northern hemisphere is tilted towards the sun.</p>
+<p>Solar zenith angle is the angle between the normal (vertical from the Earths surface) at the location of interest and the position of the sun. Given the tilt of the Earth, the solar zenith reaches its maximum (i.e. greatest angle between the sun and the normal to the Earths surface) in the winter, as the northern hemisphere is tilted away from the sun, and its minimum in the summer when the northern hemisphere is tilted towards the sun.</p>
 <p>Solar zenith also changes throughout the day, with its minimum occurring at solar noon, a.k.a. when the sun is at its highest. This is why it is suggested to fly within -/+ 2 hours of solar noon to avoid shadows in your imagery.</p>
 <p>Below we have graphed solar zenith angles over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024) to demonstrate the daily and seasonal change in values.</p>
 <p>The gray vertical bar highlights the flight time, which was just within the -/+ 2 hours of solar noon bounds and shows the solar zenith at around 30°, as we saw in the above figure.</p>
@@ -305,13 +306,32 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <p><img src="Photos_&_gifs/SSA_verse_solarZenith_diagram.PNG" width="100%" style="display: block; margin: auto;" />
 However, drones often fly at an angle, which can cause a cyclical pattern in sun sensor angles depending on flight direction. This pattern is most defined when the flight lines are oriented to fly towards the sun and away from the sun. For example, let’s take a look at the diagram below. When the drone is flying in the general direction of the sun (left), the forward tilt of the drone mid-flight results in a smaller sun sensor angle compared to when the drone is flying away from the general direction of the sun, where the tilt of the drone away from the sun increases the sun sensor angle (right).</p>
 <p><img src="Photos_&_gifs/SSA_flight_direction_diagram.PNG" width="100%" style="display: block; margin: auto;" /></p>
-<p>This pattern of sun sensor angle dependence on drone orientation relative to the sun can be see for the June 25h flight. Below are the uncorrected sun sensor angles, derived from the DLS2 sensor located on the top of the drone, colored by flight line direction.</p>
+<p>This pattern of sun sensor angle dependence on drone orientation relative to the sun can be see for the June 25th flight. Below are the uncorrected sun sensor angles, derived from the DLS2 sensor located on the top of the drone, colored by flight line direction.</p>
 <p><img src="Photos_&_gifs/SSA_flightlines.PNG" width="100%" style="display: block; margin: auto;" />
-Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value (plotted as the horizontal black line) to make an informed decision on whether or not the values look logical.</p>
+Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value (plotted as the horizontal black line) to make an informed decision on whether or not the values need correcting.</p>
 <p>To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method which will be referred to as the “corrected” values.</p>
 <p><img src="Photos_&_gifs/SSA_DLS1_verse_DLS2.PNG" width="100%" style="display: block; margin: auto;" />
 The dashed horizontal lines are the moving averages for the DLS1 and DLS2. Here the moving average of the DLS2 is at times almost 10°lower than the solar zenith, whereas the moving average of the DLS1 (corrected method) is more or less consistently 2-3° lower than the solar zenith.</p>
-<p>Given this data, we would conclude that the DLS1 method gives more accurate sun sensor angles and continue to look at irradiance to confirm if correction is needed.</p>
+<p>Given this data, we would conclude that the DLS1 method provides more accurate sun sensor angles compared to the DLS2. We will now continue to look at irradiance to confirm if correction is needed.</p>
+</div>
+<div id="do-the-relationships-between-direct-and-horizontal-irradiance-make-sense" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> 2) Do the relationships between direct and horizontal irradiance make sense?<a href="micasense-irradiance-correction.html#do-the-relationships-between-direct-and-horizontal-irradiance-make-sense" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>First, lets define direct and horizontal irradiance with respect to the DLS:</p>
+<p><strong>Direct Irradiance</strong>: The direct component of the sunlight reaching the sensor’s surface that is not being scattered. On a clear sunny day, this component is high.</p>
+<p><strong>Horiztonal Irradiance</strong>: The total irradiance on a horizontal surface, including both direct sunlight (projected onto the horizontal plane) and diffuse light. If the sun is directly above the sensor and it is a clear sunny day, the direct irradiance component will likely be quite close to the horizontal irradiance.</p>
+<p>Below, we have plotted the direct and horizontal irradiance from the DLS2 and values calculated with the DLS1 (corrected) method. Here, we can see that the direct irradiance from the DLS2 is greater than the horizontal irradiance, which is physically impossible. In contrast, the direct irradiance from the DLS1 method is approximately 50 W/m²/nm less than the horizontal irradiance.
+Main explanations for the lower direct irradiance from the DLS1 compared to the horizontal irradiance include:</p>
+<ul>
+<li><p>The ~30° sun sensor angle, which reduces the effective direct component captured by the sensor.</p></li>
+<li><p>The portion of scattered irradiance in the horizontal irradiance signal that is not included in the direct irradiance value.</p></li>
+</ul>
+<p><img src="Photos_&_gifs/Hor_dir_irradiance_DLS1_v_DLS2.PNG" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day" class="section level3 hasAnchor" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> 3) Does the scattered: direct ratio make sense for the lighting conditions of that day?<a href="micasense-irradiance-correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Scattered Irradiance</strong>: The sunlight that is scattered by particles in the atmosphere. This component is generally weaker on sunny days and higher on overcast days.</p>
+<p>For a sunny day in the summer: The ratio of scattered to direct irradiance can be relatively low, typically in the range of 0.05 to 0.2. This means that direct irradiance is 5 to 20 times stronger than scattered irradiance.</p>
+<p>For an overcast day: The ratio of scattered to direct irradiance is high, often exceeding 10, with scattered irradiance being the primary component of the total irradiance.</p>
 </div>
 </div>
 <div id="correcting-irradiance-values-for-micasense-cameras" class="section level2 hasAnchor" number="3.4">
