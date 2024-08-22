@@ -79,14 +79,12 @@ dir = "Change to match your folder strucutre" #directory where shadow mask folde
 # Reading in the multispectral orthomosaic
 ms_temp = rast(list.files(paste0(dir, "metashape\\3_MS_ORTHO\\"), pattern = ".*MS_Calibrated.*_bestPanel.tif$", full.names = TRUE)) # here we read in the ortho that is in the set directory and contains "MS_Calibrated" in the name and end in "_bestPanel.tif". We had multiple orthos in this folder, so did this to ensure the proper one was called. Change to match your ortho name, or remove the pattern if you only have one ortho in the defined path.
   
-  
 # Reading in the shapefile containing delineated crowns and buffering inward by 5cm to limit any mixed pixels from neighboring vegetation
 dir_crowns <- "D:\\Sync\\Fdc_PR_Canoe\\Crowns.shp" #path to crowns shapefile
 pols_spat = st_read(paste0(dir_crowns)) %>% # reading in crown shp
   filter(!st_is_empty(.)) %>% #removing empty
   st_buffer(dist = -.05) %>% #buffering inward by 5cm
   vect()
-
 
 # Creating a folder for shadow masks
 Nir_shadow_folder_baseName <- "NIR_shadow_mask_localMinOrMax" #name of the folder shadow masks will be written to. We have the folder name defined outside the folder creation step below so that we could change the folder name once without having to change it throughout the code.
@@ -116,6 +114,7 @@ density_values <- density(NIR_na) # calculates density of NIR values
 plot(density_values) # check to see the distribution of NIR values (ie a visual check for whether or not a local min exists)
   
 ```
+
 
 At this point the threshold can be estimated manually from the graph however, this is not a feasible method when you have many data acquisitions, nor is it the most accurate method. Below we describe the method we used to create shadow masks for many acquisitions withouth having to visually inspect the NIR distributions. To computationally find the threshold we first need to decipher whether the NIR distribution is unimodal (one peak) or multimodal (more than one peak). To do so we use the *is.multimodal* function from the LaplacesDemon package if an *if else* statement. 
 
@@ -211,47 +210,10 @@ ggsave(hist, #saving out the plot
        height = 8)
 ```
 
-Here is an example of what this histogram will look like:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-** Insert graph example ** 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r echo=FALSE, out.width="60%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\multimodal_hist_canoe_2022_08_05.jfif")
+```
 
 We then isolate the NIR band from the multispectral orthomosaic and filter the raster to set pixels with NIR values greater than the threshold to NA and those that are less than or equal to the threshold to 1.
 
@@ -264,6 +226,11 @@ shadow_mask[shadow_mask <= threshold] = 1 #for NIR values < or = to the threshol
 terra::writeRaster(shadow_mask, paste0(dir, Nir_shadow_folder_baseName,"\\",  date_list[x], "_NIR_shadow_thresh",threshold ,"_",thresh_name, ".tif"),
                      overwrite = TRUE)
 ```
+
+
+<!-- 
+This text or code won't appear in the output.
+It can be multiple lines.
 
 Lastly, we apply the *clump* function to group adjacent pixels that represent shadows creating "clumps" a.k.a. shadow patches. These shadow patches are then converted into a dataframe containing a unique ID per shadow patch and the number of pixels within each patch. 
 
@@ -303,7 +270,7 @@ new_mask[new_mask == 0] = NA # make clumps that are zero, NA
 terra::writeRaster(new_mask, paste0(dir, Nir_shadow_folder_baseName,"\\",  date_list[x], "_NIR_shadow_thresh",threshold ,"_",thresh_name, "_mask2.tif"),
                      overwrite = TRUE)
 ```
-
+-->
 
 ## Crown-level Vegetation Indicies
 

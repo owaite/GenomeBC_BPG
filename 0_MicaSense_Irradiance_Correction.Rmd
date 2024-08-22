@@ -14,13 +14,13 @@ where \(L\) is the at-camera radiance and \(I_{\text{hor}}\) is the horizontal i
 
 Below we go through the derivation to compute \(I_{\text{hor}}\).
 
-The MicaSense system includes both the camera and a downwelling light sensor (DLS). Since the DLS is tilted at the angle of the drone during flight, it measures non-horizontal irradiance, referred to as spectral irradiance (\(I_{\text{spec}}\)). Spectral irradiance is a function of direct irradiance (\(I_{\text{direct}}\)), scattered irradiance (\(I_{\text{scattered}}\)), and the angle between the sun and the sensor ( \(\theta_{\text{sun-sensor}}\)):
+The MicaSense system includes both the cameras and a downwelling light sensor (DLS). Since the DLS is tilted at the angle of the drone during flight and the sun is rarely directly overheard the sensor, the DLS measures non-horizontal irradiance, referred to as spectral irradiance (\(I_{\text{spec}}\)). Spectral irradiance is a function of direct irradiance (\(I_{\text{direct}}\)), scattered irradiance (\(I_{\text{scattered}}\)), and the angle between the sun and the sensor ( \(\theta_{\text{sun-sensor}}\)):
 
 $$
 I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}
 $$
 
-Given that \( r = \frac{I_{\text{scattered}}}{I_{\text{direct}}} \), we can substitute \( I_{\text{scattered}} = r \cdot I_{\text{direct}} \) into the equation:
+If we take  \( r\) to be the ratio of scattered to direct irradiance, \( r = \frac{I_{\text{scattered}}}{I_{\text{direct}}} \), we can substitute \( I_{\text{scattered}} = r \cdot I_{\text{direct}} \) into the equation:
 
 $$
 I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + r \cdot I_{\text{direct}}
@@ -59,55 +59,48 @@ $$
 
 Thus we see that reflectance is highly dependent on the ratio of scattered to direct irradiance as well as the sun-sensor angle. This is important for understanding the issue we have found when working with the DLS2 and the MicaSense MX Dual camera system.
 
-## Issue
-To begin, let us first look at the difference between the historic DLS1 and the current DLS2 system. 
+## The Problem
+The issue we have noticed is that the sun-sensor angle can be absurdly high or low, especially in strong illumination conditions. This leads to equally absurd, sometimes impossible, values for direct and scattered irradiance, that can be multiples higher than the direct solar irradiance.
+
+To begin, let us first look at some main differences between the legacy DLS1 and the current DLS2 system. 
 
 The DLS1:
 
-- has ### sensor on the surface
+- calculates the sun zenith angle using the GPS location of the drone and the time of acquisition 
 
-- the sun zenith angle is calculated using the GPS location of the drone and the time of acquisition 
-
-- the sun-sensor angle is calculated from the yaw/pitch/roll of the drone
-
-- scattered/direct irradiance ratio was assumed to perform the atmospheric correction
+- calculates the sun-sensor angle from the yaw/pitch/roll of the drone
 
 The DLS2:
 
-- uses a proprietary method that takes in information from the #### sensors on the surface and calculated the sun-sensor angle, the direct irradiance and the scattered irradiance
+- directly measures the sun sensor angle and the direct and diffuse irradiance components using a proprietary method that takes in information from the light sensors on the surface of the DSL2
+ 
+## Is Correction Needed?
 
-The issue we have noticed is that the sun-sensor angle can be absurdly high or low, especially in strong illumination conditions. This leads to absurd values for direct and scattered irradiance, that can be multiples higher than the direct solar irradiance. 
+Deciding whether data needs to be corrected can be challenging. We have found that looking at these three questions can be helpful:
 
-############# INSERT EXAMPLE GRAPHS###############################################
+*1) Do the sun sensor angles make sense?*
 
-## Is correction needed?
+*2) Does the relationship between direct and horizontal irradiance make sense?*
 
-Deciding whether data needs to be corrected can be challenging. We have found that looking at a few key metrics can be very helpful. 
+*3) Does the scattered: direct ratio look right for the lighting conditions of that day?*
+<!-- 
 
-**1) Do the sun sensor angles make sense?**
+Below we have plotted the sun to sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right). We have used the yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning (red). 
 
-**2) Do the relationships between direct and horizontal irradiance make sense?**
-
-**3) Does the scattered: direct ratio make sense for the lighting conditions of that day?**
-
-
-We will go into more detail into each of these questions but first will introduce how this data is affected by light conditions.
-
-Below we have plotted the sun to sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right). We have used the yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning. 
+This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line in the above figure, the solar zenith angle at the time of the flight was around 30°. 
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Irradiance_flight_lines_with_turning_all_with_spatial_plot.PNG")
 ```
+-->
 
 ### Do the sun sensor angles make sense?
-
-This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line in the above figure, the solar zenith angle at the time of the flight was around 30°. 
 
 Solar zenith angle is the angle between the normal (vertical from the Earths surface) at the location of interest and the position of the sun. Given the tilt of the Earth, the solar zenith reaches its maximum (i.e. greatest angle between the sun and the normal to the Earths surface) in the winter, as the northern hemisphere is tilted away from the sun, and its minimum in the summer when the northern hemisphere is tilted towards the sun. 
 
 Solar zenith also changes throughout the day, with its minimum occurring at solar noon, a.k.a. when the sun is at its highest. This is why it is suggested to fly within +/- 2 hours of solar noon to avoid shadows in your imagery.
 
-Below we have graphed solar zenith angles over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024) to demonstrate the daily and seasonal change in values. 
+Below we have graphed solar zenith angles over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024) that will be used in this example to demonstrate the daily and seasonal change in values. 
 
 The gray vertical bar highlights the flight time, which was just within the +/- 2 hours of solar noon bounds and shows the solar zenith at around 30°, as we saw in the above figure.
 
@@ -121,14 +114,14 @@ Now that we've refreshed our understanding of the solar zenith, let's dive into 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_verse_solarZenith_diagram.PNG")
 ```
-However, drones often fly at an angle, which can cause a cyclical pattern in sun sensor angles depending on flight direction. This pattern is most defined when the flight lines are oriented to fly towards the sun and away from the sun. For example, let's take a look at the diagram below. When the drone is flying in the general direction of the sun (left), the forward tilt of the drone mid-flight results in a smaller sun sensor angle compared to when the drone is flying away from the general direction of the sun, where the tilt of the drone away from the sun increases the sun sensor angle (right).
+However, drones often fly at an angle, which can cause a cyclical pattern in sun sensor angles depending on flight direction. For example, let's take a look at the diagram below. When the drone is flying in the general direction of the sun (left), the forward tilt of the drone mid-flight results in a smaller sun sensor angle compared to when the drone is flying away from the general direction of the sun, where the tilt of the drone away from the sun increases the sun sensor angle (right).
 
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_flight_direction_diagram.PNG")
 ```
 
-This pattern of sun sensor angle dependence on drone orientation relative to the sun can be see for the June 25th flight. Below are the uncorrected sun sensor angles, derived from the DLS2 sensor located on the top of the drone, colored by flight line direction.
+This pattern of sun sensor angle dependence on drone orientation relative to the sun can be see for the June 25th flight. Below are the uncorrected sun sensor angles, derived from the DLS2 sensor located on the top of the drone, colored by flight line direction. Here red indicates turning and blue and green are opposite flight directions.
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_flightlines.PNG")
@@ -150,10 +143,13 @@ First, lets define direct and horizontal irradiance with respect to the DLS:
 
 **Direct Irradiance**: The direct component of the sunlight reaching the sensor's surface that is not being scattered. On a clear sunny day, this component is high.
 
-**Horiztonal Irradiance**: The total irradiance on a horizontal surface, including both direct sunlight (projected onto the horizontal plane) and diffuse light. If the sun is directly above the sensor and it is a clear sunny day, the direct irradiance component will likely be quite close to the horizontal irradiance. 
+**Scattered Irradiance**: The sunlight that is scattered by particles in the atmosphere. This component is generally weaker on sunny days and higher on overcast days.
 
-Below, we have plotted the direct and horizontal irradiance from the DLS2 and values calculated with the DLS1 (corrected) method. Here, we can see that the direct irradiance from the DLS2 is greater than the horizontal irradiance, which is physically impossible. In contrast, the direct irradiance from the DLS1 method is approximately 50 W/m²/nm less than the horizontal irradiance. 
-Main explanations for the lower direct irradiance from the DLS1 compared to the horizontal irradiance include:
+**Horiztonal Irradiance**: The total irradiance on a horizontal surface, including both direct sunlight (projected onto the horizontal plane) and diffuse light. Hence, if the sun is directly above the sensor and it is a clear sunny day, the direct irradiance component will likely be quite close to the horizontal irradiance, however still lower given that horizontal irradiance inlcudes diffuse light as well. 
+
+Below, we have plotted the direct and horizontal irradiance from the DLS2 and values calculated with the DLS1 (corrected) method. We can see that the direct irradiance from the DLS2 is greater than the horizontal irradiance, which is physically impossible. In contrast, the direct irradiance from the DLS1 method is approximately 50 W/m²/nm less than the horizontal irradiance. 
+
+Explanations for the lower direct irradiance from the DLS1 compared to the horizontal irradiance include:
 
 - The ~30° sun sensor angle, which reduces the effective direct component captured by the sensor.
 
@@ -166,19 +162,26 @@ knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\G
 From this graph, we would recommend correcting the data using the DLS1 method outlined below
 
 
-### 3) Does the scattered: direct ratio make sense for the lighting conditions of that day?
+### Does the scattered: direct ratio make sense for the lighting conditions of that day?
 
+For a clear sunny day when the sun is around its peak, direct radiation generally accounts for ~85% of the total insolation with scattered radiation accounting for the remaining ~15%. For an completely overcast day, scattered radiation contributes to 100% of solar radiation.<!-- https://www.ftexploring.com/solar-energy/direct-and-diffuse-radiation.htm -->
 
-**Scattered Irradiance**: The sunlight that is scattered by particles in the atmosphere. This component is generally weaker on sunny days and higher on overcast days.
+Hence for a clear sunny day in the summer a ratio of 1:6 scattered to direct irradiance is often used as an estimate. This means that direct irradiance is around 6 times stronger than the scattered irradiance.
 
-For a sunny day in the summer: The ratio of scattered to direct irradiance can be relatively low, a value of 1:6 is often used as an estimate. This means that direct irradiance is around 6 times stronger than scattered irradiance.
-
-For an overcast day: The ratio of scattered to direct irradiance is high, often exceeding 10, with scattered irradiance being the primary component of the total irradiance.
-
+The data plotted below from June 25th was captured on a sunny day with occasional clouds.
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Dir_Scat_irradiance_DLS1_v_DLS2.PNG")
 ```
-The scattered: direct ratio for the data plotted above is 0.08 for the DLS2 and 0.46 for the DLS1. This means that the direct irradiance from the DSL2 is 12.5 times greater than the scattered component whereas the direct irradiance from the DLS1 is 2.17 greater than the scattered component. 
+
+The scattered: direct ratio for the data plotted above is 0.08 (2/25) for the DLS2 and 0.46 (23/50) for the DLS1. 
+
+**DLS2:** The ratio of 0.08 scattered:direct components from the DSL2 states that the direct irradiance during the flight was 12.5 time greater than the scattered irradiance, or in other words that 92% of the total radiation reaching the earth was direct radiation and 8% was scattered radiation. 
+
+**DLS1:** The ratio of 0.46 scattered:direct components from the DLS1 states that the direct component was 2.17 time greater than the scattered component, hence 46% of the solar radiation was from the scattered component and the remaining 54% from the direct component.
+
+Given that the flight on June 25th was flown just at the end of the 2 hour solar noon window under a sunny sky with the occasional cloud, we would assume that the scattered component would be greater than the minimum ~15% for fully clear skies at solar noon. Hence a value of 46% scattered radiation could be the result of extra scattering by the occasional clouds and a slight increase in scattering from a greater solar zenith angle. Overall the value of 0.46 is more logical than the value of 0.08, since 0.08 implies less scattered radiation than the generally accepted minimum scattered component percentage on a clear sunny day. 
+
+Overall, we recommend correcting this flight.
 
 ## Correcting Irradiance Values for Micasense Cameras
 
@@ -402,7 +405,6 @@ Below are three main steps to find the estimated scattered:direct ratio:
 First, we generate a rolling regression of the linear relationship \(I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}\) via a regression of irradiance on \(\cos(\theta_{\text{sun-sensor}})\) over a specified time window (we used 30 seconds here). 
 
 ```{r eval=FALSE, include=TRUE}
-#### (1) 
 # via a regression of Irradiance on cos_SSA over a specified time window (30s here)
 mod_frame = xmp_all_ssa_site_date %>%
   drop_na(Date2) %>% 

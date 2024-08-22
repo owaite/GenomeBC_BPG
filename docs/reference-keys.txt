@@ -27,7 +27,7 @@ calculating-reflectance
 issue
 is-correction-needed
 do-the-sun-sensor-angles-make-sense
-do-the-relationships-between-direct-and-horizontal-irradiance-make-sense
+does-the-relationship-between-direct-and-horizontal-irradiance-make-sense
 does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day
 correcting-irradiance-values-for-micasense-cameras
 initial-setup-and-data-loading
