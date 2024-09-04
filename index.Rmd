@@ -6,14 +6,14 @@ output: bookdown::gitbook
 
 # Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials {-}
 
-```{r echo=FALSE, fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Aerial_P1.PNG")
+```{r echo=FALSE,out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Cover_photo_crowns.png")
 ```
 
 Date last updated: `r Sys.Date()`
 
 
-*"Jake King^1^, Olivia Waite^1^, Samuel Grubinger^2^, Alex Liu^1^, Miriam Isaac-Renton^1^, Nicholas C. Coops^2^, Liam Irwin^2^, Lise Van Der Merwe^3^, Jon Degner^3^, Alvin Yanchuk^3^"* 
+*Jake King^1^, Olivia Waite^1^, Samuel Grubinger^2^, Alex Liu^1^, Miriam Isaac-Renton^1^, Nicholas C. Coops^2^, Liam Irwin^2^, Lise Van Der Merwe^3^, Jon Degner^3^, Alvin Yanchuk^3^* 
 
 ^1^ Natural Resources Canada, Canadian Forest Services, Canadian Wood Fibre Center, 506 Burnside Road West, Victoria, British Columbia, V8Z 1MZ.  
 

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Photogrametric Processing | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
-  <meta name="description" content="Chapter 2 Photogrametric Processing | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <title>Chapter 4 Photogrametric Processing | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
+  <meta name="description" content="Chapter 4 Photogrametric Processing | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Photogrametric Processing | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta property="og:title" content="Chapter 4 Photogrametric Processing | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Photogrametric Processing | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta name="twitter:title" content="Chapter 4 Photogrametric Processing | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   
   
   
@@ -145,57 +145,79 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-cite-this-report"><i class="fa fa-check"></i>How to cite this report:</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>1</b> LiDAR Processing Workflow</a>
+<li class="chapter" data-level="1" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html"><i class="fa fa-check"></i><b>1</b> Range of Sites Assessed</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>1.1</b> DJI Terra</a></li>
-<li class="chapter" data-level="1.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>1.2</b> Register the LiDAR to the DAP point cloud</a>
-<ul>
-<li class="chapter" data-level="1.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>1.2.1</b> Prepare LiDAR for registration</a></li>
-<li class="chapter" data-level="1.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>1.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
-<li class="chapter" data-level="1.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>1.2.3</b> Rescale and tile the registered LiDAR:</a></li>
+<li class="chapter" data-level="1.1" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html#jordan-river"><i class="fa fa-check"></i><b>1.1</b> Jordan River</a></li>
+<li class="chapter" data-level="1.2" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html#powell-river"><i class="fa fa-check"></i><b>1.2</b> Powell River</a></li>
+<li class="chapter" data-level="1.3" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html#sites"><i class="fa fa-check"></i><b>1.3</b> 2024 Sites</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>1.3</b> Normalization and individual tree point clouds</a>
+<li class="chapter" data-level="2" data-path="preflight-planning.html"><a href="preflight-planning.html"><i class="fa fa-check"></i><b>2</b> Preflight Planning</a>
 <ul>
-<li class="chapter" data-level="1.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>1.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
-<li class="chapter" data-level="1.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>1.3.2</b> Normalizing the tiles using the DTM</a></li>
-<li class="chapter" data-level="1.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>1.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
-<li class="chapter" data-level="1.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>1.3.4</b> Segmenting tiles</a></li>
-<li class="chapter" data-level="1.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>1.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
-<li class="chapter" data-level="1.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>1.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
+<li class="chapter" data-level="2.1" data-path="preflight-planning.html"><a href="preflight-planning.html#achieving-positional-accuracy-on-multi-temporal-and-multi-sensor-data-collections"><i class="fa fa-check"></i><b>2.1</b> Achieving positional accuracy on multi-temporal and multi-sensor data collections</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="preflight-planning.html"><a href="preflight-planning.html#kinematic-processing-rtkppk"><i class="fa fa-check"></i><b>2.1.1</b> Kinematic processing: RTK/PPK</a></li>
+<li class="chapter" data-level="2.1.2" data-path="preflight-planning.html"><a href="preflight-planning.html#ground-control-points-gcp"><i class="fa fa-check"></i><b>2.1.2</b> Ground Control Points (GCP)</a></li>
+<li class="chapter" data-level="2.1.3" data-path="preflight-planning.html"><a href="preflight-planning.html#absolute-and-relative-reference-with-precise-point-positioning-ppp"><i class="fa fa-check"></i><b>2.1.3</b> Absolute and Relative Reference with Precise Point Positioning (PPP)</a></li>
+<li class="chapter" data-level="2.1.4" data-path="preflight-planning.html"><a href="preflight-planning.html#terrain-following-on-sites-with-elevation-change"><i class="fa fa-check"></i><b>2.1.4</b> Terrain Following on Sites with Elevation Change</a></li>
 </ul></li>
-<li class="chapter" data-level="1.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>1.4</b> Individual Tree Metrics</a></li>
+<li class="chapter" data-level="2.2" data-path="preflight-planning.html"><a href="preflight-planning.html#site-selection-considerations"><i class="fa fa-check"></i><b>2.2</b> Site Selection Considerations</a></li>
+<li class="chapter" data-level="2.3" data-path="preflight-planning.html"><a href="preflight-planning.html#drone-and-sensors-what-will-i-need-to-purchase-and-how-much-will-it-cost"><i class="fa fa-check"></i><b>2.3</b> Drone and Sensors: What will I need to purchase and how much will it cost?</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="preflight-planning.html"><a href="preflight-planning.html#hardware-costs"><i class="fa fa-check"></i><b>2.3.1</b> Hardware Costs</a></li>
+<li class="chapter" data-level="2.3.2" data-path="preflight-planning.html"><a href="preflight-planning.html#drone-training-in-canada"><i class="fa fa-check"></i><b>2.3.2</b> Drone Training in Canada</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html"><i class="fa fa-check"></i><b>2</b> Photogrametric Processing</a>
+<li class="chapter" data-level="2.4" data-path="preflight-planning.html"><a href="preflight-planning.html#section"><i class="fa fa-check"></i><b>2.4</b> </a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>3</b> LiDAR Processing Workflow</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#processing-orthomosaics"><i class="fa fa-check"></i><b>2.1</b> Processing Orthomosaics</a></li>
-<li class="chapter" data-level="2.2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#shadow-masks"><i class="fa fa-check"></i><b>2.2</b> Shadow Masks</a></li>
-<li class="chapter" data-level="2.3" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#crown-level-vegetation-indicies"><i class="fa fa-check"></i><b>2.3</b> Crown-level Vegetation Indicies</a>
+<li class="chapter" data-level="3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>3.1</b> DJI Terra</a></li>
+<li class="chapter" data-level="3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>3.2</b> Register the LiDAR to the DAP point cloud</a>
 <ul>
-<li class="chapter" data-level="2.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>2.3.1</b> VI Workflow</a></li>
+<li class="chapter" data-level="3.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>3.2.1</b> Prepare LiDAR for registration</a></li>
+<li class="chapter" data-level="3.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>3.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
+<li class="chapter" data-level="3.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>3.2.3</b> Rescale and tile the registered LiDAR:</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>3.3</b> Normalization and individual tree point clouds</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>3.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
+<li class="chapter" data-level="3.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>3.3.2</b> Normalizing the tiles using the DTM</a></li>
+<li class="chapter" data-level="3.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>3.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
+<li class="chapter" data-level="3.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>3.3.4</b> Segmenting tiles</a></li>
+<li class="chapter" data-level="3.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>3.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
+<li class="chapter" data-level="3.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>3.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>3.4</b> Individual Tree Metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html"><i class="fa fa-check"></i><b>4</b> Photogrametric Processing</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#processing-orthomosaics"><i class="fa fa-check"></i><b>4.1</b> Processing Orthomosaics</a></li>
+<li class="chapter" data-level="4.2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#shadow-masks"><i class="fa fa-check"></i><b>4.2</b> Shadow Masks</a></li>
+<li class="chapter" data-level="4.3" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#crown-level-vegetation-indicies"><i class="fa fa-check"></i><b>4.3</b> Crown-level Vegetation Indicies</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>4.3.1</b> VI Workflow</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html"><i class="fa fa-check"></i><b>3</b> MicaSense Irradiance Correction</a>
+<li class="chapter" data-level="5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html"><i class="fa fa-check"></i><b>5</b> MicaSense Irradiance Correction</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#background"><i class="fa fa-check"></i><b>3.1</b> Background</a>
+<li class="chapter" data-level="5.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#background"><i class="fa fa-check"></i><b>5.1</b> Background</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>3.1.1</b> Deriving Horizontal Irradiance</a></li>
-<li class="chapter" data-level="3.1.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>3.1.2</b> Calculating Reflectance</a></li>
+<li class="chapter" data-level="5.1.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>5.1.1</b> Deriving Horizontal Irradiance</a></li>
+<li class="chapter" data-level="5.1.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>5.1.2</b> Calculating Reflectance</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#the-problem"><i class="fa fa-check"></i><b>3.2</b> The Problem</a></li>
-<li class="chapter" data-level="3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>3.3</b> Is Correction Needed?</a>
+<li class="chapter" data-level="5.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#the-problem"><i class="fa fa-check"></i><b>5.2</b> The Problem</a></li>
+<li class="chapter" data-level="5.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>5.3</b> Is Correction Needed?</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>3.3.1</b> Do the sun sensor angles make sense?</a></li>
-<li class="chapter" data-level="3.3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>3.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
-<li class="chapter" data-level="3.3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>3.3.3</b> Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
+<li class="chapter" data-level="5.3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>5.3.1</b> Do the sun sensor angles make sense?</a></li>
+<li class="chapter" data-level="5.3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>5.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
+<li class="chapter" data-level="5.3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>5.3.3</b> Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras"><i class="fa fa-check"></i><b>3.4</b> Correcting Irradiance Values for Micasense Cameras</a>
+<li class="chapter" data-level="5.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras"><i class="fa fa-check"></i><b>5.4</b> Correcting Irradiance Values for Micasense Cameras</a>
 <ul>
-<li class="chapter" data-level="3.4.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#reading-exif-data"><i class="fa fa-check"></i><b>3.4.1</b> Reading Exif Data</a></li>
-<li class="chapter" data-level="3.4.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-solar-zenith-anlge"><i class="fa fa-check"></i><b>3.4.2</b> Calculating Solar Zenith Anlge</a></li>
-<li class="chapter" data-level="3.4.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles"><i class="fa fa-check"></i><b>3.4.3</b> Caluclating Sun-Sensor Angles</a></li>
-<li class="chapter" data-level="3.4.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>3.4.4</b> Scattered:Direct Ratio Estimate</a></li>
-<li class="chapter" data-level="3.4.5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#compute-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>3.4.5</b> Compute horizontal (corrected) irradiance</a></li>
-<li class="chapter" data-level="3.4.6" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#visualizing-the"><i class="fa fa-check"></i><b>3.4.6</b> Visualizing the</a></li>
+<li class="chapter" data-level="5.4.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#reading-exif-data"><i class="fa fa-check"></i><b>5.4.1</b> Reading Exif Data</a></li>
+<li class="chapter" data-level="5.4.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-solar-zenith-anlge"><i class="fa fa-check"></i><b>5.4.2</b> Calculating Solar Zenith Anlge</a></li>
+<li class="chapter" data-level="5.4.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles"><i class="fa fa-check"></i><b>5.4.3</b> Caluclating Sun-Sensor Angles</a></li>
+<li class="chapter" data-level="5.4.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>5.4.4</b> Scattered:Direct Ratio Estimate</a></li>
+<li class="chapter" data-level="5.4.5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#computing-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>5.4.5</b> Computing Horizontal (Corrected) Irradiance</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -217,13 +239,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="photogrametric-processing" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Photogrametric Processing<a href="photogrametric-processing.html#photogrametric-processing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="processing-orthomosaics" class="section level2 hasAnchor" number="2.1">
-<h2><span class="header-section-number">2.1</span> Processing Orthomosaics<a href="photogrametric-processing.html#processing-orthomosaics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="photogrametric-processing" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Photogrametric Processing<a href="photogrametric-processing.html#photogrametric-processing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="processing-orthomosaics" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Processing Orthomosaics<a href="photogrametric-processing.html#processing-orthomosaics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
-<div id="shadow-masks" class="section level2 hasAnchor" number="2.2">
-<h2><span class="header-section-number">2.2</span> Shadow Masks<a href="photogrametric-processing.html#shadow-masks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="shadow-masks" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Shadow Masks<a href="photogrametric-processing.html#shadow-masks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Pixels containing shadows and openings in the canopy can introduce error in vegetation indices as reflectance values are often lower in shaded pixels (Malenovský et al., 2013; Zhang et al., 2024). Masking out shaded pixels and openings within the crown is necessary to calculate accurate vegetation indices. We found masking with NIR reflectance to be a consistent and effective approach for masking out shadows and gaps. We use the NIR reflectance band (842nm) from the Micasense RedEgde-MX Dual. NIR thresholds are determined using the shape of the NIR distribution. If the NIR distribution is bimodal, the threshold is set to the local minimum, whereas if the distribution is unimodal, the threshold is set to the local maximum (Chen et al., 2007; D’Odorico et al., 2021; Otsu et al., 2019).</p>
 <p>Below we define a function <em>find_local_min</em> that takes a list of first derivatives and returns a dataframe containing:</p>
 <ul>
@@ -434,8 +456,8 @@ The above parameters were added to describe each minimum found by the function s
 <p>Below you can see that in this case the filter did not result in a large change in the shadow mask as there were minimal small patches to begin with. Here the white areas in the filtered mask image on the right are areas that will not be masked given that the mask did not contain enough pixels. This will result in a less patchy shadow mask.</p>
 <p><img src="Photos_&_gifs/shadow_mask_example_filtered_2022_08_05.PNG" width="100%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="crown-level-vegetation-indicies" class="section level2 hasAnchor" number="2.3">
-<h2><span class="header-section-number">2.3</span> Crown-level Vegetation Indicies<a href="photogrametric-processing.html#crown-level-vegetation-indicies" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="crown-level-vegetation-indicies" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Crown-level Vegetation Indicies<a href="photogrametric-processing.html#crown-level-vegetation-indicies" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Vegetation indices (VIs) are important tools for near-real time monitoring and function as proxies for health, productivity, structural changes, and stress.</p>
 <p>Below we describe a few commonly used VIs that will be calculated in this workflow:</p>
 <ul>
@@ -446,8 +468,8 @@ The above parameters were added to describe each minimum found by the function s
 <li><p><strong>Red Edge (RE) slope</strong> captures changes in chlorophyl content and structural health. Steep RE slopes generally indicate healthy vegetation while more gradual slopes often indicate stressed vegetation. This is due to the base of the RE slope sitting around a main chlorophyll absorption peak and the end of the RE slope sitting near the near-infrared (NIR) range. Hence, the more chlorophyll the lower the reflectance around the base of the RE slope and the greater the reflectance in the NIR, often attributed to healthy vegetative material, the steeper the overall slope of the RE (Sims and Gamon, 2002, Clevers and Gitelson)</p></li>
 <li><p><strong>Green Chromatic Cordinate (GCC)</strong> is a measure of green reflectance relative to the total reflectance in the visible light portion on the electromagnetic spectrum. It is a metric of greeness that is often used as a proxy for vegetation health (Reid et al., 2016).</p></li>
 </ul>
-<div id="vi-workflow" class="section level3 hasAnchor" number="2.3.1">
-<h3><span class="header-section-number">2.3.1</span> VI Workflow<a href="photogrametric-processing.html#vi-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="vi-workflow" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> VI Workflow<a href="photogrametric-processing.html#vi-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below are code chunks that take the <a href="09-Crown_delineation#Crown-delineation">delineated crowns</a> and <a href="Photogrametric_processing#Processing%20Orthomosaics">multispectral orthomosaics</a> and output a .rds file containing several popular vegetation indices at the crown-level. In this script we demonstrate how to calculate both mean and median values of vegetation indices per crown.</p>
 <p>We begin by loading the necessary packages:</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="photogrametric-processing.html#cb29-1" tabindex="-1"></a><span class="fu">library</span>(terra) <span class="co"># to work with the orthomosaics (rasters)</span></span>

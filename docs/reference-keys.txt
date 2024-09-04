@@ -1,3 +1,19 @@
+fig:GCP-figure
+range-of-sites-assessed
+jordan-river
+powell-river
+sites
+preflight-planning
+achieving-positional-accuracy-on-multi-temporal-and-multi-sensor-data-collections
+kinematic-processing-rtkppk
+ground-control-points-gcp
+absolute-and-relative-reference-with-precise-point-positioning-ppp
+terrain-following-on-sites-with-elevation-change
+site-selection-considerations
+drone-and-sensors-what-will-i-need-to-purchase-and-how-much-will-it-cost
+hardware-costs
+drone-training-in-canada
+section
 lidar-processing-workflow
 dji-terra
 register-the-lidar-to-the-dap-point-cloud
@@ -34,5 +50,4 @@ reading-exif-data
 calculating-solar-zenith-anlge
 caluclating-sun-sensor-angles
 scattereddirect-ratio-estimate
-compute-horizontal-corrected-irradiance
-visualizing-the
+computing-horizontal-corrected-irradiance

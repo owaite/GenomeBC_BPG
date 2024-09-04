@@ -1,0 +1,42 @@
+# Preflight Planning
+
+## Achieving positional accuracy on multi-temporal and multi-sensor data collections 
+
+### Kinematic processing: RTK/PPK 
+
+### Ground Control Points (GCP) 
+
+```{r GCP-figure, echo=FALSE, out.width="100%", fig.cap = "Aerial view of a GCP at the 12-year old Western redcedar Sandcut site taken with the P1 sensor."}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Tree_tops_GCP.png")
+```
+
+### Absolute and Relative Reference with Precise Point Positioning (PPP) 
+
+### Terrain Following on Sites with Elevation Change 
+
+```{r terrain-following-figure, echo=FALSE, out.width="100%", fig.cap = "Terrain following on variable topography."}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Terrain_following.PNG")
+```
+
+## Site Selection Considerations
+
+
+
+*Ideal sites: *
+
+```{r ideal-site-figure, echo=FALSE, out.width="100%", fig.cap = ""}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\ideal_sites.png")
+```
+
+*Effects of topography: Warning to take extra care *
+
+
+
+
+## Drone and Sensors: What will I need to purchase and how much will it cost?
+
+### Hardware Costs
+
+### Drone Training in Canada
+
+## 

@@ -1,0 +1,194 @@
+
+
+
+Prior to running this code you must:
+- Download the .bat file for step 2 from the GitHub
+
+
+**Note**: We have run across an error in some imagery, DJI is working on a solution.
+
+The error is as follows:
+ERROR: call dirp_set_measurement_params failed
+ERROR: call prv_isp_config failed
+Test done with return code -6
+
+```{r eval=FALSE, include=TRUE}
+library(exiftoolr)
+library(dplyr)
+library(lubridate)
+
+install.packages("OpenImageR")
+library(OpenImageR)
+library(raster)
+library(doParallel)
+
+#install.packages("timechange")
+library(timechange)
+
+#install.packages("data.table")
+library(data.table)
+
+library(stringr)
+
+
+# Read in CSV of weather data (ensure adjustments for daylight savings have been made if necessary) 
+df <- read.csv("D:\\Fdc_PR_Canoe\\Site_Info\\Powell_River_Canoe2_All_Data_2023_02_07_PST_1_DaylightSavings_mar16_nov6_2022.csv")
+df$Date <- as.Date(df$Date, '%m/%d/%y') #comes out as year-0m-0d
+
+dates_DST <- c(unique(df$Date))
+dates_DST
+dates_list <- as.list(dates_DST)
+dates_list
+
+Canoe_df <- df
+```
+
+
+# Step 00
+Create a folder with RGB images that have the same name as converted IR images so that only matching RGB images are grabbed and both RGB and IR can be loaded in metassshape as a multicamera system
+
+
+```{r eval=FALSE, include=TRUE}
+therm_dates <- c("2022_10_05")
+
+for(x in 1:length(therm_dates)){
+  date_therm <- therm_dates[x]
+  print(date_therm)
+  
+  dir <- paste0("I:\\PARSER_Ext\\Fdc_PR_Canoe\\Flights\\",date_therm,"\\1_Data\\H20T") #directory to h20T imagery
+  list_dir <- list.files(dir, full.names = TRUE,pattern = c("DJI.+-H20T")) #folders containing orignal imagery
+  print(list_dir)
+  
+  # GETTING ALL RGB IMAGES
+  for (d in 1:length(list_dir)){
+    #calling each directly separately
+    folder_dir <- list_dir[d]
+    if(d == 1){
+      files_W <- list.files(folder_dir, pattern = "_W.JPG$")
+    }else{
+      files_W_add <- list.files(folder_dir, pattern = "_W.JPG$")
+      files_W <- append(files_W,files_W_add)
+    }
+  }
+  
+  dir_IR <- paste0("I:\\PARSER_Ext\\Fdc_PR_Canoe\\Flights\\",date_therm,"\\1_Data\\H20T\\Merged_T\\Temperature_rasters_EXIF_DST")
+  
+  #list of thermal files
+  files_T <- list.files(dir_IR, pattern = "_T.tiff$")
+  
+  
+  # Function to extract the core name from a file path
+  get_core_name <- function(file_path) {
+    basename(file_path) %>%
+      gsub("_[TW]$", "", .)
+  }
+  
+  #creating a new folder for the metahspae test
+  merged <- "Merged_T"
+  
+  if (!dir.exists(paste0(dir, "\\",merged,"\\RGB_&_IR_EXIF_DST"))) {
+    dir.create(paste0(dir, "\\",merged,"\\RGB_&_IR_EXIF_DST"),recursive = TRUE)
+  }
+  
+  dir_new <- paste0(dir, "\\",merged,"\\RGB_&_IR_EXIF_DST")
+  
+  for (d in 1:length(list_dir)){
+    #calling each directly separately
+    print(d)
+    folder_dir_W <- list_dir[d]
+    files_W <- list.files(folder_dir_W, pattern = "_W.JPG$")
+    
+    for (i in 1:length(files_T)) {
+      core_name_T <- substr(files_T[i], 1, nchar(files_T[i]) - 6)
+      matching_file_W <- files_W[str_detect(files_W, core_name_T)]
+      if(length(matching_file_W)>=1){
+        #copying over files
+        file.copy(from = paste0(folder_dir_W,"\\", matching_file_W),
+                  to = paste0(dir_new,"\\", matching_file_W), overwrite = FALSE)
+        file.copy(from = paste0(dir_IR,"\\", files_T[i]),
+                  to = paste0(dir_new,"\\", files_T[i]), overwrite = FALSE)
+      }
+    }
+  }
+  
+}
+```
+
+# Step 0: making folders and copying h20T images to sole folder
+
+```{r eval=FALSE, include=TRUE}
+#dir <- Data directory, folder where thermal and thermal_SDK_DJI_raw are held
+#"Fdc_PR_Canoe", Cw_PR_Rainbow_SiteA
+site <- "Fdc_PR_Canoe"
+flight_dates_all <- list.files(paste0("I:\\PARSER_Ext\\",site,"\\Flights\\"))
+flight_dates_all <- as.Date(flight_dates_all, "%Y_%m_%d")
+flight_dates_all
+flight_dates_DayST <- flight_dates_all[flight_dates_all %in% df$Date]
+#chanign format to have it match the file format of year_m_d
+flight_dates_DayST <- str_replace_all(flight_dates_DayST, "-", "_")
+flight_dates_DayST
+#name of the 'merged' folder that will contain all the h20T images from multiple folders, this was necessary when I was running tests but to stay consistent I would leave it set to 'Merged_T'
+
+## Dates DONE : up to 2022_10_20
+#merged_T folders done: 2022_11_19 
+## 2022_11_28 - Mica only, no thermal for: 2023_01_26, 
+## NEED TO FIND THERMAL DATA FOR 2023_04_26
+
+dates <- c("2023_05_10")#, "2023_05_24")#"2023_02_17", "2023_03_22", "2023_04_05"
+# library(filesstrings)
+
+flight_dates_DayST <- dates
+flight_dates_DayST
+
+merged <- "Merged_T"
+
+for(i in 1:length(flight_dates_DayST)){
+  data_date <- flight_dates_DayST[i]
+  print(data_date)
+  dir <- paste0("I:\\PARSER_Ext\\",site,"\\Flights\\", data_date, "\\1_Data\\H20T")
+  dir
+  # #creating a folder to move non Daylight savings data to
+  # if (!dir.exists(paste0(dir, "\\",merged,"\\No_DST"))) {
+  #   dir.create(paste0(dir, "\\",merged,"\\No_DST"),recursive = TRUE)
+  # }
+  #moving non DST data to No_DST
+  # file.rename(paste0(dir, "\\",merged,"\\DJI_SDK_raw\\"), paste0(dir, "\\",merged,"\\No_DST\\DJI_SDK_raw\\"))
+  # file.rename(paste0(dir, "\\",merged,"\\Temperature_rasters\\"), paste0(dir, "\\",merged,"\\No_DST\\Temperature_rasters\\"))
+  # file.rename(paste0(dir, "\\",merged,"\\Temperature_rasters_EXIF\\"), paste0(dir, "\\",merged,"\\No_DST\\Temperature_rasters_EXIF\\"))
+  # file.move(paste0(dir, "\\",merged,"\\DJI_SDK_loop.bat"), paste0(dir, "\\",merged,"\\No_DST\\"))
+  # file.move(paste0(dir, "\\",merged,"\\DJI_SDK_loop_updated.bat"), paste0(dir, "\\",merged,"\\No_DST\\"))
+  
+  if (!dir.exists(paste0(dir, "\\",merged,"\\Temperature_rasters_DST"))) {
+    dir.create(paste0(dir, "\\",merged,"\\Temperature_rasters_DST"),recursive = TRUE)
+  }
+  
+  if (!dir.exists(paste0(dir, "\\",merged,"\\Temperature_rasters_EXIF_DST"))) {
+    dir.create(paste0(dir, "\\",merged,"\\Temperature_rasters_EXIF_DST"),recursive = TRUE)
+  }
+  
+  #copying h20T images ending in _T (aka unprocessed thermal images) into the thermal only folder for ease in DJI SDK step
+  #getting folders in the H20T folder that have DJI and end in -H20T, may need to check that all folders are named this way
+  list_dir <- list.files(dir, full.names = TRUE,pattern = c("DJI.+-H20T"))
+  print(list_dir)
+  
+  for (d in 1:length(list_dir)){
+    #calling each directly seperately
+    folder_dir <- list_dir[d]
+    #getting allJPEGs ending in _T in that directory
+    T_files <- list.files(folder_dir, pattern = "_T\\.JPG$")
+    #print(T_files)
+    file.copy(from = paste0(folder_dir,"\\", T_files),
+              to = paste0(dir,"\\",merged,"\\", T_files), overwrite = FALSE)
+  }
+  
+}
+#no need to create merged folders, since they already exist for some
+
+```
+
+#STEP 1: Weather Data: Humidity, Ambient Temp
+
+#STEP 2: DJI SDK in Visual Studio : convert to temp in C : 
+
+#STEP 3: Read binary and convert to a raster: https://community.rstudio.com/t/solution-to-reading-raw-images-into-r/45435
+

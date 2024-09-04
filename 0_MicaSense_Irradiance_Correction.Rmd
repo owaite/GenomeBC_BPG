@@ -147,7 +147,7 @@ First, lets define direct and horizontal irradiance with respect to the DLS:
 
 **Horiztonal Irradiance**: The total irradiance on a horizontal surface, including both direct sunlight (projected onto the horizontal plane) and diffuse light. Hence, if the sun is directly above the sensor and it is a clear sunny day, the direct irradiance component will likely be quite close to the horizontal irradiance, however still lower given that horizontal irradiance inlcudes diffuse light as well. 
 
-Below, we have plotted the direct and horizontal irradiance from the DLS2 and values calculated with the DLS1 method [LINK]. We can see that the direct irradiance from the DLS2 is greater than the horizontal irradiance, which is physically impossible. In contrast, the direct irradiance from the DLS1 method is approximately 50 W/m²/nm less than the horizontal irradiance. 
+Below, we have plotted the direct and horizontal irradiance from the DLS2 and values calculated with the [DLS1 method](0_Micasense_Irradiance_Correction##Correcting Irradiance Values for Micasense Cameras). We can see that the direct irradiance from the DLS2 is greater than the horizontal irradiance, which is physically impossible. In contrast, the direct irradiance from the DLS1 method is approximately 50 W/m²/nm less than the horizontal irradiance. 
 
 Explanations for the lower direct irradiance from the DLS1 compared to the horizontal irradiance include:
 
@@ -159,7 +159,7 @@ Explanations for the lower direct irradiance from the DLS1 compared to the horiz
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Hor_dir_irradiance_DLS1_v_DLS2.PNG")
 ```
-From this graph, we would recommend correcting the data using the DLS1 method outlined below [LINK].
+From this graph, we would recommend correcting the data using the [DLS1 method](0_Micasense_Irradiance_Correction##Correcting Irradiance Values for Micasense Cameras) outlined below 
 
 
 ### Does the scattered: direct ratio make sense for the lighting conditions of that day?
@@ -185,8 +185,7 @@ Overall, we recommend correcting this flight using the DLS1 method. The DLS1 cor
 
 ## Correcting Irradiance Values for Micasense Cameras
 
-
-This chapter explains the process of correcting irradiance values for Micasense cameras using R. The correction involves several steps, including filtering and mutating data, calculating solar angles, and estimating scattered to direct light ratios. Each step is crucial for ensuring accurate irradiance readings, which are essential for downstream analyses.
+This chapter explains the process of correcting irradiance values for Micasense cameras using R. The correction involves several steps, including filtering and mutating data, calculating solar angles, and estimating scattered to direct light ratios. Each step is crucial for ensuring accurate irradiance readings, which are essential for downstream analyses. The code was taken largely from [Micasense's GitHub](https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb) and converted into R to use in our workflow.
 
 
 To fix the sun-sensor angle and irradiance values we have taken the methodology used by the DLS1. The process involves:
@@ -408,6 +407,10 @@ xmp_all_ssa = SSA_xmp_all_filtered %>%
                scales = "free_x", ncol = 2)+ # this will plot each band as its own plot as a check for all data
     theme_bw()
 )
+```
+
+<!--
+```{r eval=FALSE, include=TRUE}
 ggsave(plot = SSA_plot, #save out the plot for reference
        filename = paste0(plot_dir, "0_SSA_plot.jpeg"), #change plot_dir to the location you would like to save to
        device = jpeg,
@@ -417,6 +420,7 @@ ggsave(plot = SSA_plot, #save out the plot for reference
        dpi = 300,
        bg = 'white')
 ```
+-->
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\0_SSA_plot.PNG")
@@ -506,6 +510,10 @@ Below we plot the pattern in the rolling regression and make sure you're keeping
     theme_bw(base_size = 16) +
     facet_wrap(. ~ Date, 
                scales = "free"))
+```
+
+<!--
+```{r eval=FALSE, include=TRUE}
 
 ggsave(plot = RR_params,
        filename = paste0(plot_dir,"1_CheckRollingRegressionParams_plot.jpeg"),
@@ -516,6 +524,7 @@ ggsave(plot = RR_params,
        dpi = 300,
        bg = 'white')
 ```
+-->
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\1_CheckRollingRegressionParams_plot.PNG")
@@ -538,7 +547,10 @@ Next, check that the linear relationships you're keeping look realistic. The slo
     scale_color_viridis_c() +
     facet_wrap(. ~ Date, 
                scales = "free_y"))
+```
 
+<!--
+```{r eval=FALSE, include=TRUE}
 ggsave(plot = linear_plots,
        filename = paste0(plot_dir,"2_LinearRegression_plot.jpeg"),
        device = jpeg,
@@ -548,6 +560,8 @@ ggsave(plot = linear_plots,
        dpi = 300,
        bg = 'white')
 ```
+
+-->
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\2_LinearRegression_plot.jpeg")
@@ -672,6 +686,10 @@ Now we plot the sensor irradiance along with the corrected horizontal, direct, a
     facet_wrap(. ~ Date, scales = "free",
                ncol = 3) +
     labs(color = "Irradiance Type"))
+```
+
+<!--
+```{r eval=FALSE, include=TRUE}
 
 ggsave(plot = Sensor_irr,
        filename = paste0(plot_dir,"4_SensorIrradiance_w_CorrectedIrradiance_plot.jpeg"),
@@ -682,6 +700,8 @@ ggsave(plot = Sensor_irr,
        dpi = 300,
        bg = 'white')
 ```
+
+-->
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\4_SensorIrradiance_w_CorrectedIrradiance.PNG")
@@ -769,6 +789,10 @@ data = avg_ratio_data %>% filter(BandName %in% c("Blue")) # only need to look at
     facet_grid(BandName ~ camera, scales = "free")+
     theme_bw()
 )
+```
+
+<!--
+```{r eval=FALSE, include=TRUE}
 
 ggsave(plot = Dir_scat_irr_plot,
        filename = paste0(plot_dir, "5_Irradiance_DLS1_DLS2_plot.jpeg"),
@@ -780,38 +804,36 @@ ggsave(plot = Dir_scat_irr_plot,
        bg = 'white')
 ```
 
+-->
+
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\5_Irradiance_DLS1_DLS2_plot.jpeg")
 ```
 
 Refer to the section [Is Correction Needed?](0_Micasense_Irradiance_Correction##Is Correction Needed?) to help decide whether or not your data needs correcting.
 
-Up to this point, we have calculated "corrected" irradiance and sun sensor angles however have not overwritten the exif data within the micasense imagery. In this next step, we will overwrite image exif data with the corrected DLS1 values. Before moving on to this step ensure that :
+Up to this point, we have calculated "corrected" irradiance and sun sensor angles however have not overwritten the exif data within the MicaSense imagery. In this next step, we will overwrite image exif data with the corrected DLS1 values. Before moving on to this step ensure that :
 
 1) You have decided that your data needs correcting
 
-2) You have created a backup of your original data, since you will be irreversibly overwriting the exif data of the imagery. Prior to running the code below we copied all images in our Micasense folder to a folder in the same directory named Micasense_cor. Micasense_cor will be the folder we will be editing, and the Micasense folder will contain the unedited imagery
+2) You have created a backup of your original data, since you will be irreversibly overwriting the exif data of the imagery. Prior to running the code below we copied all images in our Micasense folder to a folder in the same directory as the Micasense folder however named named Micasense_cor. Imagery in the Micasense_cor folder will be the imagery we will be editing, and the Micasense folder will contain the unedited imagery
 
-3) You have downloaded the MicaSense.config from the GitHub page ???????????????????????????????????????????????????????
+3) The MicaSense.config has been downloaded from [GitHub](https://github.com/owaite/GenomeBC_BPG), the file can be found in the "Scripts" folder under MicaSense
 
 
 ```{r eval=FALSE, include=TRUE}
-#Writing over exif data with corrected SSA, horizontal irradiance, direct irradiance, and scattered irradiance
-#### correct the photos NOT in the "_save" folder
+# Writing over exif data with corrected SSA, horizontal irradiance, direct irradiance, and scattered irradiance
 
 corrected_directory <- paste0(dir,date,"\\1_Data\\",MS_folder_name,"_cor\\") #i.e. this folder is called Micasense_cor and is a copied version of the Micasense folder, we will be correcting the exif data of images in the Micasense_cor folder and leaving the Micasense folder untouched with the original exif data
 original_directory <- paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\") # path the folder of micasense images
 
 xmp_corrected = readRDS(paste0(dir, date, "\\", MS_folder_name,"\\CSV\\",date,"_xmp_corrected.rds")) %>% #path to corrected xmp data .rds file
-  mutate(SourceFile = str_replace(SourceFile,original_directory, corrected_directory), # Changing source file name to reflect where it will be on the SSD (working off the Q)
-         # TargetFile = str_replace(SourceFile, ext_save, "")
-         TargetFile = SourceFile) # current SourceFile is for MicaSense_Cleaned_save, here we are removing the "_save" so we just 
+  mutate(SourceFile = str_replace(SourceFile,original_directory, corrected_directory), # Changing source file name from the original directory to the corrected_directory. This will result in imagery in the corrected direcotry only to be edited
+         TargetFile = SourceFile) #the TargetFiles are the path names to the files to be edited
 
-#fix sourcefile to run on E                                            # call the MicaSense_Cleaned folder, this is the folder of images whose meta data will get edited
 # As vectors
 (img_list = xmp_corrected$FileName)
 (targets = xmp_corrected$TargetFile)
-# (SSA = xmp_corrected$SunSensorAngle)
 (SSA = xmp_corrected$SunSensorAngle_DLS1_rad)
 
 (horirrorig = xmp_corrected$HorizontalIrradiance)
@@ -824,7 +846,7 @@ targets[1] #checking its the right imgs
 for (i in seq_along(targets)) {
   # given a micasense config file, overwrite tags with computed values
   # using exiftool_call from the exifr package
-  call = paste0("-config G:/GitHub/SNC-GitHub/MicaSense/MicaSense.config", # SET PATH to the config file, this file is on the PARSER GitHub in the same folder as this R script
+  call = paste0("-config G:/GitHub/GenomeBC_BPG/MicaSense/MicaSense.config", # SET PATH to the config file, this file is on the PARSER GitHub in the same folder as this R script
                 " -overwrite_original_in_place",
                 " -SunSensorAngle=", SSA[i],
                 " -HorizontalIrradiance=", horirr[i],
@@ -837,4 +859,6 @@ for (i in seq_along(targets)) {
   print(paste0(i, "/", length(targets), " updated img:",img_list[i] ))
 }
 ```
+
+Lastly, check the exif data of the first and last image to ensure that the data has been properly overwritten.
 

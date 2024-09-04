@@ -8,6 +8,8 @@ language:
     chapter_name: "Chapter "
 rmd_files:
   - index.Rmd
+  - 0_Sites.Rmd
+  - 0_Preflight_Planning.Rmd
   - 0_LiDAR_processing.Rmd
   - 0_Photogrametric_processing.Rmd
   - 0_MicaSense_Irradiance_Correction.Rmd

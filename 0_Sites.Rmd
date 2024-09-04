@@ -1,0 +1,48 @@
+# Range of Sites Assessed
+
+## Jordan River
+```{r, echo = FALSE}
+library(knitr)
+library(kableExtra)
+
+# Data as a dataframe
+data <- data.frame(
+  `Western Red cedar (Cw)` = c("[Cw_East](https://projects.spexigeo.com/cw-jr-east/map/1bf9b0e2-21b5-4e96-a96c-033db45424fd) – planted in 2000, 3980 live trees on 4480 positions ",
+                               "[Cw_Sandcut](https://projects.spexigeo.com/cw-jr-sandcut/map/b4d345ed-a69a-43bf-b622-1431504ff041) – planted in 2012, 3500 live trees on 3841 positions"),
+  `Douglas fir (Fdc)` = c("[Fdc_East](https://projects.spexigeo.com/fdc-east-gca/map/01275e24-4077-446a-9d31-f2c1f55dbb8e) – planted in 2003, 1612 live trees on 3019 positions ",
+                          "[Fdc_W45](https://projects.spexigeo.com/fdc-jr-w45/map/86e4f176-d3d8-466f-895b-5ab21b396ca5) – planted in 2019, 2076 live trees on 2494 positions")
+)
+
+# Create the table and center it
+kable(data, col.names = c("Western Red cedar (Cw)", "Douglas fir (Fdc)"))
+
+```
+
+
+## Powell River
+```{r, echo = FALSE}
+library(knitr)
+library(kableExtra)
+
+# Data as a dataframe
+data <- data.frame(
+  `Western Red cedar (Cw)` = c("[Cw_Rainbow](https://projects.spexigeo.com/cw-rainbow/map/884b78af-30b7-4158-93a4-7516c5c2568b) – planted in 2000, 3674 live trees on 4745 positions"),
+  `Douglas fir (Fdc)` = c("[Fdc_Canoe](https://projects.spexigeo.com/9536b041-e269-4d4d-a02a-9311bda57ae8/map/dd07addc-a47c-485b-9bce-5b35f0508611) – Planted in 1999, 1739 live trees on 3164 positions")
+)
+
+# Create the table and center it
+kable(data, col.names = c("Western Red cedar (Cw)", "Douglas fir (Fdc)"))
+
+```
+## 2024 Sites
+```{r, echo = FALSE}
+# Data as a dataframe
+data <- data.frame(
+  `Douglas fir (Fdc)` = c("[Big Tree GCA](https://projects.spexigeo.com/fdc-big-tree-gca/map/0c1d3c05-63ff-46a9-b7ba-b85fd3a429a8) – Planted in 2003, 2229 live trees on 2900 positions"),
+  `Douglas fir (Fdc)` = c("[Hillcrest GCA](https://projects.spexigeo.com/fdc-hillcrest-gca/map/9a13807e-55ed-4993-b70a-f3a6697c5d7b) – Planted in 2003, 1514 live trees")
+)
+
+# Create the table and center it
+kable(data, col.names = c("Douglas fir (Fdc)", "Douglas fir (Fdc)"))
+
+```
