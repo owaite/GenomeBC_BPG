@@ -5,26 +5,26 @@
 
 ## Shadow Masks
 
-Pixels containing shadows and openings in the canopy can introduce error in vegetation indices as reflectance values are often lower in shaded pixels or due to background noise (Malenovský et al., 2013; Zhang et al., 2024).  Masking out shaded pixels and openings within the crown is necessary to calculate accurate vegetation indices. We found masking with NIR reflectance to be a consistent and effective approach for masking out shadows and gaps. We use the NIR reflectance band (842nm) from the MicaSense MX Dual. NIR thresholds are determined using the shape of the NIR distribution. If the NIR distribution is bimodal, the threshold is set to the local minima, whereas if the distribution is unimodal, the threshold is set to the local maxima (Chen et al., 2007; D’Odorico et al., 2021; Otsu et al., 2019).
+Pixels containing shadows and openings in the canopy can introduce error in vegetation indices as reflectance values are often lower in shaded pixels (Malenovský et al., 2013; Zhang et al., 2024).  Masking out shaded pixels and openings within the crown is necessary to calculate accurate vegetation indices. We found masking with NIR reflectance to be a consistent and effective approach for masking out shadows and gaps. We use the NIR reflectance band (842nm) from the Micasense RedEgde-MX Dual. NIR thresholds are determined using the shape of the NIR distribution. If the NIR distribution is bimodal, the threshold is set to the local minimum, whereas if the distribution is unimodal, the threshold is set to the local maximum (Chen et al., 2007; D’Odorico et al., 2021; Otsu et al., 2019).
 
 Below we define a function *find_local_min* that takes a list of first derivatives and returns a dataframe containing:
 
-- **neg_value**: The value of the first derivative directly before the minima (i.e. the negative derivative value to the left of the minima)
+- **neg_value**: The value of the first derivative directly before the minimum (i.e. the negative derivative value to the left of the minimum)
 
-- **pos_value**: The value of the first derivative directly after the minima (i.e. the positive derivative value to the right of the minima)
+- **pos_value**: The value of the first derivative directly after the minimum (i.e. the positive derivative value to the right of the minimum)
 
--	**pos_def**: The summation of the positive gradient values (a.k.a. slope values) in the first 15 gradient values following the local minimia. This value provides an idea of how great the increase in slope is after the local minima.
+-	**pos_def**: The summation of the positive gradient values (a.k.a. slope values) in the first 15 gradient values following the local minimum. This value provides an idea of how great the increase in slope is after the local minimum.
 
--	**neg_def**: The summation of the negative gradient values in the first 15 gradient values preceding the local minimia. This value provides an idea of how great the decrease in slope is before the local minima.
+-	**neg_def**: The summation of the negative gradient values in the first 15 gradient values preceding the local minimum. This value provides an idea of how great the decrease in slope is before the local minimum.
 
--	**Index**: Index position of the negative gradient value bordering the local minimia. This is the index of our threshold value since we do not get a true zero slope value at the local minimia but rather a change from a very small negative gradient value to a very small positive gradient value.
+-	**Index**: Index position of the negative gradient value bordering the local minimum. This is the index of our threshold value since we do not get a true zero slope value at the local minimum but rather a change from a very small negative gradient value to a very small positive gradient value.
 
--	**definition**: The summation of the absolute value of pos_def and neg_def values. The greater this number, the more defined the minima. 
-The above parameters were added to describe each minima found by the function so that the true local minima could be filtered for.
+-	**definition**: The summation of the absolute value of pos_def and neg_def values. The greater this number, the more defined the minimum. 
+The above parameters were added to describe each minimum found by the function so that the true local minimum could be filtered for.
 
-This function will be used in the next few steps to isolate minimas in the NIR distribution.
+This function will be used in the next few steps to isolate minimums in the NIR distribution.
 ```{r,eval=FALSE, echo=TRUE}
-#this function finds local minimums and "ranks" how defined they are by the 'definition' attribute
+# This function finds local minimums and ranks how defined they are by the 'definition' attribute
 find_local_min <- function(values) { #input "values" is a list of 1st derivatives of NIR values
   #initializing variables
   neg_slope <- numeric() 
@@ -94,7 +94,13 @@ if (!dir.exists(paste0(dir, Nir_shadow_folder_baseName,"\\"))) {
 
 ```
 
-Next, the NIR band is selected from the multispectral orthomosaic, cropped to the extent of the crowns shapefile, and reformated from a raster to a vector of values:
+Next, the NIR band is selected from the multispectral orthomosaic. Here you can choose to:
+
+1) Crop the mulispectral othomosaic to the extent of the crowns shapefile. We have found this to be a good option for mature sites with minimal exposed ground.
+
+2) Mask the mulispectral othomosaic to the individual crowns. We have found this to be a good option for younger sites with lots of ground exposure. 
+
+Below we crop the raster to the extent of the polygons and reformat from a raster to a vector of values:
 
 ```{r,eval=FALSE, echo=TRUE}
 #Create a vector of near-infrared (NIR) values from the 10th multispectral band (842nm)
@@ -116,25 +122,23 @@ plot(density_values) # check to see the distribution of NIR values (ie a visual 
 ```
 
 
-At this point the threshold can be estimated manually from the graph however, this is not a feasible method when you have many data acquisitions, nor is it the most accurate method. Below we describe the method we used to create shadow masks for many acquisitions withouth having to visually inspect the NIR distributions. To computationally find the threshold we first need to decipher whether the NIR distribution is unimodal (one peak) or multimodal (more than one peak). To do so we use the *is.multimodal* function from the LaplacesDemon package if an *if else* statement. 
+At this point the threshold can be estimated manually from the graph however, this is not a feasible method when you have many data acquisitions, nor is it the most accurate method. Below we describe the method we used to create shadow masks for many acquisitions withouth having to visually inspect the NIR distributions. To computationally find the threshold we first need to decipher whether the NIR distribution is unimodal (one peak) or multimodal (more than one peak). To do so we use the *is.multimodal* function from the LaplacesDemon package. 
 
-If the distribution was multimodal, we found the local minimia by:
+If the distribution was multimodal, we found the local minimum by:
 
 1) calculating the first derivatives fo the NIR density values and storing the derivatives in dy_dt
 
-2) applying the *find_local_min* function to the list of first derivatives to find minimas
+2) applying the *find_local_min* function to the list of first derivatives to find minimums
 
-3) filtering out small minimas that are not true minimas but rather dips on a larger slope
+3) filtering out small minimums that are not true minimums but rather dips on a larger slope
 
-4) Identifying false multimodals and assigning the threshold value to be the local maxima
+4) Identifying false multimodals and assigning the threshold value to be the local maximum
 
-5) Identifying the largest minima (a.k.a. the local minima) and setting that as the threshold value
+5) Identifying the largest minimum (a.k.a. the local minimum) and setting that as the threshold value
 
-If the distribution was not multimodal (and therefore unimodal), we found the local maxima by:
+If the distribution was not multimodal (and therefore unimodal), we found the local maximum by:
 
-1) locating the largest density values in the NIR distribution
-
-2) finding the NIR value that that desnity value corresponds to and setting that NIR value as the threshold
+1) locating the NIR value that corresponds to the greatest density of values in the NIR distribution
 
 **Note:** for each method there are **mode** and **thresh_name** variables defined. These variables are used to annotate the histrogram made in the next step 
 
@@ -183,7 +187,7 @@ if(is.multimodal(NIR_na)){ # if the NIR distribution is multimodal, continue to 
   }
 ```
 
-Nest, we plot a histogram of the NIR values and annotate it to contain:
+Next, we plot a histogram of the NIR values and annotate it to contain:
 
 - a vertical line at the threshold
 
@@ -228,9 +232,10 @@ terra::writeRaster(shadow_mask, paste0(dir, Nir_shadow_folder_baseName,"\\",  da
 ```
 
 
-<!-- 
-This text or code won't appear in the output.
-It can be multiple lines.
+```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\shadow_mask_example_no_filter_2022_08_05.PNG")
+```
+
 
 Lastly, we apply the *clump* function to group adjacent pixels that represent shadows creating "clumps" a.k.a. shadow patches. These shadow patches are then converted into a dataframe containing a unique ID per shadow patch and the number of pixels within each patch. 
 
@@ -270,7 +275,12 @@ new_mask[new_mask == 0] = NA # make clumps that are zero, NA
 terra::writeRaster(new_mask, paste0(dir, Nir_shadow_folder_baseName,"\\",  date_list[x], "_NIR_shadow_thresh",threshold ,"_",thresh_name, "_mask2.tif"),
                      overwrite = TRUE)
 ```
--->
+
+Below you can see that in this case the filter did not result in a large change in the shadow mask as there were minimal small patches to begin with. Here the white areas in the filtered mask image on the right are areas that will not be masked given that the mask did not contain enough pixels. This will result in a less patchy shadow mask.
+
+```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\shadow_mask_example_filtered_2022_08_05.PNG")
+```
 
 ## Crown-level Vegetation Indicies
 

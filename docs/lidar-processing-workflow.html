@@ -181,8 +181,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>3.1.1</b> Deriving Horizontal Irradiance</a></li>
 <li class="chapter" data-level="3.1.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>3.1.2</b> Calculating Reflectance</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#issue"><i class="fa fa-check"></i><b>3.2</b> Issue</a></li>
-<li class="chapter" data-level="3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>3.3</b> Is correction needed?</a>
+<li class="chapter" data-level="3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#the-problem"><i class="fa fa-check"></i><b>3.2</b> The Problem</a></li>
+<li class="chapter" data-level="3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>3.3</b> Is Correction Needed?</a>
 <ul>
 <li class="chapter" data-level="3.3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>3.3.1</b> Do the sun sensor angles make sense?</a></li>
 <li class="chapter" data-level="3.3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>3.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
@@ -190,13 +190,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras"><i class="fa fa-check"></i><b>3.4</b> Correcting Irradiance Values for Micasense Cameras</a>
 <ul>
-<li class="chapter" data-level="3.4.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#initial-setup-and-data-loading"><i class="fa fa-check"></i><b>3.4.1</b> Initial Setup and Data Loading</a></li>
-<li class="chapter" data-level="3.4.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-solar-angle"><i class="fa fa-check"></i><b>3.4.2</b> Calculating Solar Angle</a></li>
-<li class="chapter" data-level="3.4.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#caluclating-solar-angles"><i class="fa fa-check"></i><b>3.4.3</b> Caluclating Solar Angles</a></li>
-<li class="chapter" data-level="3.4.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles"><i class="fa fa-check"></i><b>3.4.4</b> Caluclating Sun-Sensor Angles</a></li>
-<li class="chapter" data-level="3.4.5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>3.4.5</b> Scattered/Direct Ratio Estimate</a></li>
-<li class="chapter" data-level="3.4.6" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#compute-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>3.4.6</b> Compute horizontal (corrected) irradiance</a></li>
-<li class="chapter" data-level="3.4.7" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#visualizing-the"><i class="fa fa-check"></i><b>3.4.7</b> Visualizing the</a></li>
+<li class="chapter" data-level="3.4.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#reading-exif-data"><i class="fa fa-check"></i><b>3.4.1</b> Reading Exif Data</a></li>
+<li class="chapter" data-level="3.4.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-solar-zenith-anlge"><i class="fa fa-check"></i><b>3.4.2</b> Calculating Solar Zenith Anlge</a></li>
+<li class="chapter" data-level="3.4.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles"><i class="fa fa-check"></i><b>3.4.3</b> Caluclating Sun-Sensor Angles</a></li>
+<li class="chapter" data-level="3.4.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>3.4.4</b> Scattered:Direct Ratio Estimate</a></li>
+<li class="chapter" data-level="3.4.5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#compute-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>3.4.5</b> Compute horizontal (corrected) irradiance</a></li>
+<li class="chapter" data-level="3.4.6" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#visualizing-the"><i class="fa fa-check"></i><b>3.4.6</b> Visualizing the</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
