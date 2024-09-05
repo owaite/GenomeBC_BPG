@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
-  <meta name="description" content="Chapter 5 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <title>Chapter 6 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
+  <meta name="description" content="Chapter 6 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta property="og:title" content="Chapter 6 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta name="twitter:title" content="Chapter 6 MicaSense Irradiance Correction | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   
   
   
@@ -168,56 +168,70 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2.4" data-path="preflight-planning.html"><a href="preflight-planning.html#section"><i class="fa fa-check"></i><b>2.4</b> </a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>3</b> LiDAR Processing Workflow</a>
+<li class="chapter" data-level="3" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html"><i class="fa fa-check"></i><b>3</b> Data Collection and Flights</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>3.1</b> DJI Terra</a></li>
-<li class="chapter" data-level="3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>3.2</b> Register the LiDAR to the DAP point cloud</a>
+<li class="chapter" data-level="3.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#hardware---dji-matrice-3000-rtk-m300"><i class="fa fa-check"></i><b>3.1</b> Hardware - DJI Matrice 3000 RTK (M300)</a></li>
+<li class="chapter" data-level="3.2" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#workflow-site-reconnaissance"><i class="fa fa-check"></i><b>3.2</b> Workflow: Site Reconnaissance</a></li>
+<li class="chapter" data-level="3.3" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#data-collection-flight-planning"><i class="fa fa-check"></i><b>3.3</b> Data Collection: Flight Planning</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>3.2.1</b> Prepare LiDAR for registration</a></li>
-<li class="chapter" data-level="3.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>3.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
-<li class="chapter" data-level="3.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>3.2.3</b> Rescale and tile the registered LiDAR:</a></li>
+<li class="chapter" data-level="3.3.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#flight-planning-theory"><i class="fa fa-check"></i><b>3.3.1</b> Flight planning theory</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#flight-planning-with-dji-pilot"><i class="fa fa-check"></i><b>3.3.2</b> Flight planning with DJI Pilot</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>3.3</b> Normalization and individual tree point clouds</a>
+<li class="chapter" data-level="3.4" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#data-collection-sensors-parameters-and-ideal-conditions"><i class="fa fa-check"></i><b>3.4</b> Data Collection: Sensors, Parameters, and Ideal Conditions</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>3.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
-<li class="chapter" data-level="3.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>3.3.2</b> Normalizing the tiles using the DTM</a></li>
-<li class="chapter" data-level="3.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>3.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
-<li class="chapter" data-level="3.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>3.3.4</b> Segmenting tiles</a></li>
-<li class="chapter" data-level="3.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>3.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
-<li class="chapter" data-level="3.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>3.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
-</ul></li>
-<li class="chapter" data-level="3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>3.4</b> Individual Tree Metrics</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html"><i class="fa fa-check"></i><b>4</b> Photogrametric Processing</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#processing-orthomosaics"><i class="fa fa-check"></i><b>4.1</b> Processing Orthomosaics</a></li>
-<li class="chapter" data-level="4.2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#shadow-masks"><i class="fa fa-check"></i><b>4.2</b> Shadow Masks</a></li>
-<li class="chapter" data-level="4.3" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#crown-level-vegetation-indicies"><i class="fa fa-check"></i><b>4.3</b> Crown-level Vegetation Indicies</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>4.3.1</b> VI Workflow</a></li>
+<li class="chapter" data-level="3.4.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#micasense-10-band-spectral-sensor-for-vegetative-indices"><i class="fa fa-check"></i><b>3.4.1</b> MicaSense: 10-Band Spectral Sensor for Vegetative Indices</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html"><i class="fa fa-check"></i><b>5</b> MicaSense Irradiance Correction</a>
+<li class="chapter" data-level="4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>4</b> LiDAR Processing Workflow</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#background"><i class="fa fa-check"></i><b>5.1</b> Background</a>
+<li class="chapter" data-level="4.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>4.1</b> DJI Terra</a></li>
+<li class="chapter" data-level="4.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>4.2</b> Register the LiDAR to the DAP point cloud</a>
 <ul>
-<li class="chapter" data-level="5.1.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>5.1.1</b> Deriving Horizontal Irradiance</a></li>
-<li class="chapter" data-level="5.1.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>5.1.2</b> Calculating Reflectance</a></li>
+<li class="chapter" data-level="4.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>4.2.1</b> Prepare LiDAR for registration</a></li>
+<li class="chapter" data-level="4.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>4.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
+<li class="chapter" data-level="4.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>4.2.3</b> Rescale and tile the registered LiDAR:</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#the-problem"><i class="fa fa-check"></i><b>5.2</b> The Problem</a></li>
-<li class="chapter" data-level="5.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>5.3</b> Is Correction Needed?</a>
+<li class="chapter" data-level="4.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>4.3</b> Normalization and individual tree point clouds</a>
 <ul>
-<li class="chapter" data-level="5.3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>5.3.1</b> Do the sun sensor angles make sense?</a></li>
-<li class="chapter" data-level="5.3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>5.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
-<li class="chapter" data-level="5.3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>5.3.3</b> Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
+<li class="chapter" data-level="4.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>4.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
+<li class="chapter" data-level="4.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>4.3.2</b> Normalizing the tiles using the DTM</a></li>
+<li class="chapter" data-level="4.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>4.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
+<li class="chapter" data-level="4.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>4.3.4</b> Segmenting tiles</a></li>
+<li class="chapter" data-level="4.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>4.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
+<li class="chapter" data-level="4.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>4.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras"><i class="fa fa-check"></i><b>5.4</b> Correcting Irradiance Values for Micasense Cameras</a>
+<li class="chapter" data-level="4.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>4.4</b> Individual Tree Metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html"><i class="fa fa-check"></i><b>5</b> Photogrametric Processing</a>
 <ul>
-<li class="chapter" data-level="5.4.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#reading-exif-data"><i class="fa fa-check"></i><b>5.4.1</b> Reading Exif Data</a></li>
-<li class="chapter" data-level="5.4.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-solar-zenith-anlge"><i class="fa fa-check"></i><b>5.4.2</b> Calculating Solar Zenith Anlge</a></li>
-<li class="chapter" data-level="5.4.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles"><i class="fa fa-check"></i><b>5.4.3</b> Caluclating Sun-Sensor Angles</a></li>
-<li class="chapter" data-level="5.4.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>5.4.4</b> Scattered:Direct Ratio Estimate</a></li>
-<li class="chapter" data-level="5.4.5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#computing-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>5.4.5</b> Computing Horizontal (Corrected) Irradiance</a></li>
+<li class="chapter" data-level="5.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#processing-orthomosaics"><i class="fa fa-check"></i><b>5.1</b> Processing Orthomosaics</a></li>
+<li class="chapter" data-level="5.2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#shadow-masks"><i class="fa fa-check"></i><b>5.2</b> Shadow Masks</a></li>
+<li class="chapter" data-level="5.3" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#crown-level-vegetation-indicies"><i class="fa fa-check"></i><b>5.3</b> Crown-level Vegetation Indicies</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>5.3.1</b> VI Workflow</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html"><i class="fa fa-check"></i><b>6</b> MicaSense Irradiance Correction</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#background"><i class="fa fa-check"></i><b>6.1</b> Background</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>6.1.1</b> Deriving Horizontal Irradiance</a></li>
+<li class="chapter" data-level="6.1.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>6.1.2</b> Calculating Reflectance</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#the-problem"><i class="fa fa-check"></i><b>6.2</b> The Problem</a></li>
+<li class="chapter" data-level="6.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>6.3</b> Is Correction Needed?</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>6.3.1</b> Do the sun sensor angles make sense?</a></li>
+<li class="chapter" data-level="6.3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>6.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
+<li class="chapter" data-level="6.3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>6.3.3</b> Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras"><i class="fa fa-check"></i><b>6.4</b> Correcting Irradiance Values for Micasense Cameras</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#reading-exif-data"><i class="fa fa-check"></i><b>6.4.1</b> Reading Exif Data</a></li>
+<li class="chapter" data-level="6.4.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-solar-zenith-anlge"><i class="fa fa-check"></i><b>6.4.2</b> Calculating Solar Zenith Anlge</a></li>
+<li class="chapter" data-level="6.4.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles"><i class="fa fa-check"></i><b>6.4.3</b> Caluclating Sun-Sensor Angles</a></li>
+<li class="chapter" data-level="6.4.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>6.4.4</b> Scattered:Direct Ratio Estimate</a></li>
+<li class="chapter" data-level="6.4.5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#computing-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>6.4.5</b> Computing Horizontal (Corrected) Irradiance</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -239,17 +253,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="micasense-irradiance-correction" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">Chapter 5</span> MicaSense Irradiance Correction<a href="micasense-irradiance-correction.html#micasense-irradiance-correction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="background" class="section level2 hasAnchor" number="5.1">
-<h2><span class="header-section-number">5.1</span> Background<a href="micasense-irradiance-correction.html#background" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="micasense-irradiance-correction" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> MicaSense Irradiance Correction<a href="micasense-irradiance-correction.html#micasense-irradiance-correction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="background" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Background<a href="micasense-irradiance-correction.html#background" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The MicaSense system measures radiance at the camera, which needs to be transformed into surface reflectance. The basic relationship is given by:</p>
 <p><span class="math display">\[
 R = \frac{L}{I_{\text{hor}}}
 \]</span></p>
 <p>where <span class="math inline">\(L\)</span> is the at-camera radiance and <span class="math inline">\(I_{\text{hor}}\)</span> is the horizontal irradiance.</p>
-<div id="deriving-horizontal-irradiance" class="section level3 hasAnchor" number="5.1.1">
-<h3><span class="header-section-number">5.1.1</span> Deriving Horizontal Irradiance<a href="micasense-irradiance-correction.html#deriving-horizontal-irradiance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="deriving-horizontal-irradiance" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Deriving Horizontal Irradiance<a href="micasense-irradiance-correction.html#deriving-horizontal-irradiance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below we go through the derivation to compute <span class="math inline">\(I_{\text{hor}}\)</span>.</p>
 <p>The MicaSense system includes both the cameras and a downwelling light sensor (DLS). Since the DLS is tilted at the angle of the drone during flight and the sun is rarely directly overheard the sensor, the DLS measures non-horizontal irradiance, referred to as spectral irradiance (<span class="math inline">\(I_{\text{spec}}\)</span>). Spectral irradiance is a function of direct irradiance (<span class="math inline">\(I_{\text{direct}}\)</span>), scattered irradiance (<span class="math inline">\(I_{\text{scattered}}\)</span>), and the angle between the sun and the sensor ( <span class="math inline">\(\theta_{\text{sun-sensor}}\)</span>):</p>
 <p><span class="math display">\[
@@ -276,8 +290,8 @@ I_{\text{hor}} = I_{\text{direct}} \cdot \left( \cos(\theta_{\text{zenith}}) + r
 I_{\text{hor}} = \frac{I_{\text{spec}}}{\cos(\theta_{\text{sun-sensor}}) + r} \cdot \left( \cos(\theta_{\text{zenith}}) + r \right)
 \]</span></p>
 </div>
-<div id="calculating-reflectance" class="section level3 hasAnchor" number="5.1.2">
-<h3><span class="header-section-number">5.1.2</span> Calculating Reflectance<a href="micasense-irradiance-correction.html#calculating-reflectance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="calculating-reflectance" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Calculating Reflectance<a href="micasense-irradiance-correction.html#calculating-reflectance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Finally, substituting <span class="math inline">\(I_{\text{hor}}\)</span> into the equation for reflectance, we obtain:</p>
 <p><span class="math display">\[
 R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \left( \cos(\theta_{\text{zenith}}) + r \right)}
@@ -285,8 +299,8 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <p>Thus we see that reflectance is highly dependent on the ratio of scattered to direct irradiance as well as the sun-sensor angle. This is important for understanding the issue we have found when working with the DLS2 and the MicaSense MX Dual camera system.</p>
 </div>
 </div>
-<div id="the-problem" class="section level2 hasAnchor" number="5.2">
-<h2><span class="header-section-number">5.2</span> The Problem<a href="micasense-irradiance-correction.html#the-problem" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="the-problem" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> The Problem<a href="micasense-irradiance-correction.html#the-problem" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The issue we have noticed is that the sun-sensor angle can be absurdly high or low, especially in strong illumination conditions. This leads to equally absurd, sometimes impossible, values for direct and scattered irradiance, that can be multiples higher than the direct solar irradiance.</p>
 <p>To begin, let us first look at some main differences between the legacy DLS1 and the current DLS2 system.</p>
 <p>The DLS1:</p>
@@ -299,8 +313,8 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <li>directly measures the sun sensor angle and the direct and diffuse irradiance components using a proprietary method that takes in information from the light sensors on the surface of the DSL2</li>
 </ul>
 </div>
-<div id="is-correction-needed" class="section level2 hasAnchor" number="5.3">
-<h2><span class="header-section-number">5.3</span> Is Correction Needed?<a href="micasense-irradiance-correction.html#is-correction-needed" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="is-correction-needed" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Is Correction Needed?<a href="micasense-irradiance-correction.html#is-correction-needed" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Deciding whether data needs to be corrected can be challenging. We have found that looking at these three questions can be helpful:</p>
 <p><em>1) Do the sun sensor angles make sense?</em></p>
 <p><em>2) Does the relationship between direct and horizontal irradiance make sense?</em></p>
@@ -308,8 +322,8 @@ R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \l
 <p>Below we have plotted the sun sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right) from the exif data of the Micasense images. We have used the yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning (red).</p>
 <p>This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line in the above figure, the solar zenith angle at the time of the flight was around 30°.</p>
 <p><img src="Photos_&_gifs/Irradiance_flight_lines_with_turning_all_with_spatial_plot_CROPPED.PNG" width="100%" style="display: block; margin: auto;" /></p>
-<div id="do-the-sun-sensor-angles-make-sense" class="section level3 hasAnchor" number="5.3.1">
-<h3><span class="header-section-number">5.3.1</span> Do the sun sensor angles make sense?<a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="do-the-sun-sensor-angles-make-sense" class="section level3 hasAnchor" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Do the sun sensor angles make sense?<a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Solar zenith angle is the angle between the normal (vertical from the Earths surface) at the location of interest and the position of the sun. Given the tilt of the Earth, the solar zenith reaches its maximum (i.e. greatest angle between the sun and the normal to the Earths surface) in the winter, as the northern hemisphere is tilted away from the sun, and its minimum in the summer when the northern hemisphere is tilted towards the sun.</p>
 <p>The solar zenith also changes throughout the day, with its minimum occurring at solar noon, a.k.a. when the sun is at its highest. This is why it is suggested to fly within +/- 2 hours of solar noon to avoid shadows in your imagery.</p>
 <p>Below we have graphed solar zenith angles over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024) that will be used in this example to demonstrate the daily and seasonal change in values.</p>
@@ -327,8 +341,8 @@ Now that we understand the reason behind the cyclical pattern of the sun sensor 
 The dashed horizontal lines are the moving averages for the DLS1 and DLS2. Here the moving average of the DLS2 is at times almost 10°lower than the solar zenith, whereas the moving average of the DLS1 (corrected method) is more or less consistently 2-3° lower than the solar zenith.</p>
 <p>Given this data, we would conclude that the DLS1 method provides more accurate sun sensor angles compared to the DLS2. We will now continue to look at irradiance to confirm if correction is needed.</p>
 </div>
-<div id="does-the-relationship-between-direct-and-horizontal-irradiance-make-sense" class="section level3 hasAnchor" number="5.3.2">
-<h3><span class="header-section-number">5.3.2</span> Does the relationship between direct and horizontal irradiance make sense?<a href="micasense-irradiance-correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="does-the-relationship-between-direct-and-horizontal-irradiance-make-sense" class="section level3 hasAnchor" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> Does the relationship between direct and horizontal irradiance make sense?<a href="micasense-irradiance-correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>First, lets define direct and horizontal irradiance with respect to the DLS:</p>
 <p><strong>Direct Irradiance</strong>: The direct component of the sunlight reaching the sensor’s surface that is not being scattered. On a clear sunny day, this component is high.</p>
 <p><strong>Scattered Irradiance</strong>: The sunlight that is scattered by particles in the atmosphere. This component is generally weaker on sunny days and higher on overcast days.</p>
@@ -342,8 +356,8 @@ The dashed horizontal lines are the moving averages for the DLS1 and DLS2. Here 
 <p><img src="Photos_&_gifs/Hor_dir_irradiance_DLS1_v_DLS2.PNG" width="100%" style="display: block; margin: auto;" />
 From this graph, we would recommend correcting the data using the <a href="0_Micasense_Irradiance_Correction##Correcting%20Irradiance%20Values%20for%20Micasense%20Cameras">DLS1 method</a> outlined below</p>
 </div>
-<div id="does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day" class="section level3 hasAnchor" number="5.3.3">
-<h3><span class="header-section-number">5.3.3</span> Does the scattered: direct ratio make sense for the lighting conditions of that day?<a href="micasense-irradiance-correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day" class="section level3 hasAnchor" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> Does the scattered: direct ratio make sense for the lighting conditions of that day?<a href="micasense-irradiance-correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>For a clear sunny day when the sun is around its peak, direct radiation generally accounts for ~85% of the total insolation with scattered radiation accounting for the remaining ~15%. For an completely overcast day, scattered radiation contributes to 100% of solar radiation.<!-- https://www.ftexploring.com/solar-energy/direct-and-diffuse-radiation.htm --></p>
 <p>Hence for a clear sunny day in the summer a ratio of 1:6 scattered to direct irradiance is often used as an estimate. This means that direct irradiance is around 6 times stronger than the scattered irradiance.</p>
 <p>The data plotted below from June 25th was captured on a sunny day with occasional clouds.
@@ -355,8 +369,8 @@ From this graph, we would recommend correcting the data using the <a href="0_Mic
 <p>Overall, we recommend correcting this flight using the DLS1 method. The DLS1 corrections are done on individual photos, if the orthomosaic has already been built, no need to rebuild the dense cloud, you can re-upload the imagery, re-calibrate, and re-build the orthomosaic.</p>
 </div>
 </div>
-<div id="correcting-irradiance-values-for-micasense-cameras" class="section level2 hasAnchor" number="5.4">
-<h2><span class="header-section-number">5.4</span> Correcting Irradiance Values for Micasense Cameras<a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="correcting-irradiance-values-for-micasense-cameras" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Correcting Irradiance Values for Micasense Cameras<a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This chapter explains the process of correcting irradiance values for Micasense cameras using R. The correction involves several steps, including filtering and mutating data, calculating solar angles, and estimating scattered to direct light ratios. Each step is crucial for ensuring accurate irradiance readings, which are essential for downstream analyses. The code was taken largely from <a href="https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb">Micasense’s GitHub</a> and converted into R to use in our workflow.</p>
 <p>To fix the sun-sensor angle and irradiance values we have taken the methodology used by the DLS1. The process involves:</p>
 <ul>
@@ -365,8 +379,8 @@ From this graph, we would recommend correcting the data using the <a href="0_Mic
 <li><p>Computing the horizontal irradiance using <span class="math inline">\(I_{\text{hor}} = I_{\text{direct}} \cdot (cos(\theta_{\text{zenith}}) + r)\)</span></p></li>
 <li><p>Editing the exif data of the images so that the imagery can be processed by Metashape with the corrected irradiance values</p></li>
 </ul>
-<div id="reading-exif-data" class="section level3 hasAnchor" number="5.4.1">
-<h3><span class="header-section-number">5.4.1</span> Reading Exif Data<a href="micasense-irradiance-correction.html#reading-exif-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="reading-exif-data" class="section level3 hasAnchor" number="6.4.1">
+<h3><span class="header-section-number">6.4.1</span> Reading Exif Data<a href="micasense-irradiance-correction.html#reading-exif-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>First, we read in the exif data of the imagery we want to correct using the exifr package.</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="micasense-irradiance-correction.html#cb35-1" tabindex="-1"></a><span class="co"># This code was written to be within a for loop that looped through many acquisition dates. Hence the path names used will be in the form &quot; paste0(dir, date,&quot;\\1_Data\\&quot;,MS_folder_name,&quot;\\&quot;...etc)&quot;. Change these path names to match your data</span></span>
 <span id="cb35-2"><a href="micasense-irradiance-correction.html#cb35-2" tabindex="-1"></a><span class="fu">library</span>(exifr)</span>
@@ -420,8 +434,8 @@ From this graph, we would recommend correcting the data using the <a href="0_Mic
 <p>Read in the exif data for all bands.</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="micasense-irradiance-correction.html#cb36-1" tabindex="-1"></a>xmp_all <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(dir,date,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">&quot;</span>,MS_folder_name,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">CSV</span><span class="sc">\\</span><span class="st">XMP_data_&quot;</span>, date,<span class="st">&quot;_AllBands.rds&quot;</span>))</span></code></pre></div>
 </div>
-<div id="calculating-solar-zenith-anlge" class="section level3 hasAnchor" number="5.4.2">
-<h3><span class="header-section-number">5.4.2</span> Calculating Solar Zenith Anlge<a href="micasense-irradiance-correction.html#calculating-solar-zenith-anlge" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="calculating-solar-zenith-anlge" class="section level3 hasAnchor" number="6.4.2">
+<h3><span class="header-section-number">6.4.2</span> Calculating Solar Zenith Anlge<a href="micasense-irradiance-correction.html#calculating-solar-zenith-anlge" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below we convert the DateTimeOrginal column from the exif data to a date object and use the date object and average lat and lon to calculate solar angle.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="micasense-irradiance-correction.html#cb37-1" tabindex="-1"></a>xmp_all_filtered <span class="ot">&lt;-</span> xmp_all <span class="sc">%&gt;%</span></span>
 <span id="cb37-2"><a href="micasense-irradiance-correction.html#cb37-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Date_time =</span> <span class="fu">ymd_hms</span>(DateTimeOriginal),</span>
@@ -467,8 +481,8 @@ print(dni)
 ```
 -->
 </div>
-<div id="caluclating-sun-sensor-angles" class="section level3 hasAnchor" number="5.4.3">
-<h3><span class="header-section-number">5.4.3</span> Caluclating Sun-Sensor Angles<a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="caluclating-sun-sensor-angles" class="section level3 hasAnchor" number="6.4.3">
+<h3><span class="header-section-number">6.4.3</span> Caluclating Sun-Sensor Angles<a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here we explain the difference between the archived DLS1 method and the current DLS2 method.</p>
 <p><em>DSL1:</em>
 The following code has been taken from <a href="https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb">Micasense’s GitHub</a> and coded in R to match our workflow</p>
@@ -559,8 +573,8 @@ ggsave(plot = SSA_plot, #save out the plot for reference
 -->
 <p><img src="Photos_&_gifs/0_SSA_plot.PNG" width="100%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="scattereddirect-ratio-estimate" class="section level3 hasAnchor" number="5.4.4">
-<h3><span class="header-section-number">5.4.4</span> Scattered:Direct Ratio Estimate<a href="micasense-irradiance-correction.html#scattereddirect-ratio-estimate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="scattereddirect-ratio-estimate" class="section level3 hasAnchor" number="6.4.4">
+<h3><span class="header-section-number">6.4.4</span> Scattered:Direct Ratio Estimate<a href="micasense-irradiance-correction.html#scattereddirect-ratio-estimate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here we estimate scattered:direct ratio for each flight by relating cosine of the sun-sensor angle to spectral irradiance measured by the DLS2. This relationship, in a perfect world, should give you the scattered irradiance as the intercept, which is independent of angle, and the direct irradiance, which is the slope, and therefore perfectly proportional to sun angle. In reality, these relationships are extremely messy and most data needs to be discarded.</p>
 <p>Below are three main steps to find the estimated scattered:direct ratio:</p>
 <ol style="list-style-type: decimal">
@@ -701,8 +715,8 @@ ggsave(plot = linear_plots,
 <span id="cb47-13"><a href="micasense-irradiance-correction.html#cb47-13" tabindex="-1"></a><span class="fu">round</span>(ratios<span class="sc">$</span>dir_diff_ratio, <span class="dv">2</span>)</span></code></pre></div>
 <p>The ratio for the DLS1 was 0.46 and the mean_scattered component was ~32 W/m<span class="math inline">\(^2\)</span>.</p>
 </div>
-<div id="computing-horizontal-corrected-irradiance" class="section level3 hasAnchor" number="5.4.5">
-<h3><span class="header-section-number">5.4.5</span> Computing Horizontal (Corrected) Irradiance<a href="micasense-irradiance-correction.html#computing-horizontal-corrected-irradiance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="computing-horizontal-corrected-irradiance" class="section level3 hasAnchor" number="6.4.5">
+<h3><span class="header-section-number">6.4.5</span> Computing Horizontal (Corrected) Irradiance<a href="micasense-irradiance-correction.html#computing-horizontal-corrected-irradiance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This is the Fresnel correction, which adjusts for the DLS reflecting, rather than measuring, some of the irradiance that hits it. We aquired this code from <a href="https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb">Micasense’s GitHub</a> and converted to R to use in this workflow.</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="micasense-irradiance-correction.html#cb48-1" tabindex="-1"></a>fresnel_transmission <span class="ot">=</span> <span class="cf">function</span>(phi, n1, n2, polarization) {</span>
 <span id="cb48-2"><a href="micasense-irradiance-correction.html#cb48-2" tabindex="-1"></a>  f1 <span class="ot">=</span> <span class="fu">cos</span>(phi)</span>

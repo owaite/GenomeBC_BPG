@@ -91,7 +91,7 @@ Import both the LiDAR and DAP clouds into CloudCompare (CC).  This can take up t
 The L1 will reflect flight lines when there is moisture in the air.  Below is an example point cloud from a damp day on the coast just after a fog past through. For sake of the example, it was not filtered in LAStools with a height threshold. 
 
 ```{r echo=FALSE, fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_1.PNG")
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\CloudCompare_1.PNG")
 ```
 
 The residual fog patches seen above the canopy can be clipped out using the cross section or segment tool.
@@ -109,14 +109,14 @@ Solution: Use the Apply Transformation function in CloudCompare – Highlight th
 
 In this example the LiDAR is the lower. 
 ```{r echo=FALSE,fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_2.PNG")
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\CloudCompare_2.PNG")
 ```
 
 
 First apply a Z transformation. It is best to do this while viewing the edge of the plot. Here we applied a Z transformation of +6. 
 
 ```{r echo=FALSE,fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_3.PNG")
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\CloudCompare_3.PNG")
 ```
 
 
@@ -127,13 +127,13 @@ Find a section of the clouds where you can easily see the alignment.  In this ca
 Here we see the LiDAR is offset to the left (negative) on the Y(green) axis and up (positive) on the x(red) axis.  
 
 ```{r echo=FALSE,fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_4.PNG")
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\CloudCompare_4.PNG")
 ```
 
 Be careful not to rotate, only transform. 
 
 ```{r echo=FALSE,fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_5.PNG")
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\CloudCompare_5.PNG")
 ```
 
 In this case the LiDAR was shifted -5 in the X and +5 in the Y axis in total.  The shift was done in three smaller iterations to achieve the alignment seen in the above screen capture. 
@@ -143,7 +143,7 @@ In this case the LiDAR was shifted -5 in the X and +5 in the Y axis in total.  T
 Highlight both clouds in the DB tree and apply the fine registration (ICP) algorithm using the following settings. Careful to set a max thread count that matches the resources you have available. 
 
 ```{r echo=FALSE,fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\CloudCompare_6.PNG")
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\CloudCompare_6.PNG")
 ```
 
 Save out the registered LiDAR point clouds at the highest resolution

@@ -5,6 +5,12 @@ fig:GCP-elevation
 fig:brushingEffect
 tab:droneTable
 tab:Untested-droneTable
+fig:M300-flying
+fig:Reconnasissance-flowDiagram
+fig:effective-overlap
+fig:P1-flightPlan
+fig:DLS-Micasense-connection
+tab:MS-Table
 range-of-sites-assessed
 jordan-river
 powell-river
@@ -20,6 +26,14 @@ drone-and-sensors-what-will-i-need-to-purchase-and-how-much-will-it-cost
 hardware-costs
 drone-training-in-canada
 section
+data-collection-and-flights
+hardware---dji-matrice-3000-rtk-m300
+workflow-site-reconnaissance
+data-collection-flight-planning
+flight-planning-theory
+flight-planning-with-dji-pilot
+data-collection-sensors-parameters-and-ideal-conditions
+micasense-10-band-spectral-sensor-for-vegetative-indices
 lidar-processing-workflow
 dji-terra
 register-the-lidar-to-the-dap-point-cloud

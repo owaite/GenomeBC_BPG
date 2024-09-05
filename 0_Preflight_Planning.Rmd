@@ -107,8 +107,8 @@ library(kableExtra)
 
 data <- data.frame(
   Hardware  = c("*Zenmuse P1, RGB",
-                "Micasense Dual MX",
-                "*Micasense Dual Panchromatic",
+                "Micasense RedEdge-MX Dual",
+                "*Micasense RedEdge-P Dual (Panchromatic)",
                 "Zenmuse H20T, Thermal and RGB",
                 "Zenmuse L1, LiDAR and RGB",
                 "*Zenmuse L2 LiDAR and RGB",

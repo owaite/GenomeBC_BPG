@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Range of Sites Assessed | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
-  <meta name="description" content="Chapter 1 Range of Sites Assessed | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <title>Chapter 3 Data Collection and Flights | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
+  <meta name="description" content="Chapter 3 Data Collection and Flights | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Range of Sites Assessed | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta property="og:title" content="Chapter 3 Data Collection and Flights | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Range of Sites Assessed | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta name="twitter:title" content="Chapter 3 Data Collection and Flights | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   
   
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="preflight-planning.html"/>
+<link rel="prev" href="preflight-planning.html"/>
+<link rel="next" href="lidar-processing-workflow.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -253,75 +253,179 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="range-of-sites-assessed" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Range of Sites Assessed<a href="range-of-sites-assessed.html#range-of-sites-assessed" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="jordan-river" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> Jordan River<a href="range-of-sites-assessed.html#jordan-river" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="data-collection-and-flights" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Data Collection and Flights<a href="data-collection-and-flights.html#data-collection-and-flights" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="hardware---dji-matrice-3000-rtk-m300" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Hardware - DJI Matrice 3000 RTK (M300)<a href="data-collection-and-flights.html#hardware---dji-matrice-3000-rtk-m300" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="figure"><span style="display:block;" id="fig:M300-flying"></span>
+<img src="Photos_&_gifs/M300_flying.png" alt="DJI Matrice 300 RTK in flight over one of our Vancouver Island feild sites, taken by Alec Liu with a Mavic3." width="100%" />
+<p class="caption">
+Figure 3.1: DJI Matrice 300 RTK in flight over one of our Vancouver Island feild sites, taken by Alec Liu with a Mavic3.
+</p>
+</div>
+<p>A complete SOP for mapping flights with the M300 was developed in-house and can be found in the <a href="https://github.com/owaite/GenomeBC_BPG/tree/main/SOPs">SOPs folder</a> on GitHub. Transport Canada (TC) regulations require logging all flights and to have the logs on-hand when flying. We have developed a simple spreadsheet that logs the details required by TC and other useful details for each flight. When undertaking a project with repeated data collection campaigns, we would recommend developing a similar approach to organizing these data. A copy of the one we use is available within the <a href="https://github.com/owaite/GenomeBC_BPG/tree/main/Example_Documents">Example_Documents</a> folder on GitHub.</p>
+</div>
+<div id="workflow-site-reconnaissance" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Workflow: Site Reconnaissance<a href="data-collection-and-flights.html#workflow-site-reconnaissance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Ahead of the first data collection flights we follow the reconnaissance workflow outlined in Figure <a href="data-collection-and-flights.html#fig:Reconnasissance-flowDiagram">3.2</a></p>
+<div class="figure"><span style="display:block;" id="fig:Reconnasissance-flowDiagram"></span>
+<img src="Photos_&_gifs/Reconnasissance_flowDiagram.PNG" alt="Reconnaissance workflow." width="85%" />
+<p class="caption">
+Figure 3.2: Reconnaissance workflow.
+</p>
+</div>
+</div>
+<div id="data-collection-flight-planning" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Data Collection: Flight Planning<a href="data-collection-and-flights.html#data-collection-flight-planning" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="flight-planning-theory" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Flight planning theory<a href="data-collection-and-flights.html#flight-planning-theory" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Figure <a href="data-collection-and-flights.html#fig:effective-overlap">3.3</a> outlines the difference in ground overlap and canopy overlap. We have developed a calculator in which you enter the flight altitude, overlaps, and canopy height and it will output the canopy overlap. You can then adjust the inputs until you get the required overlap. It is available in the <a href="https://github.com/owaite/GenomeBC_BPG/tree/main/Example_Documents">Example_Documents</a> folder on GitHub. Figure <a href="data-collection-and-flights.html#fig:effective-overlap">3.3</a> below is an example calculation detailed in the next paragraph.</p>
+<div class="figure"><span style="display:block;" id="fig:effective-overlap"></span>
+<img src="Photos_&_gifs/effective_overlap.png" alt="Effective overlap calculation." width="100%" />
+<p class="caption">
+Figure 3.3: Effective overlap calculation.
+</p>
+</div>
+</div>
+<div id="flight-planning-with-dji-pilot" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Flight planning with DJI Pilot<a href="data-collection-and-flights.html#flight-planning-with-dji-pilot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Figure <a href="data-collection-and-flights.html#fig:P1-flightPlan">3.4</a></p>
+<div class="figure"><span style="display:block;" id="fig:P1-flightPlan"></span>
+<img src="Photos_&_gifs/P1_flight_plan.png" alt="Flight planning a P1 flight on the remote controller." width="100%" />
+<p class="caption">
+Figure 3.4: Flight planning a P1 flight on the remote controller.
+</p>
+</div>
+</div>
+</div>
+<div id="data-collection-sensors-parameters-and-ideal-conditions" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Data Collection: Sensors, Parameters, and Ideal Conditions<a href="data-collection-and-flights.html#data-collection-sensors-parameters-and-ideal-conditions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="micasense-10-band-spectral-sensor-for-vegetative-indices" class="section level3 hasAnchor" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> MicaSense: 10-Band Spectral Sensor for Vegetative Indices<a href="data-collection-and-flights.html#micasense-10-band-spectral-sensor-for-vegetative-indices" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Figure <a href="data-collection-and-flights.html#fig:DLS-Micasense-connection">3.5</a></p>
+<div class="figure"><span style="display:block;" id="fig:DLS-Micasense-connection"></span>
+<img src="Photos_&_gifs/DLS2_Micasense_connection.png" alt="Micasense RedEdge-MX Dual and the DLS2 mounted on the M300. Here we are connecting the DLS2 to the Micasense camera." width="100%" />
+<p class="caption">
+Figure 3.5: Micasense RedEdge-MX Dual and the DLS2 mounted on the M300. Here we are connecting the DLS2 to the Micasense camera.
+</p>
+</div>
+<p><strong>Sensor Specifications:</strong></p>
+<ul>
+<li><p><strong>Camera Type:</strong> MicaSense Dual cameras</p></li>
+<li><p><strong>Image Format:</strong> .tif with a suffix indicating the band (e.g., _1, _2)</p></li>
+<li><p><strong>Bands/Wavelengths:</strong></p></li>
+</ul>
 <table>
-<colgroup>
-<col width="50%" />
-<col width="49%" />
-</colgroup>
+<caption><span id="tab:MS-Table">Table 3.1: </span>Band names, center wavelengths, and bandwidths collected by the Red and Blue cameras within the Micasense Dual camera systems. Panchro* is only available in the pan chromatic models.</caption>
 <thead>
 <tr class="header">
-<th align="left">Western Red cedar (Cw)</th>
-<th align="left">Douglas fir (Fdc)</th>
+<th align="left">Band Name</th>
+<th align="left">Center Wavelength (nm)</th>
+<th align="left">Bandwidth (nm)</th>
+<th align="left">Camera</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><a href="https://projects.spexigeo.com/cw-jr-east/map/1bf9b0e2-21b5-4e96-a96c-033db45424fd">Cw_East</a> – planted in 2000, 3980 live trees on 4480 positions</td>
-<td align="left"><a href="https://projects.spexigeo.com/fdc-east-gca/map/01275e24-4077-446a-9d31-f2c1f55dbb8e">Fdc_East</a> – planted in 2003, 1612 live trees on 3019 positions</td>
+<td align="left">Blue</td>
+<td align="left">475</td>
+<td align="left">32</td>
+<td align="left">Red</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://projects.spexigeo.com/cw-jr-sandcut/map/b4d345ed-a69a-43bf-b622-1431504ff041">Cw_Sandcut</a> – planted in 2012, 3500 live trees on 3841 positions</td>
-<td align="left"><a href="https://projects.spexigeo.com/fdc-jr-w45/map/86e4f176-d3d8-466f-895b-5ab21b396ca5">Fdc_W45</a> – planted in 2019, 2076 live trees on 2494 positions</td>
+<td align="left">Green</td>
+<td align="left">560</td>
+<td align="left">27</td>
+<td align="left">Red</td>
 </tr>
-</tbody>
-</table>
-</div>
-<div id="powell-river" class="section level2 hasAnchor" number="1.2">
-<h2><span class="header-section-number">1.2</span> Powell River<a href="range-of-sites-assessed.html#powell-river" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<table>
-<colgroup>
-<col width="50%" />
-<col width="49%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Western Red cedar (Cw)</th>
-<th align="left">Douglas fir (Fdc)</th>
-</tr>
-</thead>
-<tbody>
 <tr class="odd">
-<td align="left"><a href="https://projects.spexigeo.com/cw-rainbow/map/884b78af-30b7-4158-93a4-7516c5c2568b">Cw_Rainbow</a> – planted in 2000, 3674 live trees on 4745 positions</td>
-<td align="left"><a href="https://projects.spexigeo.com/9536b041-e269-4d4d-a02a-9311bda57ae8/map/dd07addc-a47c-485b-9bce-5b35f0508611">Fdc_Canoe</a> – Planted in 1999, 1739 live trees on 3164 positions</td>
+<td align="left">Red</td>
+<td align="left">668</td>
+<td align="left">14</td>
+<td align="left">Red</td>
 </tr>
-</tbody>
-</table>
-</div>
-<div id="sites" class="section level2 hasAnchor" number="1.3">
-<h2><span class="header-section-number">1.3</span> 2024 Sites<a href="range-of-sites-assessed.html#sites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<table>
-<colgroup>
-<col width="57%" />
-<col width="42%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Douglas fir (Fdc)</th>
-<th align="left">Douglas fir (Fdc)</th>
+<tr class="even">
+<td align="left">Red Edge</td>
+<td align="left">717</td>
+<td align="left">12</td>
+<td align="left">Red</td>
 </tr>
-</thead>
-<tbody>
 <tr class="odd">
-<td align="left"><a href="https://projects.spexigeo.com/fdc-big-tree-gca/map/0c1d3c05-63ff-46a9-b7ba-b85fd3a429a8">Big Tree GCA</a> – Planted in 2003, 2229 live trees on 2900 positions</td>
-<td align="left"><a href="https://projects.spexigeo.com/fdc-hillcrest-gca/map/9a13807e-55ed-4993-b70a-f3a6697c5d7b">Hillcrest GCA</a> – Planted in 2003, 1514 live trees</td>
+<td align="left">NIR</td>
+<td align="left">842</td>
+<td align="left">57</td>
+<td align="left">Red</td>
+</tr>
+<tr class="even">
+<td align="left">Panchromatic</td>
+<td align="left">634</td>
+<td align="left">463</td>
+<td align="left">Red</td>
+</tr>
+<tr class="odd">
+<td align="left">Coastal Blue</td>
+<td align="left">444</td>
+<td align="left">28</td>
+<td align="left">Blue</td>
+</tr>
+<tr class="even">
+<td align="left">Green</td>
+<td align="left">531</td>
+<td align="left">14</td>
+<td align="left">Blue</td>
+</tr>
+<tr class="odd">
+<td align="left">Red</td>
+<td align="left">650</td>
+<td align="left">16</td>
+<td align="left">Blue</td>
+</tr>
+<tr class="even">
+<td align="left">Red Edge</td>
+<td align="left">705</td>
+<td align="left">10</td>
+<td align="left">Blue</td>
+</tr>
+<tr class="odd">
+<td align="left">Red Edge</td>
+<td align="left">740</td>
+<td align="left">18</td>
+<td align="left">Blue</td>
 </tr>
 </tbody>
 </table>
+<ul>
+<li><p><strong>Image Capture Rate:</strong></p>
+<ul>
+<li><p>The default setting for timed intervals is one image capture every two seconds, with simultaneous capture for all bands.</p></li>
+<li><p>The capture rate can be adjusted to a maximum of one image per second</p></li>
+</ul></li>
+<li><p><strong>Output:</strong> 5-6 folders per camera (10-12 thousand images) for a 25–30-minute flight covering a 1.5-2 Ha site</p></li>
+<li><p><strong>GSD:</strong> 2.5-4cm at 40m above canopy. 1.5-2cm when processed pansharpened with the panchromatic band.</p></li>
+</ul>
+<p><strong>Flight Parameters: </strong></p>
+<ul>
+<li><p><strong>Flight Elevation: </strong></p>
+<ul>
+<li>40 m above canopy</li>
+</ul></li>
+<li><p><strong>Flight Speed:</strong> ~2 m/s (slower speeds reduce motion blur, especially in windy conditions)</p></li>
+<li><p><strong>Image Overlap:</strong> Extra high to ensure sufficient coverage and allow for exclusion of poor-quality images during processing.</p>
+<ul>
+<li><p>Front: ~86% (timed interval is the limiting factor)</p></li>
+<li><p>Side: ~86%</p></li>
+</ul></li>
+<li><p><strong>Margins:</strong> 10 m around the site perimeter is sufficient for flight planning due to the wide-angle shot of the MS camera</p></li>
+<li><p><strong>Flight Time:</strong> Approximately 30 minutes for a 1.5-2 Ha area site. This allows for a single battery flight, which helps to maintain even light conditions.</p></li>
+</ul>
+<p><strong>Best Practices: </strong></p>
+<ul>
+<li><p><strong>Weather Conditions:</strong> Avoid flying in any precipitation as MicaSense cameras are unprotected from moisture, with exposed data and power connections.</p></li>
+<li><p><strong>Lighting:</strong> Conduct flights within two hours of solar noon to minimize shadowing in the imagery.</p></li>
+</ul>
+<p>The DLS calibration helps to reduce the effect changing light conditions, but extreme changes in light conditions will leave residual effects that are difficult to process out. The figures below show a flight in variable conditions on top in which the calibration has failed to correct the changing light conditions. The bottom image is on an ideal day with even diffuse light.</p>
 
+</div>
 </div>
 </div>
             </section>
@@ -329,8 +433,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="preflight-planning.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="preflight-planning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="lidar-processing-workflow.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -361,7 +465,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/owaite/GenomeBC_BPG/edit/main/0_Sites.Rmd",
+"link": "https://github.com/owaite/GenomeBC_BPG/edit/main/0_Data_Collection_Flights.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -369,7 +473,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/owaite/GenomeBC_BPG/blob/main/0_Sites.Rmd",
+"link": "https://github.com/owaite/GenomeBC_BPG/blob/main/0_Data_Collection_Flights.Rmd",
 "text": null
 },
 "download": null,
