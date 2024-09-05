@@ -22,16 +22,42 @@ knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\G
 
 
 
-*Ideal sites: *
+**Ideal sites:**
 
 ```{r ideal-site-figure, echo=FALSE, out.width="100%", fig.cap = ""}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\ideal_sites.png")
 ```
 
-*Effects of topography: Warning to take extra care *
+**Effects of topography: Warning to take extra care**
 
+```{r echo=FALSE, results='asis'}
+# Define the image paths
+img_paths <- c(
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GCP_flat_ground.png",
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GCP_elevation_change_terrain.png"
+)
 
+# Define the captions
+captions <- c(
+  "a. GCP alignment on flat ground (Error ~4cm)",
+  "b. GCP alignment on ground with elevation change (Error ~28cm)"
+)
 
+# Create the HTML for the images with captions
+html <- paste0(
+  '<div style="display: flex; justify-content: center; gap: 20px;">',  # Centered horizontally with a gap between
+  paste0(
+    '<div style="text-align: center;">',
+    '<img src="', img_paths, '" style="height: 350px; margin: 0 10px;" />',
+    '<p style="margin: 0;">', captions, '</p></div>', collapse = ""  # Captions are directly below the images
+  ),
+  '</div>'
+)
+
+# Print the HTML
+cat(html)
+
+```
 
 ## Drone and Sensors: What will I need to purchase and how much will it cost?
 

@@ -1,4 +1,5 @@
 fig:GCP-figure
+fig:terrain-following-figure
 range-of-sites-assessed
 jordan-river
 powell-river
