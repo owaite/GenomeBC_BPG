@@ -1,5 +1,10 @@
 fig:GCP-figure
 fig:terrain-following-figure
+fig:ideal-site-figure
+fig:GCP-elevation
+fig:brushingEffect
+tab:droneTable
+tab:Untested-droneTable
 range-of-sites-assessed
 jordan-river
 powell-river

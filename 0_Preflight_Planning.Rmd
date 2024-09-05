@@ -24,12 +24,23 @@ knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\G
 
 **Ideal sites:**
 
-```{r ideal-site-figure, echo=FALSE, out.width="100%", fig.cap = ""}
+```{r ideal-site-figure, echo=FALSE, out.width="100%", fig.cap = "Aerial view of a 5 year old Douglas fir trial."}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\ideal_sites.png")
 ```
 
 **Effects of topography: Warning to take extra care**
 
+Below Figure \@ref(fig:GCP-elevation) 
+
+```{r GCP-elevation, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Effect of brushing on crown visibility. Left: GCP alignment on flat ground (Error ~4cm). Right: GCP alignment on ground with elevation change (Error ~28cm)"}
+# Include the pre-brushing and post-brushing images
+knitr::include_graphics(c(
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GCP_flat_ground.png",
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GCP_elevation_change_terrain.png"
+))
+```
+
+<!--
 ```{r echo=FALSE, results='asis'}
 # Define the image paths
 img_paths <- c(
@@ -58,10 +69,131 @@ html <- paste0(
 cat(html)
 
 ```
+-->
+
+
+
+
+
+
+
+
+
+
+
+Below Figure \@ref(fig:brushingEffect) shows an example of the effect of brushing on crown visibility at a moist, high-productivity common-garden trial.
+
+```{r brushingEffect, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Effect of brushing on crown visibility. Left: early August prior to brushing. Right: late August post brushing"}
+# Include the pre-brushing and post-brushing images
+knitr::include_graphics(c(
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/pre_brush.jpg",
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/post_brush.jpg"
+))
+```
+
+
 
 ## Drone and Sensors: What will I need to purchase and how much will it cost?
 
 ### Hardware Costs
+
+
+
+
+Table \@ref(tab:droneTable)
+```{r droneTable, echo = FALSE}
+library(knitr)
+library(kableExtra)
+
+data <- data.frame(
+  Hardware  = c("*Zenmuse P1, RGB",
+                "Micasense Dual MX",
+                "*Micasense Dual Panchromatic",
+                "Zenmuse H20T, Thermal and RGB",
+                "Zenmuse L1, LiDAR and RGB",
+                "*Zenmuse L2 LiDAR and RGB",
+                "DJI Matrice (M)300 RTK",
+                "*DJI Matrice (M)350 RTK",
+                "*DJI TB65 batteries",
+                "DJI DRTK2",
+                "*Emlid RS3",
+                "*Emlid RS3"
+  ),
+  Purpose = c("Sensor",
+              "Sensor",
+              "Sensor",
+              "Sensor",
+              "Sensor",
+              "Sensor",
+              "Drone",
+              "Drone",
+              "Drone batteries",
+              "GNSS receiver",
+              "GNSS receiver",
+              "GNSS receiver"
+  ),
+  Cost = c("$9,000",
+           "$16,000",
+           "$22,500",
+           "$13,350",
+           "$11,600",
+           "$16,660",
+           "$12,000",
+           "$13,500",
+           "$1,910",
+           "$4,200",
+           "$3,600",
+           "$3,600"
+  ),
+  Detail = c(
+  "Positional accuracy - Horizontal: 3 cm, Vertical: 5 cm. Ground Sampling Distance (GSD) - 1cm at 80 m elevation",
+  "Ten band multispectral camera, no longer in production",
+  "Ten band multispectral camera with Panchromatic sharpening",
+  "Thermal and RGB sensor",
+  "LiDAR sensor released in 2020",
+  "LiDAR sensor released in 2023, now with 5 returns and better accuracy",
+  "2020 released DJI enterprise drone with RC, intelligent battery case and one set of batteries",
+  "2023 released DJI enterprise drone with RC plus, intelligent battery case and one set of batteries",
+  "Pair of the newer model M300/350 batteries. Good for one approximately 30-minute mapping flight including safety margins.  At least 4 pairs are recommended for continuous flight when paired with a small generator",
+  "GNSS receiver for use as base to stream RTK to drone",
+  "GNSS receiver for use as base to stream RTK to drone and rover",
+  "GNSS receiver for use as rover for centimeter precise GCP or stem mapping"
+  )
+  
+  
+)
+# Create the table and center it
+kable(data, col.names = c("Hardware", "Purpose","Cost","Detail"),caption = 'A breakdown of drone and sensor costs, where newer versions are available, both are listed.  The * would be a “wishlist” full set up.  This is just the major purchases and doesn’t include general field equipment.')
+
+```
+
+
+
+Table \@ref(tab:Untested-droneTable) are some untested options:
+
+
+```{r Untested-droneTable, echo = FALSE}
+data <- data.frame(
+  Hardware  = c("DJI Mavic 3 Multispectral0",
+                "Senterra 6X",
+                "Micasense Altum PT"
+  ),
+  Purpose = c("Sensor, Drone",
+              "Sensor",
+              "Sensor"
+  ),
+  Cost = c("$5,945",
+           "$17,120",
+           "$25,950"
+  ),
+  Detail = c("RTK capable drone, RGB and 4 multispectral wavelengths",
+             "RTK capable, 5 multispectral plus RGB, potential to customize wavelengths, but extra price unknown",
+             "Thermal, and multispectral panchromatic, RTK capable sensor"
+  )
+)
+# Create the table and center it
+kable(data, col.names = c("Hardware", "Purpose","Cost","Detail"), caption = 'Options that we would like to test in the future but have not yet had the chance to.')
+```
 
 ### Drone Training in Canada
 

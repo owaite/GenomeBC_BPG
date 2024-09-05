@@ -271,31 +271,165 @@ Figure 2.2: Terrain following on variable topography.
 <div id="site-selection-considerations" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Site Selection Considerations<a href="preflight-planning.html#site-selection-considerations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><strong>Ideal sites:</strong></p>
-<p><img src="Photos_&_gifs/ideal_sites.png" width="100%" /></p>
+<div class="figure"><span style="display:block;" id="fig:ideal-site-figure"></span>
+<img src="Photos_&_gifs/ideal_sites.png" alt="Aerial view of a 5 year old Douglas fir trial." width="100%" />
+<p class="caption">
+Figure 2.3: Aerial view of a 5 year old Douglas fir trial.
+</p>
+</div>
 <p><strong>Effects of topography: Warning to take extra care</strong></p>
-<div style="display: flex; justify-content: center; gap: 20px;">
-<div style="text-align: center;">
-<img src="Photos_&_gifs/GCP_flat_ground.png" style="height: 350px; margin: 0 10px;" />
-<p style="margin: 0;">
-<ol style="list-style-type: lower-alpha">
-<li>GCP alignment on flat ground (Error ~4cm)
+<p>Below Figure <a href="preflight-planning.html#fig:GCP-elevation">2.4</a></p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:GCP-elevation"></span>
+<img src="Photos_&_gifs/GCP_flat_ground.png" alt="Effect of brushing on crown visibility. Left: GCP alignment on flat ground (Error ~4cm). Right: GCP alignment on ground with elevation change (Error ~28cm)" width="50%" /><img src="Photos_&_gifs/GCP_elevation_change_terrain.png" alt="Effect of brushing on crown visibility. Left: GCP alignment on flat ground (Error ~4cm). Right: GCP alignment on ground with elevation change (Error ~28cm)" width="50%" />
+<p class="caption">
+Figure 2.4: Effect of brushing on crown visibility. Left: GCP alignment on flat ground (Error ~4cm). Right: GCP alignment on ground with elevation change (Error ~28cm)
 </p>
 </div>
-<div style="text-align: center;">
-<img src="Photos_&_gifs/GCP_elevation_change_terrain.png" style="height: 350px; margin: 0 10px;" />
-<p style="margin: 0;">
-<ol start="2" style="list-style-type: lower-alpha">
-<li>GCP alignment on ground with elevation change (Error ~28cm)
+<!--
+<div style="display: flex; justify-content: center; gap: 20px;"><div style="text-align: center;"><img src="Photos_&_gifs/GCP_flat_ground.png" style="height: 350px; margin: 0 10px;" /><p style="margin: 0;">a. GCP alignment on flat ground (Error ~4cm)</p></div><div style="text-align: center;"><img src="Photos_&_gifs/GCP_elevation_change_terrain.png" style="height: 350px; margin: 0 10px;" /><p style="margin: 0;">b. GCP alignment on ground with elevation change (Error ~28cm)</p></div></div>
+-->
+<p>Below Figure <a href="preflight-planning.html#fig:brushingEffect">2.5</a> shows an example of the effect of brushing on crown visibility at a moist, high-productivity common-garden trial.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:brushingEffect"></span>
+<img src="Photos_&_gifs/pre_brush.jpg" alt="Effect of brushing on crown visibility. Left: early August prior to brushing. Right: late August post brushing" width="50%" /><img src="Photos_&_gifs/post_brush.jpg" alt="Effect of brushing on crown visibility. Left: early August prior to brushing. Right: late August post brushing" width="50%" />
+<p class="caption">
+Figure 2.5: Effect of brushing on crown visibility. Left: early August prior to brushing. Right: late August post brushing
 </p>
 </div>
-</div></li>
-</ol></li>
-</ol>
 </div>
 <div id="drone-and-sensors-what-will-i-need-to-purchase-and-how-much-will-it-cost" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> Drone and Sensors: What will I need to purchase and how much will it cost?<a href="preflight-planning.html#drone-and-sensors-what-will-i-need-to-purchase-and-how-much-will-it-cost" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="hardware-costs" class="section level3 hasAnchor" number="2.3.1">
 <h3><span class="header-section-number">2.3.1</span> Hardware Costs<a href="preflight-planning.html#hardware-costs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Table <a href="preflight-planning.html#tab:droneTable">2.1</a></p>
+<table>
+<caption><span id="tab:droneTable">Table 2.1: </span>A breakdown of drone and sensor costs, where newer versions are available, both are listed. The * would be a “wishlist” full set up. This is just the major purchases and doesn’t include general field equipment</caption>
+<colgroup>
+<col width="11%" />
+<col width="5%" />
+<col width="2%" />
+<col width="79%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Hardware</th>
+<th align="left">Purpose</th>
+<th align="left">Cost</th>
+<th align="left">Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">*Zenmuse P1, RGB</td>
+<td align="left">Sensor</td>
+<td align="left">$9,000</td>
+<td align="left">Positional accuracy - Horizontal: 3 cm, Vertical: 5 cm. Ground Sampling Distance (GSD) - 1cm at 80 m elevation</td>
+</tr>
+<tr class="even">
+<td align="left">Micasense Dual MX</td>
+<td align="left">Sensor</td>
+<td align="left">$16,000</td>
+<td align="left">Ten band multispectral camera, no longer in production</td>
+</tr>
+<tr class="odd">
+<td align="left">*Micasense Dual Panchromatic</td>
+<td align="left">Sensor</td>
+<td align="left">$22,500</td>
+<td align="left">Ten band multispectral camera with Panchromatic sharpening</td>
+</tr>
+<tr class="even">
+<td align="left">Zenmuse H20T, Thermal and RGB</td>
+<td align="left">Sensor</td>
+<td align="left">$13,350</td>
+<td align="left">Thermal and RGB sensor</td>
+</tr>
+<tr class="odd">
+<td align="left">Zenmuse L1, LiDAR and RGB</td>
+<td align="left">Sensor</td>
+<td align="left">$11,600</td>
+<td align="left">LiDAR sensor released in 2020</td>
+</tr>
+<tr class="even">
+<td align="left">*Zenmuse L2 LiDAR and RGB</td>
+<td align="left">Sensor</td>
+<td align="left">$16,660</td>
+<td align="left">LiDAR sensor released in 2023, now with 5 returns and better accuracy</td>
+</tr>
+<tr class="odd">
+<td align="left">DJI Matrice (M)300 RTK</td>
+<td align="left">Drone</td>
+<td align="left">$12,000</td>
+<td align="left">2020 released DJI enterprise drone with RC, intelligent battery case and one set of batteries</td>
+</tr>
+<tr class="even">
+<td align="left">*DJI Matrice (M)350 RTK</td>
+<td align="left">Drone</td>
+<td align="left">$13,500</td>
+<td align="left">2023 released DJI enterprise drone with RC plus, intelligent battery case and one set of batteries</td>
+</tr>
+<tr class="odd">
+<td align="left">*DJI TB65 batteries</td>
+<td align="left">Drone batteries</td>
+<td align="left">$1,910</td>
+<td align="left">Pair of the newer model M300/350 batteries. Good for one approximately 30-minute mapping flight including safety margins. At least 4 pairs are recommended for continuous flight when paired with a small generator</td>
+</tr>
+<tr class="even">
+<td align="left">DJI DRTK2</td>
+<td align="left">GNSS receiver</td>
+<td align="left">$4,200</td>
+<td align="left">GNSS receiver for use as base to stream RTK to drone</td>
+</tr>
+<tr class="odd">
+<td align="left">*Emlid RS3</td>
+<td align="left">GNSS receiver</td>
+<td align="left">$3,600</td>
+<td align="left">GNSS receiver for use as base to stream RTK to drone and rover</td>
+</tr>
+<tr class="even">
+<td align="left">*Emlid RS3</td>
+<td align="left">GNSS receiver</td>
+<td align="left">$3,600</td>
+<td align="left">GNSS receiver for use as rover for centimeter precise GCP or stem mapping</td>
+</tr>
+</tbody>
+</table>
+<p>Table <a href="preflight-planning.html#tab:Untested-droneTable">2.2</a> are some untested options:</p>
+<table>
+<caption><span id="tab:Untested-droneTable">Table 2.2: </span>Options that we would like to test in the future but have not yet had the chance to</caption>
+<colgroup>
+<col width="18%" />
+<col width="9%" />
+<col width="5%" />
+<col width="66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Hardware</th>
+<th align="left">Purpose</th>
+<th align="left">Cost</th>
+<th align="left">Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">DJI Mavic 3 Multispectral0</td>
+<td align="left">Sensor, Drone</td>
+<td align="left">$5,945</td>
+<td align="left">RTK capable drone, RGB and 4 multispectral wavelengths</td>
+</tr>
+<tr class="even">
+<td align="left">Senterra 6X</td>
+<td align="left">Sensor</td>
+<td align="left">$17,120</td>
+<td align="left">RTK capable, 5 multispectral plus RGB, potential to customize wavelengths, but extra price unknown</td>
+</tr>
+<tr class="odd">
+<td align="left">Micasense Altum PT</td>
+<td align="left">Sensor</td>
+<td align="left">$25,950</td>
+<td align="left">Thermal, and multispectral panchromatic, RTK capable sensor</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="drone-training-in-canada" class="section level3 hasAnchor" number="2.3.2">
 <h3><span class="header-section-number">2.3.2</span> Drone Training in Canada<a href="preflight-planning.html#drone-training-in-canada" class="anchor-section" aria-label="Anchor link to header"></a></h3>
