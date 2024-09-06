@@ -6,6 +6,41 @@ Figure \@ref(fig: aligned-agisoft)
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Aligned_agisoft.png")
 ```
 
+
+
+```{r metashape-pref, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Recommended Metashape preferences setup under the Advanced tab."}
+# Include the pre-brushing and post-brushing images
+knitr::include_graphics(c(
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/metashape_pref.png",
+  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/metashape_pref_2.png"
+))
+```
+
+```{r cal-ref-agisoft, echo=FALSE, out.width="100%", fig.cap = "Calibrate reflectance tool found under Tools in Metashape."}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\cal_ref_metashape.png")
+```
+
+```{r cal-ref-sunPanel-agisoft, echo=FALSE, out.width="100%", fig.cap = "Calibrate reflectance tool found under Tools in Metashape with sun sensor and reflectance panels enabled for calibration."}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\cal_ref_sun_panel_metashape.png")
+```
+
+
+
+
+```{r align-photo-agisoft, echo=FALSE, out.width="60%", fig.cap = "Photogrametric camera alignment settings using the alignment tool in Metashape"}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\align_photos_metashape.png")
+```
+
+
+```{r sparseCloud-agisoft, echo=FALSE, out.width="60%", fig.cap = "Sparse cloud created in image alignment. Pink points are those selected by the Gradual Selection tool that have a reconstruction uncertainty greater than or equal to 30.4608. These points will be filtered out."}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\sparse_cloud_metashape.png")
+```
+
+
+```{r opt-align-agisoft, echo=FALSE, out.width="60%", fig.cap = "Settings used for the Optimize Camera Alignment tool"}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\opt_camera_align_metashape.png")
+```
+
 ## Processing Orthomosaics
 
 ## Shadow Masks
