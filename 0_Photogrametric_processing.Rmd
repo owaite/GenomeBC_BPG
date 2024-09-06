@@ -40,6 +40,16 @@ knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\G
 ```{r opt-align-agisoft, echo=FALSE, out.width="60%", fig.cap = "Settings used for the Optimize Camera Alignment tool"}
 knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\opt_camera_align_metashape.png")
 ```
+```{r chunk-align-agisoft, echo=FALSE, out.width="60%", fig.cap = "Settings used for point based chunk alignment when aligning the multispectral data to the P1."}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\align_chunks_metashape.png")
+```
+
+```{r chunk-align-confirm-agisoft, echo=FALSE, out.width="60%", fig.cap = "Visual of the [T] that will appear next to chunks that have "successfully" aligned via chunk alignment. The [T] stands for transposed, visual inspection of alignment at all four corners and the center of the plot should be done to ensure the error in the alignment is within an acceptable range. We have had sites complete alignment "successfully" however with large, unacceptable error that required alignment using GCPs."}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\transposed_metashape.png")
+```
+```{r DC-settings-agisoft, echo=FALSE, out.width="60%", fig.cap = " ."}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\DC_settings_metashape.png")
+```
 
 ## Processing Orthomosaics
 
