@@ -11,6 +11,7 @@ fig:effective-overlap
 fig:P1-flightPlan
 fig:DLS-Micasense-connection
 tab:MS-Table
+fig:variable-light
 range-of-sites-assessed
 jordan-river
 powell-river

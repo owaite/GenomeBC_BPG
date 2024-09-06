@@ -1,5 +1,10 @@
 # Photogrametric Processing
 
+Figure \@ref(fig: aligned-agisoft)
+
+```{r aligned-agisoft, echo=FALSE, out.width="100%", fig.cap = "A dense point cloud processed in Agisoft Metashape with the camera locations turned on and disabled flight trajectories shown."}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Aligned_agisoft.png")
+```
 
 ## Processing Orthomosaics
 

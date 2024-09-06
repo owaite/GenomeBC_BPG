@@ -153,4 +153,63 @@ kable(data, col.names = c("Band Name", "Center Wavelength (nm)","Bandwidth (nm)"
 
 - **Lighting:** Conduct flights within two hours of solar noon to minimize shadowing in the imagery. 
 
-The DLS calibration helps to reduce the effect changing light conditions, but extreme changes in light conditions will leave residual effects that are difficult to process out. The figures below show a flight in variable conditions on top in which the calibration has failed to correct the changing light conditions.  The bottom image is on an ideal day with even diffuse light.  
+  - The DLS calibration helps to reduce the effect changing light conditions, but extreme changes in light conditions will leave residual effects that are difficult to process out. Figure \@ref(fig:drone-variable-light) below shows a flight in variable conditions (left) in which the calibration has failed to correct the changing light conditions.  The flight on the right was flown on an ideal day with even diffuse light.  
+
+Figure \@ref(fig:drone-variable-light)
+
+```{r drone-variable-light, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: MS orthomosaic in variable light. Right: MS orthomosaic in even diffuse light."}
+knitr::include_graphics(c("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\variable_light.png",
+                        "C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\diffuse_light.png"
+                        )
+)
+```
+
+  - The ideal flight as in Figure \@ref(fig:drone-variable-light) would be at solar noon in evenly overcast (diffuse) light conditions. 
+
+  - **Wind Conditions:** Lower wind speeds yield better results; however, the impact of wind will vary depending on species and site-specific factors.  Consider flying at a higher altitude and overlap in windier conditions. 
+
+  - **Flight Elevation Considerations:** While lower flight elevations produce higher resolution images, they increase flight time, making calibration more challenging. 
+
+Click [here](https://github.com/owaite/GenomeBC_BPG/tree/main/Example_Documents) to access the Micasense field SOP housed on GitHub. 
+
+[Best practices: Collecting Data with MicaSense Sensors – MicaSense Knowledge Base](https://support.micasense.com/hc/en-us/articles/224893167-Best-practices-Collecting-Data-with-MicaSense-Sensors) is an important resource.
+
+
+### Zenmuse P1: High-Quality Natural-Colour (RGB) Imagery 
+
+Figure \@ref(fig:P1-RGB)
+```{r P1-RGB, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "These images are the same area, the left was taken with the above parameters with the P1 before greenup. The right was taken with the wide angle RGB on the Zenmuse H20T, a lower resolution camera, mid-August."}
+knitr::include_graphics(c("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\P1_pre_greenup.png",
+                        "C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\RGB_mid_Aug.jpg")
+                        )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r RC-L1, echo=FALSE, out.width="100%", fig.cap = "L1 LiDAR screenshot from the remote controller during a flight at Big Tree Creek site on July 7, 2024. On the left is the RGB image instantaneously acquired for the frame and the right shows the LIDAR data acquisition from the scanner as it acquired the data up the frame."}
+knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\RC_L1.png")
+```
+
+
+
+
+

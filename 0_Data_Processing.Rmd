@@ -1,0 +1,24 @@
+# Data Processing: Software and hardware costs and options
+
+## Software costs
+We chose open-source options where we could, but there are still significant software costs. Table \@ref(tab: software-cost) outlines cost and explores options.
+
+```{r software-cost, echo = FALSE}
+data <- data.frame(
+  Software  = c("DJI Terra Pro",
+                "DJI Terra Pro"
+                 
+  ),
+  Purpose = c(
+  ),
+  Cost = c(
+  ),
+  Options_notes = c(
+  )
+  
+  
+)
+# Create the table and center it
+kable(data, col.names = c("Software", "Purpose","Cost","Options - notes"),caption = 'Purpose, cost, and notes on software that we have used for this project.')
+
+```
