@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="preflight-planning.html"/>
-<link rel="next" href="lidar-processing-workflow.html"/>
+<link rel="next" href="photogrametric-processing.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -180,36 +180,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.4" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#data-collection-sensors-parameters-and-ideal-conditions"><i class="fa fa-check"></i><b>3.4</b> Data Collection: Sensors, Parameters, and Ideal Conditions</a>
 <ul>
 <li class="chapter" data-level="3.4.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#micasense-10-band-spectral-sensor-for-vegetative-indices"><i class="fa fa-check"></i><b>3.4.1</b> MicaSense: 10-Band Spectral Sensor for Vegetative Indices</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#zenmuse-p1-high-quality-natural-colour-rgb-imagery"><i class="fa fa-check"></i><b>3.4.2</b> Zenmuse P1: High-Quality Natural-Colour (RGB) Imagery</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>4</b> LiDAR Processing Workflow</a>
+<li class="chapter" data-level="4" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html"><i class="fa fa-check"></i><b>4</b> Photogrametric Processing</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>4.1</b> DJI Terra</a></li>
-<li class="chapter" data-level="4.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>4.2</b> Register the LiDAR to the DAP point cloud</a>
+<li class="chapter" data-level="4.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#processing-orthomosaics"><i class="fa fa-check"></i><b>4.1</b> Processing Orthomosaics</a></li>
+<li class="chapter" data-level="4.2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#shadow-masks"><i class="fa fa-check"></i><b>4.2</b> Shadow Masks</a></li>
+<li class="chapter" data-level="4.3" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#crown-level-vegetation-indicies"><i class="fa fa-check"></i><b>4.3</b> Crown-level Vegetation Indicies</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>4.2.1</b> Prepare LiDAR for registration</a></li>
-<li class="chapter" data-level="4.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>4.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
-<li class="chapter" data-level="4.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>4.2.3</b> Rescale and tile the registered LiDAR:</a></li>
+<li class="chapter" data-level="4.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>4.3.1</b> VI Workflow</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>4.3</b> Normalization and individual tree point clouds</a>
+</ul></li>
+<li class="chapter" data-level="5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>5</b> LiDAR Processing Workflow</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>4.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
-<li class="chapter" data-level="4.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>4.3.2</b> Normalizing the tiles using the DTM</a></li>
-<li class="chapter" data-level="4.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>4.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
-<li class="chapter" data-level="4.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>4.3.4</b> Segmenting tiles</a></li>
-<li class="chapter" data-level="4.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>4.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
-<li class="chapter" data-level="4.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>4.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>4.4</b> Individual Tree Metrics</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html"><i class="fa fa-check"></i><b>5</b> Photogrametric Processing</a>
+<li class="chapter" data-level="5.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>5.1</b> DJI Terra</a></li>
+<li class="chapter" data-level="5.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>5.2</b> Register the LiDAR to the DAP point cloud</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#processing-orthomosaics"><i class="fa fa-check"></i><b>5.1</b> Processing Orthomosaics</a></li>
-<li class="chapter" data-level="5.2" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#shadow-masks"><i class="fa fa-check"></i><b>5.2</b> Shadow Masks</a></li>
-<li class="chapter" data-level="5.3" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#crown-level-vegetation-indicies"><i class="fa fa-check"></i><b>5.3</b> Crown-level Vegetation Indicies</a>
-<ul>
-<li class="chapter" data-level="5.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>5.3.1</b> VI Workflow</a></li>
+<li class="chapter" data-level="5.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>5.2.1</b> Prepare LiDAR for registration</a></li>
+<li class="chapter" data-level="5.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>5.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
+<li class="chapter" data-level="5.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>5.2.3</b> Rescale and tile the registered LiDAR:</a></li>
 </ul></li>
+<li class="chapter" data-level="5.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>5.3</b> Normalization and individual tree point clouds</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>5.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
+<li class="chapter" data-level="5.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>5.3.2</b> Normalizing the tiles using the DTM</a></li>
+<li class="chapter" data-level="5.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>5.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
+<li class="chapter" data-level="5.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>5.3.4</b> Segmenting tiles</a></li>
+<li class="chapter" data-level="5.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>5.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
+<li class="chapter" data-level="5.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>5.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>5.4</b> Individual Tree Metrics</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html"><i class="fa fa-check"></i><b>6</b> MicaSense Irradiance Correction</a>
 <ul>
@@ -421,14 +422,39 @@ Figure 3.5: Micasense RedEdge-MX Dual and the DLS2 mounted on the M300. Here we 
 <p><strong>Best Practices: </strong></p>
 <ul>
 <li><p><strong>Weather Conditions:</strong> Avoid flying in any precipitation as MicaSense cameras are unprotected from moisture, with exposed data and power connections.</p></li>
-<li><p><strong>Lighting:</strong> Conduct flights within two hours of solar noon to minimize shadowing in the imagery.</p></li>
+<li><p><strong>Lighting:</strong> Conduct flights within two hours of solar noon to minimize shadowing in the imagery.</p>
+<ul>
+<li>The DLS calibration helps to reduce the effect changing light conditions, but extreme changes in light conditions will leave residual effects that are difficult to process out. Figure <a href="data-collection-and-flights.html#fig:drone-variable-light">3.6</a> below shows a flight in variable conditions (left) in which the calibration has failed to correct the changing light conditions. The flight on the right was flown on an ideal day with even diffuse light.</li>
+</ul></li>
 </ul>
-<p>The DLS calibration helps to reduce the effect changing light conditions, but extreme changes in light conditions will leave residual effects that are difficult to process out. The figures below show a flight in variable conditions on top in which the calibration has failed to correct the changing light conditions. The bottom image is on an ideal day with even diffuse light.</p>
-<p>Figure <a href="data-collection-and-flights.html#fig:DLS-Micasense-connection">3.5</a></p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:variable-light"></span>
+<p>Figure <a href="data-collection-and-flights.html#fig:drone-variable-light">3.6</a></p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:drone-variable-light"></span>
 <img src="Photos_&_gifs/variable_light.png" alt="Left: MS orthomosaic in variable light. Right: MS orthomosaic in even diffuse light." width="50%" /><img src="Photos_&_gifs/diffuse_light.png" alt="Left: MS orthomosaic in variable light. Right: MS orthomosaic in even diffuse light." width="50%" />
 <p class="caption">
 Figure 3.6: Left: MS orthomosaic in variable light. Right: MS orthomosaic in even diffuse light.
+</p>
+</div>
+<ul>
+<li><p>The ideal flight as in Figure <a href="data-collection-and-flights.html#fig:drone-variable-light">3.6</a> would be at solar noon in evenly overcast (diffuse) light conditions.</p></li>
+<li><p><strong>Wind Conditions:</strong> Lower wind speeds yield better results; however, the impact of wind will vary depending on species and site-specific factors. Consider flying at a higher altitude and overlap in windier conditions.</p></li>
+<li><p><strong>Flight Elevation Considerations:</strong> While lower flight elevations produce higher resolution images, they increase flight time, making calibration more challenging.</p></li>
+</ul>
+<p>Click <a href="https://github.com/owaite/GenomeBC_BPG/tree/main/Example_Documents">here</a> to access the Micasense field SOP housed on GitHub.</p>
+<p><a href="https://support.micasense.com/hc/en-us/articles/224893167-Best-practices-Collecting-Data-with-MicaSense-Sensors">Best practices: Collecting Data with MicaSense Sensors – MicaSense Knowledge Base</a> is an important resource.</p>
+</div>
+<div id="zenmuse-p1-high-quality-natural-colour-rgb-imagery" class="section level3 hasAnchor" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> Zenmuse P1: High-Quality Natural-Colour (RGB) Imagery<a href="data-collection-and-flights.html#zenmuse-p1-high-quality-natural-colour-rgb-imagery" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+Figure <a href="data-collection-and-flights.html#fig:P1-RGB">3.7</a>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:P1-RGB"></span>
+<img src="Photos_&_gifs/P1_pre_greenup.png" alt="These images are the same area, the left was taken with the above parameters with the P1 before greenup. The right was taken with the wide angle RGB on the Zenmuse H20T, a lower resolution camera, mid-August." width="50%" /><img src="Photos_&_gifs/RGB_mid_Aug.jpg" alt="These images are the same area, the left was taken with the above parameters with the P1 before greenup. The right was taken with the wide angle RGB on the Zenmuse H20T, a lower resolution camera, mid-August." width="50%" />
+<p class="caption">
+Figure 3.7: These images are the same area, the left was taken with the above parameters with the P1 before greenup. The right was taken with the wide angle RGB on the Zenmuse H20T, a lower resolution camera, mid-August.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:RC-L1"></span>
+<img src="Photos_&_gifs/RC_L1.png" alt="L1 LiDAR screenshot from the remote controller during a flight at Big Tree Creek site on July 7, 2024. On the left is the RGB image instantaneously acquired for the frame and the right shows the LIDAR data acquisition from the scanner as it acquired the data up the frame." width="100%" />
+<p class="caption">
+Figure 3.8: L1 LiDAR screenshot from the remote controller during a flight at Big Tree Creek site on July 7, 2024. On the left is the RGB image instantaneously acquired for the frame and the right shows the LIDAR data acquisition from the scanner as it acquired the data up the frame.
 </p>
 </div>
 
@@ -441,7 +467,7 @@ Figure 3.6: Left: MS orthomosaic in variable light. Right: MS orthomosaic in eve
         </div>
       </div>
 <a href="preflight-planning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="lidar-processing-workflow.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="photogrametric-processing.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
