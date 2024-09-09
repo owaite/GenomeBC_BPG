@@ -37,6 +37,7 @@ fig:Qgis-ref-trees
 fig:Qgis-ref-tree-fit
 fig:Qgis-maintained-ref-tree-fit
 fig:CC-las-input
+fig:CC-stem-transform
 range-of-sites-assessed
 jordan-river
 powell-river
@@ -98,3 +99,5 @@ calculating-solar-zenith-anlge
 caluclating-sun-sensor-angles
 scattereddirect-ratio-estimate
 computing-horizontal-corrected-irradiance
+thermal-conversion
+folder-set-up

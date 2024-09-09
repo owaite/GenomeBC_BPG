@@ -235,6 +235,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.4.5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#computing-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>6.4.5</b> Computing Horizontal (Corrected) Irradiance</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="7" data-path="thermal-conversion.html"><a href="thermal-conversion.html"><i class="fa fa-check"></i><b>7</b> Thermal Conversion</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="thermal-conversion.html"><a href="thermal-conversion.html#folder-set-up"><i class="fa fa-check"></i><b>7.1</b> Folder Set-Up</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -338,7 +342,7 @@ las2las -i path_to_projected_L1 ^
 <h3><span class="header-section-number">5.2.2</span> Register LiDAR to DAP cloud in CloudCompare<a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Import both the LiDAR and DAP clouds into CloudCompare (CC). This can take up to twenty minutes. Allow all for the first two warnings.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:CC-las-input"></span>
-<img src="Photos_&_gifs/CC_las_import.png" alt="Left: Apply all for this initial CloudCompare popup setting. Right: select 'Yes to All' for this second setting" width="35%" /><img src="Photos_&_gifs/CC_las_import_shift.png" alt="Left: Apply all for this initial CloudCompare popup setting. Right: select 'Yes to All' for this second setting" width="65%" />
+<img src="Photos_&_gifs/CC_las_import.png" alt="Left: Apply all for this initial CloudCompare popup setting. Right: select 'Yes to All' for this second setting" width="32.5%" /><img src="Photos_&_gifs/CC_las_import_shift.png" alt="Left: Apply all for this initial CloudCompare popup setting. Right: select 'Yes to All' for this second setting" width="67.5%" />
 <p class="caption">
 Figure 5.1: Left: Apply all for this initial CloudCompare popup setting. Right: select ‘Yes to All’ for this second setting
 </p>
@@ -348,7 +352,8 @@ Figure 5.1: Left: Apply all for this initial CloudCompare popup setting. Right: 
 <p>The L1 will reflect flight lines when there is moisture in the air. Below is an example point cloud from a damp day on the coast just after a fog past through. For sake of the example, it was not filtered in LAStools with a height threshold.</p>
 <p><img src="Photos_&_gifs/CloudCompare_1.PNG" width="100%" style="display: block; margin: auto;" /></p>
 <p>The residual fog patches seen above the canopy can be clipped out using the cross section or segment tool.</p>
-<p>** IMAGE of TOOLS MENTIONED ** ******************************************</p>
+<p><img src="Photos_&_gifs/CC_cross_section_tool.png" width="100%" style="display: block; margin: auto;" />
+<img src="Photos_&_gifs/CC_cross_section_tool_poly.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rough-alignment" class="section level4 hasAnchor" number="5.2.2.2">
 <h4><span class="header-section-number">5.2.2.2</span> Rough Alignment<a href="lidar-processing-workflow.html#rough-alignment" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -362,9 +367,13 @@ Figure 5.1: Left: Apply all for this initial CloudCompare popup setting. Right: 
 <p>Next Apply transformations in the x and y axis.</p>
 <p>Find a section of the clouds where you can easily see the alignment. In this case there is a single large leave tree in the centre of the plot. The LiDAR is the one on the left.</p>
 <p>Here we see the LiDAR is offset to the left (negative) on the Y(green) axis and up (positive) on the x(red) axis.</p>
-<p><img src="Photos_&_gifs/CloudCompare_4.PNG" width="60%" style="display: block; margin: auto;" /></p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:CC-stem-transform"></span>
+<img src="Photos_&_gifs/CC-stem.png" alt="Left:      . Right: ." width="50%" /><img src="Photos_&_gifs/CC-stem-aligned.png" alt="Left:      . Right: ." width="50%" />
+<p class="caption">
+Figure 5.2: Left: . Right: .
+</p>
+</div>
 <p>Be careful not to rotate, only transform.</p>
-<p><img src="Photos_&_gifs/CloudCompare_5.PNG" width="60%" style="display: block; margin: auto;" /></p>
 <p>In this case the LiDAR was shifted -5 in the X and +5 in the Y axis in total. The shift was done in three smaller iterations to achieve the alignment seen in the above screen capture.</p>
 </div>
 <div id="fine-registration-iterative-closest-point-icp" class="section level4 hasAnchor" number="5.2.2.3">
@@ -482,7 +491,7 @@ lastile -i path_to_write\02_rescaled\*.laz ^
 <span id="cb24-6"><a href="lidar-processing-workflow.html#cb24-6" tabindex="-1"></a>  <span class="fu">opt_laz_compression</span>(TILES) <span class="ot">=</span> <span class="cn">TRUE</span>   <span class="co"># enable LAZ compression for the LAScatalog object</span></span>
 <span id="cb24-7"><a href="lidar-processing-workflow.html#cb24-7" tabindex="-1"></a>  <span class="fu">opt_output_files</span>(TILES) <span class="ot">=</span> <span class="st">&quot;&quot;</span>   <span class="co"># set output file options for the LAScatalog object to empty</span></span>
 <span id="cb24-8"><a href="lidar-processing-workflow.html#cb24-8" tabindex="-1"></a>  <span class="fu">opt_progress</span>(TILES) <span class="ot">=</span> <span class="cn">TRUE</span> <span class="co"># enable progress tracking for processing</span></span></code></pre></div>
-<p>Next we create a 10cm DTM using the tin() algorithm and smooth the raster by using the mean focal statistic and a focal window of 25m by 25m over the DTM. As the focal window shifts over the raster, it updates the pixel that sits at its center to the mean value within the 25m by 25m window. We then assigned the proper CRS and exported the raster as a tif.</p>
+<p>Next we create a 10cm DTM using the tin() algorithm and smooth the raster by using the mean focal statistic and a focal window of 25 by 25 cells over the DTM. As the focal window shifts over the raster, it updates the pixel that sits at its center to the mean value within the 25 x 25 cell window. We then assigned the proper CRS and exported the raster as a tif.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="lidar-processing-workflow.html#cb25-1" tabindex="-1"></a>  <span class="co"># Create a DTM</span></span>
 <span id="cb25-2"><a href="lidar-processing-workflow.html#cb25-2" tabindex="-1"></a>  DTM <span class="ot">=</span> <span class="fu">grid_terrain</span>(TILES, <span class="at">res =</span> <span class="fl">0.1</span>, <span class="fu">tin</span>(), <span class="at">full_raster =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb25-3"><a href="lidar-processing-workflow.html#cb25-3" tabindex="-1"></a>    <span class="co"># applying a focal operation to the DTM raster: computing the mean value within a moving window defined by a matrix.</span></span>
@@ -536,7 +545,7 @@ lastile -i path_to_write\02_rescaled\*.laz ^
 <p>The threshold set for segmentation will be site specific. We chose to only retain the top 25% of the point cloud for each tree in our mature (~25 years old) sites with crown closure in order to:
 1. limit the chance of capturing invading branches in our LiDAR data
 2. Capture a similar scope of the trees in both the LiDAR and photogrametic data, given that the aerial imagery is limited to branches that can be seen from an aerial perspective.</p>
-<p>A range a thresholds, from 50% (for ~10 year old trees that were around ~8m in height) to 80% (for ~4 year old trees that were around ~1m in height), were used for the younger sites we worked with depending on the proportion of tree visible from an aerial perspective.</p>
+<p>A range of thresholds, from 50% (for ~10 year old trees that were around ~8m in height) to 80% (for ~4 year old trees that were around ~1m in height), were used for the younger sites we worked with depending on the proportion of the tree crown that is visible from an aerial, oblique perspective.</p>
 <p>To begin, we must first define the function that will segment the trees. Here “zq” is the threshold for the height segmentation and can either be set in the polys_to_las function (if you would like it to be the same value each time the function is run) or defined as a variable prior to initiating the function (use this option if the function will be called for different sites that have different zq values).</p>
 <p>The polys_to_las function works by:
 1. Identifying points that fall within a tree crown and labeling the points with the unique treeID for that crown
@@ -587,12 +596,12 @@ lastile -i path_to_write\02_rescaled\*.laz ^
 <p>This is done to facilitate clipping out individual tree point clouds in the next step.</p>
 <p><strong>Note:</strong></p>
 <ul>
-<li><p>The <em>opt_chunk_size(SEGMENTED) = 10000</em> step sets the new chunk size to 10,000 points, meaning that chunks of 10,000 points will be managed at a time. If there are more than 10,000 points in your point cloud than data will be handled in chunks of 10,000 points at a time to not overload memory.</p></li>
+<li><p>The <em>opt_chunk_size(SEGMENTED) = 10000</em> sets the new chunk size to 10,000 units of the CRS, in this case the chunk size is 10km x 10km. This is done to read in all the segmented tiles at one time so they can then be merged together into one tile. This value will be site specific however a very large value of 10km x 10km should work for the vast majority of sites.</p></li>
 <li><p>The <em>catalog_retile</em> function merges the point clouds into one large point cloud</p></li>
 </ul>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="lidar-processing-workflow.html#cb30-1" tabindex="-1"></a>SEGMENTED <span class="ot">=</span> <span class="fu">readLAScatalog</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">07_SEGMENTED</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
 <span id="cb30-2"><a href="lidar-processing-workflow.html#cb30-2" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(SEGMENTED) <span class="ot">=</span> <span class="dv">0</span> <span class="co">#zero buffer</span></span>
-<span id="cb30-3"><a href="lidar-processing-workflow.html#cb30-3" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(SEGMENTED) <span class="ot">=</span> <span class="dv">10000</span> <span class="co">#set the chunk size for the LAScatalog object to 10000 points so that all laz files are merged into one large laz file</span></span>
+<span id="cb30-3"><a href="lidar-processing-workflow.html#cb30-3" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(SEGMENTED) <span class="ot">=</span> <span class="dv">10000</span> <span class="co">#set the chunk size for the LAScatalog object to 10000 units of the CRS so that all laz files are merged into one large laz file</span></span>
 <span id="cb30-4"><a href="lidar-processing-workflow.html#cb30-4" tabindex="-1"></a><span class="fu">opt_laz_compression</span>(SEGMENTED) <span class="ot">=</span> <span class="cn">TRUE</span></span>
 <span id="cb30-5"><a href="lidar-processing-workflow.html#cb30-5" tabindex="-1"></a><span class="fu">opt_progress</span>(SEGMENTED) <span class="ot">=</span> <span class="cn">TRUE</span></span>
 <span id="cb30-6"><a href="lidar-processing-workflow.html#cb30-6" tabindex="-1"></a><span class="fu">opt_output_files</span>(SEGMENTED) <span class="ot">=</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">08_MERGED</span><span class="sc">\\</span><span class="st">&quot;</span>, site, <span class="st">&quot;_HULLS_merged&quot;</span>) <span class="co">#write output files to &quot;08_M...&quot; with the suffix &quot;_HULLS_merged&quot;</span></span>

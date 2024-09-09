@@ -1,33 +1,22 @@
 
+# Thermal Conversion
+
+This method converts raw imagery from the Zenmuse H20T to temperature rasters. We wrote this method to bypass DJI's thermal analysis tool app since we have thousands of images and the app would often crash when a few were uploaded. This script uses the DJI thermal analysis tool's software developer kit (SDK) 
 
 
 Prior to running this code you must:
 - Download the .bat file for step 2 from the GitHub
 
 
-**Note**: We have run across an error in some imagery, DJI is working on a solution.
 
-The error is as follows:
-ERROR: call dirp_set_measurement_params failed
-ERROR: call prv_isp_config failed
-Test done with return code -6
 
-```{r eval=FALSE, include=TRUE}
+```{r, eval=FALSE, echo=TRUE}
 library(exiftoolr)
 library(dplyr)
 library(lubridate)
-
-install.packages("OpenImageR")
 library(OpenImageR)
 library(raster)
 library(doParallel)
-
-#install.packages("timechange")
-library(timechange)
-
-#install.packages("data.table")
-library(data.table)
-
 library(stringr)
 
 
@@ -44,11 +33,219 @@ Canoe_df <- df
 ```
 
 
-# Step 00
-Create a folder with RGB images that have the same name as converted IR images so that only matching RGB images are grabbed and both RGB and IR can be loaded in metassshape as a multicamera system
+## Folder Set-Up
+
+This step goes over how we organize our imagery for the following thermal conversion. 
+
+Here we:
+
+- create a folder named:
+
+  - "Merged_T" within the original "H20T" folder, this is the location the raw thermal images will be copied. This allow us to (a) keep a backup of the original data and (b) easily iterate over the images to convert them in later steps
+  
+  - "Temperature_rasters" within the Merged_T folder that will hold converted imagery
+
+  - "Temperature_rasters_EXIF" within the Merged_T folder that will hold converted imagery that has original imagery exif data written to it
+
+- locate all folders within the defined directory that have DJI and H20T in the name
+
+- Iterate over the folders found in the above step and:
+
+  - find files that end in _T.JPG (the raw thermal images)
+  - copy over the raw thermal images to the merged folder
+
+**Note:** Our folder structure was:
+
+- paste0("I:\\PARSER_Ext\\",site,"\\Flights\\", data_date, "\\1_Data\\H20T"), where "site" is a string of the site name that we defined prior to the for loop and data_date is a string representing the flight date that is defined in the for loop. This was done so we could easily iterate over sites and dates. Feel free to change this to match your folder structure.
+
+```{r, eval=FALSE, echo=TRUE}
+# Setting the site and flight date to convert thermal imagery
+flight_dates <-  c("2023_05_10") # Here only one date is shown however this can be a list of however many dates you would like to iterate over
+site <- "Fdc_PR_Canoe" 
+merged <- "Merged_T" #name of the 'merged' folder that will contain all the h20T images from the multiple folders ouput by the H20T
+
+for(i in 1:length(flight_dates)){
+  data_date <- flight_dates[i]
+  print(data_date)
+  dir <- paste0("I:\\PARSER_Ext\\",site,"\\Flights\\", data_date, "\\1_Data\\H20T")
+  #create folders
+  if (!dir.exists(paste0(dir, "\\",merged))) {
+    dir.create(paste0(dir, "\\",merged),recursive = TRUE)
+  }
+  if (!dir.exists(paste0(dir, "\\",merged,"\\Temperature_rasters"))) {
+    dir.create(paste0(dir, "\\",merged,"\\Temperature_rasters"),recursive = TRUE)
+  }
+  if (!dir.exists(paste0(dir, "\\",merged,"\\Temperature_rasters_EXIF"))) {
+    dir.create(paste0(dir, "\\",merged,"\\Temperature_rasters_EXIF"),recursive = TRUE)
+  }
+  
+  list_dir <- list.files(dir, full.names = TRUE,pattern = c("DJI.+-H20T")) #selecting folders in the H20T folder that have DJI and end in -H20T, this is how we named our folders, change this pattern to match your folders. You should be selecting all folders with H20T imagery ending in _T for that flight
+  print(list_dir) #to check only correct directories are being read
+  
+  for (d in 1:length(list_dir)){
+    folder_dir <- list_dir[d] #calling each directly separately
+    T_files <- list.files(folder_dir, pattern = "_T\\.JPG$") #selecting all JPEGs ending in _T 
+    file.copy(from = paste0(folder_dir,"\\", T_files),
+              to = paste0(dir,"\\",merged,"\\", T_files), overwrite = FALSE) #copying h20T images ending in _T (aka unprocessed thermal images) into the thermal only folder for ease in DJI SDK step
+  }
+}
+```
+
+## Weather Data
+
+For this step you will need :
+
+Humidity, Ambient Temperature
+
+First, we use the first and last image in the Merged_T folder to define the start and end time of the flight, along with the date of the flight as a date object.
+
+```{r, eval=FALSE, echo=TRUE}
+#getting image capture date from exif data of the first image in the H20T folder
+
+data_date <- flight_dates[1]
+
+time_file_list <- list.files(paste0(dir,"\\",merged), pattern = "_T\\.JPG$")
+
+#Retrieving the time the FIRST H20T thermal image was taken
+(img_1 <- time_file_list[1]) #find the first thermal image and print the name
+start_exif_flight_date <- data.frame(exif_read(paste0(dir,"\\",merged,"\\",img_1),
+                                               tags = "CreateDate",
+                                               quiet = TRUE)) #find the time the image was taken/written from the CreateDate tag in the exif data
+(start_flight_date_time <- start_exif_flight_date$CreateDate) #Start of the flight
+
+#Retrieving the time the LAST H20T thermal image was taken
+(img_last <- tail(time_file_list, n=1))#End flight time
+end_flight_date_time <- data.frame(exif_read(paste0(dir,"\\",merged,"\\",img_last),
+                                             tags = "CreateDate",
+                                             quiet = TRUE))
+(end_flight_date_time <- end_flight_date_time$CreateDate)#End of the flight
 
 
-```{r eval=FALSE, include=TRUE}
+(flight_date <- as.Date(start_exif_flight_date$CreateDate, '%Y:%m:%d %H:%M:%S')) #the flight date as a date object
+```
+
+Next we :
+
+- 
+
+
+```{r, eval=FALSE, echo=TRUE}
+
+### RUN UP TO HERE THEM LOOK AT START AND STOP TIMES TO INFORM NEXT PART
+
+ENTER start and stop times from above, ie if start was 11:15 put 11:00:00 and if end was 1:23 put 14:00:00 (2pm) as the end
+start_time_avg <- "10:00:00" #Based off of start_flight_date_time from above
+stop_time_avg <- "13:00:00" #Based off of end_flight_date_time from above
+
+#Looking at time in 15 min intervals
+#setting up weights
+
+These weights will change with each iteration - left uncommented so we cant accidently run the script without changing this part
+#if flight was from 10-11, then start and end weight swould be 1 and the mid weight can be commented out
+# I will be usually either 0.25 (15min), 0.5 (30min), 0.75 (45min) or 1 (1 hr) as weights
+# ie for a flight that started at 10:15 and ended at 11:30, the start weight would be 0.75 (for 10am data), mid weight would be 1 (for 11am data), and end would be 0.5 (for 12pm data)
+#round down for start and up for end ie start of 10:06 would be 10 and end of 11:36 would be 11:45
+
+new_flight_date <- as.Date(flight_date, format = '%Y-%m-%d')
+new_flight_date
+
+#loading in CFS HOBO weather data
+cfs_weather <- data
+
+colnames(data)
+#cfs_weather
+
+new_column_names <- gsub("\\.\\..*", "", colnames(cfs_weather))
+colnames(cfs_weather) <- new_column_names
+
+cfs_weather$Date <- as.Date(cfs_weather$Date, format = "%m/%d/%y")
+
+# For 2 time points ----------------------------------------------------------------------------
+start_weight <- 1
+end_weight <- 0.75
+
+sum_weight <- sum(start_weight,
+                  end_weight) 
+
+#creating df with columns that average humidity per date
+cfs_weather_time_avg <- cfs_weather%>%
+  group_by(Date)%>%
+  filter(Date == new_flight_date ) %>%
+  filter(Time <= stop_time_avg & Time >= start_time_avg)%>% #filtering only for humidity values taken between 10am and 12pm
+  mutate( Average_hum = (start_weight*RH[1]
+                         + end_weight*RH[2])/sum_weight,
+          
+          Average_air_temp = (start_weight*Temperature[1]
+                              + end_weight*Temperature[2])/sum_weight)
+
+cfs_weather_time_avg
+# For 3 time points ----------------------------------------------------------------------------
+start_flight_date_time
+end_flight_date_time
+#Ie: Flight starts at 10:15am and ends at 11:30
+start_weight <- 0.25 # 75% of 10am
+mid_weight <- 1 # 100% of  11am 
+end_weight <- 0.25 # 50% of 12pm
+
+sum_weight <- sum(start_weight,
+                  mid_weight,
+                  end_weight) 
+
+
+#creating df with columns that average humidity per date
+cfs_weather_time_avg <- cfs_weather%>%
+  group_by(Date)%>%
+  filter(Date == new_flight_date ) %>%
+  filter(Time <= stop_time_avg & Time >= start_time_avg)%>% #filtering only for humidity values taken between 10am and 12pm
+  mutate( Average_hum = (start_weight*RH[1]
+                         + mid_weight*RH[2] #comment out this line if no mid_weight
+                         + end_weight*RH[3])/sum_weight,
+          
+          Average_air_temp = (start_weight*Temperature[1]
+                              + mid_weight*Temperature[2]#comment out this line if no mid_weight
+                              + end_weight*Temperature[3])/sum_weight)
+cfs_weather_time_avg
+#####
+#checking dimension
+dim(cfs_weather_time_avg)
+#checking values (for all dates)
+avg_hum <- cfs_weather_time_avg$Average_hum
+avg_hum
+avg_temp <- cfs_weather_time_avg$Average_air_temp
+avg_temp
+date <- as.Date(cfs_weather_time_avg$Date, '%d-%m-%Y')
+date
+
+#creating a data frame  with unique averaged values (from 11am-12pm) humidity and dates
+Canoe_flight_table <- data.frame(
+  date,
+  avg_hum,
+  avg_temp
+)
+dim(Canoe_flight_table)
+#removing duplicated values (ie time is 11 and 12, and both have the same averaged humidity and amp temp measurments)
+Canoe_flight_table <- unique(Canoe_flight_table)
+
+#resetting index in table to go from 1-N
+rownames(Canoe_flight_table) <- NULL
+dim(Canoe_flight_table)
+Canoe_flight_table
+
+#getting averaged humidity (11am-12pm) from CFS logger for flight date
+flight_humidity <- Canoe_flight_table[Canoe_flight_table$date == flight_date, "avg_hum"]
+flight_humidity
+
+flight_amb_temp <- Canoe_flight_table[Canoe_flight_table$date == flight_date, "avg_temp"]
+flight_amb_temp
+
+```
+
+#STEP 2: DJI SDK in Visual Studio : convert to temp in C : 
+
+#STEP 3: Read binary and convert to a raster: https://community.rstudio.com/t/solution-to-reading-raw-images-into-r/45435
+
+
+```{r, eval=FALSE, echo=TRUE}
 therm_dates <- c("2022_10_05")
 
 for(x in 1:length(therm_dates)){
@@ -114,81 +311,10 @@ for(x in 1:length(therm_dates)){
 }
 ```
 
-# Step 0: making folders and copying h20T images to sole folder
 
-```{r eval=FALSE, include=TRUE}
-#dir <- Data directory, folder where thermal and thermal_SDK_DJI_raw are held
-#"Fdc_PR_Canoe", Cw_PR_Rainbow_SiteA
-site <- "Fdc_PR_Canoe"
-flight_dates_all <- list.files(paste0("I:\\PARSER_Ext\\",site,"\\Flights\\"))
-flight_dates_all <- as.Date(flight_dates_all, "%Y_%m_%d")
-flight_dates_all
-flight_dates_DayST <- flight_dates_all[flight_dates_all %in% df$Date]
-#chanign format to have it match the file format of year_m_d
-flight_dates_DayST <- str_replace_all(flight_dates_DayST, "-", "_")
-flight_dates_DayST
-#name of the 'merged' folder that will contain all the h20T images from multiple folders, this was necessary when I was running tests but to stay consistent I would leave it set to 'Merged_T'
+**Note**: We have run across an error in some imagery, DJI is working on a solution.
 
-## Dates DONE : up to 2022_10_20
-#merged_T folders done: 2022_11_19 
-## 2022_11_28 - Mica only, no thermal for: 2023_01_26, 
-## NEED TO FIND THERMAL DATA FOR 2023_04_26
-
-dates <- c("2023_05_10")#, "2023_05_24")#"2023_02_17", "2023_03_22", "2023_04_05"
-# library(filesstrings)
-
-flight_dates_DayST <- dates
-flight_dates_DayST
-
-merged <- "Merged_T"
-
-for(i in 1:length(flight_dates_DayST)){
-  data_date <- flight_dates_DayST[i]
-  print(data_date)
-  dir <- paste0("I:\\PARSER_Ext\\",site,"\\Flights\\", data_date, "\\1_Data\\H20T")
-  dir
-  # #creating a folder to move non Daylight savings data to
-  # if (!dir.exists(paste0(dir, "\\",merged,"\\No_DST"))) {
-  #   dir.create(paste0(dir, "\\",merged,"\\No_DST"),recursive = TRUE)
-  # }
-  #moving non DST data to No_DST
-  # file.rename(paste0(dir, "\\",merged,"\\DJI_SDK_raw\\"), paste0(dir, "\\",merged,"\\No_DST\\DJI_SDK_raw\\"))
-  # file.rename(paste0(dir, "\\",merged,"\\Temperature_rasters\\"), paste0(dir, "\\",merged,"\\No_DST\\Temperature_rasters\\"))
-  # file.rename(paste0(dir, "\\",merged,"\\Temperature_rasters_EXIF\\"), paste0(dir, "\\",merged,"\\No_DST\\Temperature_rasters_EXIF\\"))
-  # file.move(paste0(dir, "\\",merged,"\\DJI_SDK_loop.bat"), paste0(dir, "\\",merged,"\\No_DST\\"))
-  # file.move(paste0(dir, "\\",merged,"\\DJI_SDK_loop_updated.bat"), paste0(dir, "\\",merged,"\\No_DST\\"))
-  
-  if (!dir.exists(paste0(dir, "\\",merged,"\\Temperature_rasters_DST"))) {
-    dir.create(paste0(dir, "\\",merged,"\\Temperature_rasters_DST"),recursive = TRUE)
-  }
-  
-  if (!dir.exists(paste0(dir, "\\",merged,"\\Temperature_rasters_EXIF_DST"))) {
-    dir.create(paste0(dir, "\\",merged,"\\Temperature_rasters_EXIF_DST"),recursive = TRUE)
-  }
-  
-  #copying h20T images ending in _T (aka unprocessed thermal images) into the thermal only folder for ease in DJI SDK step
-  #getting folders in the H20T folder that have DJI and end in -H20T, may need to check that all folders are named this way
-  list_dir <- list.files(dir, full.names = TRUE,pattern = c("DJI.+-H20T"))
-  print(list_dir)
-  
-  for (d in 1:length(list_dir)){
-    #calling each directly seperately
-    folder_dir <- list_dir[d]
-    #getting allJPEGs ending in _T in that directory
-    T_files <- list.files(folder_dir, pattern = "_T\\.JPG$")
-    #print(T_files)
-    file.copy(from = paste0(folder_dir,"\\", T_files),
-              to = paste0(dir,"\\",merged,"\\", T_files), overwrite = FALSE)
-  }
-  
-}
-#no need to create merged folders, since they already exist for some
-
-```
-
-#STEP 1: Weather Data: Humidity, Ambient Temp
-
-#STEP 2: DJI SDK in Visual Studio : convert to temp in C : 
-
-#STEP 3: Read binary and convert to a raster: https://community.rstudio.com/t/solution-to-reading-raw-images-into-r/45435
-
+The error is as follows:
+ERROR: call dirp_set_measurement_params failed
+ERROR: call prv_isp_config failed
+Test done with return code -6

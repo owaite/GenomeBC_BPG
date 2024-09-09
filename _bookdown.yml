@@ -14,6 +14,7 @@ rmd_files:
   - 0_Photogrametric_processing.Rmd
   - 0_LiDAR_processing.Rmd
   - 0_MicaSense_Irradiance_Correction.Rmd
+  - 0_Thermal_Conversion.Rmd
 
   
 #bookdown::render_book("index.Rmd")
