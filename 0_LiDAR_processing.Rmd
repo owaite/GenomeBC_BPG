@@ -352,7 +352,7 @@ The threshold set for segmentation will be site specific. We chose to only retai
   1. limit the chance of capturing invading branches in our LiDAR data
   2. Capture a similar scope of the trees in both the LiDAR and photogrametic data, given that the aerial imagery is limited to branches that can be seen from an aerial perspective. 
 
-A range a thresholds, from 50% (for ~10 year old trees that were around ~8m in height) to 80% (for ~4 year old trees that were around ~1m in height), were used for the younger sites we worked with depending on the proportion of tree visible from an aerial perspective.
+A range of thresholds, from 50% (for ~10 year old trees that were around ~8m in height) to 80% (for ~4 year old trees that were around ~1m in height), were used for the younger sites we worked with depending on the proportion of the tree crown that is visible from an aerial, oblique perspective. 
 
 To begin, we must first define the function that will segment the trees. Here "zq" is the threshold for the height segmentation and can either be set in the polys_to_las function (if you would like it to be the same value each time the function is run) or defined as a variable prior to initiating the function (use this option if the function will be called for different sites that have different zq values). 
 
@@ -416,14 +416,14 @@ This is done to facilitate clipping out individual tree point clouds in the next
 
 **Note:**  
 
-- The *opt_chunk_size(SEGMENTED) = 10000* step sets the new chunk size to 10,000 points, meaning that chunks of 10,000 points will be managed at a time. If there are more than 10,000 points in your point cloud than data will be handled in chunks of 10,000 points at a time to not overload memory. 
+- The *opt_chunk_size(SEGMENTED) = 10000* sets the new chunk size to 10,000 units of the CRS, in this case the chunk size is 10km x 10km. This is done to read in all the segmented tiles at one time so they can then be merged together into one tile. This value will be site specific however a very large value of 10km x 10km should work for the vast majority of sites.
 
 - The *catalog_retile* function merges the point clouds into one large point cloud 
 
 ```{r, eval=FALSE, echo=TRUE}
 SEGMENTED = readLAScatalog(paste0(dir, "\\07_SEGMENTED\\"))
 opt_chunk_buffer(SEGMENTED) = 0 #zero buffer
-opt_chunk_size(SEGMENTED) = 10000 #set the chunk size for the LAScatalog object to 10000 points so that all laz files are merged into one large laz file
+opt_chunk_size(SEGMENTED) = 10000 #set the chunk size for the LAScatalog object to 10000 units of the CRS so that all laz files are merged into one large laz file
 opt_laz_compression(SEGMENTED) = TRUE
 opt_progress(SEGMENTED) = TRUE
 opt_output_files(SEGMENTED) = paste0(dir, "\\08_MERGED\\", site, "_HULLS_merged") #write output files to "08_M..." with the suffix "_HULLS_merged"
