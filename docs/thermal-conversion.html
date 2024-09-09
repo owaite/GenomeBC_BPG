@@ -141,6 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</a>
 <ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#hello"><i class="fa fa-check"></i><b>0.1</b> Hello</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#github-link"><i class="fa fa-check"></i>GitHub link</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-cite-this-report"><i class="fa fa-check"></i>How to cite this report:</a></li>
@@ -264,25 +265,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This method converts raw imagery from the Zenmuse H20T to temperature rasters. We wrote this method to bypass DJI’s thermal analysis tool app since we have thousands of images and the app would often crash when a few were uploaded. This script uses the DJI thermal analysis tool’s software developer kit (SDK)</p>
 <p>Prior to running this code you must:
 - Download the .bat file for step 2 from the GitHub</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="thermal-conversion.html#cb56-1" tabindex="-1"></a><span class="fu">library</span>(exiftoolr)</span>
-<span id="cb56-2"><a href="thermal-conversion.html#cb56-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb56-3"><a href="thermal-conversion.html#cb56-3" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb56-4"><a href="thermal-conversion.html#cb56-4" tabindex="-1"></a><span class="fu">library</span>(OpenImageR)</span>
-<span id="cb56-5"><a href="thermal-conversion.html#cb56-5" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
-<span id="cb56-6"><a href="thermal-conversion.html#cb56-6" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
-<span id="cb56-7"><a href="thermal-conversion.html#cb56-7" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb56-8"><a href="thermal-conversion.html#cb56-8" tabindex="-1"></a></span>
-<span id="cb56-9"><a href="thermal-conversion.html#cb56-9" tabindex="-1"></a></span>
-<span id="cb56-10"><a href="thermal-conversion.html#cb56-10" tabindex="-1"></a><span class="co"># Read in CSV of weather data (ensure adjustments for daylight savings have been made if necessary) </span></span>
-<span id="cb56-11"><a href="thermal-conversion.html#cb56-11" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;D:</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Site_Info</span><span class="sc">\\</span><span class="st">Powell_River_Canoe2_All_Data_2023_02_07_PST_1_DaylightSavings_mar16_nov6_2022.csv&quot;</span>)</span>
-<span id="cb56-12"><a href="thermal-conversion.html#cb56-12" tabindex="-1"></a>df<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(df<span class="sc">$</span>Date, <span class="st">&#39;%m/%d/%y&#39;</span>) <span class="co">#comes out as year-0m-0d</span></span>
-<span id="cb56-13"><a href="thermal-conversion.html#cb56-13" tabindex="-1"></a></span>
-<span id="cb56-14"><a href="thermal-conversion.html#cb56-14" tabindex="-1"></a>dates_DST <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">unique</span>(df<span class="sc">$</span>Date))</span>
-<span id="cb56-15"><a href="thermal-conversion.html#cb56-15" tabindex="-1"></a>dates_DST</span>
-<span id="cb56-16"><a href="thermal-conversion.html#cb56-16" tabindex="-1"></a>dates_list <span class="ot">&lt;-</span> <span class="fu">as.list</span>(dates_DST)</span>
-<span id="cb56-17"><a href="thermal-conversion.html#cb56-17" tabindex="-1"></a>dates_list</span>
-<span id="cb56-18"><a href="thermal-conversion.html#cb56-18" tabindex="-1"></a></span>
-<span id="cb56-19"><a href="thermal-conversion.html#cb56-19" tabindex="-1"></a>Canoe_df <span class="ot">&lt;-</span> df</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="thermal-conversion.html#cb54-1" tabindex="-1"></a><span class="fu">library</span>(exiftoolr)</span>
+<span id="cb54-2"><a href="thermal-conversion.html#cb54-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb54-3"><a href="thermal-conversion.html#cb54-3" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb54-4"><a href="thermal-conversion.html#cb54-4" tabindex="-1"></a><span class="fu">library</span>(OpenImageR)</span>
+<span id="cb54-5"><a href="thermal-conversion.html#cb54-5" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb54-6"><a href="thermal-conversion.html#cb54-6" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
+<span id="cb54-7"><a href="thermal-conversion.html#cb54-7" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb54-8"><a href="thermal-conversion.html#cb54-8" tabindex="-1"></a></span>
+<span id="cb54-9"><a href="thermal-conversion.html#cb54-9" tabindex="-1"></a></span>
+<span id="cb54-10"><a href="thermal-conversion.html#cb54-10" tabindex="-1"></a><span class="co"># Read in CSV of weather data (ensure adjustments for daylight savings have been made if necessary) </span></span>
+<span id="cb54-11"><a href="thermal-conversion.html#cb54-11" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;D:</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Site_Info</span><span class="sc">\\</span><span class="st">Powell_River_Canoe2_All_Data_2023_02_07_PST_1_DaylightSavings_mar16_nov6_2022.csv&quot;</span>)</span>
+<span id="cb54-12"><a href="thermal-conversion.html#cb54-12" tabindex="-1"></a>df<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(df<span class="sc">$</span>Date, <span class="st">&#39;%m/%d/%y&#39;</span>) <span class="co">#comes out as year-0m-0d</span></span>
+<span id="cb54-13"><a href="thermal-conversion.html#cb54-13" tabindex="-1"></a></span>
+<span id="cb54-14"><a href="thermal-conversion.html#cb54-14" tabindex="-1"></a>dates_DST <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">unique</span>(df<span class="sc">$</span>Date))</span>
+<span id="cb54-15"><a href="thermal-conversion.html#cb54-15" tabindex="-1"></a>dates_DST</span>
+<span id="cb54-16"><a href="thermal-conversion.html#cb54-16" tabindex="-1"></a>dates_list <span class="ot">&lt;-</span> <span class="fu">as.list</span>(dates_DST)</span>
+<span id="cb54-17"><a href="thermal-conversion.html#cb54-17" tabindex="-1"></a>dates_list</span>
+<span id="cb54-18"><a href="thermal-conversion.html#cb54-18" tabindex="-1"></a></span>
+<span id="cb54-19"><a href="thermal-conversion.html#cb54-19" tabindex="-1"></a>Canoe_df <span class="ot">&lt;-</span> df</span></code></pre></div>
 <div id="folder-set-up" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Folder Set-Up<a href="thermal-conversion.html#folder-set-up" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This step goes over how we organize our imagery for the following thermal conversion.</p>
@@ -305,64 +306,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>paste0(“I:\PARSER_Ext\”,site,“\Flights\”, data_date, “\1_Data\H20T”), where “site” is a string of the site name that we defined prior to the for loop and data_date is a string representing the flight date that is defined in the for loop. This was done so we could easily iterate over sites and dates. Feel free to change this to match your folder structure.</li>
 </ul>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="thermal-conversion.html#cb57-1" tabindex="-1"></a><span class="co"># Setting the site and flight date to convert thermal imagery</span></span>
-<span id="cb57-2"><a href="thermal-conversion.html#cb57-2" tabindex="-1"></a>flight_dates <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot;2023_05_10&quot;</span>) <span class="co"># Here only one date is shown however this can be a list of however many dates you would like to iterate over</span></span>
-<span id="cb57-3"><a href="thermal-conversion.html#cb57-3" tabindex="-1"></a>site <span class="ot">&lt;-</span> <span class="st">&quot;Fdc_PR_Canoe&quot;</span> </span>
-<span id="cb57-4"><a href="thermal-conversion.html#cb57-4" tabindex="-1"></a>merged <span class="ot">&lt;-</span> <span class="st">&quot;Merged_T&quot;</span> <span class="co">#name of the &#39;merged&#39; folder that will contain all the h20T images from the multiple folders ouput by the H20T</span></span>
-<span id="cb57-5"><a href="thermal-conversion.html#cb57-5" tabindex="-1"></a></span>
-<span id="cb57-6"><a href="thermal-conversion.html#cb57-6" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(flight_dates)){</span>
-<span id="cb57-7"><a href="thermal-conversion.html#cb57-7" tabindex="-1"></a>  data_date <span class="ot">&lt;-</span> flight_dates[i]</span>
-<span id="cb57-8"><a href="thermal-conversion.html#cb57-8" tabindex="-1"></a>  <span class="fu">print</span>(data_date)</span>
-<span id="cb57-9"><a href="thermal-conversion.html#cb57-9" tabindex="-1"></a>  dir <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;I:</span><span class="sc">\\</span><span class="st">PARSER_Ext</span><span class="sc">\\</span><span class="st">&quot;</span>,site,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Flights</span><span class="sc">\\</span><span class="st">&quot;</span>, data_date, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">H20T&quot;</span>)</span>
-<span id="cb57-10"><a href="thermal-conversion.html#cb57-10" tabindex="-1"></a>  <span class="co">#create folders</span></span>
-<span id="cb57-11"><a href="thermal-conversion.html#cb57-11" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged))) {</span>
-<span id="cb57-12"><a href="thermal-conversion.html#cb57-12" tabindex="-1"></a>    <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged),<span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb57-13"><a href="thermal-conversion.html#cb57-13" tabindex="-1"></a>  }</span>
-<span id="cb57-14"><a href="thermal-conversion.html#cb57-14" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters&quot;</span>))) {</span>
-<span id="cb57-15"><a href="thermal-conversion.html#cb57-15" tabindex="-1"></a>    <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters&quot;</span>),<span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb57-16"><a href="thermal-conversion.html#cb57-16" tabindex="-1"></a>  }</span>
-<span id="cb57-17"><a href="thermal-conversion.html#cb57-17" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters_EXIF&quot;</span>))) {</span>
-<span id="cb57-18"><a href="thermal-conversion.html#cb57-18" tabindex="-1"></a>    <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters_EXIF&quot;</span>),<span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb57-19"><a href="thermal-conversion.html#cb57-19" tabindex="-1"></a>  }</span>
-<span id="cb57-20"><a href="thermal-conversion.html#cb57-20" tabindex="-1"></a>  </span>
-<span id="cb57-21"><a href="thermal-conversion.html#cb57-21" tabindex="-1"></a>  list_dir <span class="ot">&lt;-</span> <span class="fu">list.files</span>(dir, <span class="at">full.names =</span> <span class="cn">TRUE</span>,<span class="at">pattern =</span> <span class="fu">c</span>(<span class="st">&quot;DJI.+-H20T&quot;</span>)) <span class="co">#selecting folders in the H20T folder that have DJI and end in -H20T, this is how we named our folders, change this pattern to match your folders. You should be selecting all folders with H20T imagery ending in _T for that flight</span></span>
-<span id="cb57-22"><a href="thermal-conversion.html#cb57-22" tabindex="-1"></a>  <span class="fu">print</span>(list_dir) <span class="co">#to check only correct directories are being read</span></span>
-<span id="cb57-23"><a href="thermal-conversion.html#cb57-23" tabindex="-1"></a>  </span>
-<span id="cb57-24"><a href="thermal-conversion.html#cb57-24" tabindex="-1"></a>  <span class="cf">for</span> (d <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_dir)){</span>
-<span id="cb57-25"><a href="thermal-conversion.html#cb57-25" tabindex="-1"></a>    folder_dir <span class="ot">&lt;-</span> list_dir[d] <span class="co">#calling each directly separately</span></span>
-<span id="cb57-26"><a href="thermal-conversion.html#cb57-26" tabindex="-1"></a>    T_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder_dir, <span class="at">pattern =</span> <span class="st">&quot;_T</span><span class="sc">\\</span><span class="st">.JPG$&quot;</span>) <span class="co">#selecting all JPEGs ending in _T </span></span>
-<span id="cb57-27"><a href="thermal-conversion.html#cb57-27" tabindex="-1"></a>    <span class="fu">file.copy</span>(<span class="at">from =</span> <span class="fu">paste0</span>(folder_dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, T_files),</span>
-<span id="cb57-28"><a href="thermal-conversion.html#cb57-28" tabindex="-1"></a>              <span class="at">to =</span> <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, T_files), <span class="at">overwrite =</span> <span class="cn">FALSE</span>) <span class="co">#copying h20T images ending in _T (aka unprocessed thermal images) into the thermal only folder for ease in DJI SDK step</span></span>
-<span id="cb57-29"><a href="thermal-conversion.html#cb57-29" tabindex="-1"></a>  }</span>
-<span id="cb57-30"><a href="thermal-conversion.html#cb57-30" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="thermal-conversion.html#cb55-1" tabindex="-1"></a><span class="co"># Setting the site and flight date to convert thermal imagery</span></span>
+<span id="cb55-2"><a href="thermal-conversion.html#cb55-2" tabindex="-1"></a>flight_dates <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot;2023_05_10&quot;</span>) <span class="co"># Here only one date is shown however this can be a list of however many dates you would like to iterate over</span></span>
+<span id="cb55-3"><a href="thermal-conversion.html#cb55-3" tabindex="-1"></a>site <span class="ot">&lt;-</span> <span class="st">&quot;Fdc_PR_Canoe&quot;</span> </span>
+<span id="cb55-4"><a href="thermal-conversion.html#cb55-4" tabindex="-1"></a>merged <span class="ot">&lt;-</span> <span class="st">&quot;Merged_T&quot;</span> <span class="co">#name of the &#39;merged&#39; folder that will contain all the h20T images from the multiple folders ouput by the H20T</span></span>
+<span id="cb55-5"><a href="thermal-conversion.html#cb55-5" tabindex="-1"></a></span>
+<span id="cb55-6"><a href="thermal-conversion.html#cb55-6" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(flight_dates)){</span>
+<span id="cb55-7"><a href="thermal-conversion.html#cb55-7" tabindex="-1"></a>  data_date <span class="ot">&lt;-</span> flight_dates[i]</span>
+<span id="cb55-8"><a href="thermal-conversion.html#cb55-8" tabindex="-1"></a>  <span class="fu">print</span>(data_date)</span>
+<span id="cb55-9"><a href="thermal-conversion.html#cb55-9" tabindex="-1"></a>  dir <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;I:</span><span class="sc">\\</span><span class="st">PARSER_Ext</span><span class="sc">\\</span><span class="st">&quot;</span>,site,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Flights</span><span class="sc">\\</span><span class="st">&quot;</span>, data_date, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">H20T&quot;</span>)</span>
+<span id="cb55-10"><a href="thermal-conversion.html#cb55-10" tabindex="-1"></a>  <span class="co">#create folders</span></span>
+<span id="cb55-11"><a href="thermal-conversion.html#cb55-11" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged))) {</span>
+<span id="cb55-12"><a href="thermal-conversion.html#cb55-12" tabindex="-1"></a>    <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged),<span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb55-13"><a href="thermal-conversion.html#cb55-13" tabindex="-1"></a>  }</span>
+<span id="cb55-14"><a href="thermal-conversion.html#cb55-14" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters&quot;</span>))) {</span>
+<span id="cb55-15"><a href="thermal-conversion.html#cb55-15" tabindex="-1"></a>    <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters&quot;</span>),<span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb55-16"><a href="thermal-conversion.html#cb55-16" tabindex="-1"></a>  }</span>
+<span id="cb55-17"><a href="thermal-conversion.html#cb55-17" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters_EXIF&quot;</span>))) {</span>
+<span id="cb55-18"><a href="thermal-conversion.html#cb55-18" tabindex="-1"></a>    <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters_EXIF&quot;</span>),<span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb55-19"><a href="thermal-conversion.html#cb55-19" tabindex="-1"></a>  }</span>
+<span id="cb55-20"><a href="thermal-conversion.html#cb55-20" tabindex="-1"></a>  </span>
+<span id="cb55-21"><a href="thermal-conversion.html#cb55-21" tabindex="-1"></a>  list_dir <span class="ot">&lt;-</span> <span class="fu">list.files</span>(dir, <span class="at">full.names =</span> <span class="cn">TRUE</span>,<span class="at">pattern =</span> <span class="fu">c</span>(<span class="st">&quot;DJI.+-H20T&quot;</span>)) <span class="co">#selecting folders in the H20T folder that have DJI and end in -H20T, this is how we named our folders, change this pattern to match your folders. You should be selecting all folders with H20T imagery ending in _T for that flight</span></span>
+<span id="cb55-22"><a href="thermal-conversion.html#cb55-22" tabindex="-1"></a>  <span class="fu">print</span>(list_dir) <span class="co">#to check only correct directories are being read</span></span>
+<span id="cb55-23"><a href="thermal-conversion.html#cb55-23" tabindex="-1"></a>  </span>
+<span id="cb55-24"><a href="thermal-conversion.html#cb55-24" tabindex="-1"></a>  <span class="cf">for</span> (d <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_dir)){</span>
+<span id="cb55-25"><a href="thermal-conversion.html#cb55-25" tabindex="-1"></a>    folder_dir <span class="ot">&lt;-</span> list_dir[d] <span class="co">#calling each directly separately</span></span>
+<span id="cb55-26"><a href="thermal-conversion.html#cb55-26" tabindex="-1"></a>    T_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder_dir, <span class="at">pattern =</span> <span class="st">&quot;_T</span><span class="sc">\\</span><span class="st">.JPG$&quot;</span>) <span class="co">#selecting all JPEGs ending in _T </span></span>
+<span id="cb55-27"><a href="thermal-conversion.html#cb55-27" tabindex="-1"></a>    <span class="fu">file.copy</span>(<span class="at">from =</span> <span class="fu">paste0</span>(folder_dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, T_files),</span>
+<span id="cb55-28"><a href="thermal-conversion.html#cb55-28" tabindex="-1"></a>              <span class="at">to =</span> <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, T_files), <span class="at">overwrite =</span> <span class="cn">FALSE</span>) <span class="co">#copying h20T images ending in _T (aka unprocessed thermal images) into the thermal only folder for ease in DJI SDK step</span></span>
+<span id="cb55-29"><a href="thermal-conversion.html#cb55-29" tabindex="-1"></a>  }</span>
+<span id="cb55-30"><a href="thermal-conversion.html#cb55-30" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="weather-data" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Weather Data<a href="thermal-conversion.html#weather-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>For this step you will need :</p>
 <p>Humidity, Ambient Temperature</p>
 <p>First, we use the first and last image in the Merged_T folder to define the start and end time of the flight, along with the date of the flight as a date object.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="thermal-conversion.html#cb58-1" tabindex="-1"></a><span class="co">#getting image capture date from exif data of the first image in the H20T folder</span></span>
-<span id="cb58-2"><a href="thermal-conversion.html#cb58-2" tabindex="-1"></a></span>
-<span id="cb58-3"><a href="thermal-conversion.html#cb58-3" tabindex="-1"></a>data_date <span class="ot">&lt;-</span> flight_dates[<span class="dv">1</span>]</span>
-<span id="cb58-4"><a href="thermal-conversion.html#cb58-4" tabindex="-1"></a></span>
-<span id="cb58-5"><a href="thermal-conversion.html#cb58-5" tabindex="-1"></a>time_file_list <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged), <span class="at">pattern =</span> <span class="st">&quot;_T</span><span class="sc">\\</span><span class="st">.JPG$&quot;</span>)</span>
-<span id="cb58-6"><a href="thermal-conversion.html#cb58-6" tabindex="-1"></a></span>
-<span id="cb58-7"><a href="thermal-conversion.html#cb58-7" tabindex="-1"></a><span class="co">#Retrieving the time the FIRST H20T thermal image was taken</span></span>
-<span id="cb58-8"><a href="thermal-conversion.html#cb58-8" tabindex="-1"></a>(img_1 <span class="ot">&lt;-</span> time_file_list[<span class="dv">1</span>]) <span class="co">#find the first thermal image and print the name</span></span>
-<span id="cb58-9"><a href="thermal-conversion.html#cb58-9" tabindex="-1"></a>start_exif_flight_date <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">exif_read</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,img_1),</span>
-<span id="cb58-10"><a href="thermal-conversion.html#cb58-10" tabindex="-1"></a>                                               <span class="at">tags =</span> <span class="st">&quot;CreateDate&quot;</span>,</span>
-<span id="cb58-11"><a href="thermal-conversion.html#cb58-11" tabindex="-1"></a>                                               <span class="at">quiet =</span> <span class="cn">TRUE</span>)) <span class="co">#find the time the image was taken/written from the CreateDate tag in the exif data</span></span>
-<span id="cb58-12"><a href="thermal-conversion.html#cb58-12" tabindex="-1"></a>(start_flight_date_time <span class="ot">&lt;-</span> start_exif_flight_date<span class="sc">$</span>CreateDate) <span class="co">#Start of the flight</span></span>
-<span id="cb58-13"><a href="thermal-conversion.html#cb58-13" tabindex="-1"></a></span>
-<span id="cb58-14"><a href="thermal-conversion.html#cb58-14" tabindex="-1"></a><span class="co">#Retrieving the time the LAST H20T thermal image was taken</span></span>
-<span id="cb58-15"><a href="thermal-conversion.html#cb58-15" tabindex="-1"></a>(img_last <span class="ot">&lt;-</span> <span class="fu">tail</span>(time_file_list, <span class="at">n=</span><span class="dv">1</span>))<span class="co">#End flight time</span></span>
-<span id="cb58-16"><a href="thermal-conversion.html#cb58-16" tabindex="-1"></a>end_flight_date_time <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">exif_read</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,img_last),</span>
-<span id="cb58-17"><a href="thermal-conversion.html#cb58-17" tabindex="-1"></a>                                             <span class="at">tags =</span> <span class="st">&quot;CreateDate&quot;</span>,</span>
-<span id="cb58-18"><a href="thermal-conversion.html#cb58-18" tabindex="-1"></a>                                             <span class="at">quiet =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb58-19"><a href="thermal-conversion.html#cb58-19" tabindex="-1"></a>(end_flight_date_time <span class="ot">&lt;-</span> end_flight_date_time<span class="sc">$</span>CreateDate)<span class="co">#End of the flight</span></span>
-<span id="cb58-20"><a href="thermal-conversion.html#cb58-20" tabindex="-1"></a></span>
-<span id="cb58-21"><a href="thermal-conversion.html#cb58-21" tabindex="-1"></a></span>
-<span id="cb58-22"><a href="thermal-conversion.html#cb58-22" tabindex="-1"></a>(flight_date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(start_exif_flight_date<span class="sc">$</span>CreateDate, <span class="st">&#39;%Y:%m:%d %H:%M:%S&#39;</span>)) <span class="co">#the flight date as a date object</span></span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="thermal-conversion.html#cb56-1" tabindex="-1"></a><span class="co">#getting image capture date from exif data of the first image in the H20T folder</span></span>
+<span id="cb56-2"><a href="thermal-conversion.html#cb56-2" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="thermal-conversion.html#cb56-3" tabindex="-1"></a>data_date <span class="ot">&lt;-</span> flight_dates[<span class="dv">1</span>]</span>
+<span id="cb56-4"><a href="thermal-conversion.html#cb56-4" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="thermal-conversion.html#cb56-5" tabindex="-1"></a>time_file_list <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged), <span class="at">pattern =</span> <span class="st">&quot;_T</span><span class="sc">\\</span><span class="st">.JPG$&quot;</span>)</span>
+<span id="cb56-6"><a href="thermal-conversion.html#cb56-6" tabindex="-1"></a></span>
+<span id="cb56-7"><a href="thermal-conversion.html#cb56-7" tabindex="-1"></a><span class="co">#Retrieving the time the FIRST H20T thermal image was taken</span></span>
+<span id="cb56-8"><a href="thermal-conversion.html#cb56-8" tabindex="-1"></a>(img_1 <span class="ot">&lt;-</span> time_file_list[<span class="dv">1</span>]) <span class="co">#find the first thermal image and print the name</span></span>
+<span id="cb56-9"><a href="thermal-conversion.html#cb56-9" tabindex="-1"></a>start_exif_flight_date <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">exif_read</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,img_1),</span>
+<span id="cb56-10"><a href="thermal-conversion.html#cb56-10" tabindex="-1"></a>                                               <span class="at">tags =</span> <span class="st">&quot;CreateDate&quot;</span>,</span>
+<span id="cb56-11"><a href="thermal-conversion.html#cb56-11" tabindex="-1"></a>                                               <span class="at">quiet =</span> <span class="cn">TRUE</span>)) <span class="co">#find the time the image was taken/written from the CreateDate tag in the exif data</span></span>
+<span id="cb56-12"><a href="thermal-conversion.html#cb56-12" tabindex="-1"></a>(start_flight_date_time <span class="ot">&lt;-</span> start_exif_flight_date<span class="sc">$</span>CreateDate) <span class="co">#Start of the flight</span></span>
+<span id="cb56-13"><a href="thermal-conversion.html#cb56-13" tabindex="-1"></a></span>
+<span id="cb56-14"><a href="thermal-conversion.html#cb56-14" tabindex="-1"></a><span class="co">#Retrieving the time the LAST H20T thermal image was taken</span></span>
+<span id="cb56-15"><a href="thermal-conversion.html#cb56-15" tabindex="-1"></a>(img_last <span class="ot">&lt;-</span> <span class="fu">tail</span>(time_file_list, <span class="at">n=</span><span class="dv">1</span>))<span class="co">#End flight time</span></span>
+<span id="cb56-16"><a href="thermal-conversion.html#cb56-16" tabindex="-1"></a>end_flight_date_time <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">exif_read</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,img_last),</span>
+<span id="cb56-17"><a href="thermal-conversion.html#cb56-17" tabindex="-1"></a>                                             <span class="at">tags =</span> <span class="st">&quot;CreateDate&quot;</span>,</span>
+<span id="cb56-18"><a href="thermal-conversion.html#cb56-18" tabindex="-1"></a>                                             <span class="at">quiet =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb56-19"><a href="thermal-conversion.html#cb56-19" tabindex="-1"></a>(end_flight_date_time <span class="ot">&lt;-</span> end_flight_date_time<span class="sc">$</span>CreateDate)<span class="co">#End of the flight</span></span>
+<span id="cb56-20"><a href="thermal-conversion.html#cb56-20" tabindex="-1"></a></span>
+<span id="cb56-21"><a href="thermal-conversion.html#cb56-21" tabindex="-1"></a></span>
+<span id="cb56-22"><a href="thermal-conversion.html#cb56-22" tabindex="-1"></a>(flight_date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(start_exif_flight_date<span class="sc">$</span>CreateDate, <span class="st">&#39;%Y:%m:%d %H:%M:%S&#39;</span>)) <span class="co">#the flight date as a date object</span></span></code></pre></div>
 <p>Next, since our weather station provided hourly measurements, we calculate a weighted average of temperature and humidity values based on time intervals. The weights account for the partial hours during a flight and adjust the average accordingly. This was done to account for the fact that variables will change throughout the flight, so gathering a weighted average where each hourly measurement is weighted in proportion to how much of the hour fell within the flight window gives us a better estimate of the overall weather variables than if a plain average was taken.</p>
 <p>Weights for Start, Middle, and End Hours:</p>
 <ul>
@@ -378,177 +379,177 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>For example:
 If the flight was from 10-11am, the start and end weights will be 1 and the mid weight can be commented out.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="thermal-conversion.html#cb59-1" tabindex="-1"></a><span class="do">### RUN UP TO HERE THEM LOOK AT START AND STOP TIMES TO INFORM NEXT PART</span></span>
-<span id="cb59-2"><a href="thermal-conversion.html#cb59-2" tabindex="-1"></a></span>
-<span id="cb59-3"><a href="thermal-conversion.html#cb59-3" tabindex="-1"></a>ENTER start and stop times from above, ie <span class="cf">if</span> start was <span class="dv">11</span><span class="sc">:</span><span class="dv">15</span> put <span class="dv">11</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> and <span class="cf">if</span> end was <span class="dv">1</span><span class="sc">:</span><span class="dv">23</span> put <span class="dv">14</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> (2pm) as the end</span>
-<span id="cb59-4"><a href="thermal-conversion.html#cb59-4" tabindex="-1"></a>start_time_avg <span class="ot">&lt;-</span> <span class="st">&quot;10:00:00&quot;</span> <span class="co">#Based off of start_flight_date_time from above</span></span>
-<span id="cb59-5"><a href="thermal-conversion.html#cb59-5" tabindex="-1"></a>stop_time_avg <span class="ot">&lt;-</span> <span class="st">&quot;13:00:00&quot;</span> <span class="co">#Based off of end_flight_date_time from above</span></span>
-<span id="cb59-6"><a href="thermal-conversion.html#cb59-6" tabindex="-1"></a></span>
-<span id="cb59-7"><a href="thermal-conversion.html#cb59-7" tabindex="-1"></a><span class="co">#Looking at time in 15 min intervals</span></span>
-<span id="cb59-8"><a href="thermal-conversion.html#cb59-8" tabindex="-1"></a><span class="co">#setting up weights</span></span>
-<span id="cb59-9"><a href="thermal-conversion.html#cb59-9" tabindex="-1"></a></span>
-<span id="cb59-10"><a href="thermal-conversion.html#cb59-10" tabindex="-1"></a>These weights will change with each iteration <span class="sc">-</span> left uncommented so we cant accidently run the script without changing this part</span>
-<span id="cb59-11"><a href="thermal-conversion.html#cb59-11" tabindex="-1"></a><span class="co">#if flight was from 10-11, then start and end weight swould be 1 and the mid weight can be commented out</span></span>
-<span id="cb59-12"><a href="thermal-conversion.html#cb59-12" tabindex="-1"></a><span class="co"># I will be usually either 0.25 (15min), 0.5 (30min), 0.75 (45min) or 1 (1 hr) as weights</span></span>
-<span id="cb59-13"><a href="thermal-conversion.html#cb59-13" tabindex="-1"></a><span class="co"># ie for a flight that started at 10:15 and ended at 11:30, the start weight would be 0.75 (for 10am data), mid weight would be 1 (for 11am data), and end would be 0.5 (for 12pm data)</span></span>
-<span id="cb59-14"><a href="thermal-conversion.html#cb59-14" tabindex="-1"></a><span class="co">#round down for start and up for end ie start of 10:06 would be 10 and end of 11:36 would be 11:45</span></span>
-<span id="cb59-15"><a href="thermal-conversion.html#cb59-15" tabindex="-1"></a></span>
-<span id="cb59-16"><a href="thermal-conversion.html#cb59-16" tabindex="-1"></a>new_flight_date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(flight_date, <span class="at">format =</span> <span class="st">&#39;%Y-%m-%d&#39;</span>)</span>
-<span id="cb59-17"><a href="thermal-conversion.html#cb59-17" tabindex="-1"></a>new_flight_date</span>
-<span id="cb59-18"><a href="thermal-conversion.html#cb59-18" tabindex="-1"></a></span>
-<span id="cb59-19"><a href="thermal-conversion.html#cb59-19" tabindex="-1"></a><span class="co">#loading in CFS HOBO weather data</span></span>
-<span id="cb59-20"><a href="thermal-conversion.html#cb59-20" tabindex="-1"></a>cfs_weather <span class="ot">&lt;-</span> data</span>
-<span id="cb59-21"><a href="thermal-conversion.html#cb59-21" tabindex="-1"></a></span>
-<span id="cb59-22"><a href="thermal-conversion.html#cb59-22" tabindex="-1"></a><span class="fu">colnames</span>(data)</span>
-<span id="cb59-23"><a href="thermal-conversion.html#cb59-23" tabindex="-1"></a><span class="co">#cfs_weather</span></span>
-<span id="cb59-24"><a href="thermal-conversion.html#cb59-24" tabindex="-1"></a></span>
-<span id="cb59-25"><a href="thermal-conversion.html#cb59-25" tabindex="-1"></a>new_column_names <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">colnames</span>(cfs_weather))</span>
-<span id="cb59-26"><a href="thermal-conversion.html#cb59-26" tabindex="-1"></a><span class="fu">colnames</span>(cfs_weather) <span class="ot">&lt;-</span> new_column_names</span>
-<span id="cb59-27"><a href="thermal-conversion.html#cb59-27" tabindex="-1"></a></span>
-<span id="cb59-28"><a href="thermal-conversion.html#cb59-28" tabindex="-1"></a>cfs_weather<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(cfs_weather<span class="sc">$</span>Date, <span class="at">format =</span> <span class="st">&quot;%m/%d/%y&quot;</span>)</span>
-<span id="cb59-29"><a href="thermal-conversion.html#cb59-29" tabindex="-1"></a></span>
-<span id="cb59-30"><a href="thermal-conversion.html#cb59-30" tabindex="-1"></a><span class="co"># For 2 time points ----------------------------------------------------------------------------</span></span>
-<span id="cb59-31"><a href="thermal-conversion.html#cb59-31" tabindex="-1"></a>start_weight <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb59-32"><a href="thermal-conversion.html#cb59-32" tabindex="-1"></a>end_weight <span class="ot">&lt;-</span> <span class="fl">0.75</span></span>
-<span id="cb59-33"><a href="thermal-conversion.html#cb59-33" tabindex="-1"></a></span>
-<span id="cb59-34"><a href="thermal-conversion.html#cb59-34" tabindex="-1"></a>sum_weight <span class="ot">&lt;-</span> <span class="fu">sum</span>(start_weight,</span>
-<span id="cb59-35"><a href="thermal-conversion.html#cb59-35" tabindex="-1"></a>                  end_weight) </span>
-<span id="cb59-36"><a href="thermal-conversion.html#cb59-36" tabindex="-1"></a></span>
-<span id="cb59-37"><a href="thermal-conversion.html#cb59-37" tabindex="-1"></a><span class="co">#creating df with columns that average humidity per date</span></span>
-<span id="cb59-38"><a href="thermal-conversion.html#cb59-38" tabindex="-1"></a>cfs_weather_time_avg <span class="ot">&lt;-</span> cfs_weather<span class="sc">%&gt;%</span></span>
-<span id="cb59-39"><a href="thermal-conversion.html#cb59-39" tabindex="-1"></a>  <span class="fu">group_by</span>(Date)<span class="sc">%&gt;%</span></span>
-<span id="cb59-40"><a href="thermal-conversion.html#cb59-40" tabindex="-1"></a>  <span class="fu">filter</span>(Date <span class="sc">==</span> new_flight_date ) <span class="sc">%&gt;%</span></span>
-<span id="cb59-41"><a href="thermal-conversion.html#cb59-41" tabindex="-1"></a>  <span class="fu">filter</span>(Time <span class="sc">&lt;=</span> stop_time_avg <span class="sc">&amp;</span> Time <span class="sc">&gt;=</span> start_time_avg)<span class="sc">%&gt;%</span> <span class="co">#filtering only for humidity values taken between 10am and 12pm</span></span>
-<span id="cb59-42"><a href="thermal-conversion.html#cb59-42" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">Average_hum =</span> (start_weight<span class="sc">*</span>RH[<span class="dv">1</span>]</span>
-<span id="cb59-43"><a href="thermal-conversion.html#cb59-43" tabindex="-1"></a>                         <span class="sc">+</span> end_weight<span class="sc">*</span>RH[<span class="dv">2</span>])<span class="sc">/</span>sum_weight,</span>
-<span id="cb59-44"><a href="thermal-conversion.html#cb59-44" tabindex="-1"></a>          </span>
-<span id="cb59-45"><a href="thermal-conversion.html#cb59-45" tabindex="-1"></a>          <span class="at">Average_air_temp =</span> (start_weight<span class="sc">*</span>Temperature[<span class="dv">1</span>]</span>
-<span id="cb59-46"><a href="thermal-conversion.html#cb59-46" tabindex="-1"></a>                              <span class="sc">+</span> end_weight<span class="sc">*</span>Temperature[<span class="dv">2</span>])<span class="sc">/</span>sum_weight)</span>
-<span id="cb59-47"><a href="thermal-conversion.html#cb59-47" tabindex="-1"></a></span>
-<span id="cb59-48"><a href="thermal-conversion.html#cb59-48" tabindex="-1"></a>cfs_weather_time_avg</span>
-<span id="cb59-49"><a href="thermal-conversion.html#cb59-49" tabindex="-1"></a><span class="co"># For 3 time points ----------------------------------------------------------------------------</span></span>
-<span id="cb59-50"><a href="thermal-conversion.html#cb59-50" tabindex="-1"></a>start_flight_date_time</span>
-<span id="cb59-51"><a href="thermal-conversion.html#cb59-51" tabindex="-1"></a>end_flight_date_time</span>
-<span id="cb59-52"><a href="thermal-conversion.html#cb59-52" tabindex="-1"></a><span class="co">#Ie: Flight starts at 10:15am and ends at 11:30</span></span>
-<span id="cb59-53"><a href="thermal-conversion.html#cb59-53" tabindex="-1"></a>start_weight <span class="ot">&lt;-</span> <span class="fl">0.25</span> <span class="co"># 75% of 10am</span></span>
-<span id="cb59-54"><a href="thermal-conversion.html#cb59-54" tabindex="-1"></a>mid_weight <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># 100% of  11am </span></span>
-<span id="cb59-55"><a href="thermal-conversion.html#cb59-55" tabindex="-1"></a>end_weight <span class="ot">&lt;-</span> <span class="fl">0.25</span> <span class="co"># 50% of 12pm</span></span>
-<span id="cb59-56"><a href="thermal-conversion.html#cb59-56" tabindex="-1"></a></span>
-<span id="cb59-57"><a href="thermal-conversion.html#cb59-57" tabindex="-1"></a>sum_weight <span class="ot">&lt;-</span> <span class="fu">sum</span>(start_weight,</span>
-<span id="cb59-58"><a href="thermal-conversion.html#cb59-58" tabindex="-1"></a>                  mid_weight,</span>
-<span id="cb59-59"><a href="thermal-conversion.html#cb59-59" tabindex="-1"></a>                  end_weight) </span>
-<span id="cb59-60"><a href="thermal-conversion.html#cb59-60" tabindex="-1"></a></span>
-<span id="cb59-61"><a href="thermal-conversion.html#cb59-61" tabindex="-1"></a></span>
-<span id="cb59-62"><a href="thermal-conversion.html#cb59-62" tabindex="-1"></a><span class="co">#creating df with columns that average humidity per date</span></span>
-<span id="cb59-63"><a href="thermal-conversion.html#cb59-63" tabindex="-1"></a>cfs_weather_time_avg <span class="ot">&lt;-</span> cfs_weather<span class="sc">%&gt;%</span></span>
-<span id="cb59-64"><a href="thermal-conversion.html#cb59-64" tabindex="-1"></a>  <span class="fu">group_by</span>(Date)<span class="sc">%&gt;%</span></span>
-<span id="cb59-65"><a href="thermal-conversion.html#cb59-65" tabindex="-1"></a>  <span class="fu">filter</span>(Date <span class="sc">==</span> new_flight_date ) <span class="sc">%&gt;%</span></span>
-<span id="cb59-66"><a href="thermal-conversion.html#cb59-66" tabindex="-1"></a>  <span class="fu">filter</span>(Time <span class="sc">&lt;=</span> stop_time_avg <span class="sc">&amp;</span> Time <span class="sc">&gt;=</span> start_time_avg)<span class="sc">%&gt;%</span> <span class="co">#filtering only for humidity values taken between 10am and 12pm</span></span>
-<span id="cb59-67"><a href="thermal-conversion.html#cb59-67" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">Average_hum =</span> (start_weight<span class="sc">*</span>RH[<span class="dv">1</span>]</span>
-<span id="cb59-68"><a href="thermal-conversion.html#cb59-68" tabindex="-1"></a>                         <span class="sc">+</span> mid_weight<span class="sc">*</span>RH[<span class="dv">2</span>] <span class="co">#comment out this line if no mid_weight</span></span>
-<span id="cb59-69"><a href="thermal-conversion.html#cb59-69" tabindex="-1"></a>                         <span class="sc">+</span> end_weight<span class="sc">*</span>RH[<span class="dv">3</span>])<span class="sc">/</span>sum_weight,</span>
-<span id="cb59-70"><a href="thermal-conversion.html#cb59-70" tabindex="-1"></a>          </span>
-<span id="cb59-71"><a href="thermal-conversion.html#cb59-71" tabindex="-1"></a>          <span class="at">Average_air_temp =</span> (start_weight<span class="sc">*</span>Temperature[<span class="dv">1</span>]</span>
-<span id="cb59-72"><a href="thermal-conversion.html#cb59-72" tabindex="-1"></a>                              <span class="sc">+</span> mid_weight<span class="sc">*</span>Temperature[<span class="dv">2</span>]<span class="co">#comment out this line if no mid_weight</span></span>
-<span id="cb59-73"><a href="thermal-conversion.html#cb59-73" tabindex="-1"></a>                              <span class="sc">+</span> end_weight<span class="sc">*</span>Temperature[<span class="dv">3</span>])<span class="sc">/</span>sum_weight)</span>
-<span id="cb59-74"><a href="thermal-conversion.html#cb59-74" tabindex="-1"></a>cfs_weather_time_avg</span>
-<span id="cb59-75"><a href="thermal-conversion.html#cb59-75" tabindex="-1"></a><span class="do">#####</span></span>
-<span id="cb59-76"><a href="thermal-conversion.html#cb59-76" tabindex="-1"></a><span class="co">#checking dimension</span></span>
-<span id="cb59-77"><a href="thermal-conversion.html#cb59-77" tabindex="-1"></a><span class="fu">dim</span>(cfs_weather_time_avg)</span>
-<span id="cb59-78"><a href="thermal-conversion.html#cb59-78" tabindex="-1"></a><span class="co">#checking values (for all dates)</span></span>
-<span id="cb59-79"><a href="thermal-conversion.html#cb59-79" tabindex="-1"></a>avg_hum <span class="ot">&lt;-</span> cfs_weather_time_avg<span class="sc">$</span>Average_hum</span>
-<span id="cb59-80"><a href="thermal-conversion.html#cb59-80" tabindex="-1"></a>avg_hum</span>
-<span id="cb59-81"><a href="thermal-conversion.html#cb59-81" tabindex="-1"></a>avg_temp <span class="ot">&lt;-</span> cfs_weather_time_avg<span class="sc">$</span>Average_air_temp</span>
-<span id="cb59-82"><a href="thermal-conversion.html#cb59-82" tabindex="-1"></a>avg_temp</span>
-<span id="cb59-83"><a href="thermal-conversion.html#cb59-83" tabindex="-1"></a>date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(cfs_weather_time_avg<span class="sc">$</span>Date, <span class="st">&#39;%d-%m-%Y&#39;</span>)</span>
-<span id="cb59-84"><a href="thermal-conversion.html#cb59-84" tabindex="-1"></a>date</span>
-<span id="cb59-85"><a href="thermal-conversion.html#cb59-85" tabindex="-1"></a></span>
-<span id="cb59-86"><a href="thermal-conversion.html#cb59-86" tabindex="-1"></a><span class="co">#creating a data frame  with unique averaged values (from 11am-12pm) humidity and dates</span></span>
-<span id="cb59-87"><a href="thermal-conversion.html#cb59-87" tabindex="-1"></a>Canoe_flight_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb59-88"><a href="thermal-conversion.html#cb59-88" tabindex="-1"></a>  date,</span>
-<span id="cb59-89"><a href="thermal-conversion.html#cb59-89" tabindex="-1"></a>  avg_hum,</span>
-<span id="cb59-90"><a href="thermal-conversion.html#cb59-90" tabindex="-1"></a>  avg_temp</span>
-<span id="cb59-91"><a href="thermal-conversion.html#cb59-91" tabindex="-1"></a>)</span>
-<span id="cb59-92"><a href="thermal-conversion.html#cb59-92" tabindex="-1"></a><span class="fu">dim</span>(Canoe_flight_table)</span>
-<span id="cb59-93"><a href="thermal-conversion.html#cb59-93" tabindex="-1"></a><span class="co">#removing duplicated values (ie time is 11 and 12, and both have the same averaged humidity and amp temp measurments)</span></span>
-<span id="cb59-94"><a href="thermal-conversion.html#cb59-94" tabindex="-1"></a>Canoe_flight_table <span class="ot">&lt;-</span> <span class="fu">unique</span>(Canoe_flight_table)</span>
-<span id="cb59-95"><a href="thermal-conversion.html#cb59-95" tabindex="-1"></a></span>
-<span id="cb59-96"><a href="thermal-conversion.html#cb59-96" tabindex="-1"></a><span class="co">#resetting index in table to go from 1-N</span></span>
-<span id="cb59-97"><a href="thermal-conversion.html#cb59-97" tabindex="-1"></a><span class="fu">rownames</span>(Canoe_flight_table) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb59-98"><a href="thermal-conversion.html#cb59-98" tabindex="-1"></a><span class="fu">dim</span>(Canoe_flight_table)</span>
-<span id="cb59-99"><a href="thermal-conversion.html#cb59-99" tabindex="-1"></a>Canoe_flight_table</span>
-<span id="cb59-100"><a href="thermal-conversion.html#cb59-100" tabindex="-1"></a></span>
-<span id="cb59-101"><a href="thermal-conversion.html#cb59-101" tabindex="-1"></a><span class="co">#getting averaged humidity (11am-12pm) from CFS logger for flight date</span></span>
-<span id="cb59-102"><a href="thermal-conversion.html#cb59-102" tabindex="-1"></a>flight_humidity <span class="ot">&lt;-</span> Canoe_flight_table[Canoe_flight_table<span class="sc">$</span>date <span class="sc">==</span> flight_date, <span class="st">&quot;avg_hum&quot;</span>]</span>
-<span id="cb59-103"><a href="thermal-conversion.html#cb59-103" tabindex="-1"></a>flight_humidity</span>
-<span id="cb59-104"><a href="thermal-conversion.html#cb59-104" tabindex="-1"></a></span>
-<span id="cb59-105"><a href="thermal-conversion.html#cb59-105" tabindex="-1"></a>flight_amb_temp <span class="ot">&lt;-</span> Canoe_flight_table[Canoe_flight_table<span class="sc">$</span>date <span class="sc">==</span> flight_date, <span class="st">&quot;avg_temp&quot;</span>]</span>
-<span id="cb59-106"><a href="thermal-conversion.html#cb59-106" tabindex="-1"></a>flight_amb_temp</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="thermal-conversion.html#cb57-1" tabindex="-1"></a><span class="do">### RUN UP TO HERE THEM LOOK AT START AND STOP TIMES TO INFORM NEXT PART</span></span>
+<span id="cb57-2"><a href="thermal-conversion.html#cb57-2" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="thermal-conversion.html#cb57-3" tabindex="-1"></a>ENTER start and stop times from above, ie <span class="cf">if</span> start was <span class="dv">11</span><span class="sc">:</span><span class="dv">15</span> put <span class="dv">11</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> and <span class="cf">if</span> end was <span class="dv">1</span><span class="sc">:</span><span class="dv">23</span> put <span class="dv">14</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> (2pm) as the end</span>
+<span id="cb57-4"><a href="thermal-conversion.html#cb57-4" tabindex="-1"></a>start_time_avg <span class="ot">&lt;-</span> <span class="st">&quot;10:00:00&quot;</span> <span class="co">#Based off of start_flight_date_time from above</span></span>
+<span id="cb57-5"><a href="thermal-conversion.html#cb57-5" tabindex="-1"></a>stop_time_avg <span class="ot">&lt;-</span> <span class="st">&quot;13:00:00&quot;</span> <span class="co">#Based off of end_flight_date_time from above</span></span>
+<span id="cb57-6"><a href="thermal-conversion.html#cb57-6" tabindex="-1"></a></span>
+<span id="cb57-7"><a href="thermal-conversion.html#cb57-7" tabindex="-1"></a><span class="co">#Looking at time in 15 min intervals</span></span>
+<span id="cb57-8"><a href="thermal-conversion.html#cb57-8" tabindex="-1"></a><span class="co">#setting up weights</span></span>
+<span id="cb57-9"><a href="thermal-conversion.html#cb57-9" tabindex="-1"></a></span>
+<span id="cb57-10"><a href="thermal-conversion.html#cb57-10" tabindex="-1"></a>These weights will change with each iteration <span class="sc">-</span> left uncommented so we cant accidently run the script without changing this part</span>
+<span id="cb57-11"><a href="thermal-conversion.html#cb57-11" tabindex="-1"></a><span class="co">#if flight was from 10-11, then start and end weight swould be 1 and the mid weight can be commented out</span></span>
+<span id="cb57-12"><a href="thermal-conversion.html#cb57-12" tabindex="-1"></a><span class="co"># I will be usually either 0.25 (15min), 0.5 (30min), 0.75 (45min) or 1 (1 hr) as weights</span></span>
+<span id="cb57-13"><a href="thermal-conversion.html#cb57-13" tabindex="-1"></a><span class="co"># ie for a flight that started at 10:15 and ended at 11:30, the start weight would be 0.75 (for 10am data), mid weight would be 1 (for 11am data), and end would be 0.5 (for 12pm data)</span></span>
+<span id="cb57-14"><a href="thermal-conversion.html#cb57-14" tabindex="-1"></a><span class="co">#round down for start and up for end ie start of 10:06 would be 10 and end of 11:36 would be 11:45</span></span>
+<span id="cb57-15"><a href="thermal-conversion.html#cb57-15" tabindex="-1"></a></span>
+<span id="cb57-16"><a href="thermal-conversion.html#cb57-16" tabindex="-1"></a>new_flight_date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(flight_date, <span class="at">format =</span> <span class="st">&#39;%Y-%m-%d&#39;</span>)</span>
+<span id="cb57-17"><a href="thermal-conversion.html#cb57-17" tabindex="-1"></a>new_flight_date</span>
+<span id="cb57-18"><a href="thermal-conversion.html#cb57-18" tabindex="-1"></a></span>
+<span id="cb57-19"><a href="thermal-conversion.html#cb57-19" tabindex="-1"></a><span class="co">#loading in CFS HOBO weather data</span></span>
+<span id="cb57-20"><a href="thermal-conversion.html#cb57-20" tabindex="-1"></a>cfs_weather <span class="ot">&lt;-</span> data</span>
+<span id="cb57-21"><a href="thermal-conversion.html#cb57-21" tabindex="-1"></a></span>
+<span id="cb57-22"><a href="thermal-conversion.html#cb57-22" tabindex="-1"></a><span class="fu">colnames</span>(data)</span>
+<span id="cb57-23"><a href="thermal-conversion.html#cb57-23" tabindex="-1"></a><span class="co">#cfs_weather</span></span>
+<span id="cb57-24"><a href="thermal-conversion.html#cb57-24" tabindex="-1"></a></span>
+<span id="cb57-25"><a href="thermal-conversion.html#cb57-25" tabindex="-1"></a>new_column_names <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">colnames</span>(cfs_weather))</span>
+<span id="cb57-26"><a href="thermal-conversion.html#cb57-26" tabindex="-1"></a><span class="fu">colnames</span>(cfs_weather) <span class="ot">&lt;-</span> new_column_names</span>
+<span id="cb57-27"><a href="thermal-conversion.html#cb57-27" tabindex="-1"></a></span>
+<span id="cb57-28"><a href="thermal-conversion.html#cb57-28" tabindex="-1"></a>cfs_weather<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(cfs_weather<span class="sc">$</span>Date, <span class="at">format =</span> <span class="st">&quot;%m/%d/%y&quot;</span>)</span>
+<span id="cb57-29"><a href="thermal-conversion.html#cb57-29" tabindex="-1"></a></span>
+<span id="cb57-30"><a href="thermal-conversion.html#cb57-30" tabindex="-1"></a><span class="co"># For 2 time points ----------------------------------------------------------------------------</span></span>
+<span id="cb57-31"><a href="thermal-conversion.html#cb57-31" tabindex="-1"></a>start_weight <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb57-32"><a href="thermal-conversion.html#cb57-32" tabindex="-1"></a>end_weight <span class="ot">&lt;-</span> <span class="fl">0.75</span></span>
+<span id="cb57-33"><a href="thermal-conversion.html#cb57-33" tabindex="-1"></a></span>
+<span id="cb57-34"><a href="thermal-conversion.html#cb57-34" tabindex="-1"></a>sum_weight <span class="ot">&lt;-</span> <span class="fu">sum</span>(start_weight,</span>
+<span id="cb57-35"><a href="thermal-conversion.html#cb57-35" tabindex="-1"></a>                  end_weight) </span>
+<span id="cb57-36"><a href="thermal-conversion.html#cb57-36" tabindex="-1"></a></span>
+<span id="cb57-37"><a href="thermal-conversion.html#cb57-37" tabindex="-1"></a><span class="co">#creating df with columns that average humidity per date</span></span>
+<span id="cb57-38"><a href="thermal-conversion.html#cb57-38" tabindex="-1"></a>cfs_weather_time_avg <span class="ot">&lt;-</span> cfs_weather<span class="sc">%&gt;%</span></span>
+<span id="cb57-39"><a href="thermal-conversion.html#cb57-39" tabindex="-1"></a>  <span class="fu">group_by</span>(Date)<span class="sc">%&gt;%</span></span>
+<span id="cb57-40"><a href="thermal-conversion.html#cb57-40" tabindex="-1"></a>  <span class="fu">filter</span>(Date <span class="sc">==</span> new_flight_date ) <span class="sc">%&gt;%</span></span>
+<span id="cb57-41"><a href="thermal-conversion.html#cb57-41" tabindex="-1"></a>  <span class="fu">filter</span>(Time <span class="sc">&lt;=</span> stop_time_avg <span class="sc">&amp;</span> Time <span class="sc">&gt;=</span> start_time_avg)<span class="sc">%&gt;%</span> <span class="co">#filtering only for humidity values taken between 10am and 12pm</span></span>
+<span id="cb57-42"><a href="thermal-conversion.html#cb57-42" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">Average_hum =</span> (start_weight<span class="sc">*</span>RH[<span class="dv">1</span>]</span>
+<span id="cb57-43"><a href="thermal-conversion.html#cb57-43" tabindex="-1"></a>                         <span class="sc">+</span> end_weight<span class="sc">*</span>RH[<span class="dv">2</span>])<span class="sc">/</span>sum_weight,</span>
+<span id="cb57-44"><a href="thermal-conversion.html#cb57-44" tabindex="-1"></a>          </span>
+<span id="cb57-45"><a href="thermal-conversion.html#cb57-45" tabindex="-1"></a>          <span class="at">Average_air_temp =</span> (start_weight<span class="sc">*</span>Temperature[<span class="dv">1</span>]</span>
+<span id="cb57-46"><a href="thermal-conversion.html#cb57-46" tabindex="-1"></a>                              <span class="sc">+</span> end_weight<span class="sc">*</span>Temperature[<span class="dv">2</span>])<span class="sc">/</span>sum_weight)</span>
+<span id="cb57-47"><a href="thermal-conversion.html#cb57-47" tabindex="-1"></a></span>
+<span id="cb57-48"><a href="thermal-conversion.html#cb57-48" tabindex="-1"></a>cfs_weather_time_avg</span>
+<span id="cb57-49"><a href="thermal-conversion.html#cb57-49" tabindex="-1"></a><span class="co"># For 3 time points ----------------------------------------------------------------------------</span></span>
+<span id="cb57-50"><a href="thermal-conversion.html#cb57-50" tabindex="-1"></a>start_flight_date_time</span>
+<span id="cb57-51"><a href="thermal-conversion.html#cb57-51" tabindex="-1"></a>end_flight_date_time</span>
+<span id="cb57-52"><a href="thermal-conversion.html#cb57-52" tabindex="-1"></a><span class="co">#Ie: Flight starts at 10:15am and ends at 11:30</span></span>
+<span id="cb57-53"><a href="thermal-conversion.html#cb57-53" tabindex="-1"></a>start_weight <span class="ot">&lt;-</span> <span class="fl">0.25</span> <span class="co"># 75% of 10am</span></span>
+<span id="cb57-54"><a href="thermal-conversion.html#cb57-54" tabindex="-1"></a>mid_weight <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># 100% of  11am </span></span>
+<span id="cb57-55"><a href="thermal-conversion.html#cb57-55" tabindex="-1"></a>end_weight <span class="ot">&lt;-</span> <span class="fl">0.25</span> <span class="co"># 50% of 12pm</span></span>
+<span id="cb57-56"><a href="thermal-conversion.html#cb57-56" tabindex="-1"></a></span>
+<span id="cb57-57"><a href="thermal-conversion.html#cb57-57" tabindex="-1"></a>sum_weight <span class="ot">&lt;-</span> <span class="fu">sum</span>(start_weight,</span>
+<span id="cb57-58"><a href="thermal-conversion.html#cb57-58" tabindex="-1"></a>                  mid_weight,</span>
+<span id="cb57-59"><a href="thermal-conversion.html#cb57-59" tabindex="-1"></a>                  end_weight) </span>
+<span id="cb57-60"><a href="thermal-conversion.html#cb57-60" tabindex="-1"></a></span>
+<span id="cb57-61"><a href="thermal-conversion.html#cb57-61" tabindex="-1"></a></span>
+<span id="cb57-62"><a href="thermal-conversion.html#cb57-62" tabindex="-1"></a><span class="co">#creating df with columns that average humidity per date</span></span>
+<span id="cb57-63"><a href="thermal-conversion.html#cb57-63" tabindex="-1"></a>cfs_weather_time_avg <span class="ot">&lt;-</span> cfs_weather<span class="sc">%&gt;%</span></span>
+<span id="cb57-64"><a href="thermal-conversion.html#cb57-64" tabindex="-1"></a>  <span class="fu">group_by</span>(Date)<span class="sc">%&gt;%</span></span>
+<span id="cb57-65"><a href="thermal-conversion.html#cb57-65" tabindex="-1"></a>  <span class="fu">filter</span>(Date <span class="sc">==</span> new_flight_date ) <span class="sc">%&gt;%</span></span>
+<span id="cb57-66"><a href="thermal-conversion.html#cb57-66" tabindex="-1"></a>  <span class="fu">filter</span>(Time <span class="sc">&lt;=</span> stop_time_avg <span class="sc">&amp;</span> Time <span class="sc">&gt;=</span> start_time_avg)<span class="sc">%&gt;%</span> <span class="co">#filtering only for humidity values taken between 10am and 12pm</span></span>
+<span id="cb57-67"><a href="thermal-conversion.html#cb57-67" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">Average_hum =</span> (start_weight<span class="sc">*</span>RH[<span class="dv">1</span>]</span>
+<span id="cb57-68"><a href="thermal-conversion.html#cb57-68" tabindex="-1"></a>                         <span class="sc">+</span> mid_weight<span class="sc">*</span>RH[<span class="dv">2</span>] <span class="co">#comment out this line if no mid_weight</span></span>
+<span id="cb57-69"><a href="thermal-conversion.html#cb57-69" tabindex="-1"></a>                         <span class="sc">+</span> end_weight<span class="sc">*</span>RH[<span class="dv">3</span>])<span class="sc">/</span>sum_weight,</span>
+<span id="cb57-70"><a href="thermal-conversion.html#cb57-70" tabindex="-1"></a>          </span>
+<span id="cb57-71"><a href="thermal-conversion.html#cb57-71" tabindex="-1"></a>          <span class="at">Average_air_temp =</span> (start_weight<span class="sc">*</span>Temperature[<span class="dv">1</span>]</span>
+<span id="cb57-72"><a href="thermal-conversion.html#cb57-72" tabindex="-1"></a>                              <span class="sc">+</span> mid_weight<span class="sc">*</span>Temperature[<span class="dv">2</span>]<span class="co">#comment out this line if no mid_weight</span></span>
+<span id="cb57-73"><a href="thermal-conversion.html#cb57-73" tabindex="-1"></a>                              <span class="sc">+</span> end_weight<span class="sc">*</span>Temperature[<span class="dv">3</span>])<span class="sc">/</span>sum_weight)</span>
+<span id="cb57-74"><a href="thermal-conversion.html#cb57-74" tabindex="-1"></a>cfs_weather_time_avg</span>
+<span id="cb57-75"><a href="thermal-conversion.html#cb57-75" tabindex="-1"></a><span class="do">#####</span></span>
+<span id="cb57-76"><a href="thermal-conversion.html#cb57-76" tabindex="-1"></a><span class="co">#checking dimension</span></span>
+<span id="cb57-77"><a href="thermal-conversion.html#cb57-77" tabindex="-1"></a><span class="fu">dim</span>(cfs_weather_time_avg)</span>
+<span id="cb57-78"><a href="thermal-conversion.html#cb57-78" tabindex="-1"></a><span class="co">#checking values (for all dates)</span></span>
+<span id="cb57-79"><a href="thermal-conversion.html#cb57-79" tabindex="-1"></a>avg_hum <span class="ot">&lt;-</span> cfs_weather_time_avg<span class="sc">$</span>Average_hum</span>
+<span id="cb57-80"><a href="thermal-conversion.html#cb57-80" tabindex="-1"></a>avg_hum</span>
+<span id="cb57-81"><a href="thermal-conversion.html#cb57-81" tabindex="-1"></a>avg_temp <span class="ot">&lt;-</span> cfs_weather_time_avg<span class="sc">$</span>Average_air_temp</span>
+<span id="cb57-82"><a href="thermal-conversion.html#cb57-82" tabindex="-1"></a>avg_temp</span>
+<span id="cb57-83"><a href="thermal-conversion.html#cb57-83" tabindex="-1"></a>date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(cfs_weather_time_avg<span class="sc">$</span>Date, <span class="st">&#39;%d-%m-%Y&#39;</span>)</span>
+<span id="cb57-84"><a href="thermal-conversion.html#cb57-84" tabindex="-1"></a>date</span>
+<span id="cb57-85"><a href="thermal-conversion.html#cb57-85" tabindex="-1"></a></span>
+<span id="cb57-86"><a href="thermal-conversion.html#cb57-86" tabindex="-1"></a><span class="co">#creating a data frame  with unique averaged values (from 11am-12pm) humidity and dates</span></span>
+<span id="cb57-87"><a href="thermal-conversion.html#cb57-87" tabindex="-1"></a>Canoe_flight_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb57-88"><a href="thermal-conversion.html#cb57-88" tabindex="-1"></a>  date,</span>
+<span id="cb57-89"><a href="thermal-conversion.html#cb57-89" tabindex="-1"></a>  avg_hum,</span>
+<span id="cb57-90"><a href="thermal-conversion.html#cb57-90" tabindex="-1"></a>  avg_temp</span>
+<span id="cb57-91"><a href="thermal-conversion.html#cb57-91" tabindex="-1"></a>)</span>
+<span id="cb57-92"><a href="thermal-conversion.html#cb57-92" tabindex="-1"></a><span class="fu">dim</span>(Canoe_flight_table)</span>
+<span id="cb57-93"><a href="thermal-conversion.html#cb57-93" tabindex="-1"></a><span class="co">#removing duplicated values (ie time is 11 and 12, and both have the same averaged humidity and amp temp measurments)</span></span>
+<span id="cb57-94"><a href="thermal-conversion.html#cb57-94" tabindex="-1"></a>Canoe_flight_table <span class="ot">&lt;-</span> <span class="fu">unique</span>(Canoe_flight_table)</span>
+<span id="cb57-95"><a href="thermal-conversion.html#cb57-95" tabindex="-1"></a></span>
+<span id="cb57-96"><a href="thermal-conversion.html#cb57-96" tabindex="-1"></a><span class="co">#resetting index in table to go from 1-N</span></span>
+<span id="cb57-97"><a href="thermal-conversion.html#cb57-97" tabindex="-1"></a><span class="fu">rownames</span>(Canoe_flight_table) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb57-98"><a href="thermal-conversion.html#cb57-98" tabindex="-1"></a><span class="fu">dim</span>(Canoe_flight_table)</span>
+<span id="cb57-99"><a href="thermal-conversion.html#cb57-99" tabindex="-1"></a>Canoe_flight_table</span>
+<span id="cb57-100"><a href="thermal-conversion.html#cb57-100" tabindex="-1"></a></span>
+<span id="cb57-101"><a href="thermal-conversion.html#cb57-101" tabindex="-1"></a><span class="co">#getting averaged humidity (11am-12pm) from CFS logger for flight date</span></span>
+<span id="cb57-102"><a href="thermal-conversion.html#cb57-102" tabindex="-1"></a>flight_humidity <span class="ot">&lt;-</span> Canoe_flight_table[Canoe_flight_table<span class="sc">$</span>date <span class="sc">==</span> flight_date, <span class="st">&quot;avg_hum&quot;</span>]</span>
+<span id="cb57-103"><a href="thermal-conversion.html#cb57-103" tabindex="-1"></a>flight_humidity</span>
+<span id="cb57-104"><a href="thermal-conversion.html#cb57-104" tabindex="-1"></a></span>
+<span id="cb57-105"><a href="thermal-conversion.html#cb57-105" tabindex="-1"></a>flight_amb_temp <span class="ot">&lt;-</span> Canoe_flight_table[Canoe_flight_table<span class="sc">$</span>date <span class="sc">==</span> flight_date, <span class="st">&quot;avg_temp&quot;</span>]</span>
+<span id="cb57-106"><a href="thermal-conversion.html#cb57-106" tabindex="-1"></a>flight_amb_temp</span></code></pre></div>
 <p>#STEP 2: DJI SDK in Visual Studio : convert to temp in C :</p>
 <p>#STEP 3: Read binary and convert to a raster: <a href="https://community.rstudio.com/t/solution-to-reading-raw-images-into-r/45435" class="uri">https://community.rstudio.com/t/solution-to-reading-raw-images-into-r/45435</a></p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="thermal-conversion.html#cb60-1" tabindex="-1"></a>therm_dates <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;2022_10_05&quot;</span>)</span>
-<span id="cb60-2"><a href="thermal-conversion.html#cb60-2" tabindex="-1"></a></span>
-<span id="cb60-3"><a href="thermal-conversion.html#cb60-3" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(therm_dates)){</span>
-<span id="cb60-4"><a href="thermal-conversion.html#cb60-4" tabindex="-1"></a>  date_therm <span class="ot">&lt;-</span> therm_dates[x]</span>
-<span id="cb60-5"><a href="thermal-conversion.html#cb60-5" tabindex="-1"></a>  <span class="fu">print</span>(date_therm)</span>
-<span id="cb60-6"><a href="thermal-conversion.html#cb60-6" tabindex="-1"></a>  </span>
-<span id="cb60-7"><a href="thermal-conversion.html#cb60-7" tabindex="-1"></a>  dir <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;I:</span><span class="sc">\\</span><span class="st">PARSER_Ext</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Flights</span><span class="sc">\\</span><span class="st">&quot;</span>,date_therm,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">H20T&quot;</span>) <span class="co">#directory to h20T imagery</span></span>
-<span id="cb60-8"><a href="thermal-conversion.html#cb60-8" tabindex="-1"></a>  list_dir <span class="ot">&lt;-</span> <span class="fu">list.files</span>(dir, <span class="at">full.names =</span> <span class="cn">TRUE</span>,<span class="at">pattern =</span> <span class="fu">c</span>(<span class="st">&quot;DJI.+-H20T&quot;</span>)) <span class="co">#folders containing orignal imagery</span></span>
-<span id="cb60-9"><a href="thermal-conversion.html#cb60-9" tabindex="-1"></a>  <span class="fu">print</span>(list_dir)</span>
-<span id="cb60-10"><a href="thermal-conversion.html#cb60-10" tabindex="-1"></a>  </span>
-<span id="cb60-11"><a href="thermal-conversion.html#cb60-11" tabindex="-1"></a>  <span class="co"># GETTING ALL RGB IMAGES</span></span>
-<span id="cb60-12"><a href="thermal-conversion.html#cb60-12" tabindex="-1"></a>  <span class="cf">for</span> (d <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_dir)){</span>
-<span id="cb60-13"><a href="thermal-conversion.html#cb60-13" tabindex="-1"></a>    <span class="co">#calling each directly separately</span></span>
-<span id="cb60-14"><a href="thermal-conversion.html#cb60-14" tabindex="-1"></a>    folder_dir <span class="ot">&lt;-</span> list_dir[d]</span>
-<span id="cb60-15"><a href="thermal-conversion.html#cb60-15" tabindex="-1"></a>    <span class="cf">if</span>(d <span class="sc">==</span> <span class="dv">1</span>){</span>
-<span id="cb60-16"><a href="thermal-conversion.html#cb60-16" tabindex="-1"></a>      files_W <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder_dir, <span class="at">pattern =</span> <span class="st">&quot;_W.JPG$&quot;</span>)</span>
-<span id="cb60-17"><a href="thermal-conversion.html#cb60-17" tabindex="-1"></a>    }<span class="cf">else</span>{</span>
-<span id="cb60-18"><a href="thermal-conversion.html#cb60-18" tabindex="-1"></a>      files_W_add <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder_dir, <span class="at">pattern =</span> <span class="st">&quot;_W.JPG$&quot;</span>)</span>
-<span id="cb60-19"><a href="thermal-conversion.html#cb60-19" tabindex="-1"></a>      files_W <span class="ot">&lt;-</span> <span class="fu">append</span>(files_W,files_W_add)</span>
-<span id="cb60-20"><a href="thermal-conversion.html#cb60-20" tabindex="-1"></a>    }</span>
-<span id="cb60-21"><a href="thermal-conversion.html#cb60-21" tabindex="-1"></a>  }</span>
-<span id="cb60-22"><a href="thermal-conversion.html#cb60-22" tabindex="-1"></a>  </span>
-<span id="cb60-23"><a href="thermal-conversion.html#cb60-23" tabindex="-1"></a>  dir_IR <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;I:</span><span class="sc">\\</span><span class="st">PARSER_Ext</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Flights</span><span class="sc">\\</span><span class="st">&quot;</span>,date_therm,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">H20T</span><span class="sc">\\</span><span class="st">Merged_T</span><span class="sc">\\</span><span class="st">Temperature_rasters_EXIF_DST&quot;</span>)</span>
-<span id="cb60-24"><a href="thermal-conversion.html#cb60-24" tabindex="-1"></a>  </span>
-<span id="cb60-25"><a href="thermal-conversion.html#cb60-25" tabindex="-1"></a>  <span class="co">#list of thermal files</span></span>
-<span id="cb60-26"><a href="thermal-conversion.html#cb60-26" tabindex="-1"></a>  files_T <span class="ot">&lt;-</span> <span class="fu">list.files</span>(dir_IR, <span class="at">pattern =</span> <span class="st">&quot;_T.tiff$&quot;</span>)</span>
-<span id="cb60-27"><a href="thermal-conversion.html#cb60-27" tabindex="-1"></a>  </span>
-<span id="cb60-28"><a href="thermal-conversion.html#cb60-28" tabindex="-1"></a>  </span>
-<span id="cb60-29"><a href="thermal-conversion.html#cb60-29" tabindex="-1"></a>  <span class="co"># Function to extract the core name from a file path</span></span>
-<span id="cb60-30"><a href="thermal-conversion.html#cb60-30" tabindex="-1"></a>  get_core_name <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path) {</span>
-<span id="cb60-31"><a href="thermal-conversion.html#cb60-31" tabindex="-1"></a>    <span class="fu">basename</span>(file_path) <span class="sc">%&gt;%</span></span>
-<span id="cb60-32"><a href="thermal-conversion.html#cb60-32" tabindex="-1"></a>      <span class="fu">gsub</span>(<span class="st">&quot;_[TW]$&quot;</span>, <span class="st">&quot;&quot;</span>, .)</span>
-<span id="cb60-33"><a href="thermal-conversion.html#cb60-33" tabindex="-1"></a>  }</span>
-<span id="cb60-34"><a href="thermal-conversion.html#cb60-34" tabindex="-1"></a>  </span>
-<span id="cb60-35"><a href="thermal-conversion.html#cb60-35" tabindex="-1"></a>  <span class="co">#creating a new folder for the metahspae test</span></span>
-<span id="cb60-36"><a href="thermal-conversion.html#cb60-36" tabindex="-1"></a>  merged <span class="ot">&lt;-</span> <span class="st">&quot;Merged_T&quot;</span></span>
-<span id="cb60-37"><a href="thermal-conversion.html#cb60-37" tabindex="-1"></a>  </span>
-<span id="cb60-38"><a href="thermal-conversion.html#cb60-38" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">RGB_&amp;_IR_EXIF_DST&quot;</span>))) {</span>
-<span id="cb60-39"><a href="thermal-conversion.html#cb60-39" tabindex="-1"></a>    <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">RGB_&amp;_IR_EXIF_DST&quot;</span>),<span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb60-40"><a href="thermal-conversion.html#cb60-40" tabindex="-1"></a>  }</span>
-<span id="cb60-41"><a href="thermal-conversion.html#cb60-41" tabindex="-1"></a>  </span>
-<span id="cb60-42"><a href="thermal-conversion.html#cb60-42" tabindex="-1"></a>  dir_new <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">RGB_&amp;_IR_EXIF_DST&quot;</span>)</span>
-<span id="cb60-43"><a href="thermal-conversion.html#cb60-43" tabindex="-1"></a>  </span>
-<span id="cb60-44"><a href="thermal-conversion.html#cb60-44" tabindex="-1"></a>  <span class="cf">for</span> (d <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_dir)){</span>
-<span id="cb60-45"><a href="thermal-conversion.html#cb60-45" tabindex="-1"></a>    <span class="co">#calling each directly separately</span></span>
-<span id="cb60-46"><a href="thermal-conversion.html#cb60-46" tabindex="-1"></a>    <span class="fu">print</span>(d)</span>
-<span id="cb60-47"><a href="thermal-conversion.html#cb60-47" tabindex="-1"></a>    folder_dir_W <span class="ot">&lt;-</span> list_dir[d]</span>
-<span id="cb60-48"><a href="thermal-conversion.html#cb60-48" tabindex="-1"></a>    files_W <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder_dir_W, <span class="at">pattern =</span> <span class="st">&quot;_W.JPG$&quot;</span>)</span>
-<span id="cb60-49"><a href="thermal-conversion.html#cb60-49" tabindex="-1"></a>    </span>
-<span id="cb60-50"><a href="thermal-conversion.html#cb60-50" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(files_T)) {</span>
-<span id="cb60-51"><a href="thermal-conversion.html#cb60-51" tabindex="-1"></a>      core_name_T <span class="ot">&lt;-</span> <span class="fu">substr</span>(files_T[i], <span class="dv">1</span>, <span class="fu">nchar</span>(files_T[i]) <span class="sc">-</span> <span class="dv">6</span>)</span>
-<span id="cb60-52"><a href="thermal-conversion.html#cb60-52" tabindex="-1"></a>      matching_file_W <span class="ot">&lt;-</span> files_W[<span class="fu">str_detect</span>(files_W, core_name_T)]</span>
-<span id="cb60-53"><a href="thermal-conversion.html#cb60-53" tabindex="-1"></a>      <span class="cf">if</span>(<span class="fu">length</span>(matching_file_W)<span class="sc">&gt;=</span><span class="dv">1</span>){</span>
-<span id="cb60-54"><a href="thermal-conversion.html#cb60-54" tabindex="-1"></a>        <span class="co">#copying over files</span></span>
-<span id="cb60-55"><a href="thermal-conversion.html#cb60-55" tabindex="-1"></a>        <span class="fu">file.copy</span>(<span class="at">from =</span> <span class="fu">paste0</span>(folder_dir_W,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, matching_file_W),</span>
-<span id="cb60-56"><a href="thermal-conversion.html#cb60-56" tabindex="-1"></a>                  <span class="at">to =</span> <span class="fu">paste0</span>(dir_new,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, matching_file_W), <span class="at">overwrite =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb60-57"><a href="thermal-conversion.html#cb60-57" tabindex="-1"></a>        <span class="fu">file.copy</span>(<span class="at">from =</span> <span class="fu">paste0</span>(dir_IR,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, files_T[i]),</span>
-<span id="cb60-58"><a href="thermal-conversion.html#cb60-58" tabindex="-1"></a>                  <span class="at">to =</span> <span class="fu">paste0</span>(dir_new,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, files_T[i]), <span class="at">overwrite =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb60-59"><a href="thermal-conversion.html#cb60-59" tabindex="-1"></a>      }</span>
-<span id="cb60-60"><a href="thermal-conversion.html#cb60-60" tabindex="-1"></a>    }</span>
-<span id="cb60-61"><a href="thermal-conversion.html#cb60-61" tabindex="-1"></a>  }</span>
-<span id="cb60-62"><a href="thermal-conversion.html#cb60-62" tabindex="-1"></a>  </span>
-<span id="cb60-63"><a href="thermal-conversion.html#cb60-63" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="thermal-conversion.html#cb58-1" tabindex="-1"></a>therm_dates <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;2022_10_05&quot;</span>)</span>
+<span id="cb58-2"><a href="thermal-conversion.html#cb58-2" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="thermal-conversion.html#cb58-3" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(therm_dates)){</span>
+<span id="cb58-4"><a href="thermal-conversion.html#cb58-4" tabindex="-1"></a>  date_therm <span class="ot">&lt;-</span> therm_dates[x]</span>
+<span id="cb58-5"><a href="thermal-conversion.html#cb58-5" tabindex="-1"></a>  <span class="fu">print</span>(date_therm)</span>
+<span id="cb58-6"><a href="thermal-conversion.html#cb58-6" tabindex="-1"></a>  </span>
+<span id="cb58-7"><a href="thermal-conversion.html#cb58-7" tabindex="-1"></a>  dir <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;I:</span><span class="sc">\\</span><span class="st">PARSER_Ext</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Flights</span><span class="sc">\\</span><span class="st">&quot;</span>,date_therm,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">H20T&quot;</span>) <span class="co">#directory to h20T imagery</span></span>
+<span id="cb58-8"><a href="thermal-conversion.html#cb58-8" tabindex="-1"></a>  list_dir <span class="ot">&lt;-</span> <span class="fu">list.files</span>(dir, <span class="at">full.names =</span> <span class="cn">TRUE</span>,<span class="at">pattern =</span> <span class="fu">c</span>(<span class="st">&quot;DJI.+-H20T&quot;</span>)) <span class="co">#folders containing orignal imagery</span></span>
+<span id="cb58-9"><a href="thermal-conversion.html#cb58-9" tabindex="-1"></a>  <span class="fu">print</span>(list_dir)</span>
+<span id="cb58-10"><a href="thermal-conversion.html#cb58-10" tabindex="-1"></a>  </span>
+<span id="cb58-11"><a href="thermal-conversion.html#cb58-11" tabindex="-1"></a>  <span class="co"># GETTING ALL RGB IMAGES</span></span>
+<span id="cb58-12"><a href="thermal-conversion.html#cb58-12" tabindex="-1"></a>  <span class="cf">for</span> (d <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_dir)){</span>
+<span id="cb58-13"><a href="thermal-conversion.html#cb58-13" tabindex="-1"></a>    <span class="co">#calling each directly separately</span></span>
+<span id="cb58-14"><a href="thermal-conversion.html#cb58-14" tabindex="-1"></a>    folder_dir <span class="ot">&lt;-</span> list_dir[d]</span>
+<span id="cb58-15"><a href="thermal-conversion.html#cb58-15" tabindex="-1"></a>    <span class="cf">if</span>(d <span class="sc">==</span> <span class="dv">1</span>){</span>
+<span id="cb58-16"><a href="thermal-conversion.html#cb58-16" tabindex="-1"></a>      files_W <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder_dir, <span class="at">pattern =</span> <span class="st">&quot;_W.JPG$&quot;</span>)</span>
+<span id="cb58-17"><a href="thermal-conversion.html#cb58-17" tabindex="-1"></a>    }<span class="cf">else</span>{</span>
+<span id="cb58-18"><a href="thermal-conversion.html#cb58-18" tabindex="-1"></a>      files_W_add <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder_dir, <span class="at">pattern =</span> <span class="st">&quot;_W.JPG$&quot;</span>)</span>
+<span id="cb58-19"><a href="thermal-conversion.html#cb58-19" tabindex="-1"></a>      files_W <span class="ot">&lt;-</span> <span class="fu">append</span>(files_W,files_W_add)</span>
+<span id="cb58-20"><a href="thermal-conversion.html#cb58-20" tabindex="-1"></a>    }</span>
+<span id="cb58-21"><a href="thermal-conversion.html#cb58-21" tabindex="-1"></a>  }</span>
+<span id="cb58-22"><a href="thermal-conversion.html#cb58-22" tabindex="-1"></a>  </span>
+<span id="cb58-23"><a href="thermal-conversion.html#cb58-23" tabindex="-1"></a>  dir_IR <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;I:</span><span class="sc">\\</span><span class="st">PARSER_Ext</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Flights</span><span class="sc">\\</span><span class="st">&quot;</span>,date_therm,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">H20T</span><span class="sc">\\</span><span class="st">Merged_T</span><span class="sc">\\</span><span class="st">Temperature_rasters_EXIF_DST&quot;</span>)</span>
+<span id="cb58-24"><a href="thermal-conversion.html#cb58-24" tabindex="-1"></a>  </span>
+<span id="cb58-25"><a href="thermal-conversion.html#cb58-25" tabindex="-1"></a>  <span class="co">#list of thermal files</span></span>
+<span id="cb58-26"><a href="thermal-conversion.html#cb58-26" tabindex="-1"></a>  files_T <span class="ot">&lt;-</span> <span class="fu">list.files</span>(dir_IR, <span class="at">pattern =</span> <span class="st">&quot;_T.tiff$&quot;</span>)</span>
+<span id="cb58-27"><a href="thermal-conversion.html#cb58-27" tabindex="-1"></a>  </span>
+<span id="cb58-28"><a href="thermal-conversion.html#cb58-28" tabindex="-1"></a>  </span>
+<span id="cb58-29"><a href="thermal-conversion.html#cb58-29" tabindex="-1"></a>  <span class="co"># Function to extract the core name from a file path</span></span>
+<span id="cb58-30"><a href="thermal-conversion.html#cb58-30" tabindex="-1"></a>  get_core_name <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path) {</span>
+<span id="cb58-31"><a href="thermal-conversion.html#cb58-31" tabindex="-1"></a>    <span class="fu">basename</span>(file_path) <span class="sc">%&gt;%</span></span>
+<span id="cb58-32"><a href="thermal-conversion.html#cb58-32" tabindex="-1"></a>      <span class="fu">gsub</span>(<span class="st">&quot;_[TW]$&quot;</span>, <span class="st">&quot;&quot;</span>, .)</span>
+<span id="cb58-33"><a href="thermal-conversion.html#cb58-33" tabindex="-1"></a>  }</span>
+<span id="cb58-34"><a href="thermal-conversion.html#cb58-34" tabindex="-1"></a>  </span>
+<span id="cb58-35"><a href="thermal-conversion.html#cb58-35" tabindex="-1"></a>  <span class="co">#creating a new folder for the metahspae test</span></span>
+<span id="cb58-36"><a href="thermal-conversion.html#cb58-36" tabindex="-1"></a>  merged <span class="ot">&lt;-</span> <span class="st">&quot;Merged_T&quot;</span></span>
+<span id="cb58-37"><a href="thermal-conversion.html#cb58-37" tabindex="-1"></a>  </span>
+<span id="cb58-38"><a href="thermal-conversion.html#cb58-38" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">RGB_&amp;_IR_EXIF_DST&quot;</span>))) {</span>
+<span id="cb58-39"><a href="thermal-conversion.html#cb58-39" tabindex="-1"></a>    <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">RGB_&amp;_IR_EXIF_DST&quot;</span>),<span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb58-40"><a href="thermal-conversion.html#cb58-40" tabindex="-1"></a>  }</span>
+<span id="cb58-41"><a href="thermal-conversion.html#cb58-41" tabindex="-1"></a>  </span>
+<span id="cb58-42"><a href="thermal-conversion.html#cb58-42" tabindex="-1"></a>  dir_new <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">RGB_&amp;_IR_EXIF_DST&quot;</span>)</span>
+<span id="cb58-43"><a href="thermal-conversion.html#cb58-43" tabindex="-1"></a>  </span>
+<span id="cb58-44"><a href="thermal-conversion.html#cb58-44" tabindex="-1"></a>  <span class="cf">for</span> (d <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_dir)){</span>
+<span id="cb58-45"><a href="thermal-conversion.html#cb58-45" tabindex="-1"></a>    <span class="co">#calling each directly separately</span></span>
+<span id="cb58-46"><a href="thermal-conversion.html#cb58-46" tabindex="-1"></a>    <span class="fu">print</span>(d)</span>
+<span id="cb58-47"><a href="thermal-conversion.html#cb58-47" tabindex="-1"></a>    folder_dir_W <span class="ot">&lt;-</span> list_dir[d]</span>
+<span id="cb58-48"><a href="thermal-conversion.html#cb58-48" tabindex="-1"></a>    files_W <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder_dir_W, <span class="at">pattern =</span> <span class="st">&quot;_W.JPG$&quot;</span>)</span>
+<span id="cb58-49"><a href="thermal-conversion.html#cb58-49" tabindex="-1"></a>    </span>
+<span id="cb58-50"><a href="thermal-conversion.html#cb58-50" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(files_T)) {</span>
+<span id="cb58-51"><a href="thermal-conversion.html#cb58-51" tabindex="-1"></a>      core_name_T <span class="ot">&lt;-</span> <span class="fu">substr</span>(files_T[i], <span class="dv">1</span>, <span class="fu">nchar</span>(files_T[i]) <span class="sc">-</span> <span class="dv">6</span>)</span>
+<span id="cb58-52"><a href="thermal-conversion.html#cb58-52" tabindex="-1"></a>      matching_file_W <span class="ot">&lt;-</span> files_W[<span class="fu">str_detect</span>(files_W, core_name_T)]</span>
+<span id="cb58-53"><a href="thermal-conversion.html#cb58-53" tabindex="-1"></a>      <span class="cf">if</span>(<span class="fu">length</span>(matching_file_W)<span class="sc">&gt;=</span><span class="dv">1</span>){</span>
+<span id="cb58-54"><a href="thermal-conversion.html#cb58-54" tabindex="-1"></a>        <span class="co">#copying over files</span></span>
+<span id="cb58-55"><a href="thermal-conversion.html#cb58-55" tabindex="-1"></a>        <span class="fu">file.copy</span>(<span class="at">from =</span> <span class="fu">paste0</span>(folder_dir_W,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, matching_file_W),</span>
+<span id="cb58-56"><a href="thermal-conversion.html#cb58-56" tabindex="-1"></a>                  <span class="at">to =</span> <span class="fu">paste0</span>(dir_new,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, matching_file_W), <span class="at">overwrite =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb58-57"><a href="thermal-conversion.html#cb58-57" tabindex="-1"></a>        <span class="fu">file.copy</span>(<span class="at">from =</span> <span class="fu">paste0</span>(dir_IR,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, files_T[i]),</span>
+<span id="cb58-58"><a href="thermal-conversion.html#cb58-58" tabindex="-1"></a>                  <span class="at">to =</span> <span class="fu">paste0</span>(dir_new,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, files_T[i]), <span class="at">overwrite =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb58-59"><a href="thermal-conversion.html#cb58-59" tabindex="-1"></a>      }</span>
+<span id="cb58-60"><a href="thermal-conversion.html#cb58-60" tabindex="-1"></a>    }</span>
+<span id="cb58-61"><a href="thermal-conversion.html#cb58-61" tabindex="-1"></a>  }</span>
+<span id="cb58-62"><a href="thermal-conversion.html#cb58-62" tabindex="-1"></a>  </span>
+<span id="cb58-63"><a href="thermal-conversion.html#cb58-63" tabindex="-1"></a>}</span></code></pre></div>
 <p><strong>Note</strong>: We have run across an error in some imagery, DJI is working on a solution.</p>
 <p>The error is as follows:
 ERROR: call dirp_set_measurement_params failed

@@ -38,6 +38,7 @@ fig:Qgis-ref-tree-fit
 fig:Qgis-maintained-ref-tree-fit
 fig:CC-las-input
 fig:CC-stem-transform
+hello
 range-of-sites-assessed
 jordan-river
 powell-river
