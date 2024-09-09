@@ -124,9 +124,35 @@ end_flight_date_time <- data.frame(exif_read(paste0(dir,"\\",merged,"\\",img_las
 (flight_date <- as.Date(start_exif_flight_date$CreateDate, '%Y:%m:%d %H:%M:%S')) #the flight date as a date object
 ```
 
-Next we :
+Next, since our weather station provided hourly measurements, we calculate a weighted average of temperature and humidity values based on time intervals. The weights account for the partial hours during a flight and adjust the average accordingly. This was done to account for the fact that variables will change throughout the flight, so gathering a weighted average where each hourly measurement is weighted in proportion to how much of the hour fell within the flight window gives us a better estimate of the overall weather variables than if a plain average was taken.
 
-- 
+
+
+
+Weights for Start, Middle, and End Hours:
+
+- The start weight corresponds to how much of the first hour is covered by the flight time. For example, if the flight starts at 10:15, 45 minutes (or 0.75 of the hour) are included in that hour, so the start weight is 0.75.
+
+- The end weight applies similarly for the last hour of the flight. If the flight ends at 11:30, 30 minutes (or 0.5 of the hour) are included in that hour, so the end weight is 0.5.
+
+ -The middle weight (if the flight spans more than one hour) represents the full hour(s) covered by the flight. In the example of a flight from 10:15 to 11:30, the middle weight (for the 11:00-12:00 interval) would be 1, since the full hour is included.
+
+
+
+
+
+The weights will either be 0.25 (15min), 0.5 (30min), 0.75 (45min) or 1 (1 hr). For example, for a flight that started at 10:15 and ended at 11:30:
+
+- Start weight would be 0.75 since the flight encompassed for 10am data)
+
+- Mid weight would be 1 (for 11am data)
+
+- End would be 0.5 (for 12pm data)round down for start and up for end ie start of 10:06 would be 10 and end of 11:36 would be 11:45
+
+
+For example:
+If the flight was from 10-11am, the start and end weights will be 1 and the mid weight can be commented out. 
+
 
 
 ```{r, eval=FALSE, echo=TRUE}

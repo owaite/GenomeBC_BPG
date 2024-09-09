@@ -101,3 +101,4 @@ scattereddirect-ratio-estimate
 computing-horizontal-corrected-irradiance
 thermal-conversion
 folder-set-up
+weather-data
