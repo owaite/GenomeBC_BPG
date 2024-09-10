@@ -123,7 +123,7 @@ Weights for start, middle, and end hours:
 
 - The start weight corresponds to how much of the first hour is covered by the flight time. For example, if the flight starts at 10:15, 45 minutes (or 0.75 of the hour) are included in that hour, so the start weight is 0.75.
 
- -The middle weight (if the flight spans more than one hour) represents the full hour(s) covered by the flight. In the example of a flight from 10:15 to 11:30, the middle weight (for the 11:00-12:00 interval) would be 1, since the full hour is included.
+- The middle weight (if the flight spans more than one hour) represents the full hour(s) covered by the flight. In the example of a flight from 10:15 to 11:30, the middle weight (for the 11:00-12:00 interval) would be 1, since the full hour is included.
  
 - The end weight applies similarly for the last hour of the flight. If the flight ends at 11:30, 30 minutes (or 0.5 of the hour) are included in that hour, so the end weight is 0.5.
 
@@ -154,11 +154,7 @@ sum_weight <- sum(start_weight,
 (date <- as.Date(cfs_weather_time_avg$Date, '%d-%m-%Y'))
 
 #creating a data frame  with weighted averaged values
-Canoe_flight_table <- data.frame(
-  date,
-  avg_hum,
-  avg_temp
-)
+Canoe_flight_table <- data.frame(date, avg_hum, avg_temp)
 Canoe_flight_table <- Canoe_flight_table %>% distinct()#removing duplicate rows
 
 #resetting index in table to go from 1-N
@@ -174,7 +170,9 @@ flight_amb_temp
 ```
 
 ## DJI Thermal SDK: temperature conversion
-### Parameters required for thermal conversion:
+### Parameters 
+
+The parameters required as inputs for DJI thermal's SDK are:
 
 - **Reflection** : reflection of target is currently set to 23 range is -40 to 500
 ^ Reflected Temperature: the surface of the target that is measured could reflect the energy radiated by the surrounding objects. This reflected energy could be picked up by the camera along with the radiation, which could cause an error in the temperature reading. If there are no objects with extreme high or low temperatures nearby, set this parameter as the ambient temperature. Reflected temperature configurations could affect the measurement result, and the bigger the difference between the reading and the ambient temperature, the bigger the impact. Here we use the weighted average ambient temperature calculated above from the HOBO climate logger (aka flight_amb_temp)
@@ -195,11 +193,10 @@ emissivity <- 0.98
 
 ```
 
-### Editing .bat file for DJI SDK tool and running in terminal
+### Running the SDK
+The SDK is run using a batch script that calls the SDK in a for loop over all imagery, one at a time. To set up, first we copy the original .bat file into the Merged_T folder. We do this so that the original script does not get edited and instead each flight will have their own edited .bat file. This allows you to go back and see what parameters were used if needed.
 
-First, we copy the original .bat file into the Merged_T folder. We do this so that the original does not get edited and instead each flight will have their own edited .bat file. This allows you to go back and see what parameters were used if needed.
-
-The original .bat file can be found  on GitHub and looks like this:
+The original [.bat file](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/DJI_SDK_loop.bat) can be found on GitHub and looks like this:
 ```{cmd, eval=FALSE, echo=TRUE}
 REM to change dir to the location of this file
 REM start time used to average humidity and temperature values: start_time_avg
@@ -265,31 +262,20 @@ shell.exec(paste0(dir,"\\",merged,"\\DJI_SDK_loop_updated.bat"))
 
 ## Convert to Raster
 
-Below we will:
+The folloing R script:
 
-- read in the binary data outputted by the thermal SDK
+- reads in the binary data outputted by the thermal SDK
 
-- convert to a raster
+- converts the data to rasters
 
-- update new temperature raster with exif data from original _T.JPG H20T images
-
-
-https://community.rstudio.com/t/solution-to-reading-raw-images-into-r/45435
+- updates the new temperature raster with exif data from original _T.JPG H20T imagery
 
 ```{r, eval=FALSE, echo=TRUE}
-
 dir_raw <- paste0(dir,"\\",merged,"\\DJI_SDK_raw\\")
-raw_list <- list.files(dir_raw)
-length(raw_list)
+raw_list <- list.files(dir_raw) #check this is a list of the images saved out from the SDK step above
+start.time <- Sys.time()#to log how long it takes for code to run 
 
-
-
-#seeing how long it takes for code to run 
-start.time <- Sys.time()
-
-#loop that only writes out a folder with the Temperature rasters
-for (i in 1:length(raw_list)){
-  #for (i in 1:3){
+for (i in 1:length(raw_list)){#loop that only writes out a folder with the Temperature rasters
   wh <- c(640, 512)
   print("new")
   str_m <- raw_list[i]
@@ -326,7 +312,7 @@ for (i in 1:length(raw_list)){
     print(r_h20t_path) #checking the path
     
     #need to add these before exif because exif command used won't overwrite already written ones
-    extent(rast) <- extent(r_h20t)# the extent is bound by the resolution that you have assigned to it - so must change extent then resolution
+    extent(rast) <- extent(r_h20t)# the extent is bound by the resolution that you have assigned to it - so must change extent before resolution
     res(rast) <- res(r_h20t)
     #crs(rast) <- crs(r_h20t)
     print(paste0(dir,"\\",merged,"\\Temperature_rasters\\", name, ".tiff"))
@@ -335,15 +321,13 @@ for (i in 1:length(raw_list)){
     
     #Use EXIFTOOL in terminal to add all remaining/missing exif data from the original H20T images to the new single band temperature TIFFS
     out_dir <- paste0(dir,"\\",merged,"\\Temperature_rasters_EXIF\\", name,".tiff")
-    shell(paste0("exiftool -wm cg -tagsfromfile ",r_h20t_path," -all:all ",r_temperature_path, " -o ",out_dir)) #shell lets you run windows terminal cmds from R
-    #output are temperature tiffs with same exif data as original h20T images
-  }
+    shell(paste0("exiftool -wm cg -tagsfromfile ",r_h20t_path," -all:all ",r_temperature_path, " -o ",out_dir)) #shell lets you run windows terminal cmds from R  
+    }
   percent <- i/length(raw_list)*100
   print(paste0("percent complete: ", round(percent, 3))) #gives you the % of photos done to give an idea of code speed/progress
 }
 end.time <- Sys.time()
-time.taken <- round(end.time - start.time,2)
-time.taken #time taken for script to run
+(time.taken <- round(end.time - start.time,2)) #time taken for the script to run
 ```
 
 
