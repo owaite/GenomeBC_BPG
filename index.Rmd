@@ -6,7 +6,7 @@ output: bookdown::gitbook
 
 # Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials {-}
 ```{r echo=FALSE,out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Cover_photo_crowns.png")
+knitr::include_graphics(here("Photos_&_gifs\\Cover_photo_crowns.png"))
 ```
 
 Date last updated: `r Sys.Date()`
@@ -28,10 +28,10 @@ Below is the link to the GitHub where you can access full scripts referenced in 
 ```{r echo=FALSE, results='asis'}
 # Define the image paths
 img_paths <- c(
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/IRSS.png",
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/NRCan_english.PNG",
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GeneSolve.png",
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GenomeBC.jpg"
+  here("Photos_&_gifs/IRSS.png"),
+  here("Photos_&_gifs/NRCan_english.PNG"),
+  here("Photos_&_gifs/GeneSolve.png"),
+  here("Photos_&_gifs/GenomeBC.jpg")
 )
 
 # Create the HTML for the images
