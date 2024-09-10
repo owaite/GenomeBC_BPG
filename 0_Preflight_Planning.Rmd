@@ -45,8 +45,8 @@ knitr::include_graphics(c(
 ```{r echo=FALSE, results='asis'}
 # Define the image paths
 img_paths <- c(
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GCP_flat_ground.png",
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GCP_elevation_change_terrain.png"
+  here("Photos_&_gifs/GCP_flat_ground.png"),
+  here("Photos_&_gifs/GCP_elevation_change_terrain.png")
 )
 
 # Define the captions
