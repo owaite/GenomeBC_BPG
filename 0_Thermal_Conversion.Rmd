@@ -188,9 +188,8 @@ The parameters required as inputs for DJI thermal's SDK are:
 #setting parameters:
 (flight_amb_temp) # already set above, () to print out the value in the console to ensure it is the correct one
 (flight_humidity) # already set above
-distance <- 25 
-emissivity <- 0.98
-
+distance <- 25 # max distance that can be set
+emissivity <- 0.98 # approximate value for trees
 ```
 
 ### Running the SDK

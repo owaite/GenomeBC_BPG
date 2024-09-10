@@ -1,0 +1,41 @@
+# Georeferencing Plot Trees
+
+
+```{r genetic-layout, echo=FALSE, fig.align='center', out.width="100%", fig.cap = "The spreadsheet map of the layout of the site, each tree is located on a grid with a unique row and column value assigned to it."}
+knitr::include_graphics(here("Photos_&_gifs\\genetic_layout.png"))
+
+```
+
+```{r P1-genetic-layout, echo=FALSE, fig.align='center', out.width="100%", fig.cap = "P1 orthomosaic of the site with GCPs and georeferenced trees marked with red dots"}
+knitr::include_graphics(here("Photos_&_gifs\\genetic_layout_P1.png"))
+
+```
+
+
+```{r Qgis-ref, echo=FALSE, out.width="80%",fig.align='center', fig.cap = "Visual of the Grid Georeferenced plugin in QGIS."}
+knitr::include_graphics(here("Photos_&_gifs\\Qgis_grid_georef.png"))
+                         
+```
+
+```{r ref-trees, echo=FALSE,  fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: treeID 1, reference for the bottom left corner of the plot. Right: treeID 2757, reference for the top right of the plot"}
+knitr::include_graphics(c(here("Photos_&_gifs\\ref_treeID_1.png"),
+                          here("Photos_&_gifs\\ref_treeID_2757.png")))
+
+```
+
+
+```{r Qgis-ref-trees, echo=FALSE, fig.show="hold", fig.align='center', out.width=c("32.5%","67.5%"), fig.cap = "Left: Transformation settings. Right: zoom in on vector layer and place a point on the Map Canvas"}
+knitr::include_graphics(c(here("Photos_&_gifs\\Qgis_transformation_settings.png")))
+
+knitr::include_graphics(c(here("Photos_&_gifs\\Qgis_map_cor_setting.png")))
+```
+
+```{r Qgis-ref-tree-fit, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Zoomed in visual of the georeferenced tree grid for 6 trees overlain on the P1 orthomosaic."}
+knitr::include_graphics(here("Photos_&_gifs\\Qgis-ref-tree-fit.jpg"))
+                         
+```
+
+```{r Qgis-maintained-ref-tree-fit, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Georeferenced grid overlain on P1 orthomosaic for a site that was well maintained. The georeferenced grid has been snapped to the highest point on the CHM within a given radius to pull the grid to the treetops."}
+knitr::include_graphics(here("Photos_&_gifs\\maintained-geo-ref-trees.png"))
+                         
+```

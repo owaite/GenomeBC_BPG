@@ -36,6 +36,7 @@ fig:ref-trees
 fig:Qgis-ref-trees
 fig:Qgis-ref-tree-fit
 fig:Qgis-maintained-ref-tree-fit
+fig:delin-crowns
 fig:CC-las-input
 fig:CC-stem-transform
 fig:indv-tree-metrics
@@ -69,6 +70,8 @@ processing-orthomosaics
 shadow-masks
 crown-level-vegetation-indicies
 vi-workflow
+georeferencing-plot-trees
+crown-delineation
 lidar-processing-workflow
 dji-terra
 register-the-lidar-to-the-dap-point-cloud
@@ -105,6 +108,6 @@ thermal-conversion
 folder-set-up
 weather-data
 dji-thermal-sdk-temperature-conversion
-parameters-required-for-thermal-conversion
-editing-.bat-file-for-dji-sdk-tool-and-running-in-terminal
+parameters
+running-the-sdk
 convert-to-raster

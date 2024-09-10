@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="data-collection-and-flights.html"/>
-<link rel="next" href="lidar-processing-workflow.html"/>
+<link rel="next" href="georeferencing-plot-trees.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -192,59 +192,61 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3.1" data-path="photogrametric-processing.html"><a href="photogrametric-processing.html#vi-workflow"><i class="fa fa-check"></i><b>4.3.1</b> VI Workflow</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>5</b> LiDAR Processing Workflow</a>
+<li class="chapter" data-level="5" data-path="georeferencing-plot-trees.html"><a href="georeferencing-plot-trees.html"><i class="fa fa-check"></i><b>5</b> Georeferencing Plot Trees</a></li>
+<li class="chapter" data-level="6" data-path="crown-delineation.html"><a href="crown-delineation.html"><i class="fa fa-check"></i><b>6</b> Crown delineation</a></li>
+<li class="chapter" data-level="7" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>7</b> LiDAR Processing Workflow</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>5.1</b> DJI Terra</a></li>
-<li class="chapter" data-level="5.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>5.2</b> Register the LiDAR to the DAP point cloud</a>
+<li class="chapter" data-level="7.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>7.1</b> DJI Terra</a></li>
+<li class="chapter" data-level="7.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>7.2</b> Register the LiDAR to the DAP point cloud</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>5.2.1</b> Prepare LiDAR for registration</a></li>
-<li class="chapter" data-level="5.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>5.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
-<li class="chapter" data-level="5.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>5.2.3</b> Rescale and tile the registered LiDAR:</a></li>
+<li class="chapter" data-level="7.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>7.2.1</b> Prepare LiDAR for registration</a></li>
+<li class="chapter" data-level="7.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>7.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
+<li class="chapter" data-level="7.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>7.2.3</b> Rescale and tile the registered LiDAR:</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>5.3</b> Normalization and individual tree point clouds</a>
+<li class="chapter" data-level="7.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>7.3</b> Normalization and individual tree point clouds</a>
 <ul>
-<li class="chapter" data-level="5.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>5.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
-<li class="chapter" data-level="5.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>5.3.2</b> Normalizing the tiles using the DTM</a></li>
-<li class="chapter" data-level="5.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>5.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
-<li class="chapter" data-level="5.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>5.3.4</b> Segmenting tiles</a></li>
-<li class="chapter" data-level="5.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>5.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
-<li class="chapter" data-level="5.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>5.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
+<li class="chapter" data-level="7.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>7.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
+<li class="chapter" data-level="7.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>7.3.2</b> Normalizing the tiles using the DTM</a></li>
+<li class="chapter" data-level="7.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>7.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
+<li class="chapter" data-level="7.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>7.3.4</b> Segmenting tiles</a></li>
+<li class="chapter" data-level="7.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>7.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
+<li class="chapter" data-level="7.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>7.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>5.4</b> Individual Tree Metrics</a></li>
+<li class="chapter" data-level="7.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>7.4</b> Individual Tree Metrics</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html"><i class="fa fa-check"></i><b>6</b> MicaSense Irradiance Correction</a>
+<li class="chapter" data-level="8" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html"><i class="fa fa-check"></i><b>8</b> MicaSense Irradiance Correction</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#background"><i class="fa fa-check"></i><b>6.1</b> Background</a>
+<li class="chapter" data-level="8.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#background"><i class="fa fa-check"></i><b>8.1</b> Background</a>
 <ul>
-<li class="chapter" data-level="6.1.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>6.1.1</b> Deriving Horizontal Irradiance</a></li>
-<li class="chapter" data-level="6.1.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>6.1.2</b> Calculating Reflectance</a></li>
+<li class="chapter" data-level="8.1.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>8.1.1</b> Deriving Horizontal Irradiance</a></li>
+<li class="chapter" data-level="8.1.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>8.1.2</b> Calculating Reflectance</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#the-problem"><i class="fa fa-check"></i><b>6.2</b> The Problem</a></li>
-<li class="chapter" data-level="6.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>6.3</b> Is Correction Needed?</a>
+<li class="chapter" data-level="8.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#the-problem"><i class="fa fa-check"></i><b>8.2</b> The Problem</a></li>
+<li class="chapter" data-level="8.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#is-correction-needed"><i class="fa fa-check"></i><b>8.3</b> Is Correction Needed?</a>
 <ul>
-<li class="chapter" data-level="6.3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>6.3.1</b> Do the sun sensor angles make sense?</a></li>
-<li class="chapter" data-level="6.3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>6.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
-<li class="chapter" data-level="6.3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>6.3.3</b> Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
+<li class="chapter" data-level="8.3.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>8.3.1</b> Do the sun sensor angles make sense?</a></li>
+<li class="chapter" data-level="8.3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>8.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
+<li class="chapter" data-level="8.3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>8.3.3</b> Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras"><i class="fa fa-check"></i><b>6.4</b> Correcting Irradiance Values for Micasense Cameras</a>
+<li class="chapter" data-level="8.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras"><i class="fa fa-check"></i><b>8.4</b> Correcting Irradiance Values for Micasense Cameras</a>
 <ul>
-<li class="chapter" data-level="6.4.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#reading-exif-data"><i class="fa fa-check"></i><b>6.4.1</b> Reading Exif Data</a></li>
-<li class="chapter" data-level="6.4.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-solar-zenith-anlge"><i class="fa fa-check"></i><b>6.4.2</b> Calculating Solar Zenith Anlge</a></li>
-<li class="chapter" data-level="6.4.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles"><i class="fa fa-check"></i><b>6.4.3</b> Caluclating Sun-Sensor Angles</a></li>
-<li class="chapter" data-level="6.4.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>6.4.4</b> Scattered:Direct Ratio Estimate</a></li>
-<li class="chapter" data-level="6.4.5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#computing-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>6.4.5</b> Computing Horizontal (Corrected) Irradiance</a></li>
+<li class="chapter" data-level="8.4.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#reading-exif-data"><i class="fa fa-check"></i><b>8.4.1</b> Reading Exif Data</a></li>
+<li class="chapter" data-level="8.4.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-solar-zenith-anlge"><i class="fa fa-check"></i><b>8.4.2</b> Calculating Solar Zenith Anlge</a></li>
+<li class="chapter" data-level="8.4.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles"><i class="fa fa-check"></i><b>8.4.3</b> Caluclating Sun-Sensor Angles</a></li>
+<li class="chapter" data-level="8.4.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>8.4.4</b> Scattered:Direct Ratio Estimate</a></li>
+<li class="chapter" data-level="8.4.5" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#computing-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>8.4.5</b> Computing Horizontal (Corrected) Irradiance</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="thermal-conversion.html"><a href="thermal-conversion.html"><i class="fa fa-check"></i><b>7</b> Thermal Conversion</a>
+<li class="chapter" data-level="9" data-path="thermal-conversion.html"><a href="thermal-conversion.html"><i class="fa fa-check"></i><b>9</b> Thermal Conversion</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="thermal-conversion.html"><a href="thermal-conversion.html#folder-set-up"><i class="fa fa-check"></i><b>7.1</b> Folder Set-Up</a></li>
-<li class="chapter" data-level="7.2" data-path="thermal-conversion.html"><a href="thermal-conversion.html#weather-data"><i class="fa fa-check"></i><b>7.2</b> Weather Data</a></li>
-<li class="chapter" data-level="7.3" data-path="thermal-conversion.html"><a href="thermal-conversion.html#dji-thermal-sdk-temperature-conversion"><i class="fa fa-check"></i><b>7.3</b> DJI Thermal SDK: temperature conversion</a>
+<li class="chapter" data-level="9.1" data-path="thermal-conversion.html"><a href="thermal-conversion.html#folder-set-up"><i class="fa fa-check"></i><b>9.1</b> Folder Set-Up</a></li>
+<li class="chapter" data-level="9.2" data-path="thermal-conversion.html"><a href="thermal-conversion.html#weather-data"><i class="fa fa-check"></i><b>9.2</b> Weather Data</a></li>
+<li class="chapter" data-level="9.3" data-path="thermal-conversion.html"><a href="thermal-conversion.html#dji-thermal-sdk-temperature-conversion"><i class="fa fa-check"></i><b>9.3</b> DJI Thermal SDK: temperature conversion</a>
 <ul>
-<li class="chapter" data-level="7.3.1" data-path="thermal-conversion.html"><a href="thermal-conversion.html#parameters-required-for-thermal-conversion"><i class="fa fa-check"></i><b>7.3.1</b> Parameters required for thermal conversion:</a></li>
-<li class="chapter" data-level="7.3.2" data-path="thermal-conversion.html"><a href="thermal-conversion.html#editing-.bat-file-for-dji-sdk-tool-and-running-in-terminal"><i class="fa fa-check"></i><b>7.3.2</b> Editing .bat file for DJI SDK tool and running in terminal</a></li>
+<li class="chapter" data-level="9.3.1" data-path="thermal-conversion.html"><a href="thermal-conversion.html#parameters"><i class="fa fa-check"></i><b>9.3.1</b> Parameters</a></li>
+<li class="chapter" data-level="9.3.2" data-path="thermal-conversion.html"><a href="thermal-conversion.html#running-the-sdk"><i class="fa fa-check"></i><b>9.3.2</b> Running the SDK</a></li>
 </ul></li>
-<li class="chapter" data-level="7.4" data-path="thermal-conversion.html"><a href="thermal-conversion.html#convert-to-raster"><i class="fa fa-check"></i><b>7.4</b> Convert to Raster</a></li>
+<li class="chapter" data-level="9.4" data-path="thermal-conversion.html"><a href="thermal-conversion.html#convert-to-raster"><i class="fa fa-check"></i><b>9.4</b> Convert to Raster</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -356,48 +358,6 @@ Figure 4.14: Reflectance values of trees for band 4 (Green - 560nm).
 <img src="Photos_&_gifs/b10_reflectance_values_metashape.png" alt="Reflectance values of trees for band 10 (NIR - 842nm)." width="100%" />
 <p class="caption">
 Figure 4.15: Reflectance values of trees for band 10 (NIR - 842nm).
-</p>
-</div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:genetic-layout"></span>
-<img src="Photos_&_gifs/genetic_layout.png" alt="The spreadsheet map of the layout of the site, each tree is located on a grid with a unique row and column value assigned to it." width="100%" />
-<p class="caption">
-Figure 4.16: The spreadsheet map of the layout of the site, each tree is located on a grid with a unique row and column value assigned to it.
-</p>
-</div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:P1-genetic-layout"></span>
-<img src="Photos_&_gifs/genetic_layout_P1.png" alt="P1 orthomosaic of the site with GCPs and georeferenced trees marked with red dots" width="100%" />
-<p class="caption">
-Figure 4.17: P1 orthomosaic of the site with GCPs and georeferenced trees marked with red dots
-</p>
-</div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Qgis-ref"></span>
-<img src="Photos_&_gifs/Qgis_grid_georef.png" alt="Visual of the Grid Georeferenced plugin in QGIS." width="80%" />
-<p class="caption">
-Figure 4.18: Visual of the Grid Georeferenced plugin in QGIS.
-</p>
-</div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ref-trees"></span>
-<img src="Photos_&_gifs/ref_treeID_1.png" alt="Left: treeID 1, reference for the bottom left corner of the plot. Right: treeID 2757, reference for the top right of the plot" width="50%" /><img src="Photos_&_gifs/ref_treeID_2757.png" alt="Left: treeID 1, reference for the bottom left corner of the plot. Right: treeID 2757, reference for the top right of the plot" width="50%" />
-<p class="caption">
-Figure 4.19: Left: treeID 1, reference for the bottom left corner of the plot. Right: treeID 2757, reference for the top right of the plot
-</p>
-</div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Qgis-ref-trees"></span>
-<img src="Photos_&_gifs/Qgis_transformation_settings.png" alt="Left: Transformation settings. Right: zoom in on vector layer and place a point on the Map Canvas" width="32.5%" /><img src="Photos_&_gifs/Qgis_map_cor_setting.png" alt="Left: Transformation settings. Right: zoom in on vector layer and place a point on the Map Canvas" width="67.5%" />
-<p class="caption">
-Figure 4.20: Left: Transformation settings. Right: zoom in on vector layer and place a point on the Map Canvas
-</p>
-</div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Qgis-ref-tree-fit"></span>
-<img src="Photos_&_gifs/Qgis-ref-tree-fit.jpg" alt="Zoomed in visual of the georeferenced tree grid for 6 trees overlain on the P1 orthomosaic." width="100%" />
-<p class="caption">
-Figure 4.21: Zoomed in visual of the georeferenced tree grid for 6 trees overlain on the P1 orthomosaic.
-</p>
-</div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Qgis-maintained-ref-tree-fit"></span>
-<img src="Photos_&_gifs/maintained-geo-ref-trees.png" alt="Georeferenced grid overlain on P1 orthomosaic for a site that was well maintained. The georeferenced grid has been snapped to the highest point on the CHM within a given radius to pull the grid to the treetops." width="100%" />
-<p class="caption">
-Figure 4.22: Georeferenced grid overlain on P1 orthomosaic for a site that was well maintained. The georeferenced grid has been snapped to the highest point on the CHM within a given radius to pull the grid to the treetops.
 </p>
 </div>
 <div id="processing-orthomosaics" class="section level2 hasAnchor" number="4.1">
@@ -747,7 +707,7 @@ The above parameters were added to describe each minimum found by the function s
         </div>
       </div>
 <a href="data-collection-and-flights.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="lidar-processing-workflow.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="georeferencing-plot-trees.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
