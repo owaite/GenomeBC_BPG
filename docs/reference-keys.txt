@@ -39,6 +39,7 @@ fig:Qgis-maintained-ref-tree-fit
 fig:CC-las-input
 fig:CC-stem-transform
 fig:indv-tree-metrics
+fig:crown-temp
 range-of-sites-assessed
 jordan-river
 powell-river

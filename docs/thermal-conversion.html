@@ -268,27 +268,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="thermal-conversion" class="section level1 hasAnchor" number="7">
 <h1><span class="header-section-number">Chapter 7</span> Thermal Conversion<a href="thermal-conversion.html#thermal-conversion" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This method converts raw imagery from the Zenmuse H20T to temperature rasters. We wrote this method to bypass DJI’s thermal analysis tool app since we have thousands of images and the app would often crash when a few were uploaded. This script uses the DJI thermal analysis tool’s software developer kit (SDK)</p>
-<p>Prior to running this code you must:
-- Download the .bat file for step 2 from the GitHub</p>
+<p>First load in necessary libraries</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="thermal-conversion.html#cb54-1" tabindex="-1"></a><span class="fu">library</span>(exiftoolr)</span>
 <span id="cb54-2"><a href="thermal-conversion.html#cb54-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb54-3"><a href="thermal-conversion.html#cb54-3" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
 <span id="cb54-4"><a href="thermal-conversion.html#cb54-4" tabindex="-1"></a><span class="fu">library</span>(OpenImageR)</span>
 <span id="cb54-5"><a href="thermal-conversion.html#cb54-5" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
-<span id="cb54-6"><a href="thermal-conversion.html#cb54-6" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
-<span id="cb54-7"><a href="thermal-conversion.html#cb54-7" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb54-8"><a href="thermal-conversion.html#cb54-8" tabindex="-1"></a></span>
-<span id="cb54-9"><a href="thermal-conversion.html#cb54-9" tabindex="-1"></a></span>
-<span id="cb54-10"><a href="thermal-conversion.html#cb54-10" tabindex="-1"></a><span class="co"># Read in CSV of weather data (ensure adjustments for daylight savings have been made if necessary) </span></span>
-<span id="cb54-11"><a href="thermal-conversion.html#cb54-11" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;D:</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Site_Info</span><span class="sc">\\</span><span class="st">Powell_River_Canoe2_All_Data_2023_02_07_PST_1_DaylightSavings_mar16_nov6_2022.csv&quot;</span>)</span>
-<span id="cb54-12"><a href="thermal-conversion.html#cb54-12" tabindex="-1"></a>df<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(df<span class="sc">$</span>Date, <span class="st">&#39;%m/%d/%y&#39;</span>) <span class="co">#comes out as year-0m-0d</span></span>
-<span id="cb54-13"><a href="thermal-conversion.html#cb54-13" tabindex="-1"></a></span>
-<span id="cb54-14"><a href="thermal-conversion.html#cb54-14" tabindex="-1"></a>dates_DST <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">unique</span>(df<span class="sc">$</span>Date))</span>
-<span id="cb54-15"><a href="thermal-conversion.html#cb54-15" tabindex="-1"></a>dates_DST</span>
-<span id="cb54-16"><a href="thermal-conversion.html#cb54-16" tabindex="-1"></a>dates_list <span class="ot">&lt;-</span> <span class="fu">as.list</span>(dates_DST)</span>
-<span id="cb54-17"><a href="thermal-conversion.html#cb54-17" tabindex="-1"></a>dates_list</span>
-<span id="cb54-18"><a href="thermal-conversion.html#cb54-18" tabindex="-1"></a></span>
-<span id="cb54-19"><a href="thermal-conversion.html#cb54-19" tabindex="-1"></a>Canoe_df <span class="ot">&lt;-</span> df</span></code></pre></div>
+<span id="cb54-6"><a href="thermal-conversion.html#cb54-6" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code></pre></div>
 <div id="folder-set-up" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Folder Set-Up<a href="thermal-conversion.html#folder-set-up" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This step goes over how we organize our imagery for the following thermal conversion.</p>
@@ -344,8 +330,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="weather-data" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Weather Data<a href="thermal-conversion.html#weather-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>For this step you will need :</p>
-<p>Humidity, Ambient Temperature</p>
+<p>DJI thermal’s SDK requires inputs of humidity, reflection (or ambient temperature), distance, and emissivity (see [## DJI Thermal SDK: temperature conversion] for more detail on each of the requirements). In this section we will take hourly weather data from an on-site HOBO climate logger and calculate weighted averages for humidity and ambient temperature.</p>
 <p>First, we use the first and last image in the Merged_T folder to define the start and end time of the flight, along with the date of the flight as a date object.</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="thermal-conversion.html#cb56-1" tabindex="-1"></a><span class="co">#getting image capture date from exif data of the first image in the H20T folder</span></span>
 <span id="cb56-2"><a href="thermal-conversion.html#cb56-2" tabindex="-1"></a></span>
@@ -526,85 +511,64 @@ pause</code></pre>
 <span id="cb63-12"><a href="thermal-conversion.html#cb63-12" tabindex="-1"></a>  <span class="co">#for (i in 1:3){</span></span>
 <span id="cb63-13"><a href="thermal-conversion.html#cb63-13" tabindex="-1"></a>  wh <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">640</span>, <span class="dv">512</span>)</span>
 <span id="cb63-14"><a href="thermal-conversion.html#cb63-14" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">&quot;new&quot;</span>)</span>
-<span id="cb63-15"><a href="thermal-conversion.html#cb63-15" tabindex="-1"></a>  <span class="co">#str_m &lt;- paste0(&quot;measure_p_&quot;,i-1,&quot;.raw&quot;) #i-1 because .raw images start at zero not 1</span></span>
-<span id="cb63-16"><a href="thermal-conversion.html#cb63-16" tabindex="-1"></a>  str_m <span class="ot">&lt;-</span> raw_list[i]</span>
-<span id="cb63-17"><a href="thermal-conversion.html#cb63-17" tabindex="-1"></a>  <span class="fu">print</span>(str_m)</span>
-<span id="cb63-18"><a href="thermal-conversion.html#cb63-18" tabindex="-1"></a>  </span>
-<span id="cb63-19"><a href="thermal-conversion.html#cb63-19" tabindex="-1"></a>  <span class="co">#getting name of .raw file but without the .raw extension so it can be saved as a tiff with the same name as the .raw (which has the same name as the original H20T images) so they can be swapped after alignment in metashape</span></span>
-<span id="cb63-20"><a href="thermal-conversion.html#cb63-20" tabindex="-1"></a>  name <span class="ot">&lt;-</span> <span class="fu">substr</span>(str_m,<span class="dv">1</span>,<span class="fu">nchar</span>(str_m)<span class="sc">-</span><span class="dv">4</span>)</span>
-<span id="cb63-21"><a href="thermal-conversion.html#cb63-21" tabindex="-1"></a>  <span class="fu">print</span>(name)</span>
-<span id="cb63-22"><a href="thermal-conversion.html#cb63-22" tabindex="-1"></a>  </span>
-<span id="cb63-23"><a href="thermal-conversion.html#cb63-23" tabindex="-1"></a>  <span class="co">#If else below allows you to rerun this code from where it left off if R aborts the session</span></span>
-<span id="cb63-24"><a href="thermal-conversion.html#cb63-24" tabindex="-1"></a>  test_exists <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters_EXIF</span><span class="sc">\\</span><span class="st">&quot;</span>, name,<span class="st">&quot;.tiff&quot;</span>)</span>
-<span id="cb63-25"><a href="thermal-conversion.html#cb63-25" tabindex="-1"></a>  </span>
-<span id="cb63-26"><a href="thermal-conversion.html#cb63-26" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">file.exists</span>(test_exists)){</span>
-<span id="cb63-27"><a href="thermal-conversion.html#cb63-27" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">&quot;exists&quot;</span>)</span>
-<span id="cb63-28"><a href="thermal-conversion.html#cb63-28" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb63-29"><a href="thermal-conversion.html#cb63-29" tabindex="-1"></a>    <span class="co">#divide by 2 because 16 means 2 bit integers (?)</span></span>
-<span id="cb63-30"><a href="thermal-conversion.html#cb63-30" tabindex="-1"></a>    <span class="co">#print(paste0(dir_raw, str_m))</span></span>
-<span id="cb63-31"><a href="thermal-conversion.html#cb63-31" tabindex="-1"></a>    </span>
-<span id="cb63-32"><a href="thermal-conversion.html#cb63-32" tabindex="-1"></a>    <span class="fu">file.info</span>(<span class="fu">paste0</span>(dir_raw, str_m))<span class="sc">$</span>size<span class="sc">/</span><span class="dv">2</span> </span>
-<span id="cb63-33"><a href="thermal-conversion.html#cb63-33" tabindex="-1"></a>    <span class="co">#getting product of width and height and checking it is correct</span></span>
-<span id="cb63-34"><a href="thermal-conversion.html#cb63-34" tabindex="-1"></a>    <span class="fu">prod</span>(wh)</span>
-<span id="cb63-35"><a href="thermal-conversion.html#cb63-35" tabindex="-1"></a>    <span class="co">#getting numerical values</span></span>
-<span id="cb63-36"><a href="thermal-conversion.html#cb63-36" tabindex="-1"></a>    v <span class="ot">&lt;-</span> <span class="fu">readBin</span>(<span class="fu">paste0</span>(dir_raw,str_m), <span class="at">what =</span> <span class="st">&quot;integer&quot;</span>, </span>
-<span id="cb63-37"><a href="thermal-conversion.html#cb63-37" tabindex="-1"></a>                 <span class="at">n =</span> <span class="fu">prod</span>(wh), <span class="at">size =</span> <span class="dv">2</span>,  </span>
-<span id="cb63-38"><a href="thermal-conversion.html#cb63-38" tabindex="-1"></a>                 <span class="at">signed =</span> <span class="cn">TRUE</span>, <span class="at">endian =</span> <span class="st">&quot;little&quot;</span>)</span>
-<span id="cb63-39"><a href="thermal-conversion.html#cb63-39" tabindex="-1"></a>    </span>
-<span id="cb63-40"><a href="thermal-conversion.html#cb63-40" tabindex="-1"></a>    <span class="co">#temp in deg celcius, DJI requires we divide by 10 here for degrees in celcius</span></span>
-<span id="cb63-41"><a href="thermal-conversion.html#cb63-41" tabindex="-1"></a>    v_temp <span class="ot">&lt;-</span> v<span class="sc">/</span><span class="dv">10</span></span>
-<span id="cb63-42"><a href="thermal-conversion.html#cb63-42" tabindex="-1"></a>    <span class="do">## check the values</span></span>
-<span id="cb63-43"><a href="thermal-conversion.html#cb63-43" tabindex="-1"></a>    <span class="fu">range</span>(v_temp)</span>
-<span id="cb63-44"><a href="thermal-conversion.html#cb63-44" tabindex="-1"></a>    <span class="do">## creating a matrix of the proper size</span></span>
-<span id="cb63-45"><a href="thermal-conversion.html#cb63-45" tabindex="-1"></a>    matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(v_temp, wh[<span class="dv">1</span>], wh[<span class="dv">2</span>])[wh[<span class="dv">1</span>]<span class="sc">:</span><span class="dv">1</span>,] </span>
-<span id="cb63-46"><a href="thermal-conversion.html#cb63-46" tabindex="-1"></a>    <span class="co">#matrix</span></span>
-<span id="cb63-47"><a href="thermal-conversion.html#cb63-47" tabindex="-1"></a>    <span class="co">#needs library OpenImageR</span></span>
-<span id="cb63-48"><a href="thermal-conversion.html#cb63-48" tabindex="-1"></a>    <span class="co">#rotate the matrix by 90 to get correct orientation of image</span></span>
-<span id="cb63-49"><a href="thermal-conversion.html#cb63-49" tabindex="-1"></a>    mat_rotated <span class="ot">=</span> <span class="fu">rotateFixed</span>(matrix, <span class="dv">90</span>)</span>
-<span id="cb63-50"><a href="thermal-conversion.html#cb63-50" tabindex="-1"></a>    <span class="co">#to view image</span></span>
-<span id="cb63-51"><a href="thermal-conversion.html#cb63-51" tabindex="-1"></a>    <span class="co">#image(matrix(v_temp, wh[1], wh[2])[wh[1]:1,], useRaster = TRUE, col = grey.colors(256))</span></span>
-<span id="cb63-52"><a href="thermal-conversion.html#cb63-52" tabindex="-1"></a>    rast <span class="ot">&lt;-</span> <span class="fu">raster</span>(mat_rotated) <span class="co">#creating a raster </span></span>
-<span id="cb63-53"><a href="thermal-conversion.html#cb63-53" tabindex="-1"></a>    <span class="co">#plot(rast)</span></span>
-<span id="cb63-54"><a href="thermal-conversion.html#cb63-54" tabindex="-1"></a>    <span class="co">#matching original image to measure.raw file</span></span>
-<span id="cb63-55"><a href="thermal-conversion.html#cb63-55" tabindex="-1"></a>    <span class="co">#original h20T images:</span></span>
-<span id="cb63-56"><a href="thermal-conversion.html#cb63-56" tabindex="-1"></a>    dir_h20t <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>)</span>
-<span id="cb63-57"><a href="thermal-conversion.html#cb63-57" tabindex="-1"></a>    <span class="co">#h20t_list &lt;- list.files(dir_h20t, pattern = &quot;_T\\.JPG$&quot;)</span></span>
-<span id="cb63-58"><a href="thermal-conversion.html#cb63-58" tabindex="-1"></a>    </span>
-<span id="cb63-59"><a href="thermal-conversion.html#cb63-59" tabindex="-1"></a>    <span class="co">#since names are the same, here we call the name of the raw file -.raw and add .JPG</span></span>
-<span id="cb63-60"><a href="thermal-conversion.html#cb63-60" tabindex="-1"></a>    str_h20t <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">substr</span>(str_m, <span class="dv">1</span>, <span class="fu">nchar</span>(str_m)<span class="sc">-</span><span class="dv">3</span>),<span class="st">&quot;JPG&quot;</span>)</span>
-<span id="cb63-61"><a href="thermal-conversion.html#cb63-61" tabindex="-1"></a>    </span>
-<span id="cb63-62"><a href="thermal-conversion.html#cb63-62" tabindex="-1"></a>    <span class="co">#reading in jpg h20T raster</span></span>
-<span id="cb63-63"><a href="thermal-conversion.html#cb63-63" tabindex="-1"></a>    r_h20t <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">paste0</span>(dir_h20t,str_h20t))</span>
-<span id="cb63-64"><a href="thermal-conversion.html#cb63-64" tabindex="-1"></a>    </span>
-<span id="cb63-65"><a href="thermal-conversion.html#cb63-65" tabindex="-1"></a>    r_h20t_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir_h20t,str_h20t) <span class="co">#for later exiftool</span></span>
-<span id="cb63-66"><a href="thermal-conversion.html#cb63-66" tabindex="-1"></a>    <span class="fu">print</span>(r_h20t_path)</span>
-<span id="cb63-67"><a href="thermal-conversion.html#cb63-67" tabindex="-1"></a>    </span>
-<span id="cb63-68"><a href="thermal-conversion.html#cb63-68" tabindex="-1"></a>    <span class="co"># the extent is bound by the resolution that you have assigned to it - so must change extent then resolution: https://stackoverflow.com/questions/36019332/copy-metadata-between-two-raster-objects-r/</span></span>
-<span id="cb63-69"><a href="thermal-conversion.html#cb63-69" tabindex="-1"></a>    <span class="co">#need to add these before exif because exif command used wont over write already written ones</span></span>
-<span id="cb63-70"><a href="thermal-conversion.html#cb63-70" tabindex="-1"></a>    <span class="fu">extent</span>(rast) <span class="ot">&lt;-</span> <span class="fu">extent</span>(r_h20t)</span>
-<span id="cb63-71"><a href="thermal-conversion.html#cb63-71" tabindex="-1"></a>    <span class="fu">res</span>(rast) <span class="ot">&lt;-</span> <span class="fu">res</span>(r_h20t)</span>
-<span id="cb63-72"><a href="thermal-conversion.html#cb63-72" tabindex="-1"></a>    <span class="co">#crs(rast) &lt;- crs(r_h20t)</span></span>
-<span id="cb63-73"><a href="thermal-conversion.html#cb63-73" tabindex="-1"></a>    </span>
-<span id="cb63-74"><a href="thermal-conversion.html#cb63-74" tabindex="-1"></a>    <span class="co">#writing out the itterator</span></span>
-<span id="cb63-75"><a href="thermal-conversion.html#cb63-75" tabindex="-1"></a>    <span class="fu">print</span>(i)</span>
-<span id="cb63-76"><a href="thermal-conversion.html#cb63-76" tabindex="-1"></a>    </span>
-<span id="cb63-77"><a href="thermal-conversion.html#cb63-77" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters</span><span class="sc">\\</span><span class="st">&quot;</span>, name, <span class="st">&quot;.tiff&quot;</span>))</span>
-<span id="cb63-78"><a href="thermal-conversion.html#cb63-78" tabindex="-1"></a>    <span class="fu">writeRaster</span>(rast, <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters</span><span class="sc">\\</span><span class="st">&quot;</span>, name,<span class="st">&quot;.tiff&quot;</span>), <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb63-79"><a href="thermal-conversion.html#cb63-79" tabindex="-1"></a>    r_temperature_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters</span><span class="sc">\\</span><span class="st">&quot;</span>, name,<span class="st">&quot;.tiff&quot;</span>)</span>
-<span id="cb63-80"><a href="thermal-conversion.html#cb63-80" tabindex="-1"></a>    </span>
-<span id="cb63-81"><a href="thermal-conversion.html#cb63-81" tabindex="-1"></a>    <span class="co">#STEP 3: Use EXIFTOOL in terminal to add all remaining/missing metadata from the original H20T images to the new single band TIFFS</span></span>
-<span id="cb63-82"><a href="thermal-conversion.html#cb63-82" tabindex="-1"></a>    out_dir <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters_EXIF</span><span class="sc">\\</span><span class="st">&quot;</span>, name,<span class="st">&quot;.tiff&quot;</span>)</span>
-<span id="cb63-83"><a href="thermal-conversion.html#cb63-83" tabindex="-1"></a>    <span class="co">#shell lets you run windows terminal cmds from R</span></span>
-<span id="cb63-84"><a href="thermal-conversion.html#cb63-84" tabindex="-1"></a>    <span class="fu">shell</span>(<span class="fu">paste0</span>(<span class="st">&quot;exiftool -wm cg -tagsfromfile &quot;</span>,r_h20t_path,<span class="st">&quot; -all:all &quot;</span>,r_temperature_path, <span class="st">&quot; -o &quot;</span>,out_dir))</span>
-<span id="cb63-85"><a href="thermal-conversion.html#cb63-85" tabindex="-1"></a>    <span class="co">#output are temperature tiffs with same metadata as original h20T images</span></span>
-<span id="cb63-86"><a href="thermal-conversion.html#cb63-86" tabindex="-1"></a>  }</span>
-<span id="cb63-87"><a href="thermal-conversion.html#cb63-87" tabindex="-1"></a>  percent <span class="ot">&lt;-</span> i<span class="sc">/</span><span class="fu">length</span>(raw_list)<span class="sc">*</span><span class="dv">100</span></span>
-<span id="cb63-88"><a href="thermal-conversion.html#cb63-88" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;percent complete: &quot;</span>, <span class="fu">round</span>(percent, <span class="dv">3</span>)))</span>
-<span id="cb63-89"><a href="thermal-conversion.html#cb63-89" tabindex="-1"></a>}</span>
-<span id="cb63-90"><a href="thermal-conversion.html#cb63-90" tabindex="-1"></a></span>
-<span id="cb63-91"><a href="thermal-conversion.html#cb63-91" tabindex="-1"></a>end.time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb63-92"><a href="thermal-conversion.html#cb63-92" tabindex="-1"></a>time.taken <span class="ot">&lt;-</span> <span class="fu">round</span>(end.time <span class="sc">-</span> start.time,<span class="dv">2</span>)</span>
-<span id="cb63-93"><a href="thermal-conversion.html#cb63-93" tabindex="-1"></a>time.taken</span></code></pre></div>
+<span id="cb63-15"><a href="thermal-conversion.html#cb63-15" tabindex="-1"></a>  str_m <span class="ot">&lt;-</span> raw_list[i]</span>
+<span id="cb63-16"><a href="thermal-conversion.html#cb63-16" tabindex="-1"></a>  <span class="co">#getting name of .raw file but without the .raw extension so it can be saved as a tiff with the same name as the .raw (which has the same name as the original H20T images) so they can be swapped after alignment in metashape</span></span>
+<span id="cb63-17"><a href="thermal-conversion.html#cb63-17" tabindex="-1"></a>  name <span class="ot">&lt;-</span> <span class="fu">substr</span>(str_m,<span class="dv">1</span>,<span class="fu">nchar</span>(str_m)<span class="sc">-</span><span class="dv">4</span>)</span>
+<span id="cb63-18"><a href="thermal-conversion.html#cb63-18" tabindex="-1"></a>  <span class="fu">print</span>(name)</span>
+<span id="cb63-19"><a href="thermal-conversion.html#cb63-19" tabindex="-1"></a>  <span class="co">#If else below allows you to rerun this code from where it left off if R aborts the session</span></span>
+<span id="cb63-20"><a href="thermal-conversion.html#cb63-20" tabindex="-1"></a>  test_exists <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters_EXIF</span><span class="sc">\\</span><span class="st">&quot;</span>, name,<span class="st">&quot;.tiff&quot;</span>)</span>
+<span id="cb63-21"><a href="thermal-conversion.html#cb63-21" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">file.exists</span>(test_exists)){</span>
+<span id="cb63-22"><a href="thermal-conversion.html#cb63-22" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">&quot;exists&quot;</span>)</span>
+<span id="cb63-23"><a href="thermal-conversion.html#cb63-23" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb63-24"><a href="thermal-conversion.html#cb63-24" tabindex="-1"></a>    <span class="co">#divide by 2 because 16 means 2 bit integers (?)</span></span>
+<span id="cb63-25"><a href="thermal-conversion.html#cb63-25" tabindex="-1"></a>    <span class="co">#print(paste0(dir_raw, str_m))</span></span>
+<span id="cb63-26"><a href="thermal-conversion.html#cb63-26" tabindex="-1"></a>    </span>
+<span id="cb63-27"><a href="thermal-conversion.html#cb63-27" tabindex="-1"></a>    <span class="fu">file.info</span>(<span class="fu">paste0</span>(dir_raw, str_m))<span class="sc">$</span>size<span class="sc">/</span><span class="dv">2</span> </span>
+<span id="cb63-28"><a href="thermal-conversion.html#cb63-28" tabindex="-1"></a>    <span class="fu">prod</span>(wh) <span class="co">#getting product of width and height and checking it is correct</span></span>
+<span id="cb63-29"><a href="thermal-conversion.html#cb63-29" tabindex="-1"></a>    v <span class="ot">&lt;-</span> <span class="fu">readBin</span>(<span class="fu">paste0</span>(dir_raw,str_m), <span class="at">what =</span> <span class="st">&quot;integer&quot;</span>,  <span class="co">#getting numerical values</span></span>
+<span id="cb63-30"><a href="thermal-conversion.html#cb63-30" tabindex="-1"></a>                 <span class="at">n =</span> <span class="fu">prod</span>(wh), <span class="at">size =</span> <span class="dv">2</span>,  </span>
+<span id="cb63-31"><a href="thermal-conversion.html#cb63-31" tabindex="-1"></a>                 <span class="at">signed =</span> <span class="cn">TRUE</span>, <span class="at">endian =</span> <span class="st">&quot;little&quot;</span>)</span>
+<span id="cb63-32"><a href="thermal-conversion.html#cb63-32" tabindex="-1"></a>    </span>
+<span id="cb63-33"><a href="thermal-conversion.html#cb63-33" tabindex="-1"></a>    v_temp <span class="ot">&lt;-</span> v<span class="sc">/</span><span class="dv">10</span> <span class="co">#temp in deg Celsius, DJI requires we divide by 10 here for Celsius</span></span>
+<span id="cb63-34"><a href="thermal-conversion.html#cb63-34" tabindex="-1"></a>    <span class="fu">range</span>(v_temp) <span class="co">#check the values</span></span>
+<span id="cb63-35"><a href="thermal-conversion.html#cb63-35" tabindex="-1"></a>    matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(v_temp, wh[<span class="dv">1</span>], wh[<span class="dv">2</span>])[wh[<span class="dv">1</span>]<span class="sc">:</span><span class="dv">1</span>,] <span class="co"># creating a matrix of the proper size</span></span>
+<span id="cb63-36"><a href="thermal-conversion.html#cb63-36" tabindex="-1"></a>    mat_rotated <span class="ot">=</span> <span class="fu">rotateFixed</span>(matrix, <span class="dv">90</span>)<span class="co">#rotate the matrix by 90 to get correct orientation of image, requires library OpenImageR</span></span>
+<span id="cb63-37"><a href="thermal-conversion.html#cb63-37" tabindex="-1"></a>    <span class="co">#to view image</span></span>
+<span id="cb63-38"><a href="thermal-conversion.html#cb63-38" tabindex="-1"></a>    <span class="co">#image(matrix(v_temp, wh[1], wh[2])[wh[1]:1,], useRaster = TRUE, col = grey.colors(256))</span></span>
+<span id="cb63-39"><a href="thermal-conversion.html#cb63-39" tabindex="-1"></a>    rast <span class="ot">&lt;-</span> <span class="fu">raster</span>(mat_rotated) <span class="co">#creating a raster </span></span>
+<span id="cb63-40"><a href="thermal-conversion.html#cb63-40" tabindex="-1"></a>   </span>
+<span id="cb63-41"><a href="thermal-conversion.html#cb63-41" tabindex="-1"></a>    <span class="co">#matching original image to measure.raw file</span></span>
+<span id="cb63-42"><a href="thermal-conversion.html#cb63-42" tabindex="-1"></a>    dir_h20t <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>) <span class="co">#original h20T images:</span></span>
+<span id="cb63-43"><a href="thermal-conversion.html#cb63-43" tabindex="-1"></a>    str_h20t <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">substr</span>(str_m, <span class="dv">1</span>, <span class="fu">nchar</span>(str_m)<span class="sc">-</span><span class="dv">3</span>),<span class="st">&quot;JPG&quot;</span>) <span class="co">#since names are the same, here we call the name of the raw file -.raw and add .JPG</span></span>
+<span id="cb63-44"><a href="thermal-conversion.html#cb63-44" tabindex="-1"></a>    r_h20t <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">paste0</span>(dir_h20t,str_h20t)) <span class="co">#reading in jpg h20T raster</span></span>
+<span id="cb63-45"><a href="thermal-conversion.html#cb63-45" tabindex="-1"></a>    r_h20t_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir_h20t,str_h20t) <span class="co">#for later exiftool</span></span>
+<span id="cb63-46"><a href="thermal-conversion.html#cb63-46" tabindex="-1"></a>    <span class="fu">print</span>(r_h20t_path) <span class="co">#checking the path</span></span>
+<span id="cb63-47"><a href="thermal-conversion.html#cb63-47" tabindex="-1"></a>    </span>
+<span id="cb63-48"><a href="thermal-conversion.html#cb63-48" tabindex="-1"></a>    <span class="co">#need to add these before exif because exif command used won&#39;t overwrite already written ones</span></span>
+<span id="cb63-49"><a href="thermal-conversion.html#cb63-49" tabindex="-1"></a>    <span class="fu">extent</span>(rast) <span class="ot">&lt;-</span> <span class="fu">extent</span>(r_h20t)<span class="co"># the extent is bound by the resolution that you have assigned to it - so must change extent then resolution</span></span>
+<span id="cb63-50"><a href="thermal-conversion.html#cb63-50" tabindex="-1"></a>    <span class="fu">res</span>(rast) <span class="ot">&lt;-</span> <span class="fu">res</span>(r_h20t)</span>
+<span id="cb63-51"><a href="thermal-conversion.html#cb63-51" tabindex="-1"></a>    <span class="co">#crs(rast) &lt;- crs(r_h20t)</span></span>
+<span id="cb63-52"><a href="thermal-conversion.html#cb63-52" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters</span><span class="sc">\\</span><span class="st">&quot;</span>, name, <span class="st">&quot;.tiff&quot;</span>))</span>
+<span id="cb63-53"><a href="thermal-conversion.html#cb63-53" tabindex="-1"></a>    <span class="fu">writeRaster</span>(rast, <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters</span><span class="sc">\\</span><span class="st">&quot;</span>, name,<span class="st">&quot;.tiff&quot;</span>), <span class="at">overwrite =</span> <span class="cn">TRUE</span>) <span class="co">#writing out temperature raster, that does not have exif data attached</span></span>
+<span id="cb63-54"><a href="thermal-conversion.html#cb63-54" tabindex="-1"></a>    r_temperature_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters</span><span class="sc">\\</span><span class="st">&quot;</span>, name,<span class="st">&quot;.tiff&quot;</span>)</span>
+<span id="cb63-55"><a href="thermal-conversion.html#cb63-55" tabindex="-1"></a>    </span>
+<span id="cb63-56"><a href="thermal-conversion.html#cb63-56" tabindex="-1"></a>    <span class="co">#Use EXIFTOOL in terminal to add all remaining/missing exif data from the original H20T images to the new single band temperature TIFFS</span></span>
+<span id="cb63-57"><a href="thermal-conversion.html#cb63-57" tabindex="-1"></a>    out_dir <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,merged,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">Temperature_rasters_EXIF</span><span class="sc">\\</span><span class="st">&quot;</span>, name,<span class="st">&quot;.tiff&quot;</span>)</span>
+<span id="cb63-58"><a href="thermal-conversion.html#cb63-58" tabindex="-1"></a>    <span class="fu">shell</span>(<span class="fu">paste0</span>(<span class="st">&quot;exiftool -wm cg -tagsfromfile &quot;</span>,r_h20t_path,<span class="st">&quot; -all:all &quot;</span>,r_temperature_path, <span class="st">&quot; -o &quot;</span>,out_dir)) <span class="co">#shell lets you run windows terminal cmds from R</span></span>
+<span id="cb63-59"><a href="thermal-conversion.html#cb63-59" tabindex="-1"></a>    <span class="co">#output are temperature tiffs with same exif data as original h20T images</span></span>
+<span id="cb63-60"><a href="thermal-conversion.html#cb63-60" tabindex="-1"></a>  }</span>
+<span id="cb63-61"><a href="thermal-conversion.html#cb63-61" tabindex="-1"></a>  percent <span class="ot">&lt;-</span> i<span class="sc">/</span><span class="fu">length</span>(raw_list)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb63-62"><a href="thermal-conversion.html#cb63-62" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;percent complete: &quot;</span>, <span class="fu">round</span>(percent, <span class="dv">3</span>))) <span class="co">#gives you the % of photos done to give an idea of code speed/progress</span></span>
+<span id="cb63-63"><a href="thermal-conversion.html#cb63-63" tabindex="-1"></a>}</span>
+<span id="cb63-64"><a href="thermal-conversion.html#cb63-64" tabindex="-1"></a>end.time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb63-65"><a href="thermal-conversion.html#cb63-65" tabindex="-1"></a>time.taken <span class="ot">&lt;-</span> <span class="fu">round</span>(end.time <span class="sc">-</span> start.time,<span class="dv">2</span>)</span>
+<span id="cb63-66"><a href="thermal-conversion.html#cb63-66" tabindex="-1"></a>time.taken <span class="co">#time taken for script to run</span></span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:crown-temp"></span>
+<img src="Photos_&_gifs/crown_temp_graph.png" alt="Left: temperature values within an individual crown from a flight on July 27th, 2022. Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight" width="50%" /><img src="Photos_&_gifs/Temperature_graph_for_crown_pic_2.png" alt="Left: temperature values within an individual crown from a flight on July 27th, 2022. Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight" width="50%" />
+<p class="caption">
+Figure 7.1: Left: temperature values within an individual crown from a flight on July 27th, 2022. Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight
+</p>
+</div>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="thermal-conversion.html#cb64-1" tabindex="-1"></a>therm_dates <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;2022_10_05&quot;</span>)</span>
 <span id="cb64-2"><a href="thermal-conversion.html#cb64-2" tabindex="-1"></a></span>
 <span id="cb64-3"><a href="thermal-conversion.html#cb64-3" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(therm_dates)){</span>

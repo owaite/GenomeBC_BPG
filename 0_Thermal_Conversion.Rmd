@@ -3,12 +3,7 @@
 
 This method converts raw imagery from the Zenmuse H20T to temperature rasters. We wrote this method to bypass DJI's thermal analysis tool app since we have thousands of images and the app would often crash when a few were uploaded. This script uses the DJI thermal analysis tool's software developer kit (SDK) 
 
-
-Prior to running this code you must:
-- Download the .bat file for step 2 from the GitHub
-
-
-
+First load in necessary libraries
 
 ```{r, eval=FALSE, echo=TRUE}
 library(exiftoolr)
@@ -16,20 +11,7 @@ library(dplyr)
 library(lubridate)
 library(OpenImageR)
 library(raster)
-library(doParallel)
 library(stringr)
-
-
-# Read in CSV of weather data (ensure adjustments for daylight savings have been made if necessary) 
-df <- read.csv("D:\\Fdc_PR_Canoe\\Site_Info\\Powell_River_Canoe2_All_Data_2023_02_07_PST_1_DaylightSavings_mar16_nov6_2022.csv")
-df$Date <- as.Date(df$Date, '%m/%d/%y') #comes out as year-0m-0d
-
-dates_DST <- c(unique(df$Date))
-dates_DST
-dates_list <- as.list(dates_DST)
-dates_list
-
-Canoe_df <- df
 ```
 
 
@@ -93,9 +75,7 @@ for(i in 1:length(flight_dates)){
 
 ## Weather Data
 
-For this step you will need :
-
-Humidity, Ambient Temperature
+DJI thermal's SDK requires inputs of humidity, reflection (or ambient temperature), distance, and emissivity (see [## DJI Thermal SDK: temperature conversion] for more detail on each of the requirements). In this section we will take hourly weather data from an on-site HOBO climate logger and calculate weighted averages for humidity and ambient temperature.
 
 First, we use the first and last image in the Merged_T folder to define the start and end time of the flight, along with the date of the flight as a date object.
 
@@ -312,17 +292,12 @@ for (i in 1:length(raw_list)){
   #for (i in 1:3){
   wh <- c(640, 512)
   print("new")
-  #str_m <- paste0("measure_p_",i-1,".raw") #i-1 because .raw images start at zero not 1
   str_m <- raw_list[i]
-  print(str_m)
-  
   #getting name of .raw file but without the .raw extension so it can be saved as a tiff with the same name as the .raw (which has the same name as the original H20T images) so they can be swapped after alignment in metashape
   name <- substr(str_m,1,nchar(str_m)-4)
   print(name)
-  
   #If else below allows you to rerun this code from where it left off if R aborts the session
   test_exists <- paste0(dir,"\\",merged,"\\Temperature_rasters_EXIF\\", name,".tiff")
-  
   if (file.exists(test_exists)){
     print("exists")
   } else {
@@ -330,167 +305,62 @@ for (i in 1:length(raw_list)){
     #print(paste0(dir_raw, str_m))
     
     file.info(paste0(dir_raw, str_m))$size/2 
-    #getting product of width and height and checking it is correct
-    prod(wh)
-    #getting numerical values
-    v <- readBin(paste0(dir_raw,str_m), what = "integer", 
+    prod(wh) #getting product of width and height and checking it is correct
+    v <- readBin(paste0(dir_raw,str_m), what = "integer",  #getting numerical values
                  n = prod(wh), size = 2,  
                  signed = TRUE, endian = "little")
     
-    #temp in deg celcius, DJI requires we divide by 10 here for degrees in celcius
-    v_temp <- v/10
-    ## check the values
-    range(v_temp)
-    ## creating a matrix of the proper size
-    matrix <- matrix(v_temp, wh[1], wh[2])[wh[1]:1,] 
-    #matrix
-    #needs library OpenImageR
-    #rotate the matrix by 90 to get correct orientation of image
-    mat_rotated = rotateFixed(matrix, 90)
+    v_temp <- v/10 #temp in deg Celsius, DJI requires we divide by 10 here for Celsius
+    range(v_temp) #check the values
+    matrix <- matrix(v_temp, wh[1], wh[2])[wh[1]:1,] # creating a matrix of the proper size
+    mat_rotated = rotateFixed(matrix, 90)#rotate the matrix by 90 to get correct orientation of image, requires library OpenImageR
     #to view image
     #image(matrix(v_temp, wh[1], wh[2])[wh[1]:1,], useRaster = TRUE, col = grey.colors(256))
     rast <- raster(mat_rotated) #creating a raster 
-    #plot(rast)
+   
     #matching original image to measure.raw file
-    #original h20T images:
-    dir_h20t <- paste0(dir,"\\",merged,"\\")
-    #h20t_list <- list.files(dir_h20t, pattern = "_T\\.JPG$")
-    
-    #since names are the same, here we call the name of the raw file -.raw and add .JPG
-    str_h20t <- paste0(substr(str_m, 1, nchar(str_m)-3),"JPG")
-    
-    #reading in jpg h20T raster
-    r_h20t <- raster(paste0(dir_h20t,str_h20t))
-    
+    dir_h20t <- paste0(dir,"\\",merged,"\\") #original h20T images:
+    str_h20t <- paste0(substr(str_m, 1, nchar(str_m)-3),"JPG") #since names are the same, here we call the name of the raw file -.raw and add .JPG
+    r_h20t <- raster(paste0(dir_h20t,str_h20t)) #reading in jpg h20T raster
     r_h20t_path <- paste0(dir_h20t,str_h20t) #for later exiftool
-    print(r_h20t_path)
+    print(r_h20t_path) #checking the path
     
-    # the extent is bound by the resolution that you have assigned to it - so must change extent then resolution: https://stackoverflow.com/questions/36019332/copy-metadata-between-two-raster-objects-r/
-    #need to add these before exif because exif command used wont over write already written ones
-    extent(rast) <- extent(r_h20t)
+    #need to add these before exif because exif command used won't overwrite already written ones
+    extent(rast) <- extent(r_h20t)# the extent is bound by the resolution that you have assigned to it - so must change extent then resolution
     res(rast) <- res(r_h20t)
     #crs(rast) <- crs(r_h20t)
-    
-    #writing out the itterator
-    print(i)
-    
     print(paste0(dir,"\\",merged,"\\Temperature_rasters\\", name, ".tiff"))
-    writeRaster(rast, paste0(dir,"\\",merged,"\\Temperature_rasters\\", name,".tiff"), overwrite = TRUE)
+    writeRaster(rast, paste0(dir,"\\",merged,"\\Temperature_rasters\\", name,".tiff"), overwrite = TRUE) #writing out temperature raster, that does not have exif data attached
     r_temperature_path <- paste0(dir,"\\",merged,"\\Temperature_rasters\\", name,".tiff")
     
-    #STEP 3: Use EXIFTOOL in terminal to add all remaining/missing metadata from the original H20T images to the new single band TIFFS
+    #Use EXIFTOOL in terminal to add all remaining/missing exif data from the original H20T images to the new single band temperature TIFFS
     out_dir <- paste0(dir,"\\",merged,"\\Temperature_rasters_EXIF\\", name,".tiff")
-    #shell lets you run windows terminal cmds from R
-    shell(paste0("exiftool -wm cg -tagsfromfile ",r_h20t_path," -all:all ",r_temperature_path, " -o ",out_dir))
-    #output are temperature tiffs with same metadata as original h20T images
+    shell(paste0("exiftool -wm cg -tagsfromfile ",r_h20t_path," -all:all ",r_temperature_path, " -o ",out_dir)) #shell lets you run windows terminal cmds from R
+    #output are temperature tiffs with same exif data as original h20T images
   }
   percent <- i/length(raw_list)*100
-  print(paste0("percent complete: ", round(percent, 3)))
+  print(paste0("percent complete: ", round(percent, 3))) #gives you the % of photos done to give an idea of code speed/progress
 }
-
 end.time <- Sys.time()
 time.taken <- round(end.time - start.time,2)
-time.taken
-
+time.taken #time taken for script to run
 ```
 
 
+Below in Figure @\ref(fig:crown-temp)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r, eval=FALSE, echo=TRUE}
-therm_dates <- c("2022_10_05")
-
-for(x in 1:length(therm_dates)){
-  date_therm <- therm_dates[x]
-  print(date_therm)
-  
-  dir <- paste0("I:\\PARSER_Ext\\Fdc_PR_Canoe\\Flights\\",date_therm,"\\1_Data\\H20T") #directory to h20T imagery
-  list_dir <- list.files(dir, full.names = TRUE,pattern = c("DJI.+-H20T")) #folders containing orignal imagery
-  print(list_dir)
-  
-  # GETTING ALL RGB IMAGES
-  for (d in 1:length(list_dir)){
-    #calling each directly separately
-    folder_dir <- list_dir[d]
-    if(d == 1){
-      files_W <- list.files(folder_dir, pattern = "_W.JPG$")
-    }else{
-      files_W_add <- list.files(folder_dir, pattern = "_W.JPG$")
-      files_W <- append(files_W,files_W_add)
-    }
-  }
-  
-  dir_IR <- paste0("I:\\PARSER_Ext\\Fdc_PR_Canoe\\Flights\\",date_therm,"\\1_Data\\H20T\\Merged_T\\Temperature_rasters_EXIF_DST")
-  
-  #list of thermal files
-  files_T <- list.files(dir_IR, pattern = "_T.tiff$")
-  
-  
-  # Function to extract the core name from a file path
-  get_core_name <- function(file_path) {
-    basename(file_path) %>%
-      gsub("_[TW]$", "", .)
-  }
-  
-  #creating a new folder for the metahspae test
-  merged <- "Merged_T"
-  
-  if (!dir.exists(paste0(dir, "\\",merged,"\\RGB_&_IR_EXIF_DST"))) {
-    dir.create(paste0(dir, "\\",merged,"\\RGB_&_IR_EXIF_DST"),recursive = TRUE)
-  }
-  
-  dir_new <- paste0(dir, "\\",merged,"\\RGB_&_IR_EXIF_DST")
-  
-  for (d in 1:length(list_dir)){
-    #calling each directly separately
-    print(d)
-    folder_dir_W <- list_dir[d]
-    files_W <- list.files(folder_dir_W, pattern = "_W.JPG$")
-    
-    for (i in 1:length(files_T)) {
-      core_name_T <- substr(files_T[i], 1, nchar(files_T[i]) - 6)
-      matching_file_W <- files_W[str_detect(files_W, core_name_T)]
-      if(length(matching_file_W)>=1){
-        #copying over files
-        file.copy(from = paste0(folder_dir_W,"\\", matching_file_W),
-                  to = paste0(dir_new,"\\", matching_file_W), overwrite = FALSE)
-        file.copy(from = paste0(dir_IR,"\\", files_T[i]),
-                  to = paste0(dir_new,"\\", files_T[i]), overwrite = FALSE)
-      }
-    }
-  }
-  
-}
+```{r crown-temp, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: temperature values within an individual crown from a flight on July 27th, 2022. Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight"}
+# Include the pre-brushing and post-brushing images
+knitr::include_graphics(c(
+  here("Photos_&_gifs/crown_temp_graph.png"),
+  here("Photos_&_gifs/Temperature_graph_for_crown_pic_2.png")
+))
 ```
 
-HELLOO THIS IS A TEST
 
-**Note**: We have run across an error in some imagery, DJI is working on a solution.
+<!-- **Note**: We have run across an error in some imagery that we have copied below, we are in contact with DJI to look for a solution. -->
 
-The error is as follows:
-ERROR: call dirp_set_measurement_params failed
-ERROR: call prv_isp_config failed
-Test done with return code -6
+<!-- The error is as follows: -->
+<!-- ERROR: call dirp_set_measurement_params failed -->
+<!-- ERROR: call prv_isp_config failed -->
+<!-- Test done with return code -6 -->
