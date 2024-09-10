@@ -4,7 +4,7 @@
 ## Hardware - DJI Matrice 3000 RTK (M300)
 
 ```{r M300-flying, echo=FALSE, out.width="100%", fig.cap = "DJI Matrice 300 RTK in flight over one of our Vancouver Island feild sites, taken by Alec Liu with a Mavic3."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\M300_flying.png")
+knitr::include_graphics(here("Photos_&_gifs/M300_flying.png"))
 ```
 
 A complete SOP for mapping flights with the M300 was developed in-house and can be found in the [SOPs folder](https://github.com/owaite/GenomeBC_BPG/tree/main/SOPs) on GitHub. Transport Canada (TC) regulations require logging all flights and to have the logs on-hand when flying. We have developed a simple spreadsheet that logs the details required by TC and other useful details for each flight. When undertaking a project with repeated data collection campaigns, we would recommend developing a similar approach to organizing these data.  A copy of the one we use is available within the [Example Documents](https://github.com/owaite/GenomeBC_BPG/tree/main/Example_Documents) folder on GitHub. 
@@ -17,7 +17,7 @@ Ahead of the first data collection flights we follow the reconnaissance workflow
 
 
 ```{r Reconnasissance-flowDiagram, echo=FALSE, out.width="100%", fig.cap = "Reconnaissance workflow."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Reconnasissance_flowDiagram.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\Reconnasissance_flowDiagram.PNG"))
 ```
 
 
@@ -29,7 +29,7 @@ knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\G
 Figure \@ref(fig:effective-overlap) outlines the difference in ground overlap and canopy overlap.  We have developed a calculator in which you enter the flight altitude, overlaps, and canopy height and it will output the canopy overlap.  You can then adjust the inputs until you get the required overlap. It is available in the [Example Documents](https://github.com/owaite/GenomeBC_BPG/tree/main/Example_Documents) folder on GitHub. Figure \@ref(fig:effective-overlap) below is an example calculation detailed in the next paragraph.    
 
 ```{r effective-overlap, echo=FALSE, out.width="100%", fig.cap = "Effective overlap calculation."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\effective_overlap.png")
+knitr::include_graphics(here("Photos_&_gifs\\effective_overlap.png"))
 ```
 
 
@@ -41,7 +41,7 @@ knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\G
 Figure \@ref(fig:P1-flightPlan)
 
 ```{r P1-flightPlan, echo=FALSE, out.width="100%", fig.cap = "Flight planning a P1 flight on the remote controller."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\P1_flight_plan.png")
+knitr::include_graphics(here("Photos_&_gifs\\P1_flight_plan.png"))
 ```
 
 ## Data Collection: Sensors, Parameters, and Ideal Conditions 
@@ -50,7 +50,7 @@ knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\G
 Figure \@ref(fig:DLS-Micasense-connection)
 
 ```{r DLS-Micasense-connection, echo=FALSE, out.width="100%", fig.cap = "Micasense RedEdge-MX Dual and the DLS2 mounted on the M300. Here we are connecting the DLS2 to the Micasense camera."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\DLS2_Micasense_connection.png")
+knitr::include_graphics(here("Photos_&_gifs\\DLS2_Micasense_connection.png"))
 ```
 **Sensor Specifications:** 
 
@@ -158,8 +158,8 @@ kable(data, col.names = c("Band Name", "Center Wavelength (nm)","Bandwidth (nm)"
 Figure \@ref(fig:drone-variable-light)
 
 ```{r drone-variable-light, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: MS orthomosaic in variable light. Right: MS orthomosaic in even diffuse light."}
-knitr::include_graphics(c("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\variable_light.png",
-                        "C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\diffuse_light.png"
+knitr::include_graphics(c(here("Photos_&_gifs\\variable_light.png"),
+                          here("Photos_&_gifs\\diffuse_light.png")
                         )
 )
 ```
@@ -179,9 +179,9 @@ Click [here](https://github.com/owaite/GenomeBC_BPG/tree/main/Example_Documents)
 
 Figure \@ref(fig:P1-RGB)
 ```{r P1-RGB, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "These images are the same area, the left was taken with the above parameters with the P1 before greenup. The right was taken with the wide angle RGB on the Zenmuse H20T, a lower resolution camera, mid-August."}
-knitr::include_graphics(c("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\P1_pre_greenup.png",
-                        "C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\RGB_mid_Aug.jpg")
-                        )
+knitr::include_graphics(c(here("Photos_&_gifs\\P1_pre_greenup.png"),
+                        here("Photos_&_gifs\\RGB_mid_Aug.jpg")
+                        ))
 ```
 
 
@@ -206,7 +206,7 @@ knitr::include_graphics(c("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\
 
 
 ```{r RC-L1, echo=FALSE, out.width="100%", fig.cap = "L1 LiDAR screenshot from the remote controller during a flight at Big Tree Creek site on July 7, 2024. On the left is the RGB image instantaneously acquired for the frame and the right shows the LIDAR data acquisition from the scanner as it acquired the data up the frame."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\RC_L1.png")
+knitr::include_graphics(here("Photos_&_gifs\\RC_L1.png"))
 ```
 
 
