@@ -89,7 +89,7 @@ Below we have plotted the sun sensor angle (top left), the position of each phot
 This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line in the above figure, the solar zenith angle at the time of the flight was around 30°. 
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Irradiance_flight_lines_with_turning_all_with_spatial_plot_CROPPED.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\Irradiance_flight_lines_with_turning_all_with_spatial_plot_CROPPED.PNG"))
 
 ```
 
@@ -105,33 +105,33 @@ Below we have graphed solar zenith angles over the winter solstice (December 24,
 The gray vertical bar highlights the flight time, which was just within the +/- 2 hours of solar noon bounds and shows the solar zenith at around 30°, as we saw in the above figure.
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Solar_zenith_solstice_flight.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\Solar_zenith_solstice_flight.PNG"))
 ```
 
 Now that we've refreshed our understanding of the solar zenith, let's dive into the sun sensor angle. The sun sensor angle is, as it sounds, the angle between the normal (perpendicular) of the sensor and the direction of the sun. Given that drone flights occur relatively close to the ground compared to the distance from the Earth to the sun, this difference is often negligible. Therefore, the solar zenith angle can serve as a rough estimate of the sun sensor angle for a sensor that is parallel to the Earth's surface - making it a helpful check to see if the sun sensor angle recorded by the DLS2 is within a reasonable range.
 
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_verse_solarZenith_diagram.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\SSA_verse_solarZenith_diagram.PNG"))
 ```
 However, drones often fly at an angle, which can cause a cyclical pattern in sun sensor angles depending on flight direction. For example, let's take a look at the diagram below. When the drone is flying in the general direction of the sun (left), the forward tilt of the drone mid-flight results in a smaller sun sensor angle compared to when the drone is flying away from the general direction of the sun, where the tilt of the drone away from the sun increases the sun sensor angle (right).
 
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_flight_direction_diagram.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\SSA_flight_direction_diagram.PNG"))
 ```
 
 This pattern of sun sensor angle dependence on drone orientation relative to the sun can be see for the June 25th flight. Below are the uncorrected sun sensor angles, derived from the DLS2 sensor located on the top of the drone, colored by flight line direction. Here red indicates turning and blue and green are opposite flight directions.
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_flightlines.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\SSA_flightlines.PNG"))
 ```
 Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value (plotted as the horizontal black line) to make an informed decision on whether or not the values need correcting. 
 
 To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method [LINK] which will be referred to as the "corrected" values.
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\SSA_DLS1_verse_DLS2.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\SSA_DLS1_verse_DLS2.PNG"))
 ```
 The dashed horizontal lines are the moving averages for the DLS1 and DLS2. Here the moving average of the DLS2 is at times almost 10°lower than the solar zenith, whereas the moving average of the DLS1 (corrected method) is more or less consistently 2-3° lower than the solar zenith. 
 
@@ -157,7 +157,7 @@ Explanations for the lower direct irradiance from the DLS1 compared to the horiz
 
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Hor_dir_irradiance_DLS1_v_DLS2.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\Hor_dir_irradiance_DLS1_v_DLS2.PNG"))
 ```
 From this graph, we would recommend correcting the data using the [DLS1 method](0_Micasense_Irradiance_Correction##Correcting Irradiance Values for Micasense Cameras) outlined below 
 
@@ -170,7 +170,7 @@ Hence for a clear sunny day in the summer a ratio of 1:6 scattered to direct irr
 
 The data plotted below from June 25th was captured on a sunny day with occasional clouds.
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Dir_Scat_irradiance_DLS1_v_DLS2.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\Dir_Scat_irradiance_DLS1_v_DLS2.PNG"))
 ```
 
 The scattered: direct ratio for the data plotted above is 0.09 for the DLS2 and 0.46 for the DLS1. 
@@ -423,7 +423,7 @@ ggsave(plot = SSA_plot, #save out the plot for reference
 -->
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\0_SSA_plot.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\0_SSA_plot.PNG"))
 ```
 
 ### Scattered:Direct Ratio Estimate
@@ -527,7 +527,7 @@ ggsave(plot = RR_params,
 -->
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\1_CheckRollingRegressionParams_plot.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\1_CheckRollingRegressionParams_plot.PNG"))
 ```
 
 Next, check that the linear relationships you're keeping look realistic. The slope should be steeper for sunny days (i.e. more direct irradiance) and shallower for overcast days. 
@@ -564,7 +564,7 @@ ggsave(plot = linear_plots,
 -->
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\2_LinearRegression_plot.jpeg")
+knitr::include_graphics(here("Photos_&_gifs\\2_LinearRegression_plot.jpeg"))
 ```
 
 We recommend checking that there is no excessive spatial pattern in the data by plotting the locations of imagery used in the models. Here you want to ensure that imagery throughout the plot is being used rather than only images from a certain location. The code to do this is below:
@@ -704,7 +704,7 @@ ggsave(plot = Sensor_irr,
 -->
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\4_SensorIrradiance_w_CorrectedIrradiance.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\4_SensorIrradiance_w_CorrectedIrradiance.PNG"))
 ```
 
 Now that we have corrected the data using the DLS1 method, we can compare the DLS1 values to the DLS2 values to see if correction is needed. The code below creates a dataframe that has the median scatted/direct ratios and median percent scattered irradiance values for the DLS1 method and from the DLS2 sensor. These values will be used to annotate the following comparison plots.
@@ -807,7 +807,7 @@ ggsave(plot = Dir_scat_irr_plot,
 -->
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\5_Irradiance_DLS1_DLS2_plot.jpeg")
+knitr::include_graphics(here("Photos_&_gifs\\5_Irradiance_DLS1_DLS2_plot.jpeg"))
 ```
 
 Refer to the section [Is Correction Needed?](0_Micasense_Irradiance_Correction##Is Correction Needed?) to help decide whether or not your data needs correcting.
