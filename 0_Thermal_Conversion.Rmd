@@ -122,142 +122,69 @@ end_flight_date_time <- data.frame(exif_read(paste0(dir,"\\",merged,"\\",img_las
 
 
 (flight_date <- as.Date(start_exif_flight_date$CreateDate, '%Y:%m:%d %H:%M:%S')) #the flight date as a date object
+(flight_date_filt <- as.Date(flight_date, format = '%Y-%m-%d')) #flight date in the format of 2024-03-10, YYYY-mm-dd, this ill be used in the next step to filter weather data
 ```
 
-Next, since our weather station provided hourly measurements, we calculate a weighted average of temperature and humidity values based on time intervals. The weights account for the partial hours during a flight and adjust the average accordingly. This was done to account for the fact that variables will change throughout the flight, so gathering a weighted average where each hourly measurement is weighted in proportion to how much of the hour fell within the flight window gives us a better estimate of the overall weather variables than if a plain average was taken.
+Next, since our weather station provided hourly measurements, we calculate a weighted average of temperature and humidity values based on time intervals. This was done to account for the fact that variables will change throughout the flight, so gathering a weighted average where each hourly measurement is weighted in proportion to how much of the hour fell within the flight window gives us a better estimate of the overall weather variables than if a plain average was taken.
 
+To begin, we read in the weather data and set a start time and end time of the flight, where start time is rounded down to the nearest hour (i.e. 10:15am -> 10:00am) and end time is rounded up to the nearest hour (i.e. 11:30am -> 12:00pm). These values will be used to filter the weather data.
+```{r, eval=FALSE, echo=TRUE}
+cfs_weather <- "path to weather data" #loading in HOBO weather station data
+cfs_weather$Date <- as.Date(cfs_weather$Date, format = "%m/%d/%y") #converting date in the format m/d/Y to a date object written as YYY-mm-dd
 
+start_time_avg <- "10:00:00" #Based off of start_flight_date_time of 10:15am
+stop_time_avg <- "12:00:00" #Based off of end_flight_date_time of 11:30am
 
+```
 
-Weights for Start, Middle, and End Hours:
+For simplicity we kept weights as 0.25 (15min), 0.5 (30min), 0.75 (45min) or 1 (1 hr) and rounded the start time to the earliest 15 min marker and the end time to the latest 15 min marker. For example, for a flight that started at 10:03am and ended at 11:09am, we rounded 10:03am to 10:00am and 11:09am to 11:15am.
+
+Weights for start, middle, and end hours:
 
 - The start weight corresponds to how much of the first hour is covered by the flight time. For example, if the flight starts at 10:15, 45 minutes (or 0.75 of the hour) are included in that hour, so the start weight is 0.75.
 
+ -The middle weight (if the flight spans more than one hour) represents the full hour(s) covered by the flight. In the example of a flight from 10:15 to 11:30, the middle weight (for the 11:00-12:00 interval) would be 1, since the full hour is included.
+ 
 - The end weight applies similarly for the last hour of the flight. If the flight ends at 11:30, 30 minutes (or 0.5 of the hour) are included in that hour, so the end weight is 0.5.
 
- -The middle weight (if the flight spans more than one hour) represents the full hour(s) covered by the flight. In the example of a flight from 10:15 to 11:30, the middle weight (for the 11:00-12:00 interval) would be 1, since the full hour is included.
-
-
-
-
-
-The weights will either be 0.25 (15min), 0.5 (30min), 0.75 (45min) or 1 (1 hr). For example, for a flight that started at 10:15 and ended at 11:30:
-
-- Start weight would be 0.75 since the flight encompassed for 10am data)
-
-- Mid weight would be 1 (for 11am data)
-
-- End would be 0.5 (for 12pm data)round down for start and up for end ie start of 10:06 would be 10 and end of 11:36 would be 11:45
-
-
-For example:
-If the flight was from 10-11am, the start and end weights will be 1 and the mid weight can be commented out. 
-
-
-
 ```{r, eval=FALSE, echo=TRUE}
-
-### RUN UP TO HERE THEM LOOK AT START AND STOP TIMES TO INFORM NEXT PART
-
-ENTER start and stop times from above, ie if start was 11:15 put 11:00:00 and if end was 1:23 put 14:00:00 (2pm) as the end
-start_time_avg <- "10:00:00" #Based off of start_flight_date_time from above
-stop_time_avg <- "13:00:00" #Based off of end_flight_date_time from above
-
-#Looking at time in 15 min intervals
-#setting up weights
-
-These weights will change with each iteration - left uncommented so we cant accidently run the script without changing this part
-#if flight was from 10-11, then start and end weight swould be 1 and the mid weight can be commented out
-# I will be usually either 0.25 (15min), 0.5 (30min), 0.75 (45min) or 1 (1 hr) as weights
-# ie for a flight that started at 10:15 and ended at 11:30, the start weight would be 0.75 (for 10am data), mid weight would be 1 (for 11am data), and end would be 0.5 (for 12pm data)
-#round down for start and up for end ie start of 10:06 would be 10 and end of 11:36 would be 11:45
-
-new_flight_date <- as.Date(flight_date, format = '%Y-%m-%d')
-new_flight_date
-
-#loading in CFS HOBO weather data
-cfs_weather <- data
-
-colnames(data)
-#cfs_weather
-
-new_column_names <- gsub("\\.\\..*", "", colnames(cfs_weather))
-colnames(cfs_weather) <- new_column_names
-
-cfs_weather$Date <- as.Date(cfs_weather$Date, format = "%m/%d/%y")
-
-# For 2 time points ----------------------------------------------------------------------------
-start_weight <- 1
-end_weight <- 0.75
-
-sum_weight <- sum(start_weight,
-                  end_weight) 
-
-#creating df with columns that average humidity per date
-cfs_weather_time_avg <- cfs_weather%>%
-  group_by(Date)%>%
-  filter(Date == new_flight_date ) %>%
-  filter(Time <= stop_time_avg & Time >= start_time_avg)%>% #filtering only for humidity values taken between 10am and 12pm
-  mutate( Average_hum = (start_weight*RH[1]
-                         + end_weight*RH[2])/sum_weight,
-          
-          Average_air_temp = (start_weight*Temperature[1]
-                              + end_weight*Temperature[2])/sum_weight)
-
-cfs_weather_time_avg
-# For 3 time points ----------------------------------------------------------------------------
-start_flight_date_time
-end_flight_date_time
-#Ie: Flight starts at 10:15am and ends at 11:30
-start_weight <- 0.25 # 75% of 10am
+#Ie: Flight starts at 10:15am and ends at 11:30am
+start_weight <- 0.75 # 75% of 10am
 mid_weight <- 1 # 100% of  11am 
-end_weight <- 0.25 # 50% of 12pm
+end_weight <- 0.5 # 50% of 12pm
 
 sum_weight <- sum(start_weight,
-                  mid_weight,
+                  mid_weight,#comment out the mid_weight if no mid weight
                   end_weight) 
 
-
-#creating df with columns that average humidity per date
-cfs_weather_time_avg <- cfs_weather%>%
-  group_by(Date)%>%
-  filter(Date == new_flight_date ) %>%
-  filter(Time <= stop_time_avg & Time >= start_time_avg)%>% #filtering only for humidity values taken between 10am and 12pm
-  mutate( Average_hum = (start_weight*RH[1]
-                         + mid_weight*RH[2] #comment out this line if no mid_weight
+#creating df with weighted average air temperature and humidity values
+(cfs_weather_time_avg <- cfs_weather%>%
+  filter(Date == flight_date_filt ) %>%
+  filter(Time <= stop_time_avg & Time >= start_time_avg)%>% #filtering for values taken between the defined start (10am) and end (12pm) times
+  mutate(Average_hum = (start_weight*RH[1]
+                         + mid_weight*RH[2] #comment out this line if no mid_weight and just below index of [3] to [2]
                          + end_weight*RH[3])/sum_weight,
-          
-          Average_air_temp = (start_weight*Temperature[1]
-                              + mid_weight*Temperature[2]#comment out this line if no mid_weight
-                              + end_weight*Temperature[3])/sum_weight)
-cfs_weather_time_avg
-#####
-#checking dimension
-dim(cfs_weather_time_avg)
-#checking values (for all dates)
-avg_hum <- cfs_weather_time_avg$Average_hum
-avg_hum
-avg_temp <- cfs_weather_time_avg$Average_air_temp
-avg_temp
-date <- as.Date(cfs_weather_time_avg$Date, '%d-%m-%Y')
-date
+         Average_air_temp = (start_weight*Temperature[1] 
+                             + mid_weight*Temperature[2]#comment out this line if no mid_weight and just below index of [3] to [2]
+                             + end_weight*Temperature[3])/sum_weight))
 
-#creating a data frame  with unique averaged values (from 11am-12pm) humidity and dates
+#check values 
+(avg_hum <- cfs_weather_time_avg$Average_hum)
+(avg_temp <- cfs_weather_time_avg$Average_air_temp)
+(date <- as.Date(cfs_weather_time_avg$Date, '%d-%m-%Y'))
+
+#creating a data frame  with weighted averaged values
 Canoe_flight_table <- data.frame(
   date,
   avg_hum,
   avg_temp
 )
-dim(Canoe_flight_table)
-#removing duplicated values (ie time is 11 and 12, and both have the same averaged humidity and amp temp measurments)
-Canoe_flight_table <- unique(Canoe_flight_table)
+Canoe_flight_table <- Canoe_flight_table %>% distinct()#removing duplicate rows
 
 #resetting index in table to go from 1-N
 rownames(Canoe_flight_table) <- NULL
-dim(Canoe_flight_table)
-Canoe_flight_table
 
-#getting averaged humidity (11am-12pm) from CFS logger for flight date
+#setting variables for weighted average of humidity and ambient temperature, these variables will be used as inputs into DJI's thermal anlysis tool SDK to convert rasters to temperature
 flight_humidity <- Canoe_flight_table[Canoe_flight_table$date == flight_date, "avg_hum"]
 flight_humidity
 
@@ -266,9 +193,125 @@ flight_amb_temp
 
 ```
 
-#STEP 2: DJI SDK in Visual Studio : convert to temp in C : 
+## STEP 2: DJI SDK temperature conversion
+
+below section is old directions to open powershell and run script in the shell but now an .bat file with be written into the specified directory that does this, im just keeping it in the code in case we need it again
+
+Just needed to download DJI SDK and most recent Visual Studio
+- Open windows powershell:C:\Users\owaite\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Windows PowerShell (or can look in the start menu)
+- change directory to folder with dji_irp.exe : cd "C:\dji_thermal_sdk_v1.3_20220517\utility\bin\windows\release_x64"
+- below is code used in windows powershell for a single image (path: C:\Users\owaite\Downloads\dji_thermal_sdk_v1.3_20220517\utility\bin\windows\release_x64)
+- .\dji_irp.exe -s "G:\Cw_PR_Rainbow\2022_05_07\1_Data\H20\Cw_PR_Rainbow_plotA_2022_05_07_80_65_90_1.2\DJI_202205071532_008_cedarAh20t\DJI_20220507153545_0001_T.JPG" -a measure -o measure.raw
+
+
+
+### Parameters required for thermal conversion:
+
+- **Reflection** : reflection of target is currently set to 23 range is -40 to 500
+^ Reflected Temperature: the surface of the target that is measured could reflect the energy radiated by the surrounding objects. This reflected energy could be picked up by the camera along with the radiation, which could cause an error in the temperature reading. If there are no objects with extreme high or low temperatures nearby, set this parameter as the ambient temperature. Reflected temperature configurations could affect the measurement result, and the bigger the difference between the reading and the ambient temperature, the bigger the impact. Here we use the weighted average ambient temperature calculated above from the HOBO climate logger (aka flight_amb_temp)
+
+- **Humidity**: weighted average from on-site HOBO climate logger (flight_humidity)
+
+- **Distance**: Using max distance of 25m meter since we are flying higher (~40m away from object for h20T depending on site)
+
+- **Emissivity**: 
+
+
+```{r, eval=FALSE, echo=TRUE}
+#setting parameters:
+(flight_amb_temp) # already set above, () to print out the value in the console to ensure it is the correct one
+(flight_humidity) # already set above
+distance <- 25 
+emissivity <- 0.98
+
+```
+
+
+
+### Editing .bat file for DJI SDK tool and running in terminal
+
+First, we copy the original .bat file into the Merged_T folder. We do this so that the original does not get edited and instead each flight will have their own edited .bat file. This allows you to go back and see what parameters were used if needed.
+
+The original .bat file can be found [here]() on GitHub and looks like this:
+```{r}
+REM to change dir to the location of this file
+REM start time used to average humidity and temperature values: start_time_avg
+REM end time used to average humidity and temperature values: stop_time_avg
+REM weights (in 15min intervals ie 0.25, 0.5, 0.75 or 1, round down for start and up for end time): start w: start_weight, mid w: mid_weight (might not have one), end w: end_weight
+
+cd /D "%~dp0"
+
+mkdir DJI_SDK_raw
+
+for %%i in (*.JPG) do (
+echo Working on %%i...
+C:\dji_thermal_sdk_v1.3_20220517\utility\bin\windows\release_x64\dji_irp.exe -s %%i -a measure -o DJI_SDK_raw/%%~ni.raw --humidity hum_change --distance dist_change --emissivity emis_change --reflection reflec_change
+)
+pause
+```
+
+
+```{r, eval=FALSE, echo=TRUE}
+omp_dir <- "C:/Users/owaite/Documents/Scripts/DJI_SDK_TemperatureConversion_Script" #change to the directory where you saved the original .bat script to
+
+file.copy(from = paste0(omp_dir,"\\", "DJI_SDK_loop.bat"), #copy the original omp.bat file into the Merged_T folder
+          to = paste0(dir,"\\",merged,"\\","DJI_SDK_loop.bat"), overwrite = FALSE)
+
+bat_old <- file(paste0(dir,"\\",merged,"\\","DJI_SDK_loop.bat")) #opening .bat file to edit
+bat_new <- readLines(bat_old) #reading in lines of .bat file to edit and saving them out
+close(bat_old)
+
+#replacing values
+comment out mid_weight line if necessary
+bat_new <- gsub("hum_change",flight_humidity, bat_new)
+bat_new <- gsub("dist_change",distance, bat_new)
+bat_new <- gsub("emis_change",emissivity,bat_new)
+bat_new <- gsub("reflec_change",flight_amb_temp,bat_new)
+bat_new <- gsub("start_time_avg",start_time_avg, bat_new)
+bat_new <- gsub("stop_time_avg",stop_time_avg,bat_new)
+bat_new <- gsub("start_weight", start_weight, bat_new)
+bat_new <- gsub("mid_weight", mid_weight, bat_new) #if no mid_weight, comment this line out
+bat_new <- gsub("end_weight", end_weight, bat_new)
+
+#Write the new file
+fileConn <- file(paste0(dir,"\\",merged,"\\DJI_SDK_loop_updated.bat"))
+writeLines(bat_new, fileConn)
+close(fileConn)
+```
+
+Nest, we run the updated .bat file in windows terminal using the R code below. This will automatically output a folder of new raw images with temperature in binary saved to the Merged_T/DJI_SDK_raw folder 
+
+```{r, eval=FALSE, echo=TRUE}
+shell.exec(paste0(dir,"\\",merged,"\\DJI_SDK_loop_updated.bat"))
+```
 
 #STEP 3: Read binary and convert to a raster: https://community.rstudio.com/t/solution-to-reading-raw-images-into-r/45435
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ```{r, eval=FALSE, echo=TRUE}

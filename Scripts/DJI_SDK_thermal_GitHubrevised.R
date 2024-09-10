@@ -390,17 +390,9 @@ flight_amb_temp
 distance <- 25
 distance#Using max distance of 25m meter since we are flying higher (~40m away from object for h20T depending on site), See DJI quote #55 here https://forum.dji.com/forum.php?mod=viewthread&tid=230321&extra=&page=2
 flight_humidity #from HOBO for Canoe site
-#Reflection : reflection of target is currently set to 23 range is -40 to 500
-#^ Reflected Temperature: https://dl.djicdn.com/downloads/dji_dtat/20220630/DJI+Thermal+Analysis+Tool+3_User+Guide_en.pdf
-# the surface of the target that is measured could reflect the
-# energy radiated by the surrounding objects. This reflected energy could be picked up
-# by the camera along with the radiation, which could cause an error in the temperature
-# reading. If there are no objects with extreme high or low temperatures nearby, set this
-# parameter as the ambient temperature. Reflected temperature configurations could
-# affect the measurement result, and the bigger the difference between the reading and
-# the ambient temperature, the bigger the impact.
-# see ambient temp calculate above from cfs data, also loaded below
-flight_amb_temp
+
+Reflection : reflection of target is currently set to 23 range is -40 to 500
+^ Reflected Temperature: https://dl.djicdn.com/downloads/dji_dtat/20220630/DJI+Thermal+Analysis+Tool+3_User+Guide_en.pdf the surface of the target that is measured could reflect the energy radiated by the surrounding objects. This reflected energy could be picked up by the camera along with the radiation, which could cause an error in the temperature reading. If there are no objects with extreme high or low temperatures nearby, set this parameter as the ambient temperature. Reflected temperature configurations could affect the measurement result, and the bigger the difference between the reading and the ambient temperature, the bigger the impact. see ambient temp calculate above from cfs data, also loaded below flight_amb_temp
 
 emissivity <- 0.98
 emissivity
