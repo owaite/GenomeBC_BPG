@@ -728,9 +728,21 @@ alphashape3d::ashape3d(x = a3d, alpha = “α_value, pert = TRUE,eps = 1e-09)</l
 <span id="cb34-45"><a href="lidar-processing-workflow.html#cb34-45" tabindex="-1"></a><span class="co">#writing out .rds files</span></span>
 <span id="cb34-46"><a href="lidar-processing-workflow.html#cb34-46" tabindex="-1"></a><span class="fu">saveRDS</span>(structural_metrics_df, <span class="fu">paste0</span>(dir,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">10_CROWNS_clean</span><span class="sc">\\</span><span class="st">Structural_metrics</span><span class="sc">\\</span><span class="st">&quot;</span>,name,<span class="st">&quot;_&quot;</span>, date,<span class="st">&quot;_structuralMetrics_tag&quot;</span>,tag_value,<span class="st">&quot;.rds&quot;</span>)) <span class="co">#USED PERT= TRUE : https://cran.r-project.org/web/packages/alphashape3d/alphashape3d.pdf</span></span></code></pre></div>
 <p>Below are a individual tree point cloud (left), clipped to the top 25% of the tree and its corresponding alphashape used for volume (right).</p>
-<div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-<img src="Photos_&_gifs/Individual_tree_point_cloud_resize_bookdown.png" style="height: 300px; margin: 0 10px;" /><img src="Photos_&_gifs/Individual_tree_volume_resized_bookdown.gif" style="height: 300px; margin: 0 10px;" />
-</div>
+<!-- ```{r echo=FALSE, results='asis'} -->
+<!-- # Define the image paths -->
+<!-- img_paths <- c( -->
+<!--   "C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Individual_tree_point_cloud_resize_bookdown.png",  -->
+<!--                           "C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Individual_tree_volume_resized_bookdown.gif" -->
+<!-- ) -->
+<!-- # Create the HTML for the images -->
+<!-- html <- paste0( -->
+<!--   '<div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">', -->
+<!--   paste0('<img src="', img_paths, '" style="height: 300px; margin: 0 10px;" />', collapse = ""), -->
+<!--   '</div>' -->
+<!-- ) -->
+<!-- # Print the HTML -->
+<!-- cat(html) -->
+<!-- ``` -->
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:indv-tree-metrics"></span>
 <img src="Photos_&_gifs/Individual_tree_point_cloud_resize_bookdown.png" alt="Left:      . Right: ." width="50%" /><img src="Photos_&_gifs/Individual_tree_volume_resized_bookdown.gif" alt="Left:      . Right: ." width="50%" />
 <p class="caption">
