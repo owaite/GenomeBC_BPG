@@ -102,3 +102,7 @@ computing-horizontal-corrected-irradiance
 thermal-conversion
 folder-set-up
 weather-data
+dji-thermal-sdk-temperature-conversion
+parameters-required-for-thermal-conversion
+editing-.bat-file-for-dji-sdk-tool-and-running-in-terminal
+convert-to-raster
