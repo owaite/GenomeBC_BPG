@@ -18,17 +18,15 @@ knitr::include_graphics(here("Photos_&_gifs\\Tree_tops_GCP.png"))
 
 
 ```{r terrain-following-figure, echo=FALSE, out.width="100%", fig.cap = "Terrain following on variable topography."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Terrain_following.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\Terrain_following.PNG"))
 ```
 
 ## Site Selection Considerations
 
-
-
 **Ideal sites:**
 
 ```{r ideal-site-figure, echo=FALSE, out.width="100%", fig.cap = "Aerial view of a 5 year old Douglas fir trial."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\ideal_sites.png")
+knitr::include_graphics(here("Photos_&_gifs\\ideal_sites.png"))
 ```
 
 **Effects of topography: Warning to take extra care**
@@ -38,8 +36,8 @@ Below Figure \@ref(fig:GCP-elevation)
 ```{r GCP-elevation, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Effect of brushing on crown visibility. Left: GCP alignment on flat ground (Error ~4cm). Right: GCP alignment on ground with elevation change (Error ~28cm)"}
 # Include the pre-brushing and post-brushing images
 knitr::include_graphics(c(
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GCP_flat_ground.png",
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/GCP_elevation_change_terrain.png"
+  here("Photos_&_gifs/GCP_flat_ground.png"),
+  here("Photos_&_gifs/GCP_elevation_change_terrain.png")
 ))
 ```
 
@@ -77,20 +75,13 @@ cat(html)
 
 
 
-
-
-
-
-
-
-
 Below Figure \@ref(fig:brushingEffect) shows an example of the effect of brushing on crown visibility at a moist, high-productivity common-garden trial.
 
 ```{r brushingEffect, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Effect of brushing on crown visibility. Left: early August prior to brushing. Right: late August post brushing"}
 # Include the pre-brushing and post-brushing images
 knitr::include_graphics(c(
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/pre_brush.jpg",
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/post_brush.jpg"
+  here("Photos_&_gifs/pre_brush.jpg"),
+  here("Photos_&_gifs/post_brush.jpg")
 ))
 ```
 
