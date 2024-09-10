@@ -3,7 +3,7 @@
 Figure \@ref(fig: aligned-agisoft)
 
 ```{r aligned-agisoft, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "A dense point cloud processed in Agisoft Metashape with the camera locations turned on and disabled flight trajectories shown."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Aligned_agisoft.png")
+knitr::include_graphics(here("Photos_&_gifs\\Aligned_agisoft.png"))
 ```
 
 
@@ -11,109 +11,109 @@ knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\G
 ```{r metashape-pref, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Recommended Metashape preferences setup under the Advanced tab."}
 # Include the pre-brushing and post-brushing images
 knitr::include_graphics(c(
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/metashape_pref.png",
-  "C:/Users/owaite/OneDrive - NRCan RNCan/Documents/GitHub/GenomeBC_BPG/Photos_&_gifs/metashape_pref_2.png"
+  here("Photos_&_gifs/metashape_pref.png"),
+  here("Photos_&_gifs/metashape_pref_2.png")
 ))
 ```
 
 ```{r cal-ref-agisoft, echo=FALSE, out.width="100%", fig.align='center', fig.cap = "Calibrate reflectance tool found under Tools in Metashape."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\cal_ref_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\cal_ref_metashape.png"))
 ```
 
 ```{r cal-ref-sunPanel-agisoft, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Calibrate reflectance tool found under Tools in Metashape with sun sensor and reflectance panels enabled for calibration."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\cal_ref_sun_panel_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\cal_ref_sun_panel_metashape.png"))
 ```
 
 
 
 
 ```{r align-photo-agisoft, echo=FALSE, out.width="40%", fig.align='center', fig.cap = "Photogrametric camera alignment settings using the alignment tool in Metashape"}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\align_photos_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\align_photos_metashape.png"))
 ```
 
 
 ```{r sparseCloud-agisoft, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Sparse cloud created in image alignment. Pink points are those selected by the Gradual Selection tool that have a reconstruction uncertainty greater than or equal to 30.4608. These points will be filtered out."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\sparse_cloud_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\sparse_cloud_metashape.png"))
 ```
 
 
 ```{r opt-align-agisoft, echo=FALSE, out.width="60%",fig.align='center', fig.cap = "Settings used for the Optimize Camera Alignment tool"}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\opt_camera_align_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\opt_camera_align_metashape.png"))
 ```
 ```{r chunk-align-agisoft, echo=FALSE, out.width="60%", fig.align='center',fig.cap = "Settings used for point based chunk alignment when aligning the multispectral data to the P1."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\align_chunks_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\align_chunks_metashape.png"))
 ```
 
 ```{r chunk-align-confirm-agisoft, echo=FALSE, out.width="60%",fig.align='center', fig.cap = "Visual of the [T] that will appear next to chunks that have successfully aligned via chunk alignment. The [T] stands for transposed, visual inspection of alignment at all four corners and the center of the plot should be done to ensure the error in the alignment is within an acceptable range. We have had sites complete alignment 'successfully' however with large, unacceptable error that required alignment using GCPs."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\transposed_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\transposed_metashape.png"))
 ```
 ```{r DC-settings-agisoft, echo=FALSE, out.width="60%",fig.align='center', fig.cap = "Metashape settings for building the depth maps and the dense cloud."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\DC_settings_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\DC_settings_metashape.png"))
 ```
 ```{r DEM-settings-agisoft, echo=FALSE, out.width="60%",fig.align='center', fig.cap = "Metashape settings for DEM generation."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\build_DEM_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\build_DEM_metashape.png"))
 ```
 
 ```{r ortho-settings-agisoft, echo=FALSE, out.width="60%", fig.align='center', fig.cap = "Metashape settings for building the orthomosaic."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\build_ortho_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\build_ortho_metashape.png"))
 ```
 
 
 
 
 ```{r b1-check-ref-agisoft, echo=FALSE, fig.align='center',out.width="100%", fig.cap = "Raster calculator tool in Metashape to look at reflectance values of trees for band 1 (Blue - 444nm) prior to exporting the orthomosaic."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\reflectance_values_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\reflectance_values_metashape.png"))
 
 ```
 ```{r b4-check-ref-agisoft, echo=FALSE, fig.align='center',out.width="100%", fig.cap = "Reflectance values of trees for band 4 (Green - 560nm)."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\b4_reflectance_values_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\b4_reflectance_values_metashape.png"))
 
 ```
 
 ```{r b10-check-ref-agisoft, echo=FALSE, fig.align='center', out.width="100%", fig.cap = "Reflectance values of trees for band 10 (NIR - 842nm)."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\b10_reflectance_values_metashape.png")
+knitr::include_graphics(here("Photos_&_gifs\\b10_reflectance_values_metashape.png"))
 
 ```
 
 
 
 ```{r genetic-layout, echo=FALSE, fig.align='center', out.width="100%", fig.cap = "The spreadsheet map of the layout of the site, each tree is located on a grid with a unique row and column value assigned to it."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\genetic_layout.png")
+knitr::include_graphics(here("Photos_&_gifs\\genetic_layout.png"))
 
 ```
 
 ```{r P1-genetic-layout, echo=FALSE, fig.align='center', out.width="100%", fig.cap = "P1 orthomosaic of the site with GCPs and georeferenced trees marked with red dots"}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\genetic_layout_P1.png")
+knitr::include_graphics(here("Photos_&_gifs\\genetic_layout_P1.png"))
 
 ```
 
 
 ```{r Qgis-ref, echo=FALSE, out.width="80%",fig.align='center', fig.cap = "Visual of the Grid Georeferenced plugin in QGIS."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Qgis_grid_georef.png")
+knitr::include_graphics(here("Photos_&_gifs\\Qgis_grid_georef.png"))
                          
 ```
 
 ```{r ref-trees, echo=FALSE,  fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: treeID 1, reference for the bottom left corner of the plot. Right: treeID 2757, reference for the top right of the plot"}
-knitr::include_graphics(c("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\ref_treeID_1.png",
-                          "C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\ref_treeID_2757.png"))
+knitr::include_graphics(c(here("Photos_&_gifs\\ref_treeID_1.png"),
+                          here("Photos_&_gifs\\ref_treeID_2757.png")))
 
 ```
 
 
 
 ```{r Qgis-ref-trees, echo=FALSE, fig.show="hold", fig.align='center', out.width=c("32.5%","67.5%"), fig.cap = "Left: Transformation settings. Right: zoom in on vector layer and place a point on the Map Canvas"}
-knitr::include_graphics(c("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Qgis_transformation_settings.png"))
+knitr::include_graphics(c(here("Photos_&_gifs\\Qgis_transformation_settings.png")))
 
-knitr::include_graphics(c("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Qgis_map_cor_setting.png"))
+knitr::include_graphics(c(here("Photos_&_gifs\\Qgis_map_cor_setting.png")))
 ```
 
 ```{r Qgis-ref-tree-fit, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Zoomed in visual of the georeferenced tree grid for 6 trees overlain on the P1 orthomosaic."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\Qgis-ref-tree-fit.jpg")
+knitr::include_graphics(here("Photos_&_gifs\\Qgis-ref-tree-fit.jpg"))
                          
 ```
 
 ```{r Qgis-maintained-ref-tree-fit, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Georeferenced grid overlain on P1 orthomosaic for a site that was well maintained. The georeferenced grid has been snapped to the highest point on the CHM within a given radius to pull the grid to the treetops."}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\maintained-geo-ref-trees.png")
+knitr::include_graphics(here("Photos_&_gifs\\maintained-geo-ref-trees.png"))
                          
 ```
 
@@ -332,7 +332,7 @@ ggsave(hist, #saving out the plot
 
 
 ```{r echo=FALSE, out.width="60%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\multimodal_hist_canoe_2022_08_05.jfif")
+knitr::include_graphics(here("Photos_&_gifs\\multimodal_hist_canoe_2022_08_05.jfif"))
 ```
 
 We then isolate the NIR band from the multispectral orthomosaic and filter the raster to set pixels with NIR values greater than the threshold to NA and those that are less than or equal to the threshold to 1.
@@ -349,7 +349,7 @@ terra::writeRaster(shadow_mask, paste0(dir, Nir_shadow_folder_baseName,"\\",  da
 
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\shadow_mask_example_no_filter_2022_08_05.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\shadow_mask_example_no_filter_2022_08_05.PNG"))
 ```
 
 
@@ -395,7 +395,7 @@ terra::writeRaster(new_mask, paste0(dir, Nir_shadow_folder_baseName,"\\",  date_
 Below you can see that in this case the filter did not result in a large change in the shadow mask as there were minimal small patches to begin with. Here the white areas in the filtered mask image on the right are areas that will not be masked given that the mask did not contain enough pixels. This will result in a less patchy shadow mask.
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\shadow_mask_example_filtered_2022_08_05.PNG")
+knitr::include_graphics(here("Photos_&_gifs\\shadow_mask_example_filtered_2022_08_05.PNG"))
 ```
 
 ## Crown-level Vegetation Indicies
@@ -527,7 +527,7 @@ rast_all = rast(rast_list)
 Below is an example of the resolution of the calculated vegetation indices. The image shows the chlorophyll carotenoid index (CCI) of a single crown across four summer time points. Greener pixels represent a higher ratio of chlorophylls to carotenoids. As you can see, the proportion of the crown with high CCI values increases from the May to July acquisitions, when productivity is likely at its highest, and decreases during the august acquisition suggesting lower productivity, likely due to end of summer drought conditions. 
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("C:\\Users\\owaite\\OneDrive - NRCan RNCan\\Documents\\GitHub\\GenomeBC_BPG\\Photos_&_gifs\\CCI_timeseries.png")
+knitr::include_graphics(here("Photos_&_gifs\\CCI_timeseries.png"))
 ```
 
 Lastly, we use the *exact_extract* function to calculate crown-level statistics per vegetation index raster created above. Below we show an example of taking the mean and median crown values per index as well as count the number of pixels that were used for the index calculation. We do this as a data quality check so we can remove crowns that had very few pixels involved in their index calculation.
