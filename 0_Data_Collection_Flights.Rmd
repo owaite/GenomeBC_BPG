@@ -285,7 +285,6 @@ The L1 LiDAR is used to build DTMs for terrain following when one is not availab
 
 
 
-- **Inflight Automatic Calibration:** Highly recommended for accuracy: the IMU recalibrates every 100 seconds during flight.
 
 
 
