@@ -163,7 +163,7 @@ kable(data, col.names = c("Band Name", "Center Wavelength (nm)","Bandwidth (nm)"
 
 - **Image Overlap:** Extra high to ensure sufficient coverage and allow for exclusion of poor-quality images during processing. 
 
-  - Front: ~86% (timed interval is the limiting factor) 
+  - Front: ~86% (speed and timed interval is the limiting factor) 
 
   - Side: ~86%  
 

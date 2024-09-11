@@ -26,30 +26,32 @@ knitr::include_graphics(here("Photos_&_gifs\\Tree_tops_GCP.png"))
 
 ### Absolute and Relative Reference with Precise Point Positioning (PPP) 
 It is important to consider the difference between relative and absolute reference accuracy when considering methodology.  When setting up a base station in remote locations, the absolute accuracy is meter-level.  This means, that if you set it up at the same spot next week or forty years from now it would only give you a position within approximately 1-5 meters.  Relative reference accuracy is the within-survey or flight precision and with RTK or PPK, it is centimeter-level precision. If the objective is to align and register flights under similar conditions within a short timeframe, precise relative accuracy alone may be sufficient. However, for long time series and legacy projects, it is more desirable to have both centimeter-level absolute and relative accuracy. 
-Precise absolute accuracy can be obtained using a variety of methods. If cellular service and a subscription to a provider is available, accurate coordinates can be streamed via RTK.  Network RTK providers in Canada are mostly private enterprise, the NRCan [RTK Networks](https://webapp.csrs-scrs.nrcan-rncan.gc.ca/geod/data-donnees/rtk.php?locale=en) page has information on availability.  If within range of a base station as outlined above, PPK will provide absolute accuracy. For many experimental trials established in remote forest locations, however, neither of these conditions may be met. Accordingly, another method to secure precise absolute accuracy in remote locations is logging GNSS data from a base station in the field for more than 4 hours and later submitting the log to the free [NRCan Precise Point Positioning (PPP)](https://webapp.csrs-scrs.nrcan-rncan.gc.ca/geod/tools-outils/ppp.php?locale=en) website. The PPP website can provide 3 levels of accuracy depending on the latency period.  We have been accepting the rapid, which is accurate to approximately 5 cm when an Emlid RS3 log is submitted more than 12 hours after the end of each day (as quoted on the [Emlid site](https://docs.emlid.com/reachrs/tutorials/post-processing-workflow/nrcan-workflow/)).  Whether absolute accuracy and PPP has been a goal or not, if repeated flights are expected, before leaving the site it is important to mark the base station centre point with a metal survey pin as a “monument”, ensuring the base station can be set up over the same position for subsequent flights.  For example, if using the DJI DRTK2 system you can enter the known PPP’d base station position into the remote controller for absolute accuracy on all subsequent flights. Similarly, if you are using the Emlid you can enter the PPP’d position in the base station app called Emlid flow.  We have developed in house Standard Operating Procedures (SOP) for many of the workflows, and they can be accessed through a GitHub folder and are linked thoughtout this document.  See the SOP_Emlid_RS3 and SOP_M300_Flight for more details on the Emlid and DJI RTK2 setups.  Once a site has been set up using precise absolute and relative accuracy, even if the monument or GCPs become inaccessible, accurate positions can be reliably obtained by following similar processes.
+Precise absolute accuracy can be obtained using a variety of methods. If cellular service and a subscription to a provider is available, accurate coordinates can be streamed via RTK.  Network RTK providers in Canada are mostly private enterprise, the NRCan [RTK Networks](https://webapp.csrs-scrs.nrcan-rncan.gc.ca/geod/data-donnees/rtk.php?locale=en) page has information on availability.  If within range of a base station as outlined above, PPK will provide absolute accuracy. For many experimental trials established in remote forest locations, however, neither of these conditions may be met. Accordingly, another method to secure precise absolute accuracy in remote locations is logging GNSS data from a base station in the field for more than 4 hours and later submitting the log to the free [NRCan Precise Point Positioning (PPP)](https://webapp.csrs-scrs.nrcan-rncan.gc.ca/geod/tools-outils/ppp.php?locale=en) website. The PPP website can provide 3 levels of accuracy depending on the latency period.  We have been accepting the rapid, which is accurate to approximately 5 cm when an Emlid RS3 log is submitted more than 12 hours after the end of each day (as quoted on the [Emlid site](https://docs.emlid.com/reachrs/tutorials/post-processing-workflow/nrcan-workflow/)).  Whether absolute accuracy and PPP has been a goal or not, if repeated flights are expected, before leaving the site it is important to mark the base station centre point with a metal survey pin as a “monument”, ensuring the base station can be set up over the same position for subsequent flights.  For example, if using the DJI DRTK2 system you can enter the known PPP’d base station position into the remote controller for absolute accuracy on all subsequent flights. Similarly, if you are using the Emlid you can enter the PPP’d position in the base station app called Emlid flow.  We have developed in house Standard Operating Procedures (SOP) for many of the workflows, and they can be accessed through a GitHub folder and are linked thoughtout this document.  See the [SOPs folder](https://github.com/owaite/GenomeBC_BPG/tree/main/SOPs) for SOP_Emlid_RS3 and SOP_M300_Flight for more details on the Emlid and DJI RTK2 setups.  Once a site has been set up using precise absolute and relative accuracy, even if the monument or GCPs become inaccessible, accurate positions can be reliably obtained by following similar processes.
 
 ### Terrain Following on Sites with Elevation Change 
-Most flight planning software references the elevation at takeoff. In this scenario, the drone flies at a constant altitude relative to the takeoff point, which is acceptable if the terrain remains somewhat constant. However, a constant flight altitude over sloped or variable terrain increases the risk of collision and results in inconsistent imagery across the acquisition. Terrain following flights reference the altitude relative to a Digital Elevation Model (DEM).  A DEM is a 2-dimensional georeferenced raster with elevation values. This can be a Digital Surface Model (DSM), which references the surface (canopy) elevation, or a Digital Terrain Model (DTM) which references the bare ground.  In situations where the canopy is relatively level for the whole flight a recent DSM is more desirable as this provides the most accurate reference to the canopy, which is our area of interest.  This has not been possible for most of the coastal sites we have been using as there are often large (40-60 meter) “leave” trees near the site perimeter which would create greater changes in the flight altitude and reduce consistency therefore, we have been using DTMs for terrain following.  With terrain following, the drone automatically adjusts its altitude to remain constant above the DEM, regardless of changes in canopy elevation. This ensures the focal length and overlap remains consistent, preserving data quality and accuracy. Any flights with significant vertical change should be flown with terrain following enabled. For terrain following to be effective, an accurate DEM is required.  We use 1 meter resolution DTMs for our Terrain Following flights.  DTMs are becoming more available worldwide, and in BC we can access free LiDAR derived DTMs at 1m accuracy from [LiDAR BC](https://governmentofbc.maps.arcgis.com/apps/MapSeries/index.html?appid=d06b37979b0c4709b7fcf2a1ed458e03) for many areas of the province.  Remote sites outside of these areas require building your own DTM by first flying the site with LiDAR and processing the LiDAR to DTM ahead of the photogrammetry flights.  We have made our own DTMs for approximately half of the sites we have flown.  Figure x depicts the difference between a flight plan referencing the takeoff point, and a flight plan using terrain following.  The blue lines represent the field of view of the drone mounted sensor.  Note the red ovals where the overlap decreases as the ground rises on the top image when the flight elevation remains constant to takeoff.
+Most flight planning software references the elevation at takeoff. In this scenario, the drone flies at a constant altitude relative to the takeoff point, which is acceptable if the terrain remains somewhat constant. However, a constant flight altitude over sloped or variable terrain increases the risk of collision and results in inconsistent imagery across the acquisition. Terrain following flights reference the altitude relative to a Digital Elevation Model (DEM).  A DEM is a 2-dimensional georeferenced raster with elevation values. This can be a Digital Surface Model (DSM), which references the surface (canopy) elevation, or a Digital Terrain Model (DTM) which references the bare ground.  In situations where the canopy is relatively level for the whole flight a recent DSM is more desirable as this provides the most accurate reference to the canopy, which is our area of interest.  This has not been possible for most of the coastal sites we have been using as there are often large (40-60 meter) “leave” trees near the site perimeter which would create greater changes in the flight altitude and reduce consistency therefore, we have been using DTMs for terrain following.  With terrain following, the drone automatically adjusts its altitude to remain constant above the DEM, regardless of changes in canopy elevation. This ensures the focal length and overlap remains consistent, preserving data quality and accuracy. Any flights with significant vertical change should be flown with terrain following enabled. For terrain following to be effective, an accurate DEM is required.  We use 1 meter resolution DTMs for our Terrain Following flights.  DTMs are becoming more available worldwide, and in BC we can access free LiDAR derived DTMs at 1m accuracy from [LiDAR BC](https://governmentofbc.maps.arcgis.com/apps/MapSeries/index.html?appid=d06b37979b0c4709b7fcf2a1ed458e03) for many areas of the province.  Remote sites outside of these areas require building your own DTM by first flying the site with LiDAR and processing the LiDAR to DTM ahead of the photogrammetry flights.  We have made our own DTMs for approximately half of the sites we have flown.  Figure \@ref(fig:terrain-following-figure) depicts the difference between a flight plan referencing the takeoff point, and a flight plan using terrain following.  The blue lines represent the field of view of the drone mounted sensor.  Note the red ovals where the overlap decreases as the ground rises on the top image when the flight elevation remains constant to takeoff.
 
+Figure \@ref(fig:terrain-following-figure)
 ```{r terrain-following-figure, echo=FALSE, out.width="100%", fig.cap = "Terrain following on variable topography."}
 knitr::include_graphics(here("Photos_&_gifs\\Terrain_following.PNG"))
 ```
 
 ## Site Selection Considerations
-Ideal site conditions and considerations when selecting sites prior to undertaking a drone-based phenotyping trial:
-**Ideal sites:**
-Ideal remote sensing sites are on well maintained, relatively flat ground with juvenile trees, just before the tree crowns begin encroaching on each other.  At this stage, competition between trees will not play a significant role, allowing for clearer data collection and analysis.  Douglas-fir trees at 4m tall on sites established at 2m spacing are a good example. The imagery below is of a five-year-old Douglas fir trial.
+Preferred site conditions and considerations when selecting sites prior to undertaking a drone-based phenotyping trial.
+
+**Ideal sites:**Ideal remote sensing sites are on well maintained, relatively flat ground with juvenile trees, just before the tree crowns begin encroaching on each other.  At this stage, competition between trees will not play a significant role, allowing for clearer data collection and analysis.  Douglas-fir trees at 4m tall on sites established at 2m spacing are a good example. The imagery below is of a five-year-old Douglas fir trial.
 
 ```{r ideal-site-figure, echo=FALSE, out.width="100%", fig.cap = "Aerial view of a 5 year old Douglas fir trial."}
 knitr::include_graphics(here("Photos_&_gifs\\ideal_sites.png"))
 ```
 
-**Effects of topography: Warning to take extra care**	
-Sites on ground with significant elevation change require extra care registering imagery and may require repeated alignment steps with manual intervention. The figures below show processed orthomosaic imagery from a multispectral camera with GCP points.  FigureXa is from a relatively flat site where all 4 GCPs were within 5cm of the template.  Figure Xb shows data collected with the same parameters in similar conditions and processed with the same settings on a sister site with an elevation change of 25m across the site.  We flew the site with terrain following enabled to maintain consistant height above the canopy, but the initial error was measured at 28cm.  Repeated alignment steps were able to reduce this error to within 10cm for the final product, but this required hours of reprocessing and manual intervention.
+**Effects of topography: Warning to take extra care**
 
-Below Figure \@ref(fig:GCP-elevation) 
+- Sites on ground with significant elevation change require extra care registering imagery and may require repeated alignment steps with manual intervention. Figure \@ref(fig:GCP-elevation) below show processed orthomosaic imagery from a multispectral camera with GCP points.  The left is from a relatively flat site where all 4 GCPs were within 5cm of the template.  The right side shows data collected with the same parameters in similar conditions and processed with the same settings on a sister site with an elevation change of 25m across the site.  We flew the site with terrain following enabled to maintain consistant height above the canopy, but the initial error was measured at 28cm.  Repeated alignment steps were able to reduce this error to within 10cm for the final product, but this required hours of reprocessing and manual intervention.
 
-```{r GCP-elevation, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Effect of brushing on crown visibility. Left: GCP alignment on flat ground (Error ~4cm). Right: GCP alignment on ground with elevation change (Error ~28cm)"}
+Figure \@ref(fig:GCP-elevation) 
+
+```{r GCP-elevation, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Effect of topograghy on alignment. Left: GCP alignment on flat ground (Error ~4cm). Right: GCP alignment on ground with elevation change (Error ~28cm)"}
 # Include the pre-brushing and post-brushing images
 knitr::include_graphics(c(
   here("Photos_&_gifs/GCP_flat_ground.png"),
@@ -88,10 +90,11 @@ cat(html)
 ```
 -->
 
-##Site Maintenance:Will produce cleaner data.
-Sites should be maintained to remove competing herbaceous plants and ingress.  On younger sites, summer brush growth around smaller trees will affect the imagery, so should be cut back from the trees.  To better understand the impact of brush on metrics derived from imagery (RGB or multispectral) imagine viewing the trees from an aerial perspective and drawing a polygon around the crown: Any brush or ingress that is within that polygon could contribute to incorrect metrics. 
+**Site Maintenance:Will produce cleaner data.**
 
-Cutting and piling woody debris on heavily overgrown sites can be problematic.  To produce accurate tree metrics, we rely on LiDAR sensors to create an accurate DTM.  At a heavily overgrown Western redcedar site we made the decision to have the ingress cut out to enable us to see the crowns. The LiDAR derived height compared to traditional measurements was calculated before and after brushing and was found to be significantly affected by the heavy piled debris.  Hence the decision on whether to remove competing vegetation should be based on the desired outcomes. Ideally, choose sites that have been well maintained.
+- Sites should be maintained to remove competing herbaceous plants and ingress.  On younger sites, summer brush growth around smaller trees will affect the imagery, so should be cut back from the trees.  To better understand the impact of brush on metrics derived from imagery (RGB or multispectral) imagine viewing the trees from an aerial perspective and drawing a polygon around the crown: Any brush or ingress that is within that polygon could contribute to incorrect metrics. 
+
+- Cutting and piling woody debris on heavily overgrown sites can be problematic.  To produce accurate tree metrics, we rely on LiDAR sensors to create an accurate DTM.  At a heavily overgrown Western redcedar site we made the decision to have the ingress cut out to enable us to see the crowns. The LiDAR derived height compared to traditional measurements was calculated before and after brushing and was found to be significantly affected by the heavy piled debris.  Hence the decision on whether to remove competing vegetation should be based on the desired outcomes. Ideally, choose sites that have been well maintained.
 
 Below Figure \@ref(fig:brushingEffect) shows an example of the effect of brushing on crown visibility at a moist, high-productivity common-garden trial.
 
@@ -103,31 +106,67 @@ knitr::include_graphics(c(
 ))
 ```
 
-##Age of sites: 
-Mature sites that have not been previously georeferenced or recently measured and have reached crown closure require significantly more manual editing to create and clean up delineated crowns.  For example, a 5-year-old site with 2500 trees took 2 days of manual processing to create and clean delineated tree crowns. At a site with a similar number of trees at age 25, manual editing of delineated crowns took just over a week as there were many more instances of neighbouring branches intruding on delineated crowns. See the chapters on georeferencing and crown delineation for detailed workflows.
-At mature sites where crown closure has occurred, competition can reduce the number of small trees that are visible in imagery.  At the mature East main Douglas fir site an on the ground Spring 2022 survey found 1612 live trees on site.  We were only able to produce crowns for 1514 of them and another 96 trees were partially obscured in the imagery.
-Young sites with small, thin trees may reduce confidence in extracted values from within the delineated crown area. At a 3-year-old Douglas-fir trial, for example, a small number of trees under 1m were difficult to identify and delineate from nearby brush. Their canopies were also thin, reducing confidence that reflectance values within the crown delineation polygon belong entirely to the tree’s foliage or to the brush/ground below. Similar concerns were observed for western redcedar trees under 1.5m. The ability to assess younger trees would be valuable, but further experimentation would be required. The ideal conditions for our team’s project objectives were Douglas-fir sites at 5 years and western redcedar sites at 10 years after establishment.
+**Mature Sites:** 
 
-##Site takeoff and landing requirements:
-[Transport Canada regulations](https://tc.canada.ca/en/aviation/drone-safety/learn-rules-you-fly-your-drone) dictate that Visual Line of Sight (VLOS) must be maintained with the drone.  A landing zone must be carefully chosen and have the following characteristics.
-Take-off/landing safety:
-The area designated for take-off and landing should be free of overhanging branches and surrounding large trees, which could create safety issues.
-Multispectral panel calibration:
-Multispectral sensors require calibration photos to be taken. These photos are required to be acquired in as large an open area as possible so that the data collected by the DLS correctly mimics the flight conditions. Panel Calibration procedures are detailed in the SOP_MS_field document.
-For RTK flight: 
-The Remote Control (RC) and base station are connected via Wi-Fi for RTK flight.  The effective range of this Wi-Fi requires set up near the landing zone and a clear skyline so connectivity can be established and maintained throughout the flight.  
-Should not be on a major road:
-Dust and traffic create difficulties, as do bystanders.
-It is recommended to fly sites from a higher vantage point. At one site, the only area with an acceptable line-of-site was approximately 500 meters uphill from the site. Therefore, we flew from this distance to maintain VLOS.
-In Canada, confirm that the site is in unrestricted airspace by checking the [Drone Site Selection Tool](https://nrc.canada.ca/en/drone-tool/) or be willing to apply for permissions.  Only pilots with an advanced license can apply for permission to fly in restricted airspace.  Permission is granted through the [NavDrone](https://map.navdrone.ca/) portal or app.
+- Mature sites with crown closure require more manual editing for crown delineation.
+
+- Example: A 5-year-old site (2500 trees) took 2 days of manual processing, while a 25-year-old site took over a week due to neighbouring branch interference.
+
+-	Competition in mature sites can obscure smaller trees, reducing visibility in imagery.
+
+-	Example: At the East Main Douglas fir site, 1612 live trees were surveyed, but only 1514 crowns were delineated, with 96 trees partially obscured.
+
+**Juvenile Sites:** 
+
+-	Small, thin trees in young sites may reduce confidence in extracted values within crown delineations.
+
+-	Example: A 3-year-old Douglas-fir trial had difficulty identifying trees under 1m due to nearby brush, with thin canopies further reducing reflectance accuracy.
+
+-	Similar concerns arose for western redcedar trees under 1.5m.
+
+**Site takeoff and landing requirements:**
+
+- [Transport Canada regulations](https://tc.canada.ca/en/aviation/drone-safety/learn-rules-you-fly-your-drone) dictate that Visual Line of Sight (VLOS) must be maintained with the drone.  A landing zone must be carefully chosen and have the following characteristics.
+
+- Take-off/landing safety:The area designated for take-off and landing should be free of overhanging branches and surrounding large trees, which could create connection and safety issues.
+
+- Multispectral panel calibration:Multispectral sensors require calibration photos to be taken. These photos are required to be acquired in as large an open area as possible so that the data collected by the DLS correctly mimics the flight conditions. Panel Calibration procedures are detailed [here]((https://github.com/owaite/GenomeBC_BPG/tree/main/SOPs)) in our SOP_MS_field document.
+
+- For RTK flight:The Remote Control (RC) and base station are connected via Wi-Fi for flight.  The effective range of this Wi-Fi requires set up near the landing zone and a clear skyline so connectivity can be established and maintained throughout the flight.  Consider PPK when this is not feasible.
+  
+- Should not be on a major road: Dust and traffic create difficulties, as do bystanders.
+  
+- It is recommended to fly sites from a higher vantage point. At one site, the only area with an acceptable line-of-site was approximately 500 meters uphill from the site. Therefore, we flew from this distance to maintain VLOS.
+
+- Confirm that the site is in unrestricted airspace (in Canada) by checking the [Drone Site Selection Tool](https://nrc.canada.ca/en/drone-tool/) or be willing to apply for permissions.  Only pilots with an advanced license can apply for permission to fly in restricted airspace.  Permission is granted through the [NavDrone](https://map.navdrone.ca/) portal or app.
 
 
 ## Drone and Sensors: What will I need to purchase and how much will it cost?
 
+The biggest capital investment will be for the sensors and drone.  Specific sensors and drones will be dictated by use case.  
+
+Our research was looking for sensors with the following attributes:  
+
+- High quality RGB capable of producing imagery that can differentiate branches from one tree to the next to delineate crowns and with high enough resolution to distinguish a Douglas fir plot tree from an ingress Western Hemlock.  It would also need to have centimeter level positional accuracy. 
+
+- 	Multispectral sensor –   The multispectral is the most important sensor to purchase and the final project results are based on its performance across a range of conditions.  We wanted a multispectral sensor capable of calculating a broad range of Vegetative Indices (VI).  There are more options for multispectral sensors if 5 or 6 wavelengths are okay.
+
+- 	LiDAR for its ability to penetrate through canopy to create accurate DTMs and to calculate structural metrics for each tree.
+
+- 	Thermal – to identify trees suffering from heat stress through thermal variations.
+We wanted a drone capable of carrying each of these sensors with the added ability to carry extra weight if a drone mounted sampling system could be implemented.  We chose the DJI Matrice 300 RTK (M300), an enterprise drone.  The newer model released in 2023 is the M350 with minor upgrades.
+
+We recommend the Emlid RS3 as a base station for RTK/PPK corrections, and a second RS3 as a rover to collect GCPs or stem mapping.
+
+Other options:
+The DJI Mavic 3 Multispectral is an all-in-one drone with a 4-band multispectral/RGB sensor capable of RTK. While this option does not support LiDAR or other sensors, it could be a viable solution if the limited vegetation indices available through this sensor are acceptable and the sites have enough ground exposure to allow for DTMs to be created with DAP if structural metrics are desired. It does not measure the downwelling radiance which may cause issues if correcting and comparing imagery over time.
+
+The Senterra 6X, is a six-band (five plus RGB) sensor that is also RTK capable. Senterra offers the ability to custom-fit wavelengths. MicaSense also produces several RTK-enabled multispectral sensors worth considering, including the Altum PT, which features five multispectral bands with pan sharpening and an integrated thermal camera.
+
+Table \@ref(tab:droneTable) shows a breakdown of drone and sensor costs, where newer versions are available, both are listed.  The * would be a “wishlist” full set up.  This is just the major purchases and doesn’t include general field equipment.  The section at the bottom details some options untested by our group.
+
+
 ### Hardware Costs
-
-
-
 
 Table \@ref(tab:droneTable)
 ```{r droneTable, echo = FALSE}
@@ -144,6 +183,7 @@ data <- data.frame(
                 "DJI Matrice (M)300 RTK",
                 "*DJI Matrice (M)350 RTK",
                 "*DJI TB65 batteries",
+                "*DJI TB65 charging station",
                 "DJI DRTK2",
                 "*Emlid RS3",
                 "*Emlid RS3"
@@ -157,6 +197,7 @@ data <- data.frame(
               "Drone",
               "Drone",
               "Drone batteries",
+              "Charging station",
               "GNSS receiver",
               "GNSS receiver",
               "GNSS receiver"
@@ -170,6 +211,7 @@ data <- data.frame(
            "$12,000",
            "$13,500",
            "$1,910",
+           "$1,300",
            "$4,200",
            "$3,600",
            "$3,600"
@@ -184,9 +226,10 @@ data <- data.frame(
   "2020 released DJI enterprise drone with RC, intelligent battery case and one set of batteries",
   "2023 released DJI enterprise drone with RC plus, intelligent battery case and one set of batteries",
   "Pair of the newer model M300/350 batteries. Good for one approximately 30-minute mapping flight including safety margins.  At least 4 pairs are recommended for continuous flight when paired with a small generator",
+  "Intelligent batery charging station in a hard carrying case for the newer batteries.",
   "GNSS receiver for use as base to stream RTK to drone",
   "GNSS receiver for use as base to stream RTK to drone and rover",
-  "GNSS receiver for use as rover for centimeter precise GCP or stem mapping"
+  "GNSS receiver for use as rover for centimeter precise GCP or stem mapping."
   )
   
   
@@ -224,6 +267,8 @@ data <- data.frame(
 kable(data, col.names = c("Hardware", "Purpose","Cost","Detail"), caption = 'Options that we would like to test in the future but have not yet had the chance to.')
 ```
 
-### Drone Training in Canada
+An excellent guide for starting costs is detailed in [Getting your drone research off the ground](https://www.silva21.com/extensionnotes?lang=en)
 
+### Drone Training in Canada
+In Canada, drone laws stipulate that a license is required to fly any drone weighing over 249 grams. There are two types of drone licenses: basic and advanced. The details for each type are available on the [Transport Canada (TC)](https://tc.canada.ca/en/aviation/drone-safety/learn-rules-you-fly-your-drone/find-your-category-drone-operation) webpage. Flights conducted in uncontrolled airspace only require a basic license.  If you have experienced pilots on staff and are only flying basic operations, the extra training might not be needed, however, we found the extra training and work for the advanced course to be beneficial and we highly recommend the [Indro Robotics](https://indrorobotics.ca/) training which can be tailored to fit most use cases. To prepare for the basic license The [Don Drones On](https://www.youtube.com/watch?v=ut44cLyXWLk) website has an excellent video.  
 ## 

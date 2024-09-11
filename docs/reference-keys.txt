@@ -59,7 +59,6 @@ site-selection-considerations
 drone-and-sensors-what-will-i-need-to-purchase-and-how-much-will-it-cost
 hardware-costs
 drone-training-in-canada
-section
 data-collection-and-flights
 hardware---dji-matrice-3000-rtk-m300
 battery-management
