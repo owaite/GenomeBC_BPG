@@ -1,3 +1,4 @@
+fig:Site-location-map
 fig:GCP-figure
 fig:terrain-following-figure
 fig:ideal-site-figure
@@ -39,6 +40,8 @@ fig:Qgis-maintained-ref-tree-fit
 fig:CC-las-input
 fig:CC-stem-transform
 fig:indv-tree-metrics
+abstract
+background-and-basis-of-knowledge
 range-of-sites-assessed
 jordan-river
 powell-river
@@ -56,6 +59,7 @@ drone-training-in-canada
 section
 data-collection-and-flights
 hardware---dji-matrice-3000-rtk-m300
+battery-management
 workflow-site-reconnaissance
 data-collection-flight-planning
 flight-planning-theory
@@ -63,6 +67,7 @@ flight-planning-with-dji-pilot
 data-collection-sensors-parameters-and-ideal-conditions
 micasense-10-band-spectral-sensor-for-vegetative-indices
 zenmuse-p1-high-quality-natural-colour-rgb-imagery
+zenmuse-l1-lidar-and-rgb
 photogrametric-processing
 processing-orthomosaics
 shadow-masks
