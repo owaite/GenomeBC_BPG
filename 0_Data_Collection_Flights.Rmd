@@ -69,7 +69,7 @@ The multispectral cameras are passive sensors and as such are sensitive to chang
 As seen in figure X the MicaSense Dual cameras are two sets of cameras, each captures 5 unique wavebands. The cameras write images as .tif with an _(x) for each of (x) wavelengths and organizes the images into folders with 1000 images per folder, in as many folders as needed. Image capture rate can be set as high as one image per second. A 25–30-minute flight that covers a 1.5-2 Ha site using the flight parameters outlined below will yield 5-6 folders per camera system producing 10-12 thousand images.  
 The MS sensors are particularly prone to difficulties writing to data cards and the data must be carefully checked and reflown if necessary.  We keep a spare set of SD cards for each sensor and will not overwrite any cards until the data has been confirmed by loading into the processing software.
 For the MS sensors, ensure SD cards used are formatted FAT32, they will not work in EXFAT32 or other formats. Formatting cards should be done through the MicaSense wireless connection using the built in format card button.  
-
+   
 
 Figure \@ref(fig:DLS-Micasense-connection)
 
