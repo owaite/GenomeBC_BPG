@@ -1,4 +1,4 @@
-# Georeferencing Plot Trees
+# Georeferencing Plot Trees  {#Georeferencing-Plot-Trees}
 
 
 ```{r genetic-layout, echo=FALSE, fig.align='center', out.width="100%", fig.cap = "The spreadsheet map of the layout of the site, each tree is located on a grid with a unique row and column value assigned to it."}
