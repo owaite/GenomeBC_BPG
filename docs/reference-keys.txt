@@ -72,6 +72,10 @@ crown-level-vegetation-indicies
 vi-workflow
 georeferencing-plot-trees
 crown-delineation
+circles-proportional-to-tree-height.
+supercell-raster
+filter-merge-supercells
+manually-edite-crowns
 lidar-processing-workflow
 dji-terra
 register-the-lidar-to-the-dap-point-cloud
