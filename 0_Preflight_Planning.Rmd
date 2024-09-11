@@ -147,23 +147,15 @@ The biggest capital investment will be for the sensors and drone.  Specific sens
 
 Our research was looking for sensors with the following attributes:  
 
-<<<<<<< Updated upstream
-- High quality RGB capable of producing imagery that can differentiate branches from one tree to the next to delineate crowns and with high enough resolution to distinguish a Douglas fir plot tree from an ingress Western Hemlock.  It would also need to have centimeter level positional accuracy. 
 
-- 	Multispectral sensor –   The multispectral is the most important sensor to purchase and the final project results are based on its performance across a range of conditions.  We wanted a multispectral sensor capable of calculating a broad range of Vegetative Indices (VI).  There are more options for multispectral sensors if 5 or 6 wavelengths are okay.
+- High quality RGB: capable of producing imagery that can differentiate branches from one tree to the next to delineate crowns and with high enough resolution to distinguish a Douglas fir plot tree from an ingress Western Hemlock.  It would also need to have centimeter level positional accuracy. 
 
-- 	LiDAR for its ability to penetrate through canopy to create accurate DTMs and to calculate structural metrics for each tree.
+- 	Multispectral sensor:   The multispectral is the most important sensor to purchase and the final project results are based on its performance across a range of conditions.  We wanted a multispectral sensor capable of calculating a broad range of Vegetative Indices (VI).  There are more options for multispectral sensors if 5 or 6 wavelengths are okay.
 
-- 	Thermal – to identify trees suffering from heat stress through thermal variations.
-=======
-1 	High quality RGB capable of producing imagery that can differentiate branches from one tree to the next to delineate crowns and with high enough resolution to distinguish a Douglas fir plot tree from an ingress Western Hemlock.  It would also need to have centimeter level positional accuracy. 
+- 	LiDAR: for its ability to penetrate through canopy to create accurate DTMs and to calculate structural metrics for each tree.
 
-2 	Multispectral sensor –   The multispectral is the most important sensor to purchase and the final project results are based on its performance across a range of conditions.  We wanted a multispectral sensor capable of calculating a broad range of Vegetative Indices (VI).  There are more options for multispectral sensors if 5 or 6 wavelengths are okay.
+- 	Thermal: to identify trees suffering from heat stress through thermal variations.
 
-3 	LiDAR for its ability to penetrate through canopy to create accurate DTMs and to calculate structural metrics for each tree.
-
-4 	Thermal – to identify trees suffering from heat stress through thermal variations.
->>>>>>> Stashed changes
 We wanted a drone capable of carrying each of these sensors with the added ability to carry extra weight if a drone mounted sampling system could be implemented.  We chose the DJI Matrice 300 RTK (M300), an enterprise drone.  The newer model released in 2023 is the M350 with minor upgrades.
 
 We recommend the Emlid RS3 as a base station for RTK/PPK corrections, and a second RS3 as a rover to collect GCPs or stem mapping.
