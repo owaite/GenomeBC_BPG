@@ -37,7 +37,7 @@ Outputs:
 
 
 ```{r, eval=FALSE, echo=TRUE}
-
+unique_id <- "treeID" # change this to the unique ID you have per tree
 site <- "Fdc_JR_East_GCA" 
 dir <- paste0("Q:\\SNC\\Data\\",site,"\\Site_Info\\03_GIS\\shapefiles\\")
 edited_grid <- paste0(dir,"Edited_Fdc_JR_East_GCA_ttops_0.3mBuffers_.shp")
@@ -58,7 +58,7 @@ ttops<- ttops%>%
   st_centroid()
 
 # Get heights from a circle around each ttops:
-# Create a buffer around each centroid with a radius of 30cm (0.3 meters)
+# Create a buffer around each centroid with a radius of 10cm (0.1 meters)
 buffer_radius <- 0.1  # in meters
 ttops_buffered <- st_buffer(ttops, dist = buffer_radius)
 plot(ttops_buffered$geometry, add = TRUE,col = "blue")
@@ -79,10 +79,10 @@ extracted_values = ttops_buffered %>%
                 fun = "quantile",
                 quantiles = c(0.975, 0.99),
                 force_df = TRUE,
-                append_cols = c("TAG"))
+                append_cols = c(unique_id)) 
 
 # Assign the pixel IDs to each polygon
-ttops_zq99 <- left_join(ttops_buffered, extracted_values, by = c("TAG"))
+ttops_zq99 <- left_join(ttops_buffered, extracted_values, by = c(unique_id))
 
 # Checking heights look correct
 # Fit a linear regression model
@@ -142,6 +142,13 @@ st_write(prop_hulls_forSEG, paste0(crown_dir,"Buffer_radius_ttops_",buffer_radiu
 
 
 ```
+
+
+```{r prop-cirlce-crowns, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "                 "}
+knitr::include_graphics(here("Photos_&_gifs\\prop_cirlce_Crowndelin.PNG"))
+```
+
+
 
 ## Supercell Raster
 
@@ -251,7 +258,12 @@ st_write(obj = dplyr::select(seg, supercells, geometry),
 ```
 
 
+```{r seg-parts, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "                 "}
+knitr::include_graphics(here("Photos_&_gifs\\seg_Crowndelin.PNG"))
+```
+
 ## Filter & Merge Supercells
+
 ```{r, eval=FALSE, echo=TRUE}
 ################################################################################
 # (6) Filter out polygons that don't touch the proportional height circles
@@ -298,6 +310,14 @@ st_write(obj = seg1,
          driver = "ESRI Shapefile",
          append = FALSE)
 
+```
+
+
+
+```{r seg-intersection, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "                 "}
+knitr::include_graphics(here("Photos_&_gifs\\seg_intersection_Crowndelin.PNG"))
+```
+```{r, eval=FALSE, echo=TRUE}
 seg2 = seg1 %>% 
   mutate(z50_L2 = q99 * .5) %>% #filtering out supercells where the CHM value in that super cell as less than 50% of the 99th percentile (~50th height percentile)
   mutate(TAG_archive = TAG,
@@ -316,6 +336,42 @@ st_write(obj = seg2,
          append = FALSE)
 
 dim(seg2)       
+
+```
+
+
+```{r seg-initial, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "                 "}
+knitr::include_graphics(here("Photos_&_gifs\\seg_initial_Crowndelin.PNG"))
+```
+```{r seg-centroids, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "                 "}
+knitr::include_graphics(here("Photos_&_gifs\\seg_centroids_Crowndelin.PNG"))
+```
+
+```{r seg-keep, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "                 "}
+knitr::include_graphics(here("Photos_&_gifs\\seg_keep_outline_Crowndelin.PNG"))
+```
+
+
+```{r seg-merge, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "                 "}
+knitr::include_graphics(here("Photos_&_gifs\\seg_merge_Crowndelin.PNG"))
+```
+
+```{r seg-merge-smooth, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "                 "}
+knitr::include_graphics(here("Photos_&_gifs\\seg_merge_smooth_Crowndelin.PNG"))
+```
+```{r seg-merge-smooth-np, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "                 "}
+knitr::include_graphics(here("Photos_&_gifs\\seg_merge_smooth_NMP_Crowndelin.PNG"))
+```
+```{r crown-seg, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "                 "}
+knitr::include_graphics(here("Photos_&_gifs\\seg_crowns_Crowndelin.PNG"))
+```
+```{r crown-circ, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "                 "}
+knitr::include_graphics(here("Photos_&_gifs\\seg_crowns_w_propcircles_Crowndelin.PNG"))
+```
+
+
+
+```{r, eval=FALSE, echo=TRUE}
 
 seg3 = seg2 %>% 
   filter(TAG != 0) %>% 
@@ -397,6 +453,6 @@ st_write(obj = seg5_smooth_NM_attributes,
 
 
 
-```{r delin-crowns, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "Delineated crowns at Bit Tree Creek with partially obscured plot trees in purple."}
+```{r 2-delin-crowns, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "Delineated crowns at Bit Tree Creek with partially obscured plot trees in purple."}
 knitr::include_graphics(here("Photos_&_gifs\\crowns.PNG"))
 ```

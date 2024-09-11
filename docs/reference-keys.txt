@@ -37,7 +37,7 @@ fig:ref-trees
 fig:Qgis-ref-trees
 fig:Qgis-ref-tree-fit
 fig:Qgis-maintained-ref-tree-fit
-fig:delin-crowns
+fig:2-delin-crowns
 fig:CC-las-input
 fig:CC-stem-transform
 fig:indv-tree-metrics
