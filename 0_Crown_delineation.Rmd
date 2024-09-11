@@ -1,0 +1,402 @@
+# Crown delineation 
+
+We are using supercells to create delineated crowns using:
+
+1) A shapefile (.shp) with a grid of tree locations derived by georeferencing the census data to the imagery. This will be referred to as the “grid”. Detailed steps for creating the grid can be found in the [Georeferencing Plot Trees](0_Tree_Georeferencing#Georeferencing Plot Trees) chapter
+
+2) Co-registered CHM made from normalized maximum elevation (Z) values, MicaSense orthomosaic, and P1 orthomosaic, ideally from the same date. 
+
+The R code contains commented sections where manual editing in a GIS is required. Below steps starting with (R) are steps done in the R code and (GIS) are steps requiring editing in a GIS such as QGIS or ArcGIS. The R code does the following: 
+
+- (R) The grid treetop points are buffered by 30-40cm, and using the CHM, the grid is snapped to the maximum value within this circle. 
+
+- (GIS) Check the location of the treetops to the P1 orthomosaic and manual move treetops to align with trees in the P1 orthomosaic where necessary. 
+
+- (R) Load in manually edited treetops, create circles proportional to tree height. 
+
+- (R) Create a supercell segmentation raster using the CHM and MicaSense and P1 orthomosaics 
+
+- (R) Filter out segments that do not touch any of the circles proportional to tree height 
+
+- (R) Merge remaining segments to create crown polygons 
+
+- (GIS) Load into a GIS, along with the edited treetops and P1 orthomosaic, and edit the crown polygons to remove sections where neighbouring branches intersect the crown to ensure the crowns contain only data from the correct tree.  Obscured trees are given a crown confidence score and can be removed at analysis.  This is the most manually time-consuming process in the whole project.    
+
+
+
+
+## Circles Proportional to Tree Height. 
+
+Inputs:
+ 1) CHM 
+ 2) manually edited grid points
+
+Outputs:
+ 1) Buffered grid points shapefile
+ 2) Circles Proportional to 9th height percentile shp
+
+
+```{r, eval=FALSE, echo=TRUE}
+
+site <- "Fdc_JR_East_GCA" 
+dir <- paste0("Q:\\SNC\\Data\\",site,"\\Site_Info\\03_GIS\\shapefiles\\")
+edited_grid <- paste0(dir,"Edited_Fdc_JR_East_GCA_ttops_0.3mBuffers_.shp")
+
+
+CHM_L1 <- "path to CHM"
+CHM_max_L1 <- rast(CHM_L1)
+
+
+crown_dir <- paste0("Q:\\SNC\\Data\\",site,"\\Site_Info\\GIS\\shapefiles\\Crowns\\")
+if(!dir.exists(crown_dir)){
+  dir.create(crown_dir)
+}
+
+# read in the treetops as an sp object
+ttops <- st_read(edited_grid)
+ttops<- ttops%>%
+  st_centroid()
+
+# Get heights from a circle around each ttops:
+# Create a buffer around each centroid with a radius of 30cm (0.3 meters)
+buffer_radius <- 0.1  # in meters
+ttops_buffered <- st_buffer(ttops, dist = buffer_radius)
+plot(ttops_buffered$geometry, add = TRUE,col = "blue")
+
+#Check geometries, this should be  = 0
+sum(!st_is_valid(ttops_buffered))
+
+#Check crs info
+crs(CHM_max_L1) 
+st_crs(ttops_buffered)
+
+ttops_buffered <- ttops_buffered[!st_is_empty(ttops_buffered), ]
+
+# Height Quantile from CHM
+extracted_values = ttops_buffered %>%
+  exact_extract(x = CHM_max_L1,
+                y = .,
+                fun = "quantile",
+                quantiles = c(0.975, 0.99),
+                force_df = TRUE,
+                append_cols = c("TAG"))
+
+# Assign the pixel IDs to each polygon
+ttops_zq99 <- left_join(ttops_buffered, extracted_values, by = c("TAG"))
+
+# Checking heights look correct
+# Fit a linear regression model
+ttops_buffered_plot <- ttops_zq99 %>%
+  filter(!is.na(HT2021),
+         HT2021 > 2)
+plot(ttops_buffered_plot$geometry)
+
+model <- lm(q99 ~ HT2021, data = ttops_buffered_plot)
+# Get the R-squared value
+(r_squared <- summary(model)$r.squared)
+
+ggplot(data = ttops_buffered_plot, aes(x = HT2021, y = q99)) +
+  geom_smooth(method = "lm", se=FALSE, color="black", formula = y ~ x) +
+  labs(title = paste0("buffer_radius: ", buffer_radius, "m"))+
+  geom_point()
+
+# Saving out shp of buffered points
+if(!dir.exists(paste0(crown_dir,"Buffer_radius_ttops_",buffer_radius))){
+  dir.create(paste0(crown_dir,"Buffer_radius_ttops_",buffer_radius))
+}
+st_write(ttops_zq99, paste0(crown_dir,"Buffer_radius_ttops_",buffer_radius,"\\",site,"_ttops_",buffer_radius,"mBuffers_.shp"), 
+         append = FALSE)
+
+# Proportional hulls based on 99th percentile
+percent <- 10
+(buffer_dist <- ttops_zq99$q99 * (percent/100)/2)
+length(buffer_dist)
+
+buffer_dist[is.na(buffer_dist)] <- 0
+
+prop_hulls <- ttops_zq99%>%
+  st_as_sf(crs = 26910)%>%
+  st_buffer(dist = buffer_dist)%>% #value here is radius
+  mutate(buff = buffer_dist)
+
+(prop_hulls$crownArea <- st_area(prop_hulls))
+
+plot(prop_hulls$geometry)
+
+st_write(prop_hulls, paste0(crown_dir,"Buffer_radius_ttops_",buffer_radius,"\\",site,"_proportional_Hulls_Diam",percent,"percent_zq99.shp"), 
+         append = FALSE)
+
+(na_counts <- colSums(is.na(prop_hulls)))
+# Remove unnecessary columns with lots of NAs from above
+
+colnames(prop_hulls)
+prop_hulls_forSEG <- prop_hulls %>%
+  dplyr::select(c(TAG, row, col, q99, q97, crownArea)) #has lots of NAs that throw errors for below seg1, seg1 below removes rows with NA values, so make sure to take out columns with lots of NAs here if theyre not needed below
+
+plot(prop_hulls_forSEG$geometry)
+
+st_write(prop_hulls_forSEG, paste0(crown_dir,"Buffer_radius_ttops_",buffer_radius,"\\",site,"_proportional_Hulls_Diam",percent,"percent_zq99_forSEG_.shp"), 
+         append = FALSE)
+
+(na_counts <- colSums(is.na(prop_hulls_forSEG)))
+
+
+```
+
+## Supercell Raster
+
+```{r, eval=FALSE, echo=TRUE}
+library(future)
+library(supercells)
+library(RStoolbox)
+#FDC East:
+ms_path <- "Q:\\SNC\\Data\\Fdc_JR_East_GCA\\Flights\\2024_03_13\\2_Inputs\\metashape\\3_MS_ORTHO\\Fdc_JR_East_GCA_2024_03_13_Calp15p1049_MS.tif"
+p1_path <- "Q:\\SNC\\Data\\Fdc_JR_East_GCA\\Flights\\2024_03_13\\2_Inputs\\metashape\\2_ORTHO\\Fdc_East_2024_03_13_P1_Aligned_Surrogate.tif"
+
+
+# 
+# ms_path <- "Q:\\SNC\\Data\\Hillcrest_GCA\\Flights\\2024_03_15\\2_Inputs\\metashape\\3_MS_ORTHO\\Hillcrest_GCA_2024_03_15_MS_noCor_Calp13p1562.tif"
+# p1_path <- "Q:\\SNC\\Data\\Hillcrest_GCA\\Flights\\2024_03_15\\2_Inputs\\metashape\\2_ORTHO\\Hillcrest_P1_240315_noCor_high.tif"
+# # ms_P_path <- "Q:\\SNC\\Data\\Big_Tree_GCA\\Flights\\2024_03_19\\2_Inputs\\metashape\\3_MS_ORTHO\\Fdc_Big_Tree_2024_03_19_PPP_PPK_Calp20p1083_MS_P.tif"
+
+test_folder <- ""
+
+prop_hulls <- paste0(crown_dir,"Buffer_radius_ttops_",buffer_radius,"\\",site,"_proportional_Hulls_Diam",percent,"percent_zq99_forSEG_.shp")
+
+# bound = grid_buf
+Hulls = st_read(prop_hulls) %>%
+  st_transform(crs = 26910)
+
+#buffer hulls by 5m to get a bounding box to trim rasters with
+bound = Hulls %>%
+  st_buffer(5)
+
+plot(CHM_max_L1)
+plot(Hulls$geometry, col = "red", add = TRUE)
+#plot(rast(ms_ortho))
+# Raster to input to make supercells
+CHM_max_L1 = rast(CHM_L1) %>%
+  # terra::focal(w = 3, fun = "median", na.policy = "only", na.rm = TRUE) %>%
+  # terra::focal(w = 3, fun = "median", na.policy = "only", na.rm = TRUE) %>%
+  # resample(CHM_max_L2) %>%
+  crop(bound) %>%
+  trim()
+
+
+ms_ortho = rast(ms_path)[[c(1,6,9)]] %>% 
+  resample(CHM_max_L1, method = "near") %>% 
+  crop(bound)%>%
+  trim
+
+# ms_P_ortho = rast(ms_P_path)[[c(1,3,5)]] %>% 
+#   resample(CHM_max_L1, method = "near") %>% 
+#   crop(bound)%>%
+#   trim
+
+rgb = rast(p1_path)[[1:3]] %>% 
+  resample(CHM_max_L1,method = "near") %>% #,
+  # rast("D:\\Sync\\_Sites\\Skimikin_spectral\\input\\ORTHO\\Skimikin_2021_08_14_RGB.tif")[[1:3]] %>% 
+  #   resample(CHM_max_2022_04_23)) %>% 
+  crop(bound) %>%
+  trim
+
+plot(ext(ms_ortho))
+plot(ext(bound), col = "red" ,add = TRUE)
+plot(ext(CHM_max_L1), col = "blue" ,add = TRUE)
+
+crs(ms_ortho) <- crs(CHM_max_L1) 
+crs(rgb)<- crs(CHM_max_L1) 
+
+crs(CHM_max_L1) == crs(ms_ortho)
+
+use = c( 
+  CHM_max_L1,
+  ms_ortho,
+  rgb)
+
+use[use > 60000] = NA
+
+use2 = terra::scale(use)
+
+if(!dir.exists(paste0(crown_dir,"Crown_segmentation\\"))){
+  dir.create(paste0(crown_dir,"Crown_segmentation\\"))
+}
+
+if(!dir.exists(paste0(crown_dir,"Crown_segmentation", test_folder,"\\"))){
+  dir.create(paste0(crown_dir,"Crown_segmentation", test_folder,"\\"))
+  print("Created")
+}
+
+crown_dir_folder <- paste0(crown_dir,"Crown_segmentation", test_folder,"\\")
+
+writeRaster(use2, paste0(crown_dir_folder,"scaled_for_segments.tif"),
+            overwrite = TRUE)
+
+use3 = use2 %>% 
+  ifel(#CHM_max_L2 < .25 &
+    CHM_max_L1 < .25 , 
+    NA, .)
+
+plan(multisession, workers = 6L)
+
+seg = supercells(use3, step = 6, compactness = 5, iter = 50)
+
+if(!dir.exists(paste0(crown_dir_folder,"HULLS"))){
+  dir.create(paste0(crown_dir_folder,"HULLS"))
+}
+st_write(obj = dplyr::select(seg, supercells, geometry), 
+         dsn = paste0(crown_dir_folder,"HULLS\\",site,"_SEGS_step6_c5.shp"),
+         driver = "ESRI Shapefile",
+         append = FALSE)
+```
+
+
+## Filter & Merge Supercells
+```{r, eval=FALSE, echo=TRUE}
+################################################################################
+# (6) Filter out polygons that don't touch the proportional height circles
+################################################################################
+library(smoothr) #for fill_holes
+
+if(!dir.exists(paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99"))){
+  dir.create(paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99"))
+}
+seg = st_read(paste0(crown_dir_folder,"HULLS\\",site,"_SEGS_step6_c5.shp"))
+
+
+chm_dat = c(CHM_max_L1#, 
+            #CHM_max_L2
+)
+names(chm_dat) = c("CHM_max_L1"#, 
+                   #"CHM_max_L2"
+)
+
+seg_extract = seg %>% 
+  exact_extract(x = chm_dat,
+                y = .,
+                fun = "max",
+                force_df = TRUE,
+                append_cols = c("supercells"))
+
+class(seg_extract)
+
+seg1 = st_join(seg, prop_hulls_forSEG) %>% 
+  drop_na() %>% 
+  group_by(supercells) %>% 
+  mutate(count = n()) %>% 
+  # rename("max_L1_poly" = "CHM_max_L1",
+  #        "max_L2_poly" = "CHM_max_L2") %>%
+  left_join(seg_extract, by = c("supercells"))
+
+class(seg1)
+
+saveRDS(seg1, paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99\\SEG_intersection.rds"))
+colnames(seg1)
+
+st_write(obj = seg1, 
+         dsn = paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99\\SEG_intersection.shp"),
+         driver = "ESRI Shapefile",
+         append = FALSE)
+
+seg2 = seg1 %>% 
+  mutate(z50_L2 = q99 * .5) %>% #filtering out supercells where the CHM value in that super cell as less than 50% of the 99th percentile (~50th height percentile)
+  mutate(TAG_archive = TAG,
+    TAG = if_else(
+    max > z50_L2, #&
+    # max.CHM_max_L2 > z50_L2,
+    TAG, 0)) %>% 
+  group_by(supercells) %>% 
+  mutate(count = n()) %>% 
+  mutate(TAG = if_else(count > 1, 0, TAG))
+
+
+st_write(obj = seg2, 
+         dsn = paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99\\SEGS_initial.shp"),
+         driver = "ESRI Shapefile",
+         append = FALSE)
+
+dim(seg2)       
+
+seg3 = seg2 %>% 
+  filter(TAG != 0) %>% 
+  st_centroid() %>% 
+  st_join(y = prop_hulls_forSEG, join = st_within) %>% 
+  drop_na() %>% 
+  dplyr::select(supercells, geometry)
+
+st_write(obj = seg3, 
+         dsn = paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99\\SEGS_centroids.shp"),
+         driver = "ESRI Shapefile",
+         append = FALSE)
+
+plot(seg3)
+
+seg4 = seg2 %>% 
+  st_join(seg3) %>% 
+  drop_na() 
+
+seg5 = seg4 %>% 
+  group_by(TAG) %>% 
+  summarise()
+
+plot(seg5)
+
+st_write(obj = seg4, 
+         dsn = paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99\\SEGS_keep.shp"),
+         driver = "ESRI Shapefile",
+         append = FALSE)
+
+st_write(obj = seg5, 
+         dsn = paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99\\SEGS_merge.shp"),
+         driver = "ESRI Shapefile",
+         append = FALSE)
+
+seg5_smooth <- seg5 %>% 
+  fill_holes(threshold = units::set_units(2000, "cm^2"))
+
+## CHECK:
+# test_tree <- seg5_smooth %>%
+#   filter(TAG_filtered == 664)
+# plot(test_tree$geometry, col = "red")
+
+st_write(obj = seg5_smooth, 
+         dsn = paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99\\SEGS_merge_smooth.shp"),
+         driver = "ESRI Shapefile",
+         append = FALSE)
+
+unique(st_geometry_type(seg5_smooth))
+
+seg5_smooth_NM <- st_cast(seg5_smooth, "POLYGON")
+# 
+unique(st_geometry_type(seg5_smooth_NM)) # should only have "Polygon" no more multipolygons
+
+st_write(obj = seg5_smooth_NM, 
+         dsn = paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99\\HULLS\\SEGS_merge_smooth_NoMultipolygon.shp"),
+         driver = "ESRI Shapefile",
+         append = FALSE)
+
+## adding in attributes back
+att <- ttops %>%
+  as.data.frame()%>%
+  dplyr::select(-c(geometry))
+
+(seg5_smooth_NM_attributes <- left_join(seg5_smooth_NM,att, by = "TAG" ))
+
+st_write(obj = seg5_smooth_NM_attributes, 
+         dsn = paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99\\HULLS\\SEGS_merge_smooth_NoMultipolygon_Attributes.shp"),
+         driver = "ESRI Shapefile",
+         append = FALSE)
+
+
+```
+
+## Manually Edite Crowns
+```{r, eval=FALSE, echo=TRUE}
+
+```
+
+
+
+```{r delin-crowns, echo=FALSE,fig.align = 'center',out.width="60%", fig.cap= "Delineated crowns at Bit Tree Creek with partially obscured plot trees in purple."}
+knitr::include_graphics(here("Photos_&_gifs\\crowns.PNG"))
+```
