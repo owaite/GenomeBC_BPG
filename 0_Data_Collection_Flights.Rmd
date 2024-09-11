@@ -63,10 +63,16 @@ knitr::include_graphics(here("Photos_&_gifs\\P1_flight_plan.png"))
 ## Data Collection: Sensors, Parameters, and Ideal Conditions 
 ### MicaSense: 10-Band Spectral Sensor for Vegetative Indices 
 
-The MicaSense RedEdge-MX Dual (MS) and its replacement, the Micasense RedEdge-P Dual (MS_P), (where P represents panchromatic), are 10-Band multispectral sensors that detect reflectance in ten specific wavebands of reflected light that provide useful information on vegetation health. The MS_P includes an 11th camera that is senstive to a wide range of wavelengths across the visible and NIR spectra, allowing it to capture a much larger amount of light (photons) per capture, and thus producing a higher spatial resolution product that allows for pansharpening. 
+The MicaSense RedEdge-MX Dual (MS) and its replacement, the Micasense RedEdge-P Dual (MS_P), (where P represents panchromatic), are 10-Band multispectral sensors that detect reflectance in ten specific wavebands of reflected light that provide useful information on vegetation health. The MS_P includes an 11th camera that is senstive to a wide range of wavelengths across the visible and NIR spectra, allowing it to capture a much larger amount of light (photons) per capture, and thus producing a higher spatial resolution product that allows for pansharpening.
+
 The MicaSense (MS) cameras are powered by the M300, but the gimbal mount only provides power; the camera itself is not integrated and does not communicate with the drone or remote controller. The camera is started via a laptop or phone though a Wi-Fi port connection housed on the MS and runs until the camera is linked again and stopped or the drone is powered down.
-The multispectral cameras are passive sensors and as such are sensitive to changing light conditions. To detect these changes Micasense cameras use a Downwelling Light Sensor (DLS), which is mounted to the top of the M300, to measure ambient light conditions during flight and sun to sensor angles.  These measurements are written into the metadata of each photo. We are using the DLS2 which measures the ambient light and sun angle using 10 small circular sensors spread across the top of the DLS.  Hence, it is imperative that these sensors are clean to avoid erroneous measurements. Multispectral sensors also require calibration photos to be taken at the start and end of each flight. This involves taking pictures of a specialized MicaSense calibration panel with known reflectance values. These pictures need to be taken in an open area for the DLS to correctly mimic the current flight conditions, ideally the location is large enough to avoid scattering from nearby vegetation or other objects.  Ensure there are no shadows being cast onto the panel or over the DLS as these calibration pictures are taken, either from nearby objects, vegetation, or the person taking the photos.
-As seen in figure X the MicaSense Dual cameras are two sets of cameras, each captures 5 unique wavebands. The cameras write images as .tif with an _(x) for each of (x) wavelengths and organizes the images into folders with 1000 images per folder, in as many folders as needed. Image capture rate can be set as high as one image per second. A 25–30-minute flight that covers a 1.5-2 Ha site using the flight parameters outlined below will yield 5-6 folders per camera system producing 10-12 thousand images.  
+
+The multispectral cameras are passive sensors and as such are sensitive to changing light conditions. To detect these changes Micasense cameras use a Downwelling Light Sensor (DLS), which is mounted to the top of the M300, to measure ambient light conditions during flight and sun to sensor angles.  These measurements are written into the metadata of each photo. We are using the DLS2 which measures the ambient light and sun angle using 10 small circular sensors spread across the top of the DLS.  Hence, it is imperative that these sensors are clean to avoid erroneous measurements.
+
+Multispectral sensors also require calibration photos to be taken at the start and end of each flight. This involves taking pictures of a specialized MicaSense calibration panel with known reflectance values. These pictures need to be taken in an open area for the DLS to correctly mimic the current flight conditions, ideally the location is large enough to avoid scattering from nearby vegetation or other objects.  Ensure there are no shadows being cast onto the panel or over the DLS as these calibration pictures are taken, either from nearby objects, vegetation, or the person taking the photos.
+
+As seen in Figure \@ref(fig:DLS-Micasense-connection) the MicaSense Dual cameras are two sets of cameras, each captures 5 unique wavebands. The cameras write images as .tif with an _(x) for each of (x) wavelengths and organizes the images into folders with 1000 images per folder, in as many folders as needed. Image capture rate can be set as high as one image per second. A 25–30-minute flight that covers a 1.5-2 Ha site using the flight parameters outlined below will yield 5-6 folders per camera system producing 10-12 thousand images.
+
 The MS sensors are particularly prone to difficulties writing to data cards and the data must be carefully checked and reflown if necessary.  We keep a spare set of SD cards for each sensor and will not overwrite any cards until the data has been confirmed by loading into the processing software.
 For the MS sensors, ensure SD cards used are formatted FAT32, they will not work in EXFAT32 or other formats. Formatting cards should be done through the MicaSense wireless connection using the built in format card button.  
    
@@ -188,13 +194,11 @@ knitr::include_graphics(c(here("Photos_&_gifs\\variable_light.png"),
 )
 ```
 
-  - The ideal flight as in Figure \@ref(fig:drone-variable-light) would be at solar noon in evenly overcast (diffuse) light conditions. 
-
   - **Wind Conditions:** Lower wind speeds yield better results; however, the impact of wind will vary depending on species and site-specific factors.  Consider flying at a higher altitude and overlap in windier conditions. 
 
   - **Flight Elevation Considerations:** While lower flight elevations produce higher resolution images, they increase flight time, making calibration more challenging. 
 
-Click [here](https://github.com/owaite/GenomeBC_BPG/tree/main/Example_Documents) to access the Micasense field SOP housed on GitHub. 
+Click [here](https://github.com/owaite/GenomeBC_BPG/tree/main/SOPs) to access our Micasense field SOP housed on GitHub. 
 
 [Best practices: Collecting Data with MicaSense Sensors – MicaSense Knowledge Base](https://support.micasense.com/hc/en-us/articles/224893167-Best-practices-Collecting-Data-with-MicaSense-Sensors) is an important resource.
 
@@ -257,11 +261,11 @@ The L1 LiDAR is used to build DTMs for terrain following when one is not availab
 
 - **RGB Imagery:** The L1 also includes a 20 MP RGB camera, which can be used as a lower resolution substitute for a P1 camera.
 
--**System Accuracy:** 10cm Horizontal, 5cm Vertical (50m AGL)  
+- **System Accuracy:** 10cm Horizontal, 5cm Vertical (50m AGL)  
 
 - **Moisture Resistance:** Rated for rainy or foggy conditions, but moisture in the air can result in noise and overall degrade point cloud quality; not recommended to fly in such conditions.
 
-**Flight Parameteres:**  These settings have been effective for coastal open and closed canopy sites.
+**Flight Parameters:**  These settings have been effective for coastal open and closed canopy sites.
 
 - **Repetitive Scan Mode:** Recommended for detailed terrain and vegetation profiling.  This is being further tested.
 

@@ -147,6 +147,7 @@ The biggest capital investment will be for the sensors and drone.  Specific sens
 
 Our research was looking for sensors with the following attributes:  
 
+<<<<<<< Updated upstream
 - High quality RGB capable of producing imagery that can differentiate branches from one tree to the next to delineate crowns and with high enough resolution to distinguish a Douglas fir plot tree from an ingress Western Hemlock.  It would also need to have centimeter level positional accuracy. 
 
 - 	Multispectral sensor –   The multispectral is the most important sensor to purchase and the final project results are based on its performance across a range of conditions.  We wanted a multispectral sensor capable of calculating a broad range of Vegetative Indices (VI).  There are more options for multispectral sensors if 5 or 6 wavelengths are okay.
@@ -154,6 +155,15 @@ Our research was looking for sensors with the following attributes:
 - 	LiDAR for its ability to penetrate through canopy to create accurate DTMs and to calculate structural metrics for each tree.
 
 - 	Thermal – to identify trees suffering from heat stress through thermal variations.
+=======
+1 	High quality RGB capable of producing imagery that can differentiate branches from one tree to the next to delineate crowns and with high enough resolution to distinguish a Douglas fir plot tree from an ingress Western Hemlock.  It would also need to have centimeter level positional accuracy. 
+
+2 	Multispectral sensor –   The multispectral is the most important sensor to purchase and the final project results are based on its performance across a range of conditions.  We wanted a multispectral sensor capable of calculating a broad range of Vegetative Indices (VI).  There are more options for multispectral sensors if 5 or 6 wavelengths are okay.
+
+3 	LiDAR for its ability to penetrate through canopy to create accurate DTMs and to calculate structural metrics for each tree.
+
+4 	Thermal – to identify trees suffering from heat stress through thermal variations.
+>>>>>>> Stashed changes
 We wanted a drone capable of carrying each of these sensors with the added ability to carry extra weight if a drone mounted sampling system could be implemented.  We chose the DJI Matrice 300 RTK (M300), an enterprise drone.  The newer model released in 2023 is the M350 with minor upgrades.
 
 We recommend the Emlid RS3 as a base station for RTK/PPK corrections, and a second RS3 as a rover to collect GCPs or stem mapping.
@@ -271,4 +281,3 @@ An excellent guide for starting costs is detailed in [Getting your drone researc
 
 ### Drone Training in Canada
 In Canada, drone laws stipulate that a license is required to fly any drone weighing over 249 grams. There are two types of drone licenses: basic and advanced. The details for each type are available on the [Transport Canada (TC)](https://tc.canada.ca/en/aviation/drone-safety/learn-rules-you-fly-your-drone/find-your-category-drone-operation) webpage. Flights conducted in uncontrolled airspace only require a basic license.  If you have experienced pilots on staff and are only flying basic operations, the extra training might not be needed, however, we found the extra training and work for the advanced course to be beneficial and we highly recommend the [Indro Robotics](https://indrorobotics.ca/) training which can be tailored to fit most use cases. To prepare for the basic license The [Don Drones On](https://www.youtube.com/watch?v=ut44cLyXWLk) website has an excellent video.  
-## 
