@@ -3,7 +3,7 @@
 
 This method converts raw imagery from the Zenmuse H20T to single band temperature tiffs. We use this method to bypass the DJI thermal analysis tool app since we had thousands of images to process and the app would often crash when a few images were uploaded. This method uses the DJI thermal analysis tool's software developer kit (SDK) instead to loop through a folder of images and return temperature rasters.
 
-This method consists of ### parts:
+This method consists of:
 
 1) Gathering all "*_T.JPG" imagery into a single folder to loop through
 
@@ -183,13 +183,7 @@ The parameters required as inputs for DJI thermal's SDK are:
 
 - **Distance**: The distance from the sensor to the target (i.e. tree crowns). The H20T is an infrared thermal sensor that measures the infrared radiation received from objects. Hence, the further away the object, the more the radiation attenuates and the less accurate the temperature measurement. The maximum distance that the thermal analysis tools allows is 25m. In our case, we are flying higher (~40m away from the crowns, depending on the site) and thus use the 25m maximum and interpret the temperature values as relative to each other while understanding that the absolute temperature value likely contains error given the distance between the sensor and the object.
 
-- **Emissivity**: The emissivity of a material is a measure of its ability to emit energy as thermal radiation. The default value is 1. 
-
-#default emissivity is set to 1
-# trees in general are 0.98: http://www.treethermography.it/infrared_radiation.htm
-#another source that used 0.98 for conifers: https://www.sciencedirect.com/science/article/pii/S0168192317303301
-#another course using 0.98 for conifers (Pine in this case) : https://www.sciencedirect.com/science/article/pii/S003442579600123X 
-#to calculate the true averaged emissivity value, we would need to know the true temeprature : https://reader.elsevier.com/reader/sd/pii/0168192395023135?token=B6C189C4F8E67AFEE720AC4F9E6755B03D88B74588FB5629439ACC70360D4782DEDCA3BED6740F24C5E2A72E4F606713&originRegion=us-east-1&originCreation=20221024174023
+- **Emissivity**: The emissivity of a material is a measure of its ability to emit energy as thermal radiation. The default value is 1. We used a value of 0.98 as an estimate for all conifers (Rubio et al., 1997).
 
 ```{r, eval=FALSE, echo=TRUE}
 #setting parameters:
@@ -268,7 +262,7 @@ shell.exec(paste0(dir,"\\",merged,"\\DJI_SDK_loop_updated.bat"))
 
 ## Convert to Raster
 
-The folloing R script:
+The following R script:
 
 - reads in the binary data outputted by the thermal SDK
 
@@ -337,16 +331,38 @@ end.time <- Sys.time()
 ```
 
 
-Below in Figure \@ref(fig:crown-temp)
+Figure \@ref(fig:2-crown-temp-NIR) shows the temperature and NIR values across two mature (~25 year old) Douglas-fir tree crowns, where the crowns delineate the upper 25th percentile of the tree, from a flight that occurred on July 27th, 2022 under heatdome conditions. These flights occurred in full sun conditions. Looking at the NIR plots, we can see shadowed areas (see chapter \@ref(shadow-mask) for shadow masking with NIR) towards the north east sides of both crowns, which roughly aligns with the areas of cooler temperature seen in the crown temperature plots. As you can see in the daily temperature plot on the left, the MicaSense flight occurred from 1:30-2:30pm and was followed by the thermal flight, flown with the H20T, from roughly 2:40-3:40pm. Hence, we see a greater area of cooler crown temperatures than the NIR proxy for shadow would suggest, however this is likely due to the increase in shadow from the MicaSense flight to the thermal flight as the solar zenith angle decreases into the afternoon. 
 
-```{r crown-temp, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: temperature values within a Douglas-fir crown flown under heat dome conditions (July 27th, 2022). Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight"}
-# Include the pre-brushing and post-brushing images
-knitr::include_graphics(c(
-  here("Photos_&_gifs/crown_temp_graph.png"),
-  here("Photos_&_gifs/Temperature_graph_for_crown_pic_2.png")
-))
+
+
+```{r 2-crown-temp-NIR, echo=FALSE, fig.align='center', out.width="100%", fig.cap = "Left: plot of hourly ambient tempatures from an on-site HOBO climate logger at Canoe for July 27th, 2022. Middle: near-infrared (NIR) values for two Douglas-fir crowns aquired from a MicaSense flight flown directly before the thermal flight. Right: temperature values within two Douglas-fir crowns flown under heatdome conditions."}
+knitr::include_graphics(here("Photos_&_gifs/two_crown_nir_rgb_temp_graph.PNG")
+)
 ```
 
+<!-- # ```{r crown-temp, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: temperature values within a Douglas-fir crown flown under heat dome conditions (July 27th, 2022). Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight"} -->
+<!-- # # Include the pre-brushing and post-brushing images -->
+<!-- # knitr::include_graphics(c( -->
+<!-- #   here("Photos_&_gifs/crown_temp_graph.png"), -->
+<!-- #   here("Photos_&_gifs/Temperature_graph_for_crown_pic_2.png") -->
+<!-- # )) -->
+<!-- # ``` -->
+
+
+Figure \@ref(fig:crown-temp-RGB) shows the temperature values for two young (~5 year old) Douglas-fir trees from an overcast day. Whereas we saw higher temperatures in areas with more direct light in Figure \@ref(fig:2-crown-temp-NIR), we see the opposite pattern below This is likely due to the heat of the ground radiating (i.e. warming) the lower branches of the young trees which are in view given the relatively small crown sizes and lack of crown closure. Whereas in Figure \@ref(fig:2-crown-temp-NIR) the Douglas-fir are mature and from a site that has reached crown closure, whcih resulted in the crowns used for metric calculations to be representative of the visible foliage from the top 25th percentile of the tree only.
+
+We show these two examples, one of young trees in Figure \@ref(fig:crown-temp-RGB) and the other of mature trees in Figure \@ref(fig:2-crown-temp-NIR) to show both the radiometric resolution of the H20T within the crowns as well as some important factors to keep in mind when interpreting crown temperatures.
+
+```{r crown-temp-RGB, echo=FALSE, fig.align='center', out.width="100%", fig.cap = "Left: section of a P1 orthomosaic of W45 showing two neighbouring tree crowns. Right: temperature values for the two neighbouring young Douglas-fir."}
+# Include the pre-brushing and post-brushing images
+knitr::include_graphics(here("Photos_&_gifs/Thermal_RGB_crowns.PNG")
+)
+```
+
+References:
+
+Rubio, E., Caselles, V., & Badenas, C. (1997). Emissivity measurements of several soils and vegetation types in the 8–14, μm Wave band: Analysis of two field methods. Remote Sensing of Environment, 59(3), 490–521. https://doi.org/10.1016/S0034-4257(96)00123-X
+ 
 
 <!-- **Note**: We have run across an error in some imagery that we have copied below, we are in contact with DJI to look for a solution. -->
 

@@ -42,7 +42,8 @@ fig:seg-parts
 fig:CC-las-input
 fig:CC-stem-transform
 fig:indv-tree-metrics
-fig:crown-temp
+fig:2-crown-temp-NIR
+fig:crown-temp-RGB
 abstract
 background-and-basis-of-knowledge
 range-of-sites-assessed
@@ -74,7 +75,7 @@ data-processing-photogrammetry-pipeline.
 agisoft-photogrammetry-processing-p1-data-and-registering-multispectral-to-it.
 overview.
 processing-orthomosaics
-shadow-masks
+shadow-mask
 crown-level-vegetation-indicies
 vi-workflow
 Georeferencing-Plot-Trees

@@ -193,7 +193,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.1.1" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#overview."><i class="fa fa-check"></i><b>6.1.1</b> Overview.</a></li>
 </ul></li>
 <li class="chapter" data-level="6.2" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#processing-orthomosaics"><i class="fa fa-check"></i><b>6.2</b> Processing Orthomosaics</a></li>
-<li class="chapter" data-level="6.3" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#shadow-masks"><i class="fa fa-check"></i><b>6.3</b> Shadow Masks</a></li>
+<li class="chapter" data-level="6.3" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#shadow-mask"><i class="fa fa-check"></i><b>6.3</b> Shadow Masks</a></li>
 <li class="chapter" data-level="6.4" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#crown-level-vegetation-indicies"><i class="fa fa-check"></i><b>6.4</b> Crown-level Vegetation Indicies</a>
 <ul>
 <li class="chapter" data-level="6.4.1" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#vi-workflow"><i class="fa fa-check"></i><b>6.4.1</b> VI Workflow</a></li>
@@ -283,7 +283,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="thermal-conversion" class="section level1 hasAnchor" number="11">
 <h1><span class="header-section-number">Chapter 11</span> Thermal Conversion<a href="thermal-conversion.html#thermal-conversion" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This method converts raw imagery from the Zenmuse H20T to single band temperature tiffs. We use this method to bypass the DJI thermal analysis tool app since we had thousands of images to process and the app would often crash when a few images were uploaded. This method uses the DJI thermal analysis tool’s software developer kit (SDK) instead to loop through a folder of images and return temperature rasters.</p>
-<p>This method consists of ### parts:</p>
+<p>This method consists of:</p>
 <ol style="list-style-type: decimal">
 <li><p>Gathering all “*_T.JPG” imagery into a single folder to loop through</p></li>
 <li><p>Calculating weighted averaged values for humidity and ambident temperature, which will be needed for the thermal analysis SDK to run</p></li>
@@ -435,11 +435,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">11.3.1</span> Parameters<a href="thermal-conversion.html#parameters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The parameters required as inputs for DJI thermal’s SDK are:</p>
 <ul>
-<li><p><strong>Reflection</strong> : reflection of target is currently set to 23 range is -40 to 500
-^ Reflected Temperature: the surface of the target that is measured could reflect the energy radiated by the surrounding objects. This reflected energy could be picked up by the camera along with the radiation, which could cause an error in the temperature reading. If there are no objects with extreme high or low temperatures nearby, set this parameter as the ambient temperature. Reflected temperature configurations could affect the measurement result, and the bigger the difference between the reading and the ambient temperature, the bigger the impact. Here we use the weighted average ambient temperature calculated above from the HOBO climate logger (aka flight_amb_temp)</p></li>
-<li><p><strong>Humidity</strong>: weighted average from on-site HOBO climate logger (flight_humidity)</p></li>
-<li><p><strong>Distance</strong>: Using max distance of 25m meter since we are flying higher (~40m away from object for h20T depending on site)</p></li>
-<li><p><strong>Emissivity</strong>:</p></li>
+<li><p><strong>Reflected Temperature</strong> : The reflected temperature of the target takes into account the impact of radiation reflected from nearby objects that can significantly impact the temperature reading of the object. This parameter is important if there are any objects nearby with either an extremely high or low temperature, otherwise the reflected temperature can be set to the ambient air temperature. Since none of our sites had an object with extreme high or low temperature nearby we used ambient air temperature (flight_amb_temp) from on-site HOBO climate loggers.</p></li>
+<li><p><strong>Relative Humidity</strong>: The relative humidity during the flight. The default value is set to 70% and the allowed range is 20-100%. We used a weighted average humidity value (flight_humidity) calculated using data from the on-site HOBO climate loggers.</p></li>
+<li><p><strong>Distance</strong>: The distance from the sensor to the target (i.e. tree crowns). The H20T is an infrared thermal sensor that measures the infrared radiation received from objects. Hence, the further away the object, the more the radiation attenuates and the less accurate the temperature measurement. The maximum distance that the thermal analysis tools allows is 25m. In our case, we are flying higher (~40m away from the crowns, depending on the site) and thus use the 25m maximum and interpret the temperature values as relative to each other while understanding that the absolute temperature value likely contains error given the distance between the sensor and the object.</p></li>
+<li><p><strong>Emissivity</strong>: The emissivity of a material is a measure of its ability to emit energy as thermal radiation. The default value is 1. We used a value of 0.98 as an estimate for all conifers (Rubio et al., 1997).</p></li>
 </ul>
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="thermal-conversion.html#cb63-1" tabindex="-1"></a><span class="co">#setting parameters:</span></span>
 <span id="cb63-2"><a href="thermal-conversion.html#cb63-2" tabindex="-1"></a>(flight_amb_temp) <span class="co"># already set above, () to print out the value in the console to ensure it is the correct one</span></span>
@@ -506,7 +505,7 @@ pause</code></pre>
 </div>
 <div id="convert-to-raster" class="section level2 hasAnchor" number="11.4">
 <h2><span class="header-section-number">11.4</span> Convert to Raster<a href="thermal-conversion.html#convert-to-raster" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The folloing R script:</p>
+<p>The following R script:</p>
 <ul>
 <li><p>reads in the binary data outputted by the thermal SDK</p></li>
 <li><p>converts the data to rasters</p></li>
@@ -569,13 +568,30 @@ pause</code></pre>
 <span id="cb67-55"><a href="thermal-conversion.html#cb67-55" tabindex="-1"></a>}</span>
 <span id="cb67-56"><a href="thermal-conversion.html#cb67-56" tabindex="-1"></a>end.time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb67-57"><a href="thermal-conversion.html#cb67-57" tabindex="-1"></a>(time.taken <span class="ot">&lt;-</span> <span class="fu">round</span>(end.time <span class="sc">-</span> start.time,<span class="dv">2</span>)) <span class="co">#time taken for the script to run</span></span></code></pre></div>
-<p>Below in Figure <a href="thermal-conversion.html#fig:crown-temp">11.1</a></p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:crown-temp"></span>
-<img src="Photos_&_gifs/crown_temp_graph.png" alt="Left: temperature values within a Douglas-fir crown flown under heat dome conditions (July 27th, 2022). Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight" width="50%" /><img src="Photos_&_gifs/Temperature_graph_for_crown_pic_2.png" alt="Left: temperature values within a Douglas-fir crown flown under heat dome conditions (July 27th, 2022). Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight" width="50%" />
+<p>Figure <a href="thermal-conversion.html#fig:2-crown-temp-NIR">11.1</a> shows the temperature and NIR values across two mature (~25 year old) Douglas-fir tree crowns, where the crowns delineate the upper 25th percentile of the tree, from a flight that occurred on July 27th, 2022 under heatdome conditions. These flights occurred in full sun conditions. Looking at the NIR plots, we can see shadowed areas (see chapter <a href="data-processing-photogrammetry-pipeline..html#shadow-mask">6.3</a> for shadow masking with NIR) towards the north east sides of both crowns, which roughly aligns with the areas of cooler temperature seen in the crown temperature plots. As you can see in the daily temperature plot on the left, the MicaSense flight occurred from 1:30-2:30pm and was followed by the thermal flight, flown with the H20T, from roughly 2:40-3:40pm. Hence, we see a greater area of cooler crown temperatures than the NIR proxy for shadow would suggest, however this is likely due to the increase in shadow from the MicaSense flight to the thermal flight as the solar zenith angle decreases into the afternoon.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:2-crown-temp-NIR"></span>
+<img src="Photos_&_gifs/two_crown_nir_rgb_temp_graph.PNG" alt="Left: plot of hourly ambient tempatures from an on-site HOBO climate logger at Canoe for July 27th, 2022. Middle: near-infrared (NIR) values for two Douglas-fir crowns aquired from a MicaSense flight flown directly before the thermal flight. Right: temperature values within two Douglas-fir crowns flown under heatdome conditions." width="100%" />
 <p class="caption">
-Figure 11.1: Left: temperature values within a Douglas-fir crown flown under heat dome conditions (July 27th, 2022). Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight
+Figure 11.1: Left: plot of hourly ambient tempatures from an on-site HOBO climate logger at Canoe for July 27th, 2022. Middle: near-infrared (NIR) values for two Douglas-fir crowns aquired from a MicaSense flight flown directly before the thermal flight. Right: temperature values within two Douglas-fir crowns flown under heatdome conditions.
 </p>
 </div>
+<!-- # ```{r crown-temp, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: temperature values within a Douglas-fir crown flown under heat dome conditions (July 27th, 2022). Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight"} -->
+<!-- # # Include the pre-brushing and post-brushing images -->
+<!-- # knitr::include_graphics(c( -->
+<!-- #   here("Photos_&_gifs/crown_temp_graph.png"), -->
+<!-- #   here("Photos_&_gifs/Temperature_graph_for_crown_pic_2.png") -->
+<!-- # )) -->
+<!-- # ``` -->
+<p>Figure <a href="thermal-conversion.html#fig:crown-temp-RGB">11.2</a> shows the temperature values for two young (~5 year old) Douglas-fir trees from an overcast day. Whereas we saw higher temperatures in areas with more direct light in Figure <a href="thermal-conversion.html#fig:2-crown-temp-NIR">11.1</a>, we see the opposite pattern below This is likely due to the heat of the ground radiating (i.e. warming) the lower branches of the young trees which are in view given the relatively small crown sizes and lack of crown closure. Whereas in Figure <a href="thermal-conversion.html#fig:2-crown-temp-NIR">11.1</a> the Douglas-fir are mature and from a site that has reached crown closure, whcih resulted in the crowns used for metric calculations to be representative of the visible foliage from the top 25th percentile of the tree only.</p>
+<p>We show these two examples, one of young trees in Figure <a href="thermal-conversion.html#fig:crown-temp-RGB">11.2</a> and the other of mature trees in Figure <a href="thermal-conversion.html#fig:2-crown-temp-NIR">11.1</a> to show both the radiometric resolution of the H20T within the crowns as well as some important factors to keep in mind when interpreting crown temperatures.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:crown-temp-RGB"></span>
+<img src="Photos_&_gifs/Thermal_RGB_crowns.PNG" alt="Left: section of a P1 orthomosaic of W45 showing two neighbouring tree crowns. Right: temperature values for the two neighbouring young Douglas-fir." width="100%" />
+<p class="caption">
+Figure 11.2: Left: section of a P1 orthomosaic of W45 showing two neighbouring tree crowns. Right: temperature values for the two neighbouring young Douglas-fir.
+</p>
+</div>
+<p>References:</p>
+<p>Rubio, E., Caselles, V., &amp; Badenas, C. (1997). Emissivity measurements of several soils and vegetation types in the 8–14, μm Wave band: Analysis of two field methods. Remote Sensing of Environment, 59(3), 490–521. <a href="https://doi.org/10.1016/S0034-4257(96)00123-X" class="uri">https://doi.org/10.1016/S0034-4257(96)00123-X</a></p>
 <!-- **Note**: We have run across an error in some imagery that we have copied below, we are in contact with DJI to look for a solution. -->
 <!-- The error is as follows: -->
 <!-- ERROR: call dirp_set_measurement_params failed -->
