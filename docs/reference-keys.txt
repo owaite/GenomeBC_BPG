@@ -70,7 +70,9 @@ data-collection-sensors-parameters-and-ideal-conditions
 micasense-10-band-spectral-sensor-for-vegetative-indices
 zenmuse-p1-high-quality-natural-colour-rgb-imagery
 zenmuse-l1-lidar-and-rgb
-photogrametric-processing
+data-processing-photogrammetry-pipeline.
+agisoft-photogrammetry-processing-p1-data-and-registering-multispectral-to-it.
+overview.
 processing-orthomosaics
 shadow-masks
 crown-level-vegetation-indicies

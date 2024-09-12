@@ -1,4 +1,19 @@
-# Photogrametric Processing
+# Data Processing: Photogrammetry pipeline.
+
+## Agisoft Photogrammetry: Processing P1 data and registering multispectral to it.
+
+Software: Agisoft LLC. (2024). _Agisoft Metashape Professional, Version 2.1.1_. 
+
+We use Agisoft Metashape Pro to process aerial photogrammetry into orthomosaics. The following is a complete workflow for processing a P1 RGB that is geometrically accurate, registering the less accurate multispectral imagery to it, and producing calibrated ten band orthomosaics for further processing into vegetative indices.  We process all DAP flights from the same site on the same day in one Agisoft project. Each flight is referred to as a “chunk” by Agisoft. In this case we are processing both a MS and MS_P chunk in order to test and provide examples, but normally only one would be used.  The settings used will vastly affect processing times and quality and each setting has been carefully considered.
+
+Agisoft processes can be started using GUI tools or scripted using the python console.  We don’t use a full scripted workflow as there are several manual steps outlined below, but we do use snippets of code for some steps.
+
+The workflow is based on a site approximately 1.5 Ha buffered to 2Ha and the raw data would be approximately:
+-	P1 (RGB) - 500 photos and 12 GB of data
+-	MS_P (10 band plus panchro) - 12,000 photos equaling 42 GB
+-	MS - (10 band) - 10,500 photos equaling 25GB 
+
+### Overview.
 
 Figure \@ref(fig: aligned-agisoft)
 
