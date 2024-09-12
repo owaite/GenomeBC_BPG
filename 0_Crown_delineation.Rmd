@@ -36,20 +36,9 @@ Depending on the project, circles proportional to height may serve as adequate t
 
 ```{r, eval=FALSE, echo=TRUE}
 unique_id <- "treeID" # change this to the unique ID you have per tree that was used to create the grid
-site <- "Fdc_JR_East_GCA" 
-dir <- paste0("Q:\\SNC\\Data\\",site,"\\Site_Info\\03_GIS\\shapefiles\\")
+crown_dir <- paste0("path to save crown delineation producst to")# This was a path to a folder called Crowns for us
 
-
-
-
-
-crown_dir <- paste0("Q:\\SNC\\Data\\",site,"\\Site_Info\\GIS\\shapefiles\\Crowns\\")
-if(!dir.exists(crown_dir)){
-  dir.create(crown_dir)
-}
-
-# read in the treetops as an sp object
-ttops <- st_read("path to your grid")
+ttops <- st_read("path to your grid")# read in the treetops as an sp object
 ttops<- ttops%>%
   st_centroid()
 
@@ -75,8 +64,6 @@ extracted_values = ttops_buffered %>% #extract height percentiles
                 append_cols = c(unique_id)) 
 
 ttops_zq99 <- left_join(ttops_buffered, extracted_values, by = c(unique_id)) # Assign the pixel IDs to each polygon
-
-
 
 # Saving out shp of buffered points
 if(!dir.exists(paste0(crown_dir,"Buffer_radius_ttops_",buffer_radius))){
@@ -111,11 +98,9 @@ See Figure @\ref(fig:prop-circle-crowns) below for an example of the above outpu
 knitr::include_graphics(here("Photos_&_gifs\\prop_cirlce_Crowndelin.PNG"))
 ```
 
-
-
 ## Supercell Raster
 
-To generate supercells we use a CHM, MicaSense orthomosaic, and P1 orthomosaic from similar dates
+[Supercells](https://jakubnowosad.com/supercells/) work to spatially group pixels with similar characteristics making it a great tool for crown delineation. To generate supercells, we use a Canopy Height Model (CHM), MicaSense orthomosaic, and P1 orthomosaic. When possible we provide rasters from the same flight date. However, if that is not feasible we select a CHM, MicaSense, and P1 orthomosaic from flight acquisitions flown as closely together as possible. This ensures that the aerial perspectives of the tree crowns remain highly consistent across the three rasters, facilitating more accurate supercell segmentation.
 
 ```{r, eval=FALSE, echo=TRUE}
 library(future) 
@@ -179,9 +164,7 @@ st_write(obj = dplyr::select(seg, supercells, geometry),
          append = FALSE)
 ```
 
-Figure @\ref(fig:seg-parts) shows the supercells created above in green. These are locations where
-
-????????????????????????????????????
+Figure @\ref(fig:seg-parts) shows the supercells in green created by the above R code. These outlined areas indicate groups of pixels that the supercell algorithm has deemed similar between the CHM, MicaSense and P1 orthomosaics.
 
 
 ```{r seg-parts, echo=FALSE,fig.align = 'center',out.width="100%", fig.cap= "Supercells shown in green, with circles proportional to the 99th height percentile in red and grid points representing plot trees in blue"}
@@ -190,13 +173,13 @@ knitr::include_graphics(here("Photos_&_gifs\\seg_Crowndelin.PNG"))
 
 ## Filter & Merge Supercells
 
+Above we found supercells across the site however now we need to filter for supercells that belong to tree crowns only. We do this by using the previously made circles proportional to height, where supercells must be within the circle or intersect the perimeter in order to be kept, see Figure @\ref(fig:seg-intersection) for a visual.
 ```{r, eval=FALSE, echo=TRUE}
 library(smoothr) #for fill_holes
 #Creating a folder to save files to, this was set up so that multiple tests could be run with different "percent" values 
 if(!dir.exists(paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99"))){
   dir.create(paste0(crown_dir_folder,"Prop_Diameter",percent,"%OfZq99"))
 }
-seg = st_read(paste0(crown_dir_folder,"HULLS\\",site,"_SEGS_step6_c5.shp"))
 
 chm_dat = c(CHM_max_L1)
 names(chm_dat) = c("CHM_max_L1")
@@ -225,11 +208,13 @@ st_write(obj = seg1,
 
 ```
 
-Figure @\ref(fig:seg-intersection) shows the ????????????????????????????
 
 ```{r seg-intersection, echo=FALSE,fig.align = 'center',out.width="100%", fig.cap= "                 "}
 knitr::include_graphics(here("Photos_&_gifs\\seg_intersection_Crowndelin.PNG"))
 ```
+A further filter that can be used is filtering out supercells that overlap areas on the CHM that are under a certain height cutoff per tree. In our case, given that the trees are tightly spaced we are not concerned with capturing lower branches in our crowns as they will likely be either not visible due to occlusion or shadowed by neighbouring trees resulting in the removal of the shadowed pixels within the spectral data anyways. Thus we created circles that were proportional to 10% of the 99th percentile per tree. 
+
+Hence further filtering with the 50% of the 99th height percentile, from the below R code, did not result in the removal of any supercells (Figure @\ref(fig:seg-initial)). This filtering step is mainly if you want to ensure you are only includnig data from above a certain height percentile in your crowns that was not already removed by the above filtering step using the proportional circles.
 
 ```{r, eval=FALSE, echo=TRUE}
 seg2 = seg1 %>% 
@@ -275,6 +260,8 @@ knitr::include_graphics(here("Photos_&_gifs\\seg_merge_Crowndelin.PNG"))
 ```{r seg-merge-smooth, echo=FALSE,fig.align = 'center',out.width="100%", fig.cap= "                 "}
 knitr::include_graphics(here("Photos_&_gifs\\seg_merge_smooth_Crowndelin.PNG"))
 ```
+
+
 ```{r seg-merge-smooth-np, echo=FALSE,fig.align = 'center',out.width="100%", fig.cap= "                 "}
 knitr::include_graphics(here("Photos_&_gifs\\seg_merge_smooth_NMP_Crowndelin.PNG"))
 ```
