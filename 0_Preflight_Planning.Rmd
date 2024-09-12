@@ -148,7 +148,7 @@ The biggest capital investment will be for the sensors and drone.  Specific sens
 Our research was looking for sensors with the following attributes:  
 
 
-- High quality RGB: capable of producing imagery that can differentiate branches from one tree to the next to delineate crowns and with high enough resolution to distinguish a Douglas fir plot tree from an ingress Western Hemlock.  It would also need to have centimeter level positional accuracy. 
+-   High quality RGB: capable of producing imagery that can differentiate branches from one tree to the next to delineate crowns and with high enough resolution to distinguish a Douglas fir plot tree from an ingress Western Hemlock.  It would also need to have centimeter level positional accuracy. 
 
 - 	Multispectral sensor:   The multispectral is the most important sensor to purchase and the final project results are based on its performance across a range of conditions.  We wanted a multispectral sensor capable of calculating a broad range of Vegetative Indices (VI).  There are more options for multispectral sensors if 5 or 6 wavelengths are okay.
 
