@@ -1,23 +1,19 @@
 
 # Thermal Conversion
 
-This method converts raw imagery from the Zenmuse H20T to temperature rasters. We wrote this method to bypass DJI's thermal analysis tool app since we have thousands of images and the app would often crash when a few were uploaded. This script uses the DJI thermal analysis tool's software developer kit (SDK) 
+This method converts raw imagery from the Zenmuse H20T to single band temperature tiffs. We use this method to bypass the DJI thermal analysis tool app since we had thousands of images to process and the app would often crash when a few images were uploaded. This method uses the DJI thermal analysis tool's software developer kit (SDK) instead to loop through a folder of images and return temperature rasters.
 
-First load in necessary libraries
+This method consists of ### parts:
 
-```{r, eval=FALSE, echo=TRUE}
-library(exiftoolr)
-library(dplyr)
-library(lubridate)
-library(OpenImageR)
-library(raster)
-library(stringr)
-```
+1) Gathering all "*_T.JPG" imagery into a single folder to loop through
 
+2) Calculating weighted averaged values for humidity and ambident temperature, which will be needed for the thermal analysis SDK to run
+
+3) Looping through imagery and converting to temperature rasters, then attaching original exif data to the new single band temperature rasters
 
 ## Folder Set-Up
 
-This step goes over how we organize our imagery for the following thermal conversion. 
+This step goes over how we organized our imagery for the thermal conversion. 
 
 Here we:
 
@@ -41,9 +37,16 @@ Here we:
 - paste0("I:\\PARSER_Ext\\",site,"\\Flights\\", data_date, "\\1_Data\\H20T"), where "site" is a string of the site name that we defined prior to the for loop and data_date is a string representing the flight date that is defined in the for loop. This was done so we could easily iterate over sites and dates. Feel free to change this to match your folder structure.
 
 ```{r, eval=FALSE, echo=TRUE}
+library(exiftoolr)
+library(dplyr)
+library(lubridate)
+library(OpenImageR)
+library(raster)
+library(stringr)
+
 # Setting the site and flight date to convert thermal imagery
 flight_dates <-  c("2023_05_10") # Here only one date is shown however this can be a list of however many dates you would like to iterate over
-site <- "Fdc_PR_Canoe" 
+site <- "site name here" 
 merged <- "Merged_T" #name of the 'merged' folder that will contain all the h20T images from the multiple folders ouput by the H20T
 
 for(i in 1:length(flight_dates)){
@@ -75,7 +78,7 @@ for(i in 1:length(flight_dates)){
 
 ## Weather Data
 
-DJI thermal's SDK requires inputs of humidity, reflection (or ambient temperature), distance, and emissivity (see [## DJI Thermal SDK: temperature conversion] for more detail on each of the requirements). In this section we will take hourly weather data from an on-site HOBO climate logger and calculate weighted averages for humidity and ambient temperature.
+DJI thermal's SDK requires inputs of humidity, reflection (or ambient temperature), distance, and emissivity (see section \@ref(parameters) for more detail on each of the inputs). In this section we will take hourly weather data from an on-site HOBO climate logger and calculate weighted averages for humidity and ambient temperature.
 
 First, we use the first and last image in the Merged_T folder to define the start and end time of the flight, along with the date of the flight as a date object.
 
@@ -170,19 +173,23 @@ flight_amb_temp
 ```
 
 ## DJI Thermal SDK: temperature conversion
-### Parameters 
+### Parameters {#parameters}
 
 The parameters required as inputs for DJI thermal's SDK are:
 
-- **Reflection** : reflection of target is currently set to 23 range is -40 to 500
-^ Reflected Temperature: the surface of the target that is measured could reflect the energy radiated by the surrounding objects. This reflected energy could be picked up by the camera along with the radiation, which could cause an error in the temperature reading. If there are no objects with extreme high or low temperatures nearby, set this parameter as the ambient temperature. Reflected temperature configurations could affect the measurement result, and the bigger the difference between the reading and the ambient temperature, the bigger the impact. Here we use the weighted average ambient temperature calculated above from the HOBO climate logger (aka flight_amb_temp)
+- **Reflected Temperature** : The reflected temperature of the target takes into account the impact of radiation reflected from nearby objects that can significantly impact the temperature reading of the object. This parameter is important if there are any objects nearby with either an extremely high or low temperature, otherwise the reflected temperature can be set to the ambient air temperature. Since none of our sites had an object with extreme high or low temperature nearby we used ambient air temperature (flight_amb_temp) from on-site HOBO climate loggers.
 
-- **Humidity**: weighted average from on-site HOBO climate logger (flight_humidity)
+- **Relative Humidity**: The relative humidity during the flight. The default value is set to 70% and the allowed range is 20-100%. We used a weighted average humidity value (flight_humidity) calculated using data from the on-site HOBO climate loggers.
 
-- **Distance**: Using max distance of 25m meter since we are flying higher (~40m away from object for h20T depending on site)
+- **Distance**: The distance from the sensor to the target (i.e. tree crowns). The H20T is an infrared thermal sensor that measures the infrared radiation received from objects. Hence, the further away the object, the more the radiation attenuates and the less accurate the temperature measurement. The maximum distance that the thermal analysis tools allows is 25m. In our case, we are flying higher (~40m away from the crowns, depending on the site) and thus use the 25m maximum and interpret the temperature values as relative to each other while understanding that the absolute temperature value likely contains error given the distance between the sensor and the object.
 
-- **Emissivity**: 
+- **Emissivity**: The emissivity of a material is a measure of its ability to emit energy as thermal radiation. The default value is 1. 
 
+#default emissivity is set to 1
+# trees in general are 0.98: http://www.treethermography.it/infrared_radiation.htm
+#another source that used 0.98 for conifers: https://www.sciencedirect.com/science/article/pii/S0168192317303301
+#another course using 0.98 for conifers (Pine in this case) : https://www.sciencedirect.com/science/article/pii/S003442579600123X 
+#to calculate the true averaged emissivity value, we would need to know the true temeprature : https://reader.elsevier.com/reader/sd/pii/0168192395023135?token=B6C189C4F8E67AFEE720AC4F9E6755B03D88B74588FB5629439ACC70360D4782DEDCA3BED6740F24C5E2A72E4F606713&originRegion=us-east-1&originCreation=20221024174023
 
 ```{r, eval=FALSE, echo=TRUE}
 #setting parameters:
@@ -330,9 +337,9 @@ end.time <- Sys.time()
 ```
 
 
-Below in Figure @\ref(fig:crown-temp)
+Below in Figure \@ref(fig:crown-temp)
 
-```{r crown-temp, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: temperature values within an individual crown from a flight on July 27th, 2022. Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight"}
+```{r crown-temp, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: temperature values within a Douglas-fir crown flown under heat dome conditions (July 27th, 2022). Right: plot of hourly ambient tempatures from an on-site HOBO climate logger for July 27th, 2022, the grey vertical line is the time of the flight"}
 # Include the pre-brushing and post-brushing images
 knitr::include_graphics(c(
   here("Photos_&_gifs/crown_temp_graph.png"),
