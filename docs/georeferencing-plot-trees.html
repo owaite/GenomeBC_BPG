@@ -191,6 +191,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.1" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#agisoft-photogrammetry-processing-p1-data-and-registering-multispectral-to-it."><i class="fa fa-check"></i><b>6.1</b> Agisoft Photogrammetry: Processing P1 data and registering multispectral to it.</a>
 <ul>
 <li class="chapter" data-level="6.1.1" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#overview."><i class="fa fa-check"></i><b>6.1.1</b> Overview.</a></li>
+<li class="chapter" data-level="6.1.2" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#detailed-workflow"><i class="fa fa-check"></i><b>6.1.2</b> Detailed Workflow</a></li>
 </ul></li>
 <li class="chapter" data-level="6.2" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#processing-orthomosaics"><i class="fa fa-check"></i><b>6.2</b> Processing Orthomosaics</a></li>
 <li class="chapter" data-level="6.3" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#shadow-mask"><i class="fa fa-check"></i><b>6.3</b> Shadow Masks</a></li>
@@ -282,8 +283,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="Georeferencing-Plot-Trees" class="section level1 hasAnchor" number="7">
 <h1><span class="header-section-number">Chapter 7</span> Georeferencing Plot Trees<a href="Georeferencing-Plot-Trees.html#Georeferencing-Plot-Trees" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>At this stage in the workflow we have processed high quality imagery into orthomosaics ready for analysis. The next step is to georeference the row and column census data and the high quality P1 template to geolocate the trees, which will be used later on to create individual tree polygons. Figure <a href="Georeferencing-Plot-Trees.html#fig:genetic-layout">7.1</a> is an image of the spreadsheet map from the Big Tree creek site which is typical of many BC genetics trials. Figure <a href="Georeferencing-Plot-Trees.html#fig:P1-genetic-layout">7.2</a> is the P1 orthomosaic template flight we georeference the census data to.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:genetic-layout"></span>
-<img src="Photos_&_gifs/genetic_layout.png" alt="The spreadsheet map of the layout of the site, each tree is located on a grid with a unique row and column value assigned to it." width="100%" />
+<img src="Photos_&_gifs/genetic_layout2.png" alt="The spreadsheet map of the layout of the site, each tree is located on a grid with a unique row and column value assigned to it." width="100%" />
 <p class="caption">
 Figure 7.1: The spreadsheet map of the layout of the site, each tree is located on a grid with a unique row and column value assigned to it.
 </p>
@@ -294,12 +296,62 @@ Figure 7.1: The spreadsheet map of the layout of the site, each tree is located 
 Figure 7.2: P1 orthomosaic of the site with GCPs and georeferenced trees marked with red dots
 </p>
 </div>
+<p>We have recently developed a “Grid Georeferencer” plugin in QGIS that does the initial rough georeferencing of the census data. We also have a version that works in R. Both are detailed below.</p>
+<p><strong>Workflow in QGIS.</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>The census data is examined, and a unique identifier column is found or created.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>This column is “treeID” and will be used through the rest of the data processing pipeline.</p></li>
+<li><p>The census data must also contain “row” and “col” (row and column identifiers).</p></li>
+</ol></li>
+<li><p>The information from the reconnaissance workflow is used to locate reference trees.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>The distance, Azimuth and treeID from each GCP to the nearest plot tree was recorded as a reference tree.</p></li>
+<li><p>In a GIS (in this case QGIS) a shapefile is made with the reference trees. Here they are visualized as red dots. The shapefile is saved in the “working” reference system NAD83 UTM’s.</p></li>
+</ol></li>
+<li><p>The “Grid Georeferencer” plugin is run in QGIS as seen in Figure <a href="Georeferencing-Plot-Trees.html#fig:Qgis-ref">7.3</a>.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Enter the Input csv, choose the extra fields to import, enter the grid spacing, enter the export location.</li>
+</ol></li>
+</ol>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:Qgis-ref"></span>
 <img src="Photos_&_gifs/Qgis_grid_georef.png" alt="Visual of the Grid Georeferenced plugin in QGIS." width="80%" />
 <p class="caption">
 Figure 7.3: Visual of the Grid Georeferenced plugin in QGIS.
 </p>
 </div>
+<ol start="4" style="list-style-type: decimal">
+<li><p>The plugin builds the grid based on the row and col fields at the spacing input.</p>
+<p>4a. Then rotates the grid based on the input reference trees and saves a copy of this rotated version as _rotated in the export folder.</p>
+<p>4b. Then applies an affine transformation to better fit the grid to the reference trees. It saves this as _transformed and loads it into QGIS.</p></li>
+</ol>
+<p><strong>Alternate Workflow in R.</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>The census data is examined, and a unique identifier column is found or created.</p></li>
+<li><p>This column is “treeID” and will be used through the rest of the data processing pipeline.</p></li>
+<li><p>The information from the reconnaissance workflow is used to locate corner trees.</p>
+<ol style="list-style-type: lower-alpha">
+<li>The distance, Azimuth and treeID from each GCP to the nearest plot tree was recorded as a reference tree.</li>
+<li>In a GIS (in this case QGIS) a shapefile is made with the reference trees. Here they are visualized as red dots.</li>
+<li>We want to identify the tree that is in the first row and first column (first-first), which here is the bottom left corner, and the first row last column (first-last), which is the bottom right and coincidentally a reference tree.</li>
+<li>Ideally, we would have a GCP at the bottom left corner of the site, but this was the densest section, so the columns and rows were carefully counted in either direction from the nearest reference tree.</li>
+<li>We made shapefiles for the first-first and first-last trees.</li>
+</ol></li>
+<li><p>The “treetop_georeferencing” script is opened in R and site-specific variables entered including spacing, which on this site is 2m X 2m. The code then goes through the following steps. **Note this requires North up rows and East up columns to work as scripted. Modifications will need to be made to sites with different orientations.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Read Shapefiles: Read the shapefiles for the first-first and first-last trees.</li>
+<li>Read and Filter Data: Load the CSV file, filter for the required columns. At Big Tree we want the row, col, treeID and the most recent assessments, which here are a 2012 remeasurement(ht12) and assessment(c12).</li>
+<li>Generate Initial Grid: Create a grid of tree locations using the row and column numbers, starting from the initial points (first-first). Adjust the coordinates to account for column and row spacing.</li>
+<li>Convert to Spatial Object: Convert the grid data to an sf (simple features) object in R.</li>
+<li>Identify Reference Point: Extract the coordinates of the tree in the first column and the last row (first_last_sf) from the grid.</li>
+<li>Calculate Rotation Angle: Define a function to rotate coordinates. Calculate the angle of rotation needed to align the grid with the actual positions of the initial points.</li>
+<li>Rotate Grid: Apply the rotation to all points in the grid.</li>
+<li>Merge and Save Results: Merge the rotated coordinates with the original grid data. Set the CRS and save the resulting grid as a shapefile.</li>
+<li>Plot Final Grid: Plot the final rotated grid to visualize the tree locations.</li>
+</ol></li>
+</ol>
+<p><strong>Final Steps in QGIS</strong>
+The grid is loaded into the GIS and examined. The first-first corner with row 1 column 1 looks great, but the top right corner is at least 2 meters off as you can see below. This is one of the better ones we have georeferenced. The site is on even ground and was quite square. Some of the sites were 6 meters off from one corner to the other.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:ref-trees"></span>
 <img src="Photos_&_gifs/ref_treeID_1.png" alt="Left: treeID 1, reference for the bottom left corner of the plot. Right: treeID 2757, reference for the top right of the plot" width="50%" /><img src="Photos_&_gifs/ref_treeID_2757.png" alt="Left: treeID 1, reference for the bottom left corner of the plot. Right: treeID 2757, reference for the top right of the plot" width="50%" />
 <p class="caption">

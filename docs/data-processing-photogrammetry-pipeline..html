@@ -191,6 +191,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.1" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#agisoft-photogrammetry-processing-p1-data-and-registering-multispectral-to-it."><i class="fa fa-check"></i><b>6.1</b> Agisoft Photogrammetry: Processing P1 data and registering multispectral to it.</a>
 <ul>
 <li class="chapter" data-level="6.1.1" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#overview."><i class="fa fa-check"></i><b>6.1.1</b> Overview.</a></li>
+<li class="chapter" data-level="6.1.2" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#detailed-workflow"><i class="fa fa-check"></i><b>6.1.2</b> Detailed Workflow</a></li>
 </ul></li>
 <li class="chapter" data-level="6.2" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#processing-orthomosaics"><i class="fa fa-check"></i><b>6.2</b> Processing Orthomosaics</a></li>
 <li class="chapter" data-level="6.3" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html#shadow-mask"><i class="fa fa-check"></i><b>6.3</b> Shadow Masks</a></li>
@@ -287,103 +288,257 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Software: Agisoft LLC. (2024). <em>Agisoft Metashape Professional, Version 2.1.1</em>.</p>
 <p>We use Agisoft Metashape Pro to process aerial photogrammetry into orthomosaics. The following is a complete workflow for processing a P1 RGB that is geometrically accurate, registering the less accurate multispectral imagery to it, and producing calibrated ten band orthomosaics for further processing into vegetative indices. We process all DAP flights from the same site on the same day in one Agisoft project. Each flight is referred to as a “chunk” by Agisoft. In this case we are processing both a MS and MS_P chunk in order to test and provide examples, but normally only one would be used. The settings used will vastly affect processing times and quality and each setting has been carefully considered.</p>
 <p>Agisoft processes can be started using GUI tools or scripted using the python console. We don’t use a full scripted workflow as there are several manual steps outlined below, but we do use snippets of code for some steps.</p>
-<p>The workflow is based on a site approximately 1.5 Ha buffered to 2Ha and the raw data would be approximately:
-- P1 (RGB) - 500 photos and 12 GB of data
-- MS_P (10 band plus panchro) - 12,000 photos equaling 42 GB
-- MS - (10 band) - 10,500 photos equaling 25GB</p>
+<p>The workflow is based on a site approximately 1.5 Ha buffered to 2Ha and the raw data would be approximately:</p>
+<ul>
+<li>P1 (RGB): 500 photos and 12 GB of data</li>
+<li>MS_P (10 band plus panchro): 12,000 photos equaling 42 GB</li>
+<li>MS (10 band): 10,500 photos equaling 25GB</li>
+</ul>
 <div id="overview." class="section level3 hasAnchor" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> Overview.<a href="data-processing-photogrammetry-pipeline..html#overview." class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Figure @ref(fig: aligned-agisoft)</p>
+<ol style="list-style-type: decimal">
+<li>Run the Opening script that will import all photos for each chunk and locate the calibration panel captures for the multispectral chunks. Then saves to the project file structure.</li>
+<li>Manually assess all flight lines and disable outliers.</li>
+<li>Build the P1 through to orthomosaic using the settings detailed below.</li>
+<li>Confirm the P1 is aligned to the GCPs and template P1 if this is not the primary flight.</li>
+<li>For each of the other DAP sensors, specifically MS and MS_P chunks, build through to orthomosaic following the steps outlined below paying particular attention to the chunk align.</li>
+<li>Check the ortho registration and reflectance values.</li>
+<li>Run the closing script for each multispectral sensor after entering the variables into the script. This script will:
+<ul>
+<li>Normalize the 16bit pixel values.<br />
+</li>
+<li>Import the 15m buffered shape of the trial and export the orthomosaic clipped to this shape in NAD83 to the project specific folder.</li>
+</ul></li>
+</ol>
+<p>Approximate processing times:</p>
+<ul>
+<li>~12 hours for the P1 RGB.</li>
+<li>~18-38 hours for each of the Micasense Dual sensors, with the MS_P on the higher end.</li>
+</ul>
+<p>This process produces an Agisoft folder with the P1 and MS chunks containing ~80GB of files.
+The exported orthomosaic tifs contain 10 (MS) or 11 (MS_P) bands and are ready for analysis.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:aligned-agisoft"></span>
 <img src="Photos_&_gifs/Aligned_agisoft.png" alt="A dense point cloud processed in Agisoft Metashape with the camera locations turned on and disabled flight trajectories shown." width="100%" />
 <p class="caption">
 Figure 6.1: A dense point cloud processed in Agisoft Metashape with the camera locations turned on and disabled flight trajectories shown.
 </p>
 </div>
+<p><strong>Coordinate Reference Systems:</strong></p>
+<ul>
+<li>DJI drones and GNSS units work in the geodetic coordinate system (GCS) WGS84, EPSG:4326</li>
+<li>We chose to work in WGS84 during photogrammetry processing until exporting orthomosaics. We export orthomosaics for further processing into the coordinate reference system NAD83/UTM.</li>
+</ul>
+<p><strong>Agisoft Preferences Setup:</strong>
+Prior to commencing processing, we recommend the following settings in Tools-Preferences.</p>
+<ul>
+<li>GPU tab: Uncheck the Use CPU when performing GPU accelerated processing. This will free up your CPU during the heavy processing steps.</li>
+<li>Advanced tab: The settings in Figure <a href="data-processing-photogrammetry-pipeline..html#fig:metashape-pref">6.2</a> are recommended.</li>
+</ul>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:metashape-pref"></span>
-<img src="Photos_&_gifs/metashape_pref.png" alt="Recommended Metashape preferences setup under the Advanced tab." width="50%" /><img src="Photos_&_gifs/metashape_pref_2.png" alt="Recommended Metashape preferences setup under the Advanced tab." width="50%" />
+<img src="Photos_&_gifs/metashape_pref.png" alt="Recommended Metashape preferences setup in Tools, Metashape Preferences, under the Advanced tab." width="50%" /><img src="Photos_&_gifs/metashape_pref_2.png" alt="Recommended Metashape preferences setup in Tools, Metashape Preferences, under the Advanced tab." width="50%" />
 <p class="caption">
-Figure 6.2: Recommended Metashape preferences setup under the Advanced tab.
+Figure 6.2: Recommended Metashape preferences setup in Tools, Metashape Preferences, under the Advanced tab.
 </p>
 </div>
+</div>
+<div id="detailed-workflow" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Detailed Workflow<a href="data-processing-photogrammetry-pipeline..html#detailed-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Load Photos and locate calibration panels</strong> - Script (or GUI). 15 minutes.</p>
+<ul>
+<li>Agisoft processes all ten bands as a multicamera with one primary channel. We import imagery using a python script located here on GitHub. However, you can also import folders containing imagery in metashape via the import tool or by dragging and dropping the folder into the specified chunk.</li>
+<li>This will import all photos for each chunk, then locate the calibration panel captures for the multispectral and move them to a “Calibration images” folder in the Agisoft Workspace tab. If you chose to manually import imagery, you can locate calibration panels using the Calibrate Reflectance tool in the Tools GUI as seen below in Figure <a href="data-processing-photogrammetry-pipeline..html#fig:cal-ref-agisoft">6.3</a>.</li>
+</ul></li>
+</ol>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:cal-ref-agisoft"></span>
 <img src="Photos_&_gifs/cal_ref_metashape.png" alt="Calibrate reflectance tool found under Tools in Metashape." width="100%" />
 <p class="caption">
 Figure 6.3: Calibrate reflectance tool found under Tools in Metashape.
 </p>
 </div>
+<p><strong>Note:</strong> To process a pansharpened image the MS_P sensor requires the panchromatic camera to be set as the primary channel for processing. Go to Tools – Set Primary Channel – select Panchro.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><p><strong>Micasense Corrections outside of Agisoft(if necessary)</strong> – R Script. 2 hours.</p>
+<ul>
+<li>We have encountered incorrect irradiance data in metadata of MicaSense imagery due to incorrect measurements by the DLS2. To correct the irradiance data prior to processing we use methods from MicaSense’s DLS1 system. See the chapter on MicaSense Irradiance Correction for checks on whether your data needs correction and a detailed explanation of the correction process.</li>
+</ul></li>
+<li><p><strong>Visually Assess Flight Trajectory and Disable Outliers</strong> – Manual. 10 minutes.</p>
+<ul>
+<li>The MS cameras start taking pictures as soon as image capture has been started via the webpage on the ground and don’t stop until we power off at the end of the flight. Hence, we examine the flight trajectory and disable photos taken during flight to and from the site.</li>
+</ul></li>
+</ol>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:cal-ref-sunPanel-agisoft"></span>
 <img src="Photos_&_gifs/cal_ref_sun_panel_metashape.png" alt="Calibrate reflectance tool found under Tools in Metashape with sun sensor and reflectance panels enabled for calibration." width="100%" />
 <p class="caption">
 Figure 6.4: Calibrate reflectance tool found under Tools in Metashape with sun sensor and reflectance panels enabled for calibration.
 </p>
 </div>
+<ol start="4" style="list-style-type: decimal">
+<li><p><strong>Select the Best Calibration Panels and Calibrate Reflectance</strong> – Manual and Processed. 15 minutes.</p>
+<ul>
+<li>Each panel has a unique set of calibration values provided by the manufacturer in a csv. The Select Panel button in the Calibrate Reflectance tool will direct you to import the csv.</li>
+<li>Agisoft Metashape takes the latest before the flight and the earliest after the flight panel captures and linearly interpolates between them.</li>
+<li>We select one panel capture from the start and one from the end of the flight, by visually selecting a centered capture without shadow or glare and moving the rest to an “Unused_Cal_Images” folder (this folder needs to be created in the GUI).</li>
+<li>We run the calibration process using both the DLS and Calibration Panels checked in . However, Micasense recommends only calibrating with panels on full sun days. Please refer to the <a href="https://support.micasense.com/hc/en-us/articles/224893167-Best-practices-Collecting-Data-with-MicaSense-Sensors#:~:text=Hold%20the%20aircraft%20at%20chest,offset%20slightly%20to%20prevent%20shadows.">Micasense Knowledge Base - Best practices: Collecting Data with MicaSense Sensors</a> for more details.</li>
+</ul></li>
+<li><p><strong>Align Photos</strong> – GUI - Processed. 3-10 hours.</p>
+<ul>
+<li>Photogrammetric alignment is the process of matching and orienting overlapping images by identifying common features known as tie points, across multiple images. This alignment generates a geometrically accurate sparse point cloud from the tie points.</li>
+<li>We use the batch processing tool and settings as seen in Figure @ref(fig: align-photo-agisoft).</li>
+<li>The sparse clouds vary greatly in density, the P1 clouds on a closed canopy can be as low as 150,000 points. The MS_P sparse clouds could be 48 million points on the same flight plan.</li>
+</ul></li>
+</ol>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:align-photo-agisoft"></span>
 <img src="Photos_&_gifs/align_photos_metashape.png" alt="Photogrametric camera alignment settings using the alignment tool in Metashape" width="40%" />
 <p class="caption">
 Figure 6.5: Photogrametric camera alignment settings using the alignment tool in Metashape
 </p>
 </div>
+<ol start="6" style="list-style-type: decimal">
+<li><p><strong>Import and Align GCPs</strong> – Manual. 15 minutes.</p>
+<ul>
+<li>The GCP coordinates are imported in WGS 84.</li>
+<li><strong>Note</strong> GCPs can be used either actively as control points in which case they will “pull” the images into alignment or passively as check points to measure error.</li>
+<li>We are only using GCPs as check points now, but they will be implemented if registration fails.
+-Instructions to align GCPs if necessary
+<ul>
+<li>In the Reference pane check GCP_1 right click on it and filter photos by marker</li>
+<li>Open the photos tab, and double click the first photo. Drag the marker to the center of the photo. Do this for several photos - then click on the update transform tool found in the Reference pane.</li>
+<li>Scroll through at least 3 more pics to make sure they are aligned.</li>
+<li>Repeat for each GCPs hitting update transform tool located in the reference panel once you have set the photos.</li>
+<li>Leave at least one GCP for a “checkpoint”.</li>
+</ul></li>
+</ul></li>
+<li><p><strong>Sparse Cloud - Filter and Optimize Camera Alignment</strong> - manual. 30-45 minutes.</p>
+<ul>
+<li>This iterative step filters the sparse cloud for outliers and optimizes the camera calibration. Most literature suggests more aggressive filtering, but on closed canopy sites this tends to cause loss. Visually assess the cloud at each stage to confirm the sparse cloud is not becoming too sparse.</li>
+<li>In the GUI select Model – Gradual Selection – Reconstruction Uncertainty: Adjust the slider until the value is 25-75, while selecting a Max of %10 of the points.</li>
+<li>In Figure <a href="data-processing-photogrammetry-pipeline..html#fig:sparseCloud-agisoft">6.6</a>, there are 400,000 points selected out of 40 million and the uncertainty is at 30.</li>
+<li>Hit okay and delete to remove points.
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:sparseCloud-agisoft"></span>
 <img src="Photos_&_gifs/sparse_cloud_metashape.png" alt="Sparse cloud created in image alignment. Pink points are those selected by the Gradual Selection tool that have a reconstruction uncertainty greater than or equal to 30.4608. These points will be filtered out." width="100%" />
 <p class="caption">
 Figure 6.6: Sparse cloud created in image alignment. Pink points are those selected by the Gradual Selection tool that have a reconstruction uncertainty greater than or equal to 30.4608. These points will be filtered out.
 </p>
-</div>
+</div></li>
+<li>Next we optimize the camera alignment. Tools - Optimize Camera Alignment: default settings as in Figure <a href="data-processing-photogrammetry-pipeline..html#fig:opt-align-agisoft">6.7</a>.</li>
+</ul></li>
+</ol>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:opt-align-agisoft"></span>
 <img src="Photos_&_gifs/opt_camera_align_metashape.png" alt="Settings used for the Optimize Camera Alignment tool" width="60%" />
 <p class="caption">
 Figure 6.7: Settings used for the Optimize Camera Alignment tool
 </p>
 </div>
+<pre><code>-We now go through the same steps again filtering points and optimizing the cameras for the following settings.
+- Model – Gradual Selection – Projection Accuracy: 5-20. Max%10
+- Optimize Camera Alignment at stock - check estimate tiepoint covariance
+- Model – Gradual Selection – Reprojection Error: 0.3-1. Max%10
+- Optimize Camera Alignment at stock with fit additional corrections and estimate tiepoint covariance.
+  - Finall using the select tool we manually clip any edge points not cohesive to the flight.</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li><p><strong>Point based chunk alignment:</strong> multispectral to P1 - (requires manual verification). 2-6 hours. Batch processing</p>
+<ul>
+<li>Leveraging the accuracy of the P1 as a reference, the MS sparse cloud is aligned to the higher accuracy P1 sparse cloud using the batch processing steps according to the settings in Figure <a href="data-processing-photogrammetry-pipeline..html#fig:chunk-align-agisoft">6.8</a>.
+Figure <a href="data-processing-photogrammetry-pipeline..html#fig:chunk-align-agisoft">6.8</a>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:chunk-align-agisoft"></span>
 <img src="Photos_&_gifs/align_chunks_metashape.png" alt="Settings used for point based chunk alignment when aligning the multispectral data to the P1." width="60%" />
 <p class="caption">
 Figure 6.8: Settings used for point based chunk alignment when aligning the multispectral data to the P1.
 </p>
-</div>
+</div></li>
+<li>Visually confirm each multispectral has in fact aligned by seeing the [T] for transposed as in Figure <a href="data-processing-photogrammetry-pipeline..html#fig:chunk-align-agisoft">6.8</a>. If the chunk align on medium setting fails, try again on low. If this also fails, you will need to align with GCP’s or attempt georeferencing the output orthomosaics in a GIS.</li>
+</ul></li>
+</ol>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:chunk-align-confirm-agisoft"></span>
-<img src="Photos_&_gifs/transposed_metashape.png" alt="Visual of the [T] that will appear next to chunks that have successfully aligned via chunk alignment. The [T] stands for transposed, visual inspection of alignment at all four corners and the center of the plot should be done to ensure the error in the alignment is within an acceptable range. We have had sites complete alignment 'successfully' however with large, unacceptable error that required alignment using GCPs." width="60%" />
+<img src="Photos_&_gifs/transposed_metashape.png" alt="Visual of the [T] that will appear next to chunks that have successfully aligned via chunk alignment." width="60%" />
 <p class="caption">
-Figure 6.9: Visual of the [T] that will appear next to chunks that have successfully aligned via chunk alignment. The [T] stands for transposed, visual inspection of alignment at all four corners and the center of the plot should be done to ensure the error in the alignment is within an acceptable range. We have had sites complete alignment ‘successfully’ however with large, unacceptable error that required alignment using GCPs.
+Figure 6.9: Visual of the [T] that will appear next to chunks that have successfully aligned via chunk alignment.
 </p>
 </div>
+<ol start="9" style="list-style-type: decimal">
+<li><p><strong>Build Depth Maps and Dense Cloud</strong> – Script or Batch Process. 5-24 hours.</p>
+<p>-A dense point cloud, a high-resolution 3D representation with significantly more detail than the sparse cloud is built in this step. First depth maps are created for each image, capturing detailed information about the distance to surfaces in the scene. These depth maps are then combined to generate the dense point cloud. This is a primary product and can be exported. We have been building these to the highest settings as outlined in Figure <a href="data-processing-photogrammetry-pipeline..html#fig:DC-settings-agisoft">6.10</a>, but if this is not required significant time can be saved by lowering the setting. An example dense cloud is seen in Figure <a href="data-processing-photogrammetry-pipeline..html#fig:aligned-agisoft">6.1</a></p></li>
+</ol>
+Figure <a href="data-processing-photogrammetry-pipeline..html#fig:DC-settings-agisoft">6.10</a><br />
+
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:DC-settings-agisoft"></span>
 <img src="Photos_&_gifs/DC_settings_metashape.png" alt="Metashape settings for building the depth maps and the dense cloud." width="60%" />
 <p class="caption">
 Figure 6.10: Metashape settings for building the depth maps and the dense cloud.
 </p>
 </div>
+<ol start="10" style="list-style-type: decimal">
+<li><p><strong>Build DEM</strong> – Script or Batch Processed. ~1 hour.</p>
+<p>-Generates a Digital Elevation Model from the dense cloud data. Batch settings in Figure <a href="data-processing-photogrammetry-pipeline..html#fig:DEM-settings-agisoft">6.11</a></p></li>
+</ol>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:DEM-settings-agisoft"></span>
 <img src="Photos_&_gifs/build_DEM_metashape.png" alt="Metashape settings for DEM generation." width="60%" />
 <p class="caption">
 Figure 6.11: Metashape settings for DEM generation.
 </p>
 </div>
+<ol start="11" style="list-style-type: decimal">
+<li><p><strong>Build Orthomosaic</strong> – Script - Processed. 1-4 hours.</p>
+<ul>
+<li>Creates an orthomosaic by stitching together the aligned images and the DEM according to batch processing steps in Figure <a href="data-processing-photogrammetry-pipeline..html#fig:ortho-settings-agisoft">6.12</a>.</li>
+<li><strong>NOTE: We do NOT enable hole filling for multispectral</strong> – only used for RGB orthomosaics that were needed strictly for visual purposes and not analysis.</li>
+</ul></li>
+</ol>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:ortho-settings-agisoft"></span>
 <img src="Photos_&_gifs/build_ortho_metashape.png" alt="Metashape settings for building the orthomosaic." width="60%" />
 <p class="caption">
 Figure 6.12: Metashape settings for building the orthomosaic.
 </p>
 </div>
+<ol start="12" style="list-style-type: decimal">
+<li><p>**Check Orthomosaic Registration* - Manual. 15 minutes to redo from GCP alignment.</p>
+<ul>
+<li>The orthomosaic is checked for alignment to the GCPs. If it is not close on each GCP, we go back and try alignment with GCPs. It is very important to check all corners, as occasionally three out of four will align beautifully, and the fourth will be 25-50cm out of alignment.</li>
+<li>In the cases where we were unable to establish GCPs the orthomosaic is exported and checked against the P1 in a GIS.</li>
+</ul></li>
+<li><p><strong>Sanity Check Reflectance Values</strong> – Manual. 15 minutes – 2 hours if remaking orthomosaics.</p>
+<ul>
+<li><p>The orthomosaic is sanity checked for reflectance values. We look at the histogram of three different bands to ensure the values make sense. If they do not, another calibration panel is chosen, the reflectance is recalibrated, and the orthomosaic is rebuilt.</p></li>
+<li><p>To check values - go into Raster Transform - Enable Transform</p></li>
+<li><p>Select B1 (blue band). Click the circular arrows to the left of the “interpolate colors” button, then click auto and then apply. B1 should be around ~0.02 for the trees. The range it gives will be for the entire ortho so roads and other vegetation will increase the range so I suggest zooming into the ortho so you can see approximately what values correspond to trees. Repeat for B4 (green) and B10 (NIR). If the values are too large or small, i.e. B10 (NIR) &gt; 1, choose another calibration panel, delete the ortho, recalibrate, remake the ortho and recheck the values.
+-<strong>Note</strong> these values are general estimates of what a “tree” should look like however, different vegetation will have different ranges, for example values for cedar may be a little lower compared to Douglas fir.
+<strong>General benchmarks:</strong></p></li>
+<li><p>B1 should be around ~0.02.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:b1-check-ref-agisoft"></span>
 <img src="Photos_&_gifs/reflectance_values_metashape.png" alt="Raster calculator tool in Metashape to look at reflectance values of trees for band 1 (Blue - 444nm) prior to exporting the orthomosaic." width="100%" />
 <p class="caption">
 Figure 6.13: Raster calculator tool in Metashape to look at reflectance values of trees for band 1 (Blue - 444nm) prior to exporting the orthomosaic.
 </p>
-</div>
+</div></li>
+<li><p>B4 should be around ~0.06</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:b4-check-ref-agisoft"></span>
 <img src="Photos_&_gifs/b4_reflectance_values_metashape.png" alt="Reflectance values of trees for band 4 (Green - 560nm)." width="100%" />
 <p class="caption">
 Figure 6.14: Reflectance values of trees for band 4 (Green - 560nm).
 </p>
-</div>
+</div></li>
+<li><p>B10 should be around ~0.3 – 0.5, but shouldn’t exceed 0.7</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:b10-check-ref-agisoft"></span>
 <img src="Photos_&_gifs/b10_reflectance_values_metashape.png" alt="Reflectance values of trees for band 10 (NIR - 842nm)." width="100%" />
 <p class="caption">
 Figure 6.15: Reflectance values of trees for band 10 (NIR - 842nm).
 </p>
-</div>
+</div></li>
+</ul></li>
+<li><p>Normalize, pan sharpen and export – Script 5 minutes.</p>
+<ul>
+<li>Run the closing script for each multispectral sensor after entering the variables into the script. This script will:</li>
+<li>Normalize the 16bit pixel values for the MS. For the MS_P it will normalize and pan sharpen.</li>
+<li>Import the 15m buffered shape of the trial and export the orthomosaic clipped to this shape in NAD83 to the project specific folder.</li>
+</ul></li>
+</ol>
+<p>The following are helpful Agisoft processing references:
+Agisoft LLC. (2024). <a href="https://www.agisoft.com/downloads/user-manuals/">Agisoft Metashape User Manual: Professional Edition, Version 2.1.</a>
+<a href="https://pubs.usgs.gov/publication/ofr20211039">USGS_ Processing Coastal Imagery With Agisoft Metashape Professional Edition</a>
+<a href="">Micasense - Process MicaSense sensor data in Agisoft Metashape</a>
+Processing Multi-spectral Imagery with Agisoft MetaShape Pro:Dr. Eric Saczuk
+The knowledge base at Agisoft also has many other useful articles.</p>
 </div>
 </div>
 <div id="processing-orthomosaics" class="section level2 hasAnchor" number="6.2">
@@ -403,85 +558,85 @@ Figure 6.15: Reflectance values of trees for band 10 (NIR - 842nm).
 The above parameters were added to describe each minimum found by the function so that the true local minimum could be filtered for.</p></li>
 </ul>
 <p>This function will be used in the next few steps to isolate minimums in the NIR distribution.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data-processing-photogrammetry-pipeline..html#cb1-1" tabindex="-1"></a><span class="co"># This function finds local minimums and ranks how defined they are by the &#39;definition&#39; attribute</span></span>
-<span id="cb1-2"><a href="data-processing-photogrammetry-pipeline..html#cb1-2" tabindex="-1"></a>find_local_min <span class="ot">&lt;-</span> <span class="cf">function</span>(values) { <span class="co">#input &quot;values&quot; is a list of 1st derivatives of NIR values</span></span>
-<span id="cb1-3"><a href="data-processing-photogrammetry-pipeline..html#cb1-3" tabindex="-1"></a>  <span class="co">#initializing variables</span></span>
-<span id="cb1-4"><a href="data-processing-photogrammetry-pipeline..html#cb1-4" tabindex="-1"></a>  neg_slope <span class="ot">&lt;-</span> <span class="fu">numeric</span>() </span>
-<span id="cb1-5"><a href="data-processing-photogrammetry-pipeline..html#cb1-5" tabindex="-1"></a>  pos_slope <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
-<span id="cb1-6"><a href="data-processing-photogrammetry-pipeline..html#cb1-6" tabindex="-1"></a>  index_of_closest <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
-<span id="cb1-7"><a href="data-processing-photogrammetry-pipeline..html#cb1-7" tabindex="-1"></a>  definition <span class="ot">=</span> <span class="fu">numeric</span>()</span>
-<span id="cb1-8"><a href="data-processing-photogrammetry-pipeline..html#cb1-8" tabindex="-1"></a>  neg_sum <span class="ot">=</span> <span class="fu">numeric</span>()</span>
-<span id="cb1-9"><a href="data-processing-photogrammetry-pipeline..html#cb1-9" tabindex="-1"></a>  pos_sum <span class="ot">=</span> <span class="fu">numeric</span>()</span>
-<span id="cb1-10"><a href="data-processing-photogrammetry-pipeline..html#cb1-10" tabindex="-1"></a>  </span>
-<span id="cb1-11"><a href="data-processing-photogrammetry-pipeline..html#cb1-11" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co">#initializing iterator </span></span>
-<span id="cb1-12"><a href="data-processing-photogrammetry-pipeline..html#cb1-12" tabindex="-1"></a>  </span>
-<span id="cb1-13"><a href="data-processing-photogrammetry-pipeline..html#cb1-13" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(values)) { <span class="co">#skip index 1 so following &quot;values[i-1]...&quot; can properly index</span></span>
-<span id="cb1-14"><a href="data-processing-photogrammetry-pipeline..html#cb1-14" tabindex="-1"></a>    <span class="co">#print(i)</span></span>
-<span id="cb1-15"><a href="data-processing-photogrammetry-pipeline..html#cb1-15" tabindex="-1"></a>    <span class="cf">if</span> (values[i <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> values[i] <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> i <span class="sc">&gt;</span> <span class="dv">15</span>) { </span>
-<span id="cb1-16"><a href="data-processing-photogrammetry-pipeline..html#cb1-16" tabindex="-1"></a>      <span class="co">#finds a change from negative to positive 1st derivative (local min)</span></span>
-<span id="cb1-17"><a href="data-processing-photogrammetry-pipeline..html#cb1-17" tabindex="-1"></a>      <span class="co">#i&gt;15 because local min will not be in first 15 values and this stops an error occurring where a local min is found in the first 15 values and the def_positive indexing does not work</span></span>
-<span id="cb1-18"><a href="data-processing-photogrammetry-pipeline..html#cb1-18" tabindex="-1"></a>      def_positive <span class="ot">&lt;-</span> <span class="fu">c</span>(values[i<span class="sc">:</span>(i<span class="sc">+</span><span class="dv">15</span>)]) <span class="co"># vector of next 15 gradient values</span></span>
-<span id="cb1-19"><a href="data-processing-photogrammetry-pipeline..html#cb1-19" tabindex="-1"></a>      def_pos <span class="ot">&lt;-</span> def_positive[def_positive <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="co">#only taking positive 1st derivative values (aka positive slopes)</span></span>
-<span id="cb1-20"><a href="data-processing-photogrammetry-pipeline..html#cb1-20" tabindex="-1"></a>      pos_sum[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(def_pos) <span class="co">#adding up the positive 1st derivative values</span></span>
-<span id="cb1-21"><a href="data-processing-photogrammetry-pipeline..html#cb1-21" tabindex="-1"></a>      </span>
-<span id="cb1-22"><a href="data-processing-photogrammetry-pipeline..html#cb1-22" tabindex="-1"></a>      def_negative <span class="ot">&lt;-</span> <span class="fu">c</span>(values[(i <span class="sc">-</span> <span class="dv">15</span>)<span class="sc">:</span>i]) <span class="co"># vector of the 15 values to the left of the local min (negative 1st derivatives)</span></span>
-<span id="cb1-23"><a href="data-processing-photogrammetry-pipeline..html#cb1-23" tabindex="-1"></a>      def_neg <span class="ot">&lt;-</span> def_negative[def_negative <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="co">#only taking the negative slopes in the list</span></span>
-<span id="cb1-24"><a href="data-processing-photogrammetry-pipeline..html#cb1-24" tabindex="-1"></a>      neg_sum[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(def_neg) <span class="co">#adding up negative values</span></span>
-<span id="cb1-25"><a href="data-processing-photogrammetry-pipeline..html#cb1-25" tabindex="-1"></a>      </span>
-<span id="cb1-26"><a href="data-processing-photogrammetry-pipeline..html#cb1-26" tabindex="-1"></a>      neg_slope[k] <span class="ot">&lt;-</span> values[i <span class="sc">-</span> <span class="dv">1</span>] <span class="co">#1st derivative value at i-1 (right before sign change from neg to pos)</span></span>
-<span id="cb1-27"><a href="data-processing-photogrammetry-pipeline..html#cb1-27" tabindex="-1"></a>      pos_slope[k] <span class="ot">&lt;-</span> values[i] <span class="co">#1st derivative at i (at the switch from neg to positive)</span></span>
-<span id="cb1-28"><a href="data-processing-photogrammetry-pipeline..html#cb1-28" tabindex="-1"></a>      index_of_closest[k] <span class="ot">&lt;-</span> i <span class="sc">-</span> <span class="dv">1</span> <span class="co">#index value of the last neg 1st derivative before the local min</span></span>
-<span id="cb1-29"><a href="data-processing-photogrammetry-pipeline..html#cb1-29" tabindex="-1"></a>      definition[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">abs</span>(def_neg), <span class="fu">abs</span>(def_pos)) <span class="co"># higher the value, more pronounced the local min</span></span>
-<span id="cb1-30"><a href="data-processing-photogrammetry-pipeline..html#cb1-30" tabindex="-1"></a>      k <span class="ot">&lt;-</span> k <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb1-31"><a href="data-processing-photogrammetry-pipeline..html#cb1-31" tabindex="-1"></a>    }</span>
-<span id="cb1-32"><a href="data-processing-photogrammetry-pipeline..html#cb1-32" tabindex="-1"></a>  }</span>
-<span id="cb1-33"><a href="data-processing-photogrammetry-pipeline..html#cb1-33" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">neg_value =</span> neg_slope, <span class="at">pos_value =</span> pos_slope, <span class="at">Index =</span> index_of_closest, <span class="at">definition =</span> definition, <span class="at">neg_def =</span> neg_sum, <span class="at">pos_def =</span> pos_sum))</span>
-<span id="cb1-34"><a href="data-processing-photogrammetry-pipeline..html#cb1-34" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-processing-photogrammetry-pipeline..html#cb2-1" tabindex="-1"></a><span class="co"># This function finds local minimums and ranks how defined they are by the &#39;definition&#39; attribute</span></span>
+<span id="cb2-2"><a href="data-processing-photogrammetry-pipeline..html#cb2-2" tabindex="-1"></a>find_local_min <span class="ot">&lt;-</span> <span class="cf">function</span>(values) { <span class="co">#input &quot;values&quot; is a list of 1st derivatives of NIR values</span></span>
+<span id="cb2-3"><a href="data-processing-photogrammetry-pipeline..html#cb2-3" tabindex="-1"></a>  <span class="co">#initializing variables</span></span>
+<span id="cb2-4"><a href="data-processing-photogrammetry-pipeline..html#cb2-4" tabindex="-1"></a>  neg_slope <span class="ot">&lt;-</span> <span class="fu">numeric</span>() </span>
+<span id="cb2-5"><a href="data-processing-photogrammetry-pipeline..html#cb2-5" tabindex="-1"></a>  pos_slope <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
+<span id="cb2-6"><a href="data-processing-photogrammetry-pipeline..html#cb2-6" tabindex="-1"></a>  index_of_closest <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
+<span id="cb2-7"><a href="data-processing-photogrammetry-pipeline..html#cb2-7" tabindex="-1"></a>  definition <span class="ot">=</span> <span class="fu">numeric</span>()</span>
+<span id="cb2-8"><a href="data-processing-photogrammetry-pipeline..html#cb2-8" tabindex="-1"></a>  neg_sum <span class="ot">=</span> <span class="fu">numeric</span>()</span>
+<span id="cb2-9"><a href="data-processing-photogrammetry-pipeline..html#cb2-9" tabindex="-1"></a>  pos_sum <span class="ot">=</span> <span class="fu">numeric</span>()</span>
+<span id="cb2-10"><a href="data-processing-photogrammetry-pipeline..html#cb2-10" tabindex="-1"></a>  </span>
+<span id="cb2-11"><a href="data-processing-photogrammetry-pipeline..html#cb2-11" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co">#initializing iterator </span></span>
+<span id="cb2-12"><a href="data-processing-photogrammetry-pipeline..html#cb2-12" tabindex="-1"></a>  </span>
+<span id="cb2-13"><a href="data-processing-photogrammetry-pipeline..html#cb2-13" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(values)) { <span class="co">#skip index 1 so following &quot;values[i-1]...&quot; can properly index</span></span>
+<span id="cb2-14"><a href="data-processing-photogrammetry-pipeline..html#cb2-14" tabindex="-1"></a>    <span class="co">#print(i)</span></span>
+<span id="cb2-15"><a href="data-processing-photogrammetry-pipeline..html#cb2-15" tabindex="-1"></a>    <span class="cf">if</span> (values[i <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> values[i] <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> i <span class="sc">&gt;</span> <span class="dv">15</span>) { </span>
+<span id="cb2-16"><a href="data-processing-photogrammetry-pipeline..html#cb2-16" tabindex="-1"></a>      <span class="co">#finds a change from negative to positive 1st derivative (local min)</span></span>
+<span id="cb2-17"><a href="data-processing-photogrammetry-pipeline..html#cb2-17" tabindex="-1"></a>      <span class="co">#i&gt;15 because local min will not be in first 15 values and this stops an error occurring where a local min is found in the first 15 values and the def_positive indexing does not work</span></span>
+<span id="cb2-18"><a href="data-processing-photogrammetry-pipeline..html#cb2-18" tabindex="-1"></a>      def_positive <span class="ot">&lt;-</span> <span class="fu">c</span>(values[i<span class="sc">:</span>(i<span class="sc">+</span><span class="dv">15</span>)]) <span class="co"># vector of next 15 gradient values</span></span>
+<span id="cb2-19"><a href="data-processing-photogrammetry-pipeline..html#cb2-19" tabindex="-1"></a>      def_pos <span class="ot">&lt;-</span> def_positive[def_positive <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="co">#only taking positive 1st derivative values (aka positive slopes)</span></span>
+<span id="cb2-20"><a href="data-processing-photogrammetry-pipeline..html#cb2-20" tabindex="-1"></a>      pos_sum[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(def_pos) <span class="co">#adding up the positive 1st derivative values</span></span>
+<span id="cb2-21"><a href="data-processing-photogrammetry-pipeline..html#cb2-21" tabindex="-1"></a>      </span>
+<span id="cb2-22"><a href="data-processing-photogrammetry-pipeline..html#cb2-22" tabindex="-1"></a>      def_negative <span class="ot">&lt;-</span> <span class="fu">c</span>(values[(i <span class="sc">-</span> <span class="dv">15</span>)<span class="sc">:</span>i]) <span class="co"># vector of the 15 values to the left of the local min (negative 1st derivatives)</span></span>
+<span id="cb2-23"><a href="data-processing-photogrammetry-pipeline..html#cb2-23" tabindex="-1"></a>      def_neg <span class="ot">&lt;-</span> def_negative[def_negative <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="co">#only taking the negative slopes in the list</span></span>
+<span id="cb2-24"><a href="data-processing-photogrammetry-pipeline..html#cb2-24" tabindex="-1"></a>      neg_sum[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(def_neg) <span class="co">#adding up negative values</span></span>
+<span id="cb2-25"><a href="data-processing-photogrammetry-pipeline..html#cb2-25" tabindex="-1"></a>      </span>
+<span id="cb2-26"><a href="data-processing-photogrammetry-pipeline..html#cb2-26" tabindex="-1"></a>      neg_slope[k] <span class="ot">&lt;-</span> values[i <span class="sc">-</span> <span class="dv">1</span>] <span class="co">#1st derivative value at i-1 (right before sign change from neg to pos)</span></span>
+<span id="cb2-27"><a href="data-processing-photogrammetry-pipeline..html#cb2-27" tabindex="-1"></a>      pos_slope[k] <span class="ot">&lt;-</span> values[i] <span class="co">#1st derivative at i (at the switch from neg to positive)</span></span>
+<span id="cb2-28"><a href="data-processing-photogrammetry-pipeline..html#cb2-28" tabindex="-1"></a>      index_of_closest[k] <span class="ot">&lt;-</span> i <span class="sc">-</span> <span class="dv">1</span> <span class="co">#index value of the last neg 1st derivative before the local min</span></span>
+<span id="cb2-29"><a href="data-processing-photogrammetry-pipeline..html#cb2-29" tabindex="-1"></a>      definition[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">abs</span>(def_neg), <span class="fu">abs</span>(def_pos)) <span class="co"># higher the value, more pronounced the local min</span></span>
+<span id="cb2-30"><a href="data-processing-photogrammetry-pipeline..html#cb2-30" tabindex="-1"></a>      k <span class="ot">&lt;-</span> k <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb2-31"><a href="data-processing-photogrammetry-pipeline..html#cb2-31" tabindex="-1"></a>    }</span>
+<span id="cb2-32"><a href="data-processing-photogrammetry-pipeline..html#cb2-32" tabindex="-1"></a>  }</span>
+<span id="cb2-33"><a href="data-processing-photogrammetry-pipeline..html#cb2-33" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">neg_value =</span> neg_slope, <span class="at">pos_value =</span> pos_slope, <span class="at">Index =</span> index_of_closest, <span class="at">definition =</span> definition, <span class="at">neg_def =</span> neg_sum, <span class="at">pos_def =</span> pos_sum))</span>
+<span id="cb2-34"><a href="data-processing-photogrammetry-pipeline..html#cb2-34" tabindex="-1"></a>}</span></code></pre></div>
 <p>To begin, we load the necessary packages, the multispectral orthomosaic that contains the NIR (842nm) band, and the delineated crowns shapefile and create the folder where the shadow mask will be saved to:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-processing-photogrammetry-pipeline..html#cb2-1" tabindex="-1"></a><span class="co">#Required Packages</span></span>
-<span id="cb2-2"><a href="data-processing-photogrammetry-pipeline..html#cb2-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co"># to plot </span></span>
-<span id="cb2-3"><a href="data-processing-photogrammetry-pipeline..html#cb2-3" tabindex="-1"></a><span class="fu">library</span>(terra) <span class="co"># to work with the orthomosaics (rasters)</span></span>
-<span id="cb2-4"><a href="data-processing-photogrammetry-pipeline..html#cb2-4" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co">#for data manipulation</span></span>
-<span id="cb2-5"><a href="data-processing-photogrammetry-pipeline..html#cb2-5" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># for data manipulation</span></span>
-<span id="cb2-6"><a href="data-processing-photogrammetry-pipeline..html#cb2-6" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="co"># to work with the delineated crown polygons</span></span>
-<span id="cb2-7"><a href="data-processing-photogrammetry-pipeline..html#cb2-7" tabindex="-1"></a><span class="fu">library</span>(pracma) <span class="co"># for gradient/ derivative function</span></span>
-<span id="cb2-8"><a href="data-processing-photogrammetry-pipeline..html#cb2-8" tabindex="-1"></a><span class="fu">library</span>(LaplacesDemon) <span class="co"># is.multimodal function</span></span>
-<span id="cb2-9"><a href="data-processing-photogrammetry-pipeline..html#cb2-9" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="data-processing-photogrammetry-pipeline..html#cb2-10" tabindex="-1"></a><span class="co"># Setting directory </span></span>
-<span id="cb2-11"><a href="data-processing-photogrammetry-pipeline..html#cb2-11" tabindex="-1"></a>dir <span class="ot">=</span> <span class="st">&quot;Change to match your folder strucutre&quot;</span> <span class="co">#directory where shadow mask folder will be made. This dir is also used in path names for the orhtomosaics. Change up paths throughout the code to call your data.</span></span>
-<span id="cb2-12"><a href="data-processing-photogrammetry-pipeline..html#cb2-12" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="data-processing-photogrammetry-pipeline..html#cb2-13" tabindex="-1"></a><span class="co"># Reading in the multispectral orthomosaic</span></span>
-<span id="cb2-14"><a href="data-processing-photogrammetry-pipeline..html#cb2-14" tabindex="-1"></a>ms_temp <span class="ot">=</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;metashape</span><span class="sc">\\</span><span class="st">3_MS_ORTHO</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">pattern =</span> <span class="st">&quot;.*MS_Calibrated.*_bestPanel.tif$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) <span class="co"># here we read in the ortho that is in the set directory and contains &quot;MS_Calibrated&quot; in the name and end in &quot;_bestPanel.tif&quot;. We had multiple orthos in this folder, so did this to ensure the proper one was called. Change to match your ortho name, or remove the pattern if you only have one ortho in the defined path.</span></span>
-<span id="cb2-15"><a href="data-processing-photogrammetry-pipeline..html#cb2-15" tabindex="-1"></a>  </span>
-<span id="cb2-16"><a href="data-processing-photogrammetry-pipeline..html#cb2-16" tabindex="-1"></a><span class="co"># Reading in the shapefile containing delineated crowns and buffering inward by 5cm to limit any mixed pixels from neighboring vegetation</span></span>
-<span id="cb2-17"><a href="data-processing-photogrammetry-pipeline..html#cb2-17" tabindex="-1"></a>dir_crowns <span class="ot">&lt;-</span> <span class="st">&quot;D:</span><span class="sc">\\</span><span class="st">Sync</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Crowns.shp&quot;</span> <span class="co">#path to crowns shapefile</span></span>
-<span id="cb2-18"><a href="data-processing-photogrammetry-pipeline..html#cb2-18" tabindex="-1"></a>pols_spat <span class="ot">=</span> <span class="fu">st_read</span>(<span class="fu">paste0</span>(dir_crowns)) <span class="sc">%&gt;%</span> <span class="co"># reading in crown shp</span></span>
-<span id="cb2-19"><a href="data-processing-photogrammetry-pipeline..html#cb2-19" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(.)) <span class="sc">%&gt;%</span> <span class="co">#removing empty</span></span>
-<span id="cb2-20"><a href="data-processing-photogrammetry-pipeline..html#cb2-20" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="at">dist =</span> <span class="sc">-</span>.<span class="dv">05</span>) <span class="sc">%&gt;%</span> <span class="co">#buffering inward by 5cm</span></span>
-<span id="cb2-21"><a href="data-processing-photogrammetry-pipeline..html#cb2-21" tabindex="-1"></a>  <span class="fu">vect</span>()</span>
-<span id="cb2-22"><a href="data-processing-photogrammetry-pipeline..html#cb2-22" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="data-processing-photogrammetry-pipeline..html#cb2-23" tabindex="-1"></a><span class="co"># Creating a folder for shadow masks</span></span>
-<span id="cb2-24"><a href="data-processing-photogrammetry-pipeline..html#cb2-24" tabindex="-1"></a>Nir_shadow_folder_baseName <span class="ot">&lt;-</span> <span class="st">&quot;NIR_shadow_mask_localMinOrMax&quot;</span> <span class="co">#name of the folder shadow masks will be written to. We have the folder name defined outside the folder creation step below so that we could change the folder name once without having to change it throughout the code.</span></span>
-<span id="cb2-25"><a href="data-processing-photogrammetry-pipeline..html#cb2-25" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))) {</span>
-<span id="cb2-26"><a href="data-processing-photogrammetry-pipeline..html#cb2-26" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir,Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
-<span id="cb2-27"><a href="data-processing-photogrammetry-pipeline..html#cb2-27" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-processing-photogrammetry-pipeline..html#cb3-1" tabindex="-1"></a><span class="co">#Required Packages</span></span>
+<span id="cb3-2"><a href="data-processing-photogrammetry-pipeline..html#cb3-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co"># to plot </span></span>
+<span id="cb3-3"><a href="data-processing-photogrammetry-pipeline..html#cb3-3" tabindex="-1"></a><span class="fu">library</span>(terra) <span class="co"># to work with the orthomosaics (rasters)</span></span>
+<span id="cb3-4"><a href="data-processing-photogrammetry-pipeline..html#cb3-4" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co">#for data manipulation</span></span>
+<span id="cb3-5"><a href="data-processing-photogrammetry-pipeline..html#cb3-5" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># for data manipulation</span></span>
+<span id="cb3-6"><a href="data-processing-photogrammetry-pipeline..html#cb3-6" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="co"># to work with the delineated crown polygons</span></span>
+<span id="cb3-7"><a href="data-processing-photogrammetry-pipeline..html#cb3-7" tabindex="-1"></a><span class="fu">library</span>(pracma) <span class="co"># for gradient/ derivative function</span></span>
+<span id="cb3-8"><a href="data-processing-photogrammetry-pipeline..html#cb3-8" tabindex="-1"></a><span class="fu">library</span>(LaplacesDemon) <span class="co"># is.multimodal function</span></span>
+<span id="cb3-9"><a href="data-processing-photogrammetry-pipeline..html#cb3-9" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="data-processing-photogrammetry-pipeline..html#cb3-10" tabindex="-1"></a><span class="co"># Setting directory </span></span>
+<span id="cb3-11"><a href="data-processing-photogrammetry-pipeline..html#cb3-11" tabindex="-1"></a>dir <span class="ot">=</span> <span class="st">&quot;Change to match your folder strucutre&quot;</span> <span class="co">#directory where shadow mask folder will be made. This dir is also used in path names for the orhtomosaics. Change up paths throughout the code to call your data.</span></span>
+<span id="cb3-12"><a href="data-processing-photogrammetry-pipeline..html#cb3-12" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="data-processing-photogrammetry-pipeline..html#cb3-13" tabindex="-1"></a><span class="co"># Reading in the multispectral orthomosaic</span></span>
+<span id="cb3-14"><a href="data-processing-photogrammetry-pipeline..html#cb3-14" tabindex="-1"></a>ms_temp <span class="ot">=</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;metashape</span><span class="sc">\\</span><span class="st">3_MS_ORTHO</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">pattern =</span> <span class="st">&quot;.*MS_Calibrated.*_bestPanel.tif$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) <span class="co"># here we read in the ortho that is in the set directory and contains &quot;MS_Calibrated&quot; in the name and end in &quot;_bestPanel.tif&quot;. We had multiple orthos in this folder, so did this to ensure the proper one was called. Change to match your ortho name, or remove the pattern if you only have one ortho in the defined path.</span></span>
+<span id="cb3-15"><a href="data-processing-photogrammetry-pipeline..html#cb3-15" tabindex="-1"></a>  </span>
+<span id="cb3-16"><a href="data-processing-photogrammetry-pipeline..html#cb3-16" tabindex="-1"></a><span class="co"># Reading in the shapefile containing delineated crowns and buffering inward by 5cm to limit any mixed pixels from neighboring vegetation</span></span>
+<span id="cb3-17"><a href="data-processing-photogrammetry-pipeline..html#cb3-17" tabindex="-1"></a>dir_crowns <span class="ot">&lt;-</span> <span class="st">&quot;D:</span><span class="sc">\\</span><span class="st">Sync</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Crowns.shp&quot;</span> <span class="co">#path to crowns shapefile</span></span>
+<span id="cb3-18"><a href="data-processing-photogrammetry-pipeline..html#cb3-18" tabindex="-1"></a>pols_spat <span class="ot">=</span> <span class="fu">st_read</span>(<span class="fu">paste0</span>(dir_crowns)) <span class="sc">%&gt;%</span> <span class="co"># reading in crown shp</span></span>
+<span id="cb3-19"><a href="data-processing-photogrammetry-pipeline..html#cb3-19" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(.)) <span class="sc">%&gt;%</span> <span class="co">#removing empty</span></span>
+<span id="cb3-20"><a href="data-processing-photogrammetry-pipeline..html#cb3-20" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="at">dist =</span> <span class="sc">-</span>.<span class="dv">05</span>) <span class="sc">%&gt;%</span> <span class="co">#buffering inward by 5cm</span></span>
+<span id="cb3-21"><a href="data-processing-photogrammetry-pipeline..html#cb3-21" tabindex="-1"></a>  <span class="fu">vect</span>()</span>
+<span id="cb3-22"><a href="data-processing-photogrammetry-pipeline..html#cb3-22" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="data-processing-photogrammetry-pipeline..html#cb3-23" tabindex="-1"></a><span class="co"># Creating a folder for shadow masks</span></span>
+<span id="cb3-24"><a href="data-processing-photogrammetry-pipeline..html#cb3-24" tabindex="-1"></a>Nir_shadow_folder_baseName <span class="ot">&lt;-</span> <span class="st">&quot;NIR_shadow_mask_localMinOrMax&quot;</span> <span class="co">#name of the folder shadow masks will be written to. We have the folder name defined outside the folder creation step below so that we could change the folder name once without having to change it throughout the code.</span></span>
+<span id="cb3-25"><a href="data-processing-photogrammetry-pipeline..html#cb3-25" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))) {</span>
+<span id="cb3-26"><a href="data-processing-photogrammetry-pipeline..html#cb3-26" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir,Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
+<span id="cb3-27"><a href="data-processing-photogrammetry-pipeline..html#cb3-27" tabindex="-1"></a>  }</span></code></pre></div>
 <p>Next, the NIR band is selected from the multispectral orthomosaic. Here you can choose to:</p>
 <ol style="list-style-type: decimal">
 <li><p>Crop the mulispectral othomosaic to the extent of the crowns shapefile. We have found this to be a good option for mature sites with minimal exposed ground.</p></li>
 <li><p>Mask the mulispectral othomosaic to the individual crowns. We have found this to be a good option for younger sites with lots of ground exposure.</p></li>
 </ol>
 <p>Below we crop the raster to the extent of the polygons and reformat from a raster to a vector of values:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-processing-photogrammetry-pipeline..html#cb3-1" tabindex="-1"></a><span class="co">#Create a vector of near-infrared (NIR) values from the 10th multispectral band (842nm)</span></span>
-<span id="cb3-2"><a href="data-processing-photogrammetry-pipeline..html#cb3-2" tabindex="-1"></a>NIR <span class="ot">=</span> ms_temp[[<span class="dv">10</span>]] <span class="sc">%&gt;%</span> <span class="co">#isolating the NIR (842nm) band</span></span>
-<span id="cb3-3"><a href="data-processing-photogrammetry-pipeline..html#cb3-3" tabindex="-1"></a>  <span class="fu">crop</span>(pols_spat) <span class="sc">%&gt;%</span> <span class="co">#cropping to the extent of the crown polygon shp</span></span>
-<span id="cb3-4"><a href="data-processing-photogrammetry-pipeline..html#cb3-4" tabindex="-1"></a>  <span class="fu">clamp</span>(<span class="at">upper =</span> <span class="dv">50000</span>, <span class="at">values =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-5"><a href="data-processing-photogrammetry-pipeline..html#cb3-5" tabindex="-1"></a>  <span class="fu">as.vector</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-processing-photogrammetry-pipeline..html#cb4-1" tabindex="-1"></a><span class="co">#Create a vector of near-infrared (NIR) values from the 10th multispectral band (842nm)</span></span>
+<span id="cb4-2"><a href="data-processing-photogrammetry-pipeline..html#cb4-2" tabindex="-1"></a>NIR <span class="ot">=</span> ms_temp[[<span class="dv">10</span>]] <span class="sc">%&gt;%</span> <span class="co">#isolating the NIR (842nm) band</span></span>
+<span id="cb4-3"><a href="data-processing-photogrammetry-pipeline..html#cb4-3" tabindex="-1"></a>  <span class="fu">crop</span>(pols_spat) <span class="sc">%&gt;%</span> <span class="co">#cropping to the extent of the crown polygon shp</span></span>
+<span id="cb4-4"><a href="data-processing-photogrammetry-pipeline..html#cb4-4" tabindex="-1"></a>  <span class="fu">clamp</span>(<span class="at">upper =</span> <span class="dv">50000</span>, <span class="at">values =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="data-processing-photogrammetry-pipeline..html#cb4-5" tabindex="-1"></a>  <span class="fu">as.vector</span>()</span></code></pre></div>
 <p>Density of the NIR values is calculated and plotted, after removing NA values.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-processing-photogrammetry-pipeline..html#cb4-1" tabindex="-1"></a>NIR_na <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(NIR) <span class="co">#remove NA values from the NIR vector</span></span>
-<span id="cb4-2"><a href="data-processing-photogrammetry-pipeline..html#cb4-2" tabindex="-1"></a>density_values <span class="ot">&lt;-</span> <span class="fu">density</span>(NIR_na) <span class="co"># calculates density of NIR values</span></span>
-<span id="cb4-3"><a href="data-processing-photogrammetry-pipeline..html#cb4-3" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="data-processing-photogrammetry-pipeline..html#cb4-4" tabindex="-1"></a><span class="co"># Plot to see the distribution of NIR values</span></span>
-<span id="cb4-5"><a href="data-processing-photogrammetry-pipeline..html#cb4-5" tabindex="-1"></a><span class="fu">plot</span>(density_values) <span class="co"># check to see the distribution of NIR values (ie a visual check for whether or not a local min exists)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-processing-photogrammetry-pipeline..html#cb5-1" tabindex="-1"></a>NIR_na <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(NIR) <span class="co">#remove NA values from the NIR vector</span></span>
+<span id="cb5-2"><a href="data-processing-photogrammetry-pipeline..html#cb5-2" tabindex="-1"></a>density_values <span class="ot">&lt;-</span> <span class="fu">density</span>(NIR_na) <span class="co"># calculates density of NIR values</span></span>
+<span id="cb5-3"><a href="data-processing-photogrammetry-pipeline..html#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="data-processing-photogrammetry-pipeline..html#cb5-4" tabindex="-1"></a><span class="co"># Plot to see the distribution of NIR values</span></span>
+<span id="cb5-5"><a href="data-processing-photogrammetry-pipeline..html#cb5-5" tabindex="-1"></a><span class="fu">plot</span>(density_values) <span class="co"># check to see the distribution of NIR values (ie a visual check for whether or not a local min exists)</span></span></code></pre></div>
 <p>At this point the threshold can be estimated manually from the graph however, this is not a feasible method when you have many data acquisitions, nor is it the most accurate method. Below we describe the method we used to create shadow masks for many acquisitions withouth having to visually inspect the NIR distributions. To computationally find the threshold we first need to decipher whether the NIR distribution is unimodal (one peak) or multimodal (more than one peak). To do so we use the <em>is.multimodal</em> function from the LaplacesDemon package.</p>
 <p>If the distribution was multimodal, we found the local minimum by:</p>
 <ol style="list-style-type: decimal">
@@ -496,89 +651,89 @@ The above parameters were added to describe each minimum found by the function s
 <li>locating the NIR value that corresponds to the greatest density of values in the NIR distribution</li>
 </ol>
 <p><strong>Note:</strong> for each method there are <strong>mode</strong> and <strong>thresh_name</strong> variables defined. These variables are used to annotate the histrogram made in the next step</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-processing-photogrammetry-pipeline..html#cb5-1" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">is.multimodal</span>(NIR_na)){ <span class="co"># if the NIR distribution is multimodal, continue to the below steps</span></span>
-<span id="cb5-2"><a href="data-processing-photogrammetry-pipeline..html#cb5-2" tabindex="-1"></a>    </span>
-<span id="cb5-3"><a href="data-processing-photogrammetry-pipeline..html#cb5-3" tabindex="-1"></a>    dy_dt <span class="ot">&lt;-</span> pracma<span class="sc">::</span><span class="fu">gradient</span>(density_values<span class="sc">$</span>y) <span class="co">#list of first derivatives of NIR vector</span></span>
-<span id="cb5-4"><a href="data-processing-photogrammetry-pipeline..html#cb5-4" tabindex="-1"></a>    </span>
-<span id="cb5-5"><a href="data-processing-photogrammetry-pipeline..html#cb5-5" tabindex="-1"></a>    zeros <span class="ot">&lt;-</span> <span class="fu">find_local_min</span>(dy_dt) <span class="co"># Finds index locations where slope switches from neg to post (local min) and ranks the intensity of each local min</span></span>
-<span id="cb5-6"><a href="data-processing-photogrammetry-pipeline..html#cb5-6" tabindex="-1"></a>    zeros_filtered <span class="ot">&lt;-</span> zeros[(zeros<span class="sc">$</span>pos_def <span class="sc">&gt;</span> <span class="dv">0</span>),] <span class="co"># Filters rows with pos_def &gt; 0, filtering out small minimums on negative slopes (not true local mins)</span></span>
-<span id="cb5-7"><a href="data-processing-photogrammetry-pipeline..html#cb5-7" tabindex="-1"></a>    </span>
-<span id="cb5-8"><a href="data-processing-photogrammetry-pipeline..html#cb5-8" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">nrow</span>(zeros_filtered)<span class="sc">==</span><span class="dv">0</span>){<span class="co">#if empty, then detected a false multimodal distribution and defaulting to max as threshold value</span></span>
-<span id="cb5-9"><a href="data-processing-photogrammetry-pipeline..html#cb5-9" tabindex="-1"></a>      <span class="fu">print</span>(<span class="st">&quot;It is a false multimodal&quot;</span>)</span>
-<span id="cb5-10"><a href="data-processing-photogrammetry-pipeline..html#cb5-10" tabindex="-1"></a>      max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-11"><a href="data-processing-photogrammetry-pipeline..html#cb5-11" tabindex="-1"></a>      threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
-<span id="cb5-12"><a href="data-processing-photogrammetry-pipeline..html#cb5-12" tabindex="-1"></a>      mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal (False Multi)&quot;</span></span>
-<span id="cb5-13"><a href="data-processing-photogrammetry-pipeline..html#cb5-13" tabindex="-1"></a>      thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
-<span id="cb5-14"><a href="data-processing-photogrammetry-pipeline..html#cb5-14" tabindex="-1"></a>      </span>
-<span id="cb5-15"><a href="data-processing-photogrammetry-pipeline..html#cb5-15" tabindex="-1"></a>      }<span class="cf">else</span>{ </span>
-<span id="cb5-16"><a href="data-processing-photogrammetry-pipeline..html#cb5-16" tabindex="-1"></a>      zeros_local_min <span class="ot">&lt;-</span> zeros_filtered[<span class="fu">which.max</span>(zeros_filtered<span class="sc">$</span>definition), ] <span class="co">#isolating the largest local min</span></span>
-<span id="cb5-17"><a href="data-processing-photogrammetry-pipeline..html#cb5-17" tabindex="-1"></a>      <span class="co"># x_zeros &lt;- density_values$x[zeros_local_min$Index] #selecting NIR (aka x_mid) value that corresponds to the index value of the most defined local min </span></span>
-<span id="cb5-18"><a href="data-processing-photogrammetry-pipeline..html#cb5-18" tabindex="-1"></a>      threshold <span class="ot">&lt;-</span> density_values<span class="sc">$</span>x[zeros_local_min<span class="sc">$</span>Index] <span class="co">#selecting NIR (aka x_mid) value that corresponds to the index value of the most defined local min </span></span>
-<span id="cb5-19"><a href="data-processing-photogrammetry-pipeline..html#cb5-19" tabindex="-1"></a>      </span>
-<span id="cb5-20"><a href="data-processing-photogrammetry-pipeline..html#cb5-20" tabindex="-1"></a>      <span class="co"># Catching cases of &quot;inf&quot; returns:</span></span>
-<span id="cb5-21"><a href="data-processing-photogrammetry-pipeline..html#cb5-21" tabindex="-1"></a>      <span class="cf">if</span> (threshold <span class="sc">&lt;=</span> <span class="fl">0.7</span> <span class="sc">&amp;</span> threshold <span class="sc">&gt;</span> <span class="dv">0</span>){<span class="co">#setting limits on the threshold to remove any thresholds from the tails of the distribution</span></span>
-<span id="cb5-22"><a href="data-processing-photogrammetry-pipeline..html#cb5-22" tabindex="-1"></a>        <span class="fu">print</span>(threshold)</span>
-<span id="cb5-23"><a href="data-processing-photogrammetry-pipeline..html#cb5-23" tabindex="-1"></a>        mode <span class="ot">&lt;-</span> <span class="st">&quot;Multimodal&quot;</span></span>
-<span id="cb5-24"><a href="data-processing-photogrammetry-pipeline..html#cb5-24" tabindex="-1"></a>        thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMin&quot;</span></span>
-<span id="cb5-25"><a href="data-processing-photogrammetry-pipeline..html#cb5-25" tabindex="-1"></a>        </span>
-<span id="cb5-26"><a href="data-processing-photogrammetry-pipeline..html#cb5-26" tabindex="-1"></a>        }<span class="cf">else</span>{</span>
-<span id="cb5-27"><a href="data-processing-photogrammetry-pipeline..html#cb5-27" tabindex="-1"></a>        <span class="fu">print</span>(<span class="st">&quot;Multimodal with org thresh &gt; 0.7&quot;</span>) <span class="co">#This output usually indicates an error in the function, make sure to look at the NIR distribution to confirm this is in fact correct or if the code needs modification for a special case</span></span>
-<span id="cb5-28"><a href="data-processing-photogrammetry-pipeline..html#cb5-28" tabindex="-1"></a>        <span class="co">#This often indicates a false multimodal as well, and therefore the NIR value with the max frequency in the NIR distribution with be used as the threshold</span></span>
-<span id="cb5-29"><a href="data-processing-photogrammetry-pipeline..html#cb5-29" tabindex="-1"></a>        max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-30"><a href="data-processing-photogrammetry-pipeline..html#cb5-30" tabindex="-1"></a>        threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
-<span id="cb5-31"><a href="data-processing-photogrammetry-pipeline..html#cb5-31" tabindex="-1"></a>        mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal (False Multi with org thresh &gt; 0.7)&quot;</span></span>
-<span id="cb5-32"><a href="data-processing-photogrammetry-pipeline..html#cb5-32" tabindex="-1"></a>        thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
-<span id="cb5-33"><a href="data-processing-photogrammetry-pipeline..html#cb5-33" tabindex="-1"></a>      }</span>
-<span id="cb5-34"><a href="data-processing-photogrammetry-pipeline..html#cb5-34" tabindex="-1"></a>    }</span>
-<span id="cb5-35"><a href="data-processing-photogrammetry-pipeline..html#cb5-35" tabindex="-1"></a>  }<span class="cf">else</span>{ <span class="co">#if the NIR vector is NOT multimodal, continue to the below steps</span></span>
-<span id="cb5-36"><a href="data-processing-photogrammetry-pipeline..html#cb5-36" tabindex="-1"></a>    <span class="co">#Finding NIR value with the greatest frequency in the distribution - this max value will be the threshold for unimodal distributions </span></span>
-<span id="cb5-37"><a href="data-processing-photogrammetry-pipeline..html#cb5-37" tabindex="-1"></a>    max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-38"><a href="data-processing-photogrammetry-pipeline..html#cb5-38" tabindex="-1"></a>    threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
-<span id="cb5-39"><a href="data-processing-photogrammetry-pipeline..html#cb5-39" tabindex="-1"></a>    <span class="fu">print</span>(threshold)</span>
-<span id="cb5-40"><a href="data-processing-photogrammetry-pipeline..html#cb5-40" tabindex="-1"></a>    thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
-<span id="cb5-41"><a href="data-processing-photogrammetry-pipeline..html#cb5-41" tabindex="-1"></a>    mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal&quot;</span></span>
-<span id="cb5-42"><a href="data-processing-photogrammetry-pipeline..html#cb5-42" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-processing-photogrammetry-pipeline..html#cb6-1" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">is.multimodal</span>(NIR_na)){ <span class="co"># if the NIR distribution is multimodal, continue to the below steps</span></span>
+<span id="cb6-2"><a href="data-processing-photogrammetry-pipeline..html#cb6-2" tabindex="-1"></a>    </span>
+<span id="cb6-3"><a href="data-processing-photogrammetry-pipeline..html#cb6-3" tabindex="-1"></a>    dy_dt <span class="ot">&lt;-</span> pracma<span class="sc">::</span><span class="fu">gradient</span>(density_values<span class="sc">$</span>y) <span class="co">#list of first derivatives of NIR vector</span></span>
+<span id="cb6-4"><a href="data-processing-photogrammetry-pipeline..html#cb6-4" tabindex="-1"></a>    </span>
+<span id="cb6-5"><a href="data-processing-photogrammetry-pipeline..html#cb6-5" tabindex="-1"></a>    zeros <span class="ot">&lt;-</span> <span class="fu">find_local_min</span>(dy_dt) <span class="co"># Finds index locations where slope switches from neg to post (local min) and ranks the intensity of each local min</span></span>
+<span id="cb6-6"><a href="data-processing-photogrammetry-pipeline..html#cb6-6" tabindex="-1"></a>    zeros_filtered <span class="ot">&lt;-</span> zeros[(zeros<span class="sc">$</span>pos_def <span class="sc">&gt;</span> <span class="dv">0</span>),] <span class="co"># Filters rows with pos_def &gt; 0, filtering out small minimums on negative slopes (not true local mins)</span></span>
+<span id="cb6-7"><a href="data-processing-photogrammetry-pipeline..html#cb6-7" tabindex="-1"></a>    </span>
+<span id="cb6-8"><a href="data-processing-photogrammetry-pipeline..html#cb6-8" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">nrow</span>(zeros_filtered)<span class="sc">==</span><span class="dv">0</span>){<span class="co">#if empty, then detected a false multimodal distribution and defaulting to max as threshold value</span></span>
+<span id="cb6-9"><a href="data-processing-photogrammetry-pipeline..html#cb6-9" tabindex="-1"></a>      <span class="fu">print</span>(<span class="st">&quot;It is a false multimodal&quot;</span>)</span>
+<span id="cb6-10"><a href="data-processing-photogrammetry-pipeline..html#cb6-10" tabindex="-1"></a>      max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-11"><a href="data-processing-photogrammetry-pipeline..html#cb6-11" tabindex="-1"></a>      threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
+<span id="cb6-12"><a href="data-processing-photogrammetry-pipeline..html#cb6-12" tabindex="-1"></a>      mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal (False Multi)&quot;</span></span>
+<span id="cb6-13"><a href="data-processing-photogrammetry-pipeline..html#cb6-13" tabindex="-1"></a>      thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
+<span id="cb6-14"><a href="data-processing-photogrammetry-pipeline..html#cb6-14" tabindex="-1"></a>      </span>
+<span id="cb6-15"><a href="data-processing-photogrammetry-pipeline..html#cb6-15" tabindex="-1"></a>      }<span class="cf">else</span>{ </span>
+<span id="cb6-16"><a href="data-processing-photogrammetry-pipeline..html#cb6-16" tabindex="-1"></a>      zeros_local_min <span class="ot">&lt;-</span> zeros_filtered[<span class="fu">which.max</span>(zeros_filtered<span class="sc">$</span>definition), ] <span class="co">#isolating the largest local min</span></span>
+<span id="cb6-17"><a href="data-processing-photogrammetry-pipeline..html#cb6-17" tabindex="-1"></a>      <span class="co"># x_zeros &lt;- density_values$x[zeros_local_min$Index] #selecting NIR (aka x_mid) value that corresponds to the index value of the most defined local min </span></span>
+<span id="cb6-18"><a href="data-processing-photogrammetry-pipeline..html#cb6-18" tabindex="-1"></a>      threshold <span class="ot">&lt;-</span> density_values<span class="sc">$</span>x[zeros_local_min<span class="sc">$</span>Index] <span class="co">#selecting NIR (aka x_mid) value that corresponds to the index value of the most defined local min </span></span>
+<span id="cb6-19"><a href="data-processing-photogrammetry-pipeline..html#cb6-19" tabindex="-1"></a>      </span>
+<span id="cb6-20"><a href="data-processing-photogrammetry-pipeline..html#cb6-20" tabindex="-1"></a>      <span class="co"># Catching cases of &quot;inf&quot; returns:</span></span>
+<span id="cb6-21"><a href="data-processing-photogrammetry-pipeline..html#cb6-21" tabindex="-1"></a>      <span class="cf">if</span> (threshold <span class="sc">&lt;=</span> <span class="fl">0.7</span> <span class="sc">&amp;</span> threshold <span class="sc">&gt;</span> <span class="dv">0</span>){<span class="co">#setting limits on the threshold to remove any thresholds from the tails of the distribution</span></span>
+<span id="cb6-22"><a href="data-processing-photogrammetry-pipeline..html#cb6-22" tabindex="-1"></a>        <span class="fu">print</span>(threshold)</span>
+<span id="cb6-23"><a href="data-processing-photogrammetry-pipeline..html#cb6-23" tabindex="-1"></a>        mode <span class="ot">&lt;-</span> <span class="st">&quot;Multimodal&quot;</span></span>
+<span id="cb6-24"><a href="data-processing-photogrammetry-pipeline..html#cb6-24" tabindex="-1"></a>        thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMin&quot;</span></span>
+<span id="cb6-25"><a href="data-processing-photogrammetry-pipeline..html#cb6-25" tabindex="-1"></a>        </span>
+<span id="cb6-26"><a href="data-processing-photogrammetry-pipeline..html#cb6-26" tabindex="-1"></a>        }<span class="cf">else</span>{</span>
+<span id="cb6-27"><a href="data-processing-photogrammetry-pipeline..html#cb6-27" tabindex="-1"></a>        <span class="fu">print</span>(<span class="st">&quot;Multimodal with org thresh &gt; 0.7&quot;</span>) <span class="co">#This output usually indicates an error in the function, make sure to look at the NIR distribution to confirm this is in fact correct or if the code needs modification for a special case</span></span>
+<span id="cb6-28"><a href="data-processing-photogrammetry-pipeline..html#cb6-28" tabindex="-1"></a>        <span class="co">#This often indicates a false multimodal as well, and therefore the NIR value with the max frequency in the NIR distribution with be used as the threshold</span></span>
+<span id="cb6-29"><a href="data-processing-photogrammetry-pipeline..html#cb6-29" tabindex="-1"></a>        max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-30"><a href="data-processing-photogrammetry-pipeline..html#cb6-30" tabindex="-1"></a>        threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
+<span id="cb6-31"><a href="data-processing-photogrammetry-pipeline..html#cb6-31" tabindex="-1"></a>        mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal (False Multi with org thresh &gt; 0.7)&quot;</span></span>
+<span id="cb6-32"><a href="data-processing-photogrammetry-pipeline..html#cb6-32" tabindex="-1"></a>        thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
+<span id="cb6-33"><a href="data-processing-photogrammetry-pipeline..html#cb6-33" tabindex="-1"></a>      }</span>
+<span id="cb6-34"><a href="data-processing-photogrammetry-pipeline..html#cb6-34" tabindex="-1"></a>    }</span>
+<span id="cb6-35"><a href="data-processing-photogrammetry-pipeline..html#cb6-35" tabindex="-1"></a>  }<span class="cf">else</span>{ <span class="co">#if the NIR vector is NOT multimodal, continue to the below steps</span></span>
+<span id="cb6-36"><a href="data-processing-photogrammetry-pipeline..html#cb6-36" tabindex="-1"></a>    <span class="co">#Finding NIR value with the greatest frequency in the distribution - this max value will be the threshold for unimodal distributions </span></span>
+<span id="cb6-37"><a href="data-processing-photogrammetry-pipeline..html#cb6-37" tabindex="-1"></a>    max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-38"><a href="data-processing-photogrammetry-pipeline..html#cb6-38" tabindex="-1"></a>    threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
+<span id="cb6-39"><a href="data-processing-photogrammetry-pipeline..html#cb6-39" tabindex="-1"></a>    <span class="fu">print</span>(threshold)</span>
+<span id="cb6-40"><a href="data-processing-photogrammetry-pipeline..html#cb6-40" tabindex="-1"></a>    thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
+<span id="cb6-41"><a href="data-processing-photogrammetry-pipeline..html#cb6-41" tabindex="-1"></a>    mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal&quot;</span></span>
+<span id="cb6-42"><a href="data-processing-photogrammetry-pipeline..html#cb6-42" tabindex="-1"></a>  }</span></code></pre></div>
 <p>Next, we plot a histogram of the NIR values and annotate it to contain:</p>
 <ul>
 <li><p>a vertical line at the threshold</p></li>
 <li><p>the threshold value</p></li>
 <li><p>the mode (i.e. unimodal verse mulitmodal)</p></li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-processing-photogrammetry-pipeline..html#cb6-1" tabindex="-1"></a>(<span class="at">hist =</span> NIR <span class="sc">%&gt;%</span> <span class="co">#plotting a histogram of NIR values with a vertical red line for the defined threshold value</span></span>
-<span id="cb6-2"><a href="data-processing-photogrammetry-pipeline..html#cb6-2" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="data-processing-photogrammetry-pipeline..html#cb6-3" tabindex="-1"></a>    <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb6-4"><a href="data-processing-photogrammetry-pipeline..html#cb6-4" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> NIR), <span class="at">bins =</span> <span class="dv">150</span>) <span class="sc">+</span>      </span>
-<span id="cb6-5"><a href="data-processing-photogrammetry-pipeline..html#cb6-5" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> threshold, <span class="at">color =</span> <span class="st">&quot;red3&quot;</span>) <span class="sc">+</span></span>
-<span id="cb6-6"><a href="data-processing-photogrammetry-pipeline..html#cb6-6" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(mode, <span class="st">&quot; , threshold: &quot;</span>,<span class="fu">round</span>(threshold, <span class="at">digits =</span> <span class="dv">2</span>)))<span class="sc">+</span></span>
-<span id="cb6-7"><a href="data-processing-photogrammetry-pipeline..html#cb6-7" tabindex="-1"></a>    <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb6-8"><a href="data-processing-photogrammetry-pipeline..html#cb6-8" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),           </span>
-<span id="cb6-9"><a href="data-processing-photogrammetry-pipeline..html#cb6-9" tabindex="-1"></a>          <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb6-10"><a href="data-processing-photogrammetry-pipeline..html#cb6-10" tabindex="-1"></a>          <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>,<span class="at">hjust =</span> <span class="fl">0.75</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">28</span>)))</span>
-<span id="cb6-11"><a href="data-processing-photogrammetry-pipeline..html#cb6-11" tabindex="-1"></a>  </span>
-<span id="cb6-12"><a href="data-processing-photogrammetry-pipeline..html#cb6-12" tabindex="-1"></a><span class="fu">ggsave</span>(hist, <span class="co">#saving out the plot</span></span>
-<span id="cb6-13"><a href="data-processing-photogrammetry-pipeline..html#cb6-13" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, date_list[x], <span class="st">&quot;_NIR_shadow_hist_localMin_orMax.jpeg&quot;</span>),</span>
-<span id="cb6-14"><a href="data-processing-photogrammetry-pipeline..html#cb6-14" tabindex="-1"></a>       <span class="at">device =</span> jpeg,</span>
-<span id="cb6-15"><a href="data-processing-photogrammetry-pipeline..html#cb6-15" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">8</span>,</span>
-<span id="cb6-16"><a href="data-processing-photogrammetry-pipeline..html#cb6-16" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">8</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="data-processing-photogrammetry-pipeline..html#cb7-1" tabindex="-1"></a>(<span class="at">hist =</span> NIR <span class="sc">%&gt;%</span> <span class="co">#plotting a histogram of NIR values with a vertical red line for the defined threshold value</span></span>
+<span id="cb7-2"><a href="data-processing-photogrammetry-pipeline..html#cb7-2" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="data-processing-photogrammetry-pipeline..html#cb7-3" tabindex="-1"></a>    <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb7-4"><a href="data-processing-photogrammetry-pipeline..html#cb7-4" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> NIR), <span class="at">bins =</span> <span class="dv">150</span>) <span class="sc">+</span>      </span>
+<span id="cb7-5"><a href="data-processing-photogrammetry-pipeline..html#cb7-5" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> threshold, <span class="at">color =</span> <span class="st">&quot;red3&quot;</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="data-processing-photogrammetry-pipeline..html#cb7-6" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(mode, <span class="st">&quot; , threshold: &quot;</span>,<span class="fu">round</span>(threshold, <span class="at">digits =</span> <span class="dv">2</span>)))<span class="sc">+</span></span>
+<span id="cb7-7"><a href="data-processing-photogrammetry-pipeline..html#cb7-7" tabindex="-1"></a>    <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb7-8"><a href="data-processing-photogrammetry-pipeline..html#cb7-8" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),           </span>
+<span id="cb7-9"><a href="data-processing-photogrammetry-pipeline..html#cb7-9" tabindex="-1"></a>          <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb7-10"><a href="data-processing-photogrammetry-pipeline..html#cb7-10" tabindex="-1"></a>          <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>,<span class="at">hjust =</span> <span class="fl">0.75</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">28</span>)))</span>
+<span id="cb7-11"><a href="data-processing-photogrammetry-pipeline..html#cb7-11" tabindex="-1"></a>  </span>
+<span id="cb7-12"><a href="data-processing-photogrammetry-pipeline..html#cb7-12" tabindex="-1"></a><span class="fu">ggsave</span>(hist, <span class="co">#saving out the plot</span></span>
+<span id="cb7-13"><a href="data-processing-photogrammetry-pipeline..html#cb7-13" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, date_list[x], <span class="st">&quot;_NIR_shadow_hist_localMin_orMax.jpeg&quot;</span>),</span>
+<span id="cb7-14"><a href="data-processing-photogrammetry-pipeline..html#cb7-14" tabindex="-1"></a>       <span class="at">device =</span> jpeg,</span>
+<span id="cb7-15"><a href="data-processing-photogrammetry-pipeline..html#cb7-15" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">8</span>,</span>
+<span id="cb7-16"><a href="data-processing-photogrammetry-pipeline..html#cb7-16" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">8</span>)</span></code></pre></div>
 <p><img src="Photos_&_gifs/multimodal_hist_canoe_2022_08_05.jfif" width="60%" style="display: block; margin: auto;" /></p>
 <p>We then isolate the NIR band from the multispectral orthomosaic and filter the raster to set pixels with NIR values greater than the threshold to NA and those that are less than or equal to the threshold to 1.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="data-processing-photogrammetry-pipeline..html#cb7-1" tabindex="-1"></a>shadow_mask <span class="ot">=</span> ms_temp[[<span class="dv">10</span>]] <span class="co">#isolating the NIR band of the multispectral ortho</span></span>
-<span id="cb7-2"><a href="data-processing-photogrammetry-pipeline..html#cb7-2" tabindex="-1"></a>shadow_mask[shadow_mask <span class="sc">&gt;</span> threshold] <span class="ot">=</span> <span class="cn">NA</span> <span class="co">#for NIR values &gt; threshold, make them NA</span></span>
-<span id="cb7-3"><a href="data-processing-photogrammetry-pipeline..html#cb7-3" tabindex="-1"></a>shadow_mask[shadow_mask <span class="sc">&lt;=</span> threshold] <span class="ot">=</span> <span class="dv">1</span> <span class="co">#for NIR values &lt; or = to the threshold value, make them 1</span></span>
-<span id="cb7-4"><a href="data-processing-photogrammetry-pipeline..html#cb7-4" tabindex="-1"></a>  </span>
-<span id="cb7-5"><a href="data-processing-photogrammetry-pipeline..html#cb7-5" tabindex="-1"></a><span class="co"># Writing out the shadow mask that has values of 1 for all pixels that will be masked out</span></span>
-<span id="cb7-6"><a href="data-processing-photogrammetry-pipeline..html#cb7-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(shadow_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,  date_list[x], <span class="st">&quot;_NIR_shadow_thresh&quot;</span>,threshold ,<span class="st">&quot;_&quot;</span>,thresh_name, <span class="st">&quot;.tif&quot;</span>),</span>
-<span id="cb7-7"><a href="data-processing-photogrammetry-pipeline..html#cb7-7" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-processing-photogrammetry-pipeline..html#cb8-1" tabindex="-1"></a>shadow_mask <span class="ot">=</span> ms_temp[[<span class="dv">10</span>]] <span class="co">#isolating the NIR band of the multispectral ortho</span></span>
+<span id="cb8-2"><a href="data-processing-photogrammetry-pipeline..html#cb8-2" tabindex="-1"></a>shadow_mask[shadow_mask <span class="sc">&gt;</span> threshold] <span class="ot">=</span> <span class="cn">NA</span> <span class="co">#for NIR values &gt; threshold, make them NA</span></span>
+<span id="cb8-3"><a href="data-processing-photogrammetry-pipeline..html#cb8-3" tabindex="-1"></a>shadow_mask[shadow_mask <span class="sc">&lt;=</span> threshold] <span class="ot">=</span> <span class="dv">1</span> <span class="co">#for NIR values &lt; or = to the threshold value, make them 1</span></span>
+<span id="cb8-4"><a href="data-processing-photogrammetry-pipeline..html#cb8-4" tabindex="-1"></a>  </span>
+<span id="cb8-5"><a href="data-processing-photogrammetry-pipeline..html#cb8-5" tabindex="-1"></a><span class="co"># Writing out the shadow mask that has values of 1 for all pixels that will be masked out</span></span>
+<span id="cb8-6"><a href="data-processing-photogrammetry-pipeline..html#cb8-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(shadow_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,  date_list[x], <span class="st">&quot;_NIR_shadow_thresh&quot;</span>,threshold ,<span class="st">&quot;_&quot;</span>,thresh_name, <span class="st">&quot;.tif&quot;</span>),</span>
+<span id="cb8-7"><a href="data-processing-photogrammetry-pipeline..html#cb8-7" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="Photos_&_gifs/shadow_mask_example_no_filter_2022_08_05.PNG" width="100%" style="display: block; margin: auto;" /></p>
 <p>Lastly, we apply the <em>clump</em> function to group adjacent pixels that represent shadows creating “clumps” a.k.a. shadow patches. These shadow patches are then converted into a dataframe containing a unique ID per shadow patch and the number of pixels within each patch.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-processing-photogrammetry-pipeline..html#cb8-1" tabindex="-1"></a><span class="co"># Grouping adjacent pixels with the same value (i.e. representing shadowed areas) into distinct patches or clumps</span></span>
-<span id="cb8-2"><a href="data-processing-photogrammetry-pipeline..html#cb8-2" tabindex="-1"></a>shadow_patches <span class="ot">=</span> raster<span class="sc">::</span><span class="fu">clump</span>(raster<span class="sc">::</span><span class="fu">raster</span>(shadow_mask), <span class="at">directions =</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="data-processing-photogrammetry-pipeline..html#cb8-3" tabindex="-1"></a>  <span class="fu">rast</span>()</span>
-<span id="cb8-4"><a href="data-processing-photogrammetry-pipeline..html#cb8-4" tabindex="-1"></a>  </span>
-<span id="cb8-5"><a href="data-processing-photogrammetry-pipeline..html#cb8-5" tabindex="-1"></a><span class="co"># Summarizing the clumps obtained from the shadow patches raster. It contains two columns: </span></span>
-<span id="cb8-6"><a href="data-processing-photogrammetry-pipeline..html#cb8-6" tabindex="-1"></a><span class="co">#1. value: representing the unique ID of each clump:</span></span>
-<span id="cb8-7"><a href="data-processing-photogrammetry-pipeline..html#cb8-7" tabindex="-1"></a><span class="co">#2. count: representing the number of pixels within each clump</span></span>
-<span id="cb8-8"><a href="data-processing-photogrammetry-pipeline..html#cb8-8" tabindex="-1"></a>clumps <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">freq</span>(shadow_patches))</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="data-processing-photogrammetry-pipeline..html#cb9-1" tabindex="-1"></a><span class="co"># Grouping adjacent pixels with the same value (i.e. representing shadowed areas) into distinct patches or clumps</span></span>
+<span id="cb9-2"><a href="data-processing-photogrammetry-pipeline..html#cb9-2" tabindex="-1"></a>shadow_patches <span class="ot">=</span> raster<span class="sc">::</span><span class="fu">clump</span>(raster<span class="sc">::</span><span class="fu">raster</span>(shadow_mask), <span class="at">directions =</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="data-processing-photogrammetry-pipeline..html#cb9-3" tabindex="-1"></a>  <span class="fu">rast</span>()</span>
+<span id="cb9-4"><a href="data-processing-photogrammetry-pipeline..html#cb9-4" tabindex="-1"></a>  </span>
+<span id="cb9-5"><a href="data-processing-photogrammetry-pipeline..html#cb9-5" tabindex="-1"></a><span class="co"># Summarizing the clumps obtained from the shadow patches raster. It contains two columns: </span></span>
+<span id="cb9-6"><a href="data-processing-photogrammetry-pipeline..html#cb9-6" tabindex="-1"></a><span class="co">#1. value: representing the unique ID of each clump:</span></span>
+<span id="cb9-7"><a href="data-processing-photogrammetry-pipeline..html#cb9-7" tabindex="-1"></a><span class="co">#2. count: representing the number of pixels within each clump</span></span>
+<span id="cb9-8"><a href="data-processing-photogrammetry-pipeline..html#cb9-8" tabindex="-1"></a>clumps <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">freq</span>(shadow_patches))</span></code></pre></div>
 <p>Here we filter the shadow patches by a threshold to remove insignificant patches and write out the cleaned shadow mask for future use.</p>
 <p>The threshold <strong>num_pix</strong> is calculated by:</p>
 <ul>
@@ -586,18 +741,18 @@ The above parameters were added to describe each minimum found by the function s
 <li><p>dividing the 0.02m^2 threshold by the area of a pixel to determine the threshold number of pixels a shadow patch must have to not be filtered out</p></li>
 </ul>
 <p>In our case, the resolution of the raster was just over ~3cm, giving us a threshold of ~23 pixels.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="data-processing-photogrammetry-pipeline..html#cb9-1" tabindex="-1"></a><span class="co"># Calculating the threshold for the number of pixels that a clump must contain to be considered significant</span></span>
-<span id="cb9-2"><a href="data-processing-photogrammetry-pipeline..html#cb9-2" tabindex="-1"></a><span class="co"># It is calculated based on the desired area threshold (200 cm²) divided by the area of a single pixel</span></span>
-<span id="cb9-3"><a href="data-processing-photogrammetry-pipeline..html#cb9-3" tabindex="-1"></a>num_pix <span class="ot">=</span> <span class="fl">0.02</span> <span class="sc">/</span> (<span class="fu">res</span>(shadow_patches)[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>) <span class="co">#0.02 represents 200cm² in meters</span></span>
-<span id="cb9-4"><a href="data-processing-photogrammetry-pipeline..html#cb9-4" tabindex="-1"></a>flecks <span class="ot">=</span> clumps[clumps<span class="sc">$</span>count <span class="sc">&gt;</span> num_pix,] <span class="co"># remove clump observations with frequency smaller than the threshold</span></span>
-<span id="cb9-5"><a href="data-processing-photogrammetry-pipeline..html#cb9-5" tabindex="-1"></a>flecks <span class="ot">=</span> <span class="fu">as.vector</span>(flecks<span class="sc">$</span>value) <span class="co"># record IDs from clumps which met the criteria in previous step</span></span>
-<span id="cb9-6"><a href="data-processing-photogrammetry-pipeline..html#cb9-6" tabindex="-1"></a>  </span>
-<span id="cb9-7"><a href="data-processing-photogrammetry-pipeline..html#cb9-7" tabindex="-1"></a>new_mask <span class="ot">=</span> shadow_patches <span class="sc">%in%</span> flecks <span class="co">#keep clumps that have IDS in flecks</span></span>
-<span id="cb9-8"><a href="data-processing-photogrammetry-pipeline..html#cb9-8" tabindex="-1"></a>new_mask[new_mask <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">=</span> <span class="cn">NA</span> <span class="co"># make clumps that are zero, NA</span></span>
-<span id="cb9-9"><a href="data-processing-photogrammetry-pipeline..html#cb9-9" tabindex="-1"></a>  </span>
-<span id="cb9-10"><a href="data-processing-photogrammetry-pipeline..html#cb9-10" tabindex="-1"></a><span class="co">#writing out a &#39;cleaned&#39; shadow mask  </span></span>
-<span id="cb9-11"><a href="data-processing-photogrammetry-pipeline..html#cb9-11" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(new_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,  date_list[x], <span class="st">&quot;_NIR_shadow_thresh&quot;</span>,threshold ,<span class="st">&quot;_&quot;</span>,thresh_name, <span class="st">&quot;_mask2.tif&quot;</span>),</span>
-<span id="cb9-12"><a href="data-processing-photogrammetry-pipeline..html#cb9-12" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-processing-photogrammetry-pipeline..html#cb10-1" tabindex="-1"></a><span class="co"># Calculating the threshold for the number of pixels that a clump must contain to be considered significant</span></span>
+<span id="cb10-2"><a href="data-processing-photogrammetry-pipeline..html#cb10-2" tabindex="-1"></a><span class="co"># It is calculated based on the desired area threshold (200 cm²) divided by the area of a single pixel</span></span>
+<span id="cb10-3"><a href="data-processing-photogrammetry-pipeline..html#cb10-3" tabindex="-1"></a>num_pix <span class="ot">=</span> <span class="fl">0.02</span> <span class="sc">/</span> (<span class="fu">res</span>(shadow_patches)[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>) <span class="co">#0.02 represents 200cm² in meters</span></span>
+<span id="cb10-4"><a href="data-processing-photogrammetry-pipeline..html#cb10-4" tabindex="-1"></a>flecks <span class="ot">=</span> clumps[clumps<span class="sc">$</span>count <span class="sc">&gt;</span> num_pix,] <span class="co"># remove clump observations with frequency smaller than the threshold</span></span>
+<span id="cb10-5"><a href="data-processing-photogrammetry-pipeline..html#cb10-5" tabindex="-1"></a>flecks <span class="ot">=</span> <span class="fu">as.vector</span>(flecks<span class="sc">$</span>value) <span class="co"># record IDs from clumps which met the criteria in previous step</span></span>
+<span id="cb10-6"><a href="data-processing-photogrammetry-pipeline..html#cb10-6" tabindex="-1"></a>  </span>
+<span id="cb10-7"><a href="data-processing-photogrammetry-pipeline..html#cb10-7" tabindex="-1"></a>new_mask <span class="ot">=</span> shadow_patches <span class="sc">%in%</span> flecks <span class="co">#keep clumps that have IDS in flecks</span></span>
+<span id="cb10-8"><a href="data-processing-photogrammetry-pipeline..html#cb10-8" tabindex="-1"></a>new_mask[new_mask <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">=</span> <span class="cn">NA</span> <span class="co"># make clumps that are zero, NA</span></span>
+<span id="cb10-9"><a href="data-processing-photogrammetry-pipeline..html#cb10-9" tabindex="-1"></a>  </span>
+<span id="cb10-10"><a href="data-processing-photogrammetry-pipeline..html#cb10-10" tabindex="-1"></a><span class="co">#writing out a &#39;cleaned&#39; shadow mask  </span></span>
+<span id="cb10-11"><a href="data-processing-photogrammetry-pipeline..html#cb10-11" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(new_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,  date_list[x], <span class="st">&quot;_NIR_shadow_thresh&quot;</span>,threshold ,<span class="st">&quot;_&quot;</span>,thresh_name, <span class="st">&quot;_mask2.tif&quot;</span>),</span>
+<span id="cb10-12"><a href="data-processing-photogrammetry-pipeline..html#cb10-12" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>Below you can see that in this case the filter did not result in a large change in the shadow mask as there were minimal small patches to begin with. Here the white areas in the filtered mask image on the right are areas that will not be masked given that the mask did not contain enough pixels. This will result in a less patchy shadow mask.</p>
 <p><img src="Photos_&_gifs/shadow_mask_example_filtered_2022_08_05.PNG" width="100%" style="display: block; margin: auto;" /></p>
 </div>
@@ -617,105 +772,105 @@ The above parameters were added to describe each minimum found by the function s
 <h3><span class="header-section-number">6.4.1</span> VI Workflow<a href="data-processing-photogrammetry-pipeline..html#vi-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below are code chunks that take the <a href="09-Crown_delineation#Crown-delineation">delineated crowns</a> and <a href="Photogrametric_processing#Processing%20Orthomosaics">multispectral orthomosaics</a> and output a .rds file containing several popular vegetation indices at the crown-level. In this script we demonstrate how to calculate both mean and median values of vegetation indices per crown.</p>
 <p>We begin by loading the necessary packages:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-processing-photogrammetry-pipeline..html#cb10-1" tabindex="-1"></a><span class="fu">library</span>(terra) <span class="co"># to work with the orthomosaics (rasters)</span></span>
-<span id="cb10-2"><a href="data-processing-photogrammetry-pipeline..html#cb10-2" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co">#for data manipulation</span></span>
-<span id="cb10-3"><a href="data-processing-photogrammetry-pipeline..html#cb10-3" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># for data manipulation</span></span>
-<span id="cb10-4"><a href="data-processing-photogrammetry-pipeline..html#cb10-4" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="co"># to work with the delineated crown polygons</span></span>
-<span id="cb10-5"><a href="data-processing-photogrammetry-pipeline..html#cb10-5" tabindex="-1"></a><span class="fu">library</span>(exactextractr) <span class="co"># for the exact_extract function</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="data-processing-photogrammetry-pipeline..html#cb11-1" tabindex="-1"></a><span class="fu">library</span>(terra) <span class="co"># to work with the orthomosaics (rasters)</span></span>
+<span id="cb11-2"><a href="data-processing-photogrammetry-pipeline..html#cb11-2" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co">#for data manipulation</span></span>
+<span id="cb11-3"><a href="data-processing-photogrammetry-pipeline..html#cb11-3" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># for data manipulation</span></span>
+<span id="cb11-4"><a href="data-processing-photogrammetry-pipeline..html#cb11-4" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="co"># to work with the delineated crown polygons</span></span>
+<span id="cb11-5"><a href="data-processing-photogrammetry-pipeline..html#cb11-5" tabindex="-1"></a><span class="fu">library</span>(exactextractr) <span class="co"># for the exact_extract function</span></span></code></pre></div>
 <p>Next, we read in the mulispectral orthomosaic and shadow mask. The shadow mask will work to remove shadowed pixels so they do not skew the values for the vegetation indices. See the section on <a href="Photogrametric_processing#Shadow%20Masks">shadow masks</a> for a detailed workflow.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="data-processing-photogrammetry-pipeline..html#cb11-1" tabindex="-1"></a><span class="co"># Load in multispectral orthomosaic </span></span>
-<span id="cb11-2"><a href="data-processing-photogrammetry-pipeline..html#cb11-2" tabindex="-1"></a>ms_ortho <span class="ot">=</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;metashape</span><span class="sc">\\</span><span class="st">3_MS_ORTHO</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">pattern =</span> <span class="st">&quot;.*MS_Calibrated.*_bestPanel.tif$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) <span class="co">#path to multispectral ortho</span></span>
-<span id="cb11-3"><a href="data-processing-photogrammetry-pipeline..html#cb11-3" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="data-processing-photogrammetry-pipeline..html#cb11-4" tabindex="-1"></a><span class="co"># Reading in the NIR shadow mask</span></span>
-<span id="cb11-5"><a href="data-processing-photogrammetry-pipeline..html#cb11-5" tabindex="-1"></a>shadow_mask <span class="ot">=</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">paste0</span>(dir, Nir_shadow_folder,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>),  <span class="at">pattern =</span> <span class="st">&quot;.*_NIR_shadow.*_thresh.*_mask2.tif$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>))<span class="co"># NIR shadow mask</span></span>
-<span id="cb11-6"><a href="data-processing-photogrammetry-pipeline..html#cb11-6" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="data-processing-photogrammetry-pipeline..html#cb11-7" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="data-processing-photogrammetry-pipeline..html#cb11-8" tabindex="-1"></a><span class="co"># Below selects the root name of the multispectral ortho ie: &quot;Name_of_multispectral_ortho&quot; that will be used to name the multispectral shadow masked orthos created in the following steps</span></span>
-<span id="cb11-9"><a href="data-processing-photogrammetry-pipeline..html#cb11-9" tabindex="-1"></a>ms_ortho_name_root <span class="ot">&lt;-</span> <span class="fu">substr</span>(<span class="fu">names</span>(ms_ortho)[<span class="dv">1</span>], <span class="dv">1</span>, <span class="fu">nchar</span>(<span class="fu">names</span>(ms_ortho)[<span class="dv">1</span>]) <span class="sc">-</span> <span class="dv">2</span>)</span>
-<span id="cb11-10"><a href="data-processing-photogrammetry-pipeline..html#cb11-10" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="data-processing-photogrammetry-pipeline..html#cb11-11" tabindex="-1"></a><span class="co">#names(ms_ortho)[1] grabs the name for band 1 of the ms_ortho: ie: &quot;Name_of_multispectral_ortho_1&quot;, so that the substr function can selection the rootname as done above</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-processing-photogrammetry-pipeline..html#cb12-1" tabindex="-1"></a><span class="co"># Load in multispectral orthomosaic </span></span>
+<span id="cb12-2"><a href="data-processing-photogrammetry-pipeline..html#cb12-2" tabindex="-1"></a>ms_ortho <span class="ot">=</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;metashape</span><span class="sc">\\</span><span class="st">3_MS_ORTHO</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">pattern =</span> <span class="st">&quot;.*MS_Calibrated.*_bestPanel.tif$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) <span class="co">#path to multispectral ortho</span></span>
+<span id="cb12-3"><a href="data-processing-photogrammetry-pipeline..html#cb12-3" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="data-processing-photogrammetry-pipeline..html#cb12-4" tabindex="-1"></a><span class="co"># Reading in the NIR shadow mask</span></span>
+<span id="cb12-5"><a href="data-processing-photogrammetry-pipeline..html#cb12-5" tabindex="-1"></a>shadow_mask <span class="ot">=</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">paste0</span>(dir, Nir_shadow_folder,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>),  <span class="at">pattern =</span> <span class="st">&quot;.*_NIR_shadow.*_thresh.*_mask2.tif$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>))<span class="co"># NIR shadow mask</span></span>
+<span id="cb12-6"><a href="data-processing-photogrammetry-pipeline..html#cb12-6" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="data-processing-photogrammetry-pipeline..html#cb12-7" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="data-processing-photogrammetry-pipeline..html#cb12-8" tabindex="-1"></a><span class="co"># Below selects the root name of the multispectral ortho ie: &quot;Name_of_multispectral_ortho&quot; that will be used to name the multispectral shadow masked orthos created in the following steps</span></span>
+<span id="cb12-9"><a href="data-processing-photogrammetry-pipeline..html#cb12-9" tabindex="-1"></a>ms_ortho_name_root <span class="ot">&lt;-</span> <span class="fu">substr</span>(<span class="fu">names</span>(ms_ortho)[<span class="dv">1</span>], <span class="dv">1</span>, <span class="fu">nchar</span>(<span class="fu">names</span>(ms_ortho)[<span class="dv">1</span>]) <span class="sc">-</span> <span class="dv">2</span>)</span>
+<span id="cb12-10"><a href="data-processing-photogrammetry-pipeline..html#cb12-10" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="data-processing-photogrammetry-pipeline..html#cb12-11" tabindex="-1"></a><span class="co">#names(ms_ortho)[1] grabs the name for band 1 of the ms_ortho: ie: &quot;Name_of_multispectral_ortho_1&quot;, so that the substr function can selection the rootname as done above</span></span></code></pre></div>
 <p>To speed up processing, we mask the shadow mask to only contain areas inside delineated crowns.</p>
 <p>The shadow mask is a raster containing values 1 (shadowed pixel) and NA (not shadowed pixel). The <em>mask</em> function below identifies pixels in the multispectral orthomosaic that align with shadowed pixels in the shadow mask and changes their value to NA.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-processing-photogrammetry-pipeline..html#cb12-1" tabindex="-1"></a><span class="co"># Mask shadow mask to delineated crowns:</span></span>
-<span id="cb12-2"><a href="data-processing-photogrammetry-pipeline..html#cb12-2" tabindex="-1"></a>shadow_mask <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">mask</span>(shadow_mask, pols)</span>
-<span id="cb12-3"><a href="data-processing-photogrammetry-pipeline..html#cb12-3" tabindex="-1"></a>  </span>
-<span id="cb12-4"><a href="data-processing-photogrammetry-pipeline..html#cb12-4" tabindex="-1"></a><span class="co"># Mask the multispectral ortho using the shadow mask</span></span>
-<span id="cb12-5"><a href="data-processing-photogrammetry-pipeline..html#cb12-5" tabindex="-1"></a>ms_mask <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">mask</span>(ms_ortho, shadow_mask, <span class="at">maskvalues =</span> <span class="dv">1</span>, <span class="at">updatevalue =</span> <span class="cn">NA</span>)</span>
-<span id="cb12-6"><a href="data-processing-photogrammetry-pipeline..html#cb12-6" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="data-processing-photogrammetry-pipeline..html#cb12-7" tabindex="-1"></a><span class="co">#writing out the shadow masked multispectral ortho</span></span>
-<span id="cb12-8"><a href="data-processing-photogrammetry-pipeline..html#cb12-8" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(ms_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,ms_ortho_name_root,<span class="st">&quot;_NirShadow_masked.tif&quot;</span>),</span>
-<span id="cb12-9"><a href="data-processing-photogrammetry-pipeline..html#cb12-9" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="data-processing-photogrammetry-pipeline..html#cb13-1" tabindex="-1"></a><span class="co"># Mask shadow mask to delineated crowns:</span></span>
+<span id="cb13-2"><a href="data-processing-photogrammetry-pipeline..html#cb13-2" tabindex="-1"></a>shadow_mask <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">mask</span>(shadow_mask, pols)</span>
+<span id="cb13-3"><a href="data-processing-photogrammetry-pipeline..html#cb13-3" tabindex="-1"></a>  </span>
+<span id="cb13-4"><a href="data-processing-photogrammetry-pipeline..html#cb13-4" tabindex="-1"></a><span class="co"># Mask the multispectral ortho using the shadow mask</span></span>
+<span id="cb13-5"><a href="data-processing-photogrammetry-pipeline..html#cb13-5" tabindex="-1"></a>ms_mask <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">mask</span>(ms_ortho, shadow_mask, <span class="at">maskvalues =</span> <span class="dv">1</span>, <span class="at">updatevalue =</span> <span class="cn">NA</span>)</span>
+<span id="cb13-6"><a href="data-processing-photogrammetry-pipeline..html#cb13-6" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="data-processing-photogrammetry-pipeline..html#cb13-7" tabindex="-1"></a><span class="co">#writing out the shadow masked multispectral ortho</span></span>
+<span id="cb13-8"><a href="data-processing-photogrammetry-pipeline..html#cb13-8" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(ms_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,ms_ortho_name_root,<span class="st">&quot;_NirShadow_masked.tif&quot;</span>),</span>
+<span id="cb13-9"><a href="data-processing-photogrammetry-pipeline..html#cb13-9" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>The shadow masked multispectral orthomosaic is then masked to the delineated crowns polygon to speed raster calculations in the next step.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="data-processing-photogrammetry-pipeline..html#cb13-1" tabindex="-1"></a><span class="co"># Mask shadow masked raster to delineated crowns</span></span>
-<span id="cb13-2"><a href="data-processing-photogrammetry-pipeline..html#cb13-2" tabindex="-1"></a>ms_mask <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">mask</span>(ms_mask, pols)</span>
-<span id="cb13-3"><a href="data-processing-photogrammetry-pipeline..html#cb13-3" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="data-processing-photogrammetry-pipeline..html#cb13-4" tabindex="-1"></a><span class="co"># Write out the masked raster</span></span>
-<span id="cb13-5"><a href="data-processing-photogrammetry-pipeline..html#cb13-5" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(ms_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,ms_ortho_name_root,<span class="st">&quot;_NirShadow_ms_mask_to_pols.tif&quot;</span>),</span>
-<span id="cb13-6"><a href="data-processing-photogrammetry-pipeline..html#cb13-6" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="data-processing-photogrammetry-pipeline..html#cb14-1" tabindex="-1"></a><span class="co"># Mask shadow masked raster to delineated crowns</span></span>
+<span id="cb14-2"><a href="data-processing-photogrammetry-pipeline..html#cb14-2" tabindex="-1"></a>ms_mask <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">mask</span>(ms_mask, pols)</span>
+<span id="cb14-3"><a href="data-processing-photogrammetry-pipeline..html#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="data-processing-photogrammetry-pipeline..html#cb14-4" tabindex="-1"></a><span class="co"># Write out the masked raster</span></span>
+<span id="cb14-5"><a href="data-processing-photogrammetry-pipeline..html#cb14-5" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(ms_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,ms_ortho_name_root,<span class="st">&quot;_NirShadow_ms_mask_to_pols.tif&quot;</span>),</span>
+<span id="cb14-6"><a href="data-processing-photogrammetry-pipeline..html#cb14-6" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>Here we calculate several vegetation indices using the multispectral orthomosaic from above with shadowed pixels and non-crown pixels removed.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="data-processing-photogrammetry-pipeline..html#cb14-1" tabindex="-1"></a><span class="co"># List of band reflectances (R444 - R842) and index values that will be calculated per tree crown</span></span>
-<span id="cb14-2"><a href="data-processing-photogrammetry-pipeline..html#cb14-2" tabindex="-1"></a>rast_list <span class="ot">=</span> <span class="fu">list</span>(</span>
-<span id="cb14-3"><a href="data-processing-photogrammetry-pipeline..html#cb14-3" tabindex="-1"></a>  <span class="co"># reflectance values</span></span>
-<span id="cb14-4"><a href="data-processing-photogrammetry-pipeline..html#cb14-4" tabindex="-1"></a>  <span class="at">R444 =</span> ms_mask[[<span class="dv">1</span>]],</span>
-<span id="cb14-5"><a href="data-processing-photogrammetry-pipeline..html#cb14-5" tabindex="-1"></a>  <span class="at">R475 =</span> ms_mask[[<span class="dv">2</span>]],</span>
-<span id="cb14-6"><a href="data-processing-photogrammetry-pipeline..html#cb14-6" tabindex="-1"></a>  <span class="at">R531 =</span> ms_mask[[<span class="dv">3</span>]],</span>
-<span id="cb14-7"><a href="data-processing-photogrammetry-pipeline..html#cb14-7" tabindex="-1"></a>  <span class="at">R560 =</span> ms_mask[[<span class="dv">4</span>]],               </span>
-<span id="cb14-8"><a href="data-processing-photogrammetry-pipeline..html#cb14-8" tabindex="-1"></a>  <span class="at">R650 =</span> ms_mask[[<span class="dv">5</span>]],               </span>
-<span id="cb14-9"><a href="data-processing-photogrammetry-pipeline..html#cb14-9" tabindex="-1"></a>  <span class="at">R668 =</span> ms_mask[[<span class="dv">6</span>]],               </span>
-<span id="cb14-10"><a href="data-processing-photogrammetry-pipeline..html#cb14-10" tabindex="-1"></a>  <span class="at">R705 =</span> ms_mask[[<span class="dv">7</span>]],               </span>
-<span id="cb14-11"><a href="data-processing-photogrammetry-pipeline..html#cb14-11" tabindex="-1"></a>  <span class="at">R717 =</span> ms_mask[[<span class="dv">8</span>]],               </span>
-<span id="cb14-12"><a href="data-processing-photogrammetry-pipeline..html#cb14-12" tabindex="-1"></a>  <span class="at">R740 =</span> ms_mask[[<span class="dv">9</span>]],               </span>
-<span id="cb14-13"><a href="data-processing-photogrammetry-pipeline..html#cb14-13" tabindex="-1"></a>  <span class="at">R842 =</span> ms_mask[[<span class="dv">10</span>]],                              </span>
-<span id="cb14-14"><a href="data-processing-photogrammetry-pipeline..html#cb14-14" tabindex="-1"></a>    </span>
-<span id="cb14-15"><a href="data-processing-photogrammetry-pipeline..html#cb14-15" tabindex="-1"></a>  <span class="co"># Near-infrared greenness</span></span>
-<span id="cb14-16"><a href="data-processing-photogrammetry-pipeline..html#cb14-16" tabindex="-1"></a>  <span class="at">mDatt =</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">8</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">6</span>]]),</span>
-<span id="cb14-17"><a href="data-processing-photogrammetry-pipeline..html#cb14-17" tabindex="-1"></a>  <span class="at">NDVI =</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">6</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">6</span>]]), </span>
-<span id="cb14-18"><a href="data-processing-photogrammetry-pipeline..html#cb14-18" tabindex="-1"></a>    </span>
-<span id="cb14-19"><a href="data-processing-photogrammetry-pipeline..html#cb14-19" tabindex="-1"></a>  <span class="co"># Chlorophyll </span></span>
-<span id="cb14-20"><a href="data-processing-photogrammetry-pipeline..html#cb14-20" tabindex="-1"></a>  <span class="at">NDRE1 =</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">7</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">7</span>]]),     </span>
-<span id="cb14-21"><a href="data-processing-photogrammetry-pipeline..html#cb14-21" tabindex="-1"></a>  <span class="at">NDRE2 =</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">8</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">8</span>]]), </span>
-<span id="cb14-22"><a href="data-processing-photogrammetry-pipeline..html#cb14-22" tabindex="-1"></a>  <span class="at">NDRE3 =</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">9</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">9</span>]]), </span>
-<span id="cb14-23"><a href="data-processing-photogrammetry-pipeline..html#cb14-23" tabindex="-1"></a>  <span class="at">EVI =</span> (<span class="fl">2.5</span> <span class="sc">*</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">6</span>]])) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">+</span> (<span class="dv">6</span> <span class="sc">*</span> ms_mask[[<span class="dv">6</span>]]) <span class="sc">-</span> ( <span class="fl">7.5</span> <span class="sc">*</span> ms_mask[[<span class="dv">1</span>]] <span class="sc">+</span> <span class="dv">1</span>)),             </span>
-<span id="cb14-24"><a href="data-processing-photogrammetry-pipeline..html#cb14-24" tabindex="-1"></a>  <span class="at">GCC =</span> (ms_mask[[<span class="dv">4</span>]]<span class="sc">+</span> ms_mask[[<span class="dv">3</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">1</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">2</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">3</span>]]<span class="sc">+</span>ms_mask[[<span class="dv">4</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">5</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">6</span>]]),             </span>
-<span id="cb14-25"><a href="data-processing-photogrammetry-pipeline..html#cb14-25" tabindex="-1"></a>  </span>
-<span id="cb14-26"><a href="data-processing-photogrammetry-pipeline..html#cb14-26" tabindex="-1"></a>  <span class="co"># Carotenoids, waxes</span></span>
-<span id="cb14-27"><a href="data-processing-photogrammetry-pipeline..html#cb14-27" tabindex="-1"></a>  <span class="at">ARI =</span> (<span class="dv">1</span> <span class="sc">/</span> ms_mask[[<span class="dv">4</span>]]) <span class="sc">-</span> (<span class="dv">1</span> <span class="sc">/</span> ms_mask[[<span class="dv">7</span>]]),    </span>
-<span id="cb14-28"><a href="data-processing-photogrammetry-pipeline..html#cb14-28" tabindex="-1"></a>  <span class="at">EWI9 =</span> (ms_mask[[<span class="dv">6</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">8</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">6</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">8</span>]]),</span>
-<span id="cb14-29"><a href="data-processing-photogrammetry-pipeline..html#cb14-29" tabindex="-1"></a>    </span>
-<span id="cb14-30"><a href="data-processing-photogrammetry-pipeline..html#cb14-30" tabindex="-1"></a>  <span class="co"># Carotenoids             </span></span>
-<span id="cb14-31"><a href="data-processing-photogrammetry-pipeline..html#cb14-31" tabindex="-1"></a>  <span class="at">PRI =</span> (ms_mask[[<span class="dv">3</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">4</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">3</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">4</span>]]),             </span>
-<span id="cb14-32"><a href="data-processing-photogrammetry-pipeline..html#cb14-32" tabindex="-1"></a>  <span class="at">CCI =</span> (ms_mask[[<span class="dv">3</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">5</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">3</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">5</span>]]),             </span>
-<span id="cb14-33"><a href="data-processing-photogrammetry-pipeline..html#cb14-33" tabindex="-1"></a>    </span>
-<span id="cb14-34"><a href="data-processing-photogrammetry-pipeline..html#cb14-34" tabindex="-1"></a>  <span class="co"># Red edge             </span></span>
-<span id="cb14-35"><a href="data-processing-photogrammetry-pipeline..html#cb14-35" tabindex="-1"></a>  <span class="at">RE_upper =</span> (ms_mask[[<span class="dv">9</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">8</span>]]) <span class="sc">/</span> <span class="dv">23</span>,             </span>
-<span id="cb14-36"><a href="data-processing-photogrammetry-pipeline..html#cb14-36" tabindex="-1"></a>  <span class="at">RE_lower =</span> (ms_mask[[<span class="dv">8</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">7</span>]]) <span class="sc">/</span> <span class="dv">12</span>,             </span>
-<span id="cb14-37"><a href="data-processing-photogrammetry-pipeline..html#cb14-37" tabindex="-1"></a>  <span class="at">RE_total =</span> (ms_mask[[<span class="dv">9</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">7</span>]]) <span class="sc">/</span> <span class="dv">35</span></span>
-<span id="cb14-38"><a href="data-processing-photogrammetry-pipeline..html#cb14-38" tabindex="-1"></a>)</span>
-<span id="cb14-39"><a href="data-processing-photogrammetry-pipeline..html#cb14-39" tabindex="-1"></a>  </span>
-<span id="cb14-40"><a href="data-processing-photogrammetry-pipeline..html#cb14-40" tabindex="-1"></a>rast_all <span class="ot">=</span> <span class="fu">rast</span>(rast_list)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="data-processing-photogrammetry-pipeline..html#cb15-1" tabindex="-1"></a><span class="co"># List of band reflectances (R444 - R842) and index values that will be calculated per tree crown</span></span>
+<span id="cb15-2"><a href="data-processing-photogrammetry-pipeline..html#cb15-2" tabindex="-1"></a>rast_list <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb15-3"><a href="data-processing-photogrammetry-pipeline..html#cb15-3" tabindex="-1"></a>  <span class="co"># reflectance values</span></span>
+<span id="cb15-4"><a href="data-processing-photogrammetry-pipeline..html#cb15-4" tabindex="-1"></a>  <span class="at">R444 =</span> ms_mask[[<span class="dv">1</span>]],</span>
+<span id="cb15-5"><a href="data-processing-photogrammetry-pipeline..html#cb15-5" tabindex="-1"></a>  <span class="at">R475 =</span> ms_mask[[<span class="dv">2</span>]],</span>
+<span id="cb15-6"><a href="data-processing-photogrammetry-pipeline..html#cb15-6" tabindex="-1"></a>  <span class="at">R531 =</span> ms_mask[[<span class="dv">3</span>]],</span>
+<span id="cb15-7"><a href="data-processing-photogrammetry-pipeline..html#cb15-7" tabindex="-1"></a>  <span class="at">R560 =</span> ms_mask[[<span class="dv">4</span>]],               </span>
+<span id="cb15-8"><a href="data-processing-photogrammetry-pipeline..html#cb15-8" tabindex="-1"></a>  <span class="at">R650 =</span> ms_mask[[<span class="dv">5</span>]],               </span>
+<span id="cb15-9"><a href="data-processing-photogrammetry-pipeline..html#cb15-9" tabindex="-1"></a>  <span class="at">R668 =</span> ms_mask[[<span class="dv">6</span>]],               </span>
+<span id="cb15-10"><a href="data-processing-photogrammetry-pipeline..html#cb15-10" tabindex="-1"></a>  <span class="at">R705 =</span> ms_mask[[<span class="dv">7</span>]],               </span>
+<span id="cb15-11"><a href="data-processing-photogrammetry-pipeline..html#cb15-11" tabindex="-1"></a>  <span class="at">R717 =</span> ms_mask[[<span class="dv">8</span>]],               </span>
+<span id="cb15-12"><a href="data-processing-photogrammetry-pipeline..html#cb15-12" tabindex="-1"></a>  <span class="at">R740 =</span> ms_mask[[<span class="dv">9</span>]],               </span>
+<span id="cb15-13"><a href="data-processing-photogrammetry-pipeline..html#cb15-13" tabindex="-1"></a>  <span class="at">R842 =</span> ms_mask[[<span class="dv">10</span>]],                              </span>
+<span id="cb15-14"><a href="data-processing-photogrammetry-pipeline..html#cb15-14" tabindex="-1"></a>    </span>
+<span id="cb15-15"><a href="data-processing-photogrammetry-pipeline..html#cb15-15" tabindex="-1"></a>  <span class="co"># Near-infrared greenness</span></span>
+<span id="cb15-16"><a href="data-processing-photogrammetry-pipeline..html#cb15-16" tabindex="-1"></a>  <span class="at">mDatt =</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">8</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">6</span>]]),</span>
+<span id="cb15-17"><a href="data-processing-photogrammetry-pipeline..html#cb15-17" tabindex="-1"></a>  <span class="at">NDVI =</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">6</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">6</span>]]), </span>
+<span id="cb15-18"><a href="data-processing-photogrammetry-pipeline..html#cb15-18" tabindex="-1"></a>    </span>
+<span id="cb15-19"><a href="data-processing-photogrammetry-pipeline..html#cb15-19" tabindex="-1"></a>  <span class="co"># Chlorophyll </span></span>
+<span id="cb15-20"><a href="data-processing-photogrammetry-pipeline..html#cb15-20" tabindex="-1"></a>  <span class="at">NDRE1 =</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">7</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">7</span>]]),     </span>
+<span id="cb15-21"><a href="data-processing-photogrammetry-pipeline..html#cb15-21" tabindex="-1"></a>  <span class="at">NDRE2 =</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">8</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">8</span>]]), </span>
+<span id="cb15-22"><a href="data-processing-photogrammetry-pipeline..html#cb15-22" tabindex="-1"></a>  <span class="at">NDRE3 =</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">9</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">9</span>]]), </span>
+<span id="cb15-23"><a href="data-processing-photogrammetry-pipeline..html#cb15-23" tabindex="-1"></a>  <span class="at">EVI =</span> (<span class="fl">2.5</span> <span class="sc">*</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">6</span>]])) <span class="sc">/</span> (ms_mask[[<span class="dv">10</span>]] <span class="sc">+</span> (<span class="dv">6</span> <span class="sc">*</span> ms_mask[[<span class="dv">6</span>]]) <span class="sc">-</span> ( <span class="fl">7.5</span> <span class="sc">*</span> ms_mask[[<span class="dv">1</span>]] <span class="sc">+</span> <span class="dv">1</span>)),             </span>
+<span id="cb15-24"><a href="data-processing-photogrammetry-pipeline..html#cb15-24" tabindex="-1"></a>  <span class="at">GCC =</span> (ms_mask[[<span class="dv">4</span>]]<span class="sc">+</span> ms_mask[[<span class="dv">3</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">1</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">2</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">3</span>]]<span class="sc">+</span>ms_mask[[<span class="dv">4</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">5</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">6</span>]]),             </span>
+<span id="cb15-25"><a href="data-processing-photogrammetry-pipeline..html#cb15-25" tabindex="-1"></a>  </span>
+<span id="cb15-26"><a href="data-processing-photogrammetry-pipeline..html#cb15-26" tabindex="-1"></a>  <span class="co"># Carotenoids, waxes</span></span>
+<span id="cb15-27"><a href="data-processing-photogrammetry-pipeline..html#cb15-27" tabindex="-1"></a>  <span class="at">ARI =</span> (<span class="dv">1</span> <span class="sc">/</span> ms_mask[[<span class="dv">4</span>]]) <span class="sc">-</span> (<span class="dv">1</span> <span class="sc">/</span> ms_mask[[<span class="dv">7</span>]]),    </span>
+<span id="cb15-28"><a href="data-processing-photogrammetry-pipeline..html#cb15-28" tabindex="-1"></a>  <span class="at">EWI9 =</span> (ms_mask[[<span class="dv">6</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">8</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">6</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">8</span>]]),</span>
+<span id="cb15-29"><a href="data-processing-photogrammetry-pipeline..html#cb15-29" tabindex="-1"></a>    </span>
+<span id="cb15-30"><a href="data-processing-photogrammetry-pipeline..html#cb15-30" tabindex="-1"></a>  <span class="co"># Carotenoids             </span></span>
+<span id="cb15-31"><a href="data-processing-photogrammetry-pipeline..html#cb15-31" tabindex="-1"></a>  <span class="at">PRI =</span> (ms_mask[[<span class="dv">3</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">4</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">3</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">4</span>]]),             </span>
+<span id="cb15-32"><a href="data-processing-photogrammetry-pipeline..html#cb15-32" tabindex="-1"></a>  <span class="at">CCI =</span> (ms_mask[[<span class="dv">3</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">5</span>]]) <span class="sc">/</span> (ms_mask[[<span class="dv">3</span>]] <span class="sc">+</span> ms_mask[[<span class="dv">5</span>]]),             </span>
+<span id="cb15-33"><a href="data-processing-photogrammetry-pipeline..html#cb15-33" tabindex="-1"></a>    </span>
+<span id="cb15-34"><a href="data-processing-photogrammetry-pipeline..html#cb15-34" tabindex="-1"></a>  <span class="co"># Red edge             </span></span>
+<span id="cb15-35"><a href="data-processing-photogrammetry-pipeline..html#cb15-35" tabindex="-1"></a>  <span class="at">RE_upper =</span> (ms_mask[[<span class="dv">9</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">8</span>]]) <span class="sc">/</span> <span class="dv">23</span>,             </span>
+<span id="cb15-36"><a href="data-processing-photogrammetry-pipeline..html#cb15-36" tabindex="-1"></a>  <span class="at">RE_lower =</span> (ms_mask[[<span class="dv">8</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">7</span>]]) <span class="sc">/</span> <span class="dv">12</span>,             </span>
+<span id="cb15-37"><a href="data-processing-photogrammetry-pipeline..html#cb15-37" tabindex="-1"></a>  <span class="at">RE_total =</span> (ms_mask[[<span class="dv">9</span>]] <span class="sc">-</span> ms_mask[[<span class="dv">7</span>]]) <span class="sc">/</span> <span class="dv">35</span></span>
+<span id="cb15-38"><a href="data-processing-photogrammetry-pipeline..html#cb15-38" tabindex="-1"></a>)</span>
+<span id="cb15-39"><a href="data-processing-photogrammetry-pipeline..html#cb15-39" tabindex="-1"></a>  </span>
+<span id="cb15-40"><a href="data-processing-photogrammetry-pipeline..html#cb15-40" tabindex="-1"></a>rast_all <span class="ot">=</span> <span class="fu">rast</span>(rast_list)</span></code></pre></div>
 <p>Below is an example of the resolution of the calculated vegetation indices. The image shows the chlorophyll carotenoid index (CCI) of a single crown across four summer time points. Greener pixels represent a higher ratio of chlorophylls to carotenoids. As you can see, the proportion of the crown with high CCI values increases from the May to July acquisitions, when productivity is likely at its highest, and decreases during the august acquisition suggesting lower productivity, likely due to end of summer drought conditions.</p>
 <p><img src="Photos_&_gifs/CCI_timeseries.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>Lastly, we use the <em>exact_extract</em> function to calculate crown-level statistics per vegetation index raster created above. Below we show an example of taking the mean and median crown values per index as well as count the number of pixels that were used for the index calculation. We do this as a data quality check so we can remove crowns that had very few pixels involved in their index calculation.</p>
 <p><strong>Note:</strong> the append_cols parameter should be set to a list of column names that exist in pols (the shapefile of delineated crowns) that you would like to be appended to the dataframe containing vegetation indcies per tree crown. As you can see below we have attached many columns we found useful, however the only column necessary to append is a column in pols that represents a unique ID per tree crown.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="data-processing-photogrammetry-pipeline..html#cb15-1" tabindex="-1"></a><span class="co"># Calculating Mean Index values per crown</span></span>
-<span id="cb15-2"><a href="data-processing-photogrammetry-pipeline..html#cb15-2" tabindex="-1"></a>df_spectral_mean <span class="ot">=</span> <span class="fu">exact_extract</span>(rast_all, pols, <span class="at">fun =</span> <span class="st">&quot;mean&quot;</span>, <span class="at">append_cols =</span> <span class="fu">c</span>(<span class="st">&quot;treeID&quot;</span>,<span class="st">&quot;Edited&quot;</span>,<span class="st">&quot;tag__&quot;</span>,<span class="st">&quot;rep&quot;</span>,<span class="st">&quot;blk&quot;</span>,<span class="st">&quot;fam&quot;</span>,<span class="st">&quot;fem&quot;</span>))</span>
-<span id="cb15-3"><a href="data-processing-photogrammetry-pipeline..html#cb15-3" tabindex="-1"></a>  </span>
-<span id="cb15-4"><a href="data-processing-photogrammetry-pipeline..html#cb15-4" tabindex="-1"></a><span class="co"># Calculating the number of non-masked pixels used for index calculation</span></span>
-<span id="cb15-5"><a href="data-processing-photogrammetry-pipeline..html#cb15-5" tabindex="-1"></a>df_count <span class="ot">=</span> <span class="fu">exact_extract</span>(ms_mask[[<span class="dv">1</span>]], pols, <span class="at">fun =</span> <span class="st">&quot;count&quot;</span>, <span class="at">progress =</span> <span class="cn">TRUE</span>, <span class="at">append_cols =</span> <span class="fu">c</span>(<span class="st">&quot;treeID&quot;</span>,<span class="st">&quot;Edited&quot;</span>,<span class="st">&quot;tag__&quot;</span>,<span class="st">&quot;rep&quot;</span>,<span class="st">&quot;blk&quot;</span>,<span class="st">&quot;fam&quot;</span>,<span class="st">&quot;fem&quot;</span>))</span>
-<span id="cb15-6"><a href="data-processing-photogrammetry-pipeline..html#cb15-6" tabindex="-1"></a>  </span>
-<span id="cb15-7"><a href="data-processing-photogrammetry-pipeline..html#cb15-7" tabindex="-1"></a><span class="co"># Joining the mean index values df and the count values df</span></span>
-<span id="cb15-8"><a href="data-processing-photogrammetry-pipeline..html#cb15-8" tabindex="-1"></a>df_spectral_mean_count <span class="ot">&lt;-</span> <span class="fu">merge</span>(df_spectral_mean,df_count, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;treeID&quot;</span>,<span class="st">&quot;Edited&quot;</span>,<span class="st">&quot;tag__&quot;</span>,<span class="st">&quot;rep&quot;</span>,<span class="st">&quot;blk&quot;</span>,<span class="st">&quot;fam&quot;</span>,<span class="st">&quot;fem&quot;</span>))</span>
-<span id="cb15-9"><a href="data-processing-photogrammetry-pipeline..html#cb15-9" tabindex="-1"></a>  </span>
-<span id="cb15-10"><a href="data-processing-photogrammetry-pipeline..html#cb15-10" tabindex="-1"></a><span class="co"># Saving out mean crown values + non masked pixel count to an rds file</span></span>
-<span id="cb15-11"><a href="data-processing-photogrammetry-pipeline..html#cb15-11" tabindex="-1"></a><span class="fu">saveRDS</span>(df_spectral_mean_count, <span class="fu">paste0</span>(dir_D,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,updated_metrics_folder,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, date_list[x], <span class="st">&quot;_NIRshadowMask_MeanCrownSpectralIndices.rds&quot;</span>))</span>
-<span id="cb15-12"><a href="data-processing-photogrammetry-pipeline..html#cb15-12" tabindex="-1"></a></span>
-<span id="cb15-13"><a href="data-processing-photogrammetry-pipeline..html#cb15-13" tabindex="-1"></a><span class="co"># Calculating Median Index values per crown</span></span>
-<span id="cb15-14"><a href="data-processing-photogrammetry-pipeline..html#cb15-14" tabindex="-1"></a>df_spectral_median <span class="ot">=</span> <span class="fu">exact_extract</span>(rast_all, pols, <span class="at">fun =</span> <span class="st">&quot;median&quot;</span>, <span class="at">append_cols =</span> <span class="fu">c</span>(<span class="st">&quot;treeID&quot;</span>,<span class="st">&quot;Edited&quot;</span>,<span class="st">&quot;tag__&quot;</span>,<span class="st">&quot;rep&quot;</span>,<span class="st">&quot;blk&quot;</span>,<span class="st">&quot;fam&quot;</span>,<span class="st">&quot;fem&quot;</span>))</span>
-<span id="cb15-15"><a href="data-processing-photogrammetry-pipeline..html#cb15-15" tabindex="-1"></a>  </span>
-<span id="cb15-16"><a href="data-processing-photogrammetry-pipeline..html#cb15-16" tabindex="-1"></a>df_spectral_median_count <span class="ot">&lt;-</span> <span class="fu">merge</span>(df_spectral_median,df_count, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;treeID&quot;</span>,<span class="st">&quot;Edited&quot;</span>,<span class="st">&quot;tag__&quot;</span>,<span class="st">&quot;rep&quot;</span>,<span class="st">&quot;blk&quot;</span>,<span class="st">&quot;fam&quot;</span>,<span class="st">&quot;fem&quot;</span>))</span>
-<span id="cb15-17"><a href="data-processing-photogrammetry-pipeline..html#cb15-17" tabindex="-1"></a>  </span>
-<span id="cb15-18"><a href="data-processing-photogrammetry-pipeline..html#cb15-18" tabindex="-1"></a><span class="co"># Saving out median crown values + non masked pixel count to an rds file</span></span>
-<span id="cb15-19"><a href="data-processing-photogrammetry-pipeline..html#cb15-19" tabindex="-1"></a><span class="fu">saveRDS</span>(df_spectral_median_count, <span class="fu">paste0</span>(dir_D,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,updated_metrics_folder,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, date_list[x], <span class="st">&quot;_NIRshadowMask_MedianCrownSpectralIndices.rds&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="data-processing-photogrammetry-pipeline..html#cb16-1" tabindex="-1"></a><span class="co"># Calculating Mean Index values per crown</span></span>
+<span id="cb16-2"><a href="data-processing-photogrammetry-pipeline..html#cb16-2" tabindex="-1"></a>df_spectral_mean <span class="ot">=</span> <span class="fu">exact_extract</span>(rast_all, pols, <span class="at">fun =</span> <span class="st">&quot;mean&quot;</span>, <span class="at">append_cols =</span> <span class="fu">c</span>(<span class="st">&quot;treeID&quot;</span>,<span class="st">&quot;Edited&quot;</span>,<span class="st">&quot;tag__&quot;</span>,<span class="st">&quot;rep&quot;</span>,<span class="st">&quot;blk&quot;</span>,<span class="st">&quot;fam&quot;</span>,<span class="st">&quot;fem&quot;</span>))</span>
+<span id="cb16-3"><a href="data-processing-photogrammetry-pipeline..html#cb16-3" tabindex="-1"></a>  </span>
+<span id="cb16-4"><a href="data-processing-photogrammetry-pipeline..html#cb16-4" tabindex="-1"></a><span class="co"># Calculating the number of non-masked pixels used for index calculation</span></span>
+<span id="cb16-5"><a href="data-processing-photogrammetry-pipeline..html#cb16-5" tabindex="-1"></a>df_count <span class="ot">=</span> <span class="fu">exact_extract</span>(ms_mask[[<span class="dv">1</span>]], pols, <span class="at">fun =</span> <span class="st">&quot;count&quot;</span>, <span class="at">progress =</span> <span class="cn">TRUE</span>, <span class="at">append_cols =</span> <span class="fu">c</span>(<span class="st">&quot;treeID&quot;</span>,<span class="st">&quot;Edited&quot;</span>,<span class="st">&quot;tag__&quot;</span>,<span class="st">&quot;rep&quot;</span>,<span class="st">&quot;blk&quot;</span>,<span class="st">&quot;fam&quot;</span>,<span class="st">&quot;fem&quot;</span>))</span>
+<span id="cb16-6"><a href="data-processing-photogrammetry-pipeline..html#cb16-6" tabindex="-1"></a>  </span>
+<span id="cb16-7"><a href="data-processing-photogrammetry-pipeline..html#cb16-7" tabindex="-1"></a><span class="co"># Joining the mean index values df and the count values df</span></span>
+<span id="cb16-8"><a href="data-processing-photogrammetry-pipeline..html#cb16-8" tabindex="-1"></a>df_spectral_mean_count <span class="ot">&lt;-</span> <span class="fu">merge</span>(df_spectral_mean,df_count, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;treeID&quot;</span>,<span class="st">&quot;Edited&quot;</span>,<span class="st">&quot;tag__&quot;</span>,<span class="st">&quot;rep&quot;</span>,<span class="st">&quot;blk&quot;</span>,<span class="st">&quot;fam&quot;</span>,<span class="st">&quot;fem&quot;</span>))</span>
+<span id="cb16-9"><a href="data-processing-photogrammetry-pipeline..html#cb16-9" tabindex="-1"></a>  </span>
+<span id="cb16-10"><a href="data-processing-photogrammetry-pipeline..html#cb16-10" tabindex="-1"></a><span class="co"># Saving out mean crown values + non masked pixel count to an rds file</span></span>
+<span id="cb16-11"><a href="data-processing-photogrammetry-pipeline..html#cb16-11" tabindex="-1"></a><span class="fu">saveRDS</span>(df_spectral_mean_count, <span class="fu">paste0</span>(dir_D,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,updated_metrics_folder,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, date_list[x], <span class="st">&quot;_NIRshadowMask_MeanCrownSpectralIndices.rds&quot;</span>))</span>
+<span id="cb16-12"><a href="data-processing-photogrammetry-pipeline..html#cb16-12" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="data-processing-photogrammetry-pipeline..html#cb16-13" tabindex="-1"></a><span class="co"># Calculating Median Index values per crown</span></span>
+<span id="cb16-14"><a href="data-processing-photogrammetry-pipeline..html#cb16-14" tabindex="-1"></a>df_spectral_median <span class="ot">=</span> <span class="fu">exact_extract</span>(rast_all, pols, <span class="at">fun =</span> <span class="st">&quot;median&quot;</span>, <span class="at">append_cols =</span> <span class="fu">c</span>(<span class="st">&quot;treeID&quot;</span>,<span class="st">&quot;Edited&quot;</span>,<span class="st">&quot;tag__&quot;</span>,<span class="st">&quot;rep&quot;</span>,<span class="st">&quot;blk&quot;</span>,<span class="st">&quot;fam&quot;</span>,<span class="st">&quot;fem&quot;</span>))</span>
+<span id="cb16-15"><a href="data-processing-photogrammetry-pipeline..html#cb16-15" tabindex="-1"></a>  </span>
+<span id="cb16-16"><a href="data-processing-photogrammetry-pipeline..html#cb16-16" tabindex="-1"></a>df_spectral_median_count <span class="ot">&lt;-</span> <span class="fu">merge</span>(df_spectral_median,df_count, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;treeID&quot;</span>,<span class="st">&quot;Edited&quot;</span>,<span class="st">&quot;tag__&quot;</span>,<span class="st">&quot;rep&quot;</span>,<span class="st">&quot;blk&quot;</span>,<span class="st">&quot;fam&quot;</span>,<span class="st">&quot;fem&quot;</span>))</span>
+<span id="cb16-17"><a href="data-processing-photogrammetry-pipeline..html#cb16-17" tabindex="-1"></a>  </span>
+<span id="cb16-18"><a href="data-processing-photogrammetry-pipeline..html#cb16-18" tabindex="-1"></a><span class="co"># Saving out median crown values + non masked pixel count to an rds file</span></span>
+<span id="cb16-19"><a href="data-processing-photogrammetry-pipeline..html#cb16-19" tabindex="-1"></a><span class="fu">saveRDS</span>(df_spectral_median_count, <span class="fu">paste0</span>(dir_D,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,updated_metrics_folder,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, date_list[x], <span class="st">&quot;_NIRshadowMask_MedianCrownSpectralIndices.rds&quot;</span>))</span></code></pre></div>
 <p>References:</p>
 <p>Clevers, J. G. P. W., &amp; Gitelson, A. A. (2013). Remote estimation of crop and grass chlorophyll and nitrogen content using red-edge bands on Sentinel-2 and -3. International Journal of Applied Earth Observation and Geoinformation, 23(1), 344–351. <a href="https://doi.org/10.1016/J.JAG.2012.10.008" class="uri">https://doi.org/10.1016/J.JAG.2012.10.008</a></p>
 <p>Evangelides, C., &amp; Nobajas, A. (2020). Red-Edge Normalised Difference Vegetation Index (NDVI705) from Sentinel-2 imagery to assess post-fire regeneration. Remote Sensing Applications: Society and Environment, 17, 100283. <a href="https://doi.org/10.1016/J.RSASE.2019.100283" class="uri">https://doi.org/10.1016/J.RSASE.2019.100283</a></p>

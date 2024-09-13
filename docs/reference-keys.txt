@@ -74,6 +74,7 @@ zenmuse-l1-lidar-and-rgb
 data-processing-photogrammetry-pipeline.
 agisoft-photogrammetry-processing-p1-data-and-registering-multispectral-to-it.
 overview.
+detailed-workflow
 processing-orthomosaics
 shadow-mask
 crown-level-vegetation-indicies
