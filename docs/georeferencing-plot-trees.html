@@ -358,18 +358,22 @@ The grid is loaded into the GIS and examined. The first-first corner with row 1 
 Figure 7.4: Left: treeID 1, reference for the bottom left corner of the plot. Right: treeID 2757, reference for the top right of the plot
 </p>
 </div>
+<p>We now use the reference trees and QGIS’ Georeferencer plugin if needed to tighten up the fit of the grid to the Orthomosaic. Open the Georeferencer and select the Transformation Settings icon as seen to the left. The polynomial 2 transformation works well, but another transformation can be tried if it doesn’t fit. Once sufficient, add the vector layer that we exported from R and zoom in on the first point that matches a reference tree as below. Then add a point and select the From Map Canvas button.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:Qgis-ref-trees"></span>
 <img src="Photos_&_gifs/Qgis_transformation_settings.png" alt="Left: Transformation settings. Right: zoom in on vector layer and place a point on the Map Canvas" width="32.5%" /><img src="Photos_&_gifs/Qgis_map_cor_setting.png" alt="Left: Transformation settings. Right: zoom in on vector layer and place a point on the Map Canvas" width="67.5%" />
 <p class="caption">
 Figure 7.5: Left: Transformation settings. Right: zoom in on vector layer and place a point on the Map Canvas
 </p>
 </div>
+<p>Work through the reference trees. With 6 reference trees spread evenly through the site the fit was quite good as seen here.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:Qgis-ref-tree-fit"></span>
 <img src="Photos_&_gifs/Qgis-ref-tree-fit.jpg" alt="Zoomed in visual of the georeferenced tree grid for 6 trees overlain on the P1 orthomosaic." width="100%" />
 <p class="caption">
 Figure 7.6: Zoomed in visual of the georeferenced tree grid for 6 trees overlain on the P1 orthomosaic.
 </p>
 </div>
+<p>From here we will manually move each tree position to its visible top. This is a time-consuming task, as care must be taken. In the above imagery the tree between 1601 and 1680 is ingress (a Western hemlock, not planted as part of the trial), the P1 imagery helps to make the distinction visible.
+On sites that have been recently maintained as pictured below, and if you already have a CHM, a time saving method is to follow the crown delineation workflow in R and buffer 30-40cm circles around your tree points, then snap the tree point to the local maximum. Code and detailed instructions are available in the Crown Delineation workflow.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:Qgis-maintained-ref-tree-fit"></span>
 <img src="Photos_&_gifs/maintained-geo-ref-trees.png" alt="Georeferenced grid overlain on P1 orthomosaic for a site that was well maintained. The georeferenced grid has been snapped to the highest point on the CHM within a given radius to pull the grid to the treetops." width="100%" />
 <p class="caption">

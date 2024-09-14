@@ -62,8 +62,8 @@ knitr::include_graphics(c(
 
 1. **Load Photos and locate calibration panels** - Script (or GUI). 15 minutes.
 
-    - Agisoft processes all ten bands as a multicamera with one primary channel. We import imagery using a python script located here on GitHub.  However, you can also import folders containing imagery in metashape via the import tool or by dragging and dropping the folder into the specified chunk. 
-    - This will import all photos for each chunk, then locate the calibration panel captures for the multispectral and move them to a “Calibration images” folder in the Agisoft Workspace tab. If you chose to manually import imagery, you can locate calibration panels using the Calibrate Reflectance tool in the Tools GUI as seen below in Figure \@ref(fig:cal-ref-agisoft).
+  - Agisoft processes all ten bands as a multicamera with one primary channel. We import imagery using a python script located here on GitHub.  However, you can also import folders containing imagery in metashape via the import tool or by dragging and dropping the folder into the specified chunk. 
+  - This will import all photos for each chunk, then locate the calibration panel captures for the multispectral and move them to a “Calibration images” folder in the Agisoft Workspace tab. If you chose to manually import imagery, you can locate calibration panels using the Calibrate Reflectance tool in the Tools GUI as seen below in Figure \@ref(fig:cal-ref-agisoft).
 
 
 ```{r cal-ref-agisoft, echo=FALSE, out.width="100%", fig.align='center', fig.cap = "Calibrate reflectance tool found under Tools in Metashape."}
@@ -74,11 +74,11 @@ knitr::include_graphics(here("Photos_&_gifs\\cal_ref_metashape.png"))
 
 2. **Micasense Corrections outside of Agisoft(if necessary)** – R Script. 2 hours.
 
-    - We have encountered incorrect irradiance data in metadata of MicaSense imagery due to incorrect measurements by the DLS2. To correct the irradiance data prior to processing we use methods from MicaSense’s DLS1 system. See the chapter on MicaSense Irradiance Correction for checks on whether your data needs correction and a detailed explanation of the correction process.
+  - We have encountered incorrect irradiance data in metadata of MicaSense imagery due to incorrect measurements by the DLS2. To correct the irradiance data prior to processing we use methods from MicaSense’s DLS1 system. See the chapter on MicaSense Irradiance Correction for checks on whether your data needs correction and a detailed explanation of the correction process.
 
 3.	**Visually Assess Flight Trajectory and Disable Outliers** – Manual. 10 minutes.
 
-    - The MS cameras start taking pictures as soon as image capture has been started via the webpage on the ground and don’t stop until we power off at the end of the flight. Hence, we examine the flight trajectory and disable photos taken during flight to and from the site.
+  - The MS cameras start taking pictures as soon as image capture has been started via the webpage on the ground and don’t stop until we power off at the end of the flight. Hence, we examine the flight trajectory and disable photos taken during flight to and from the site.
 
 ```{r cal-ref-sunPanel-agisoft, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Calibrate reflectance tool found under Tools in Metashape with sun sensor and reflectance panels enabled for calibration."}
 knitr::include_graphics(here("Photos_&_gifs\\cal_ref_sun_panel_metashape.png"))
@@ -86,16 +86,16 @@ knitr::include_graphics(here("Photos_&_gifs\\cal_ref_sun_panel_metashape.png"))
 
 4.	**Select the Best Calibration Panels and Calibrate Reflectance** – Manual and Processed. 15 minutes.
 
-      - Each panel has a unique set of calibration values provided by the manufacturer in a csv.  The Select Panel button in the Calibrate Reflectance tool will direct you to import the csv. 
-      - Agisoft Metashape takes the latest before the flight and the earliest after the flight panel captures and linearly interpolates between them.
-      - We select one panel capture from the start and one from the end of the flight, by visually selecting a centered capture without shadow or glare and moving the rest to an “Unused_Cal_Images” folder (this folder needs to be created in the GUI). 
-      - We run the calibration process using both the DLS and Calibration Panels checked in . However, Micasense recommends only calibrating with panels on full sun days. Please refer to the [Micasense Knowledge Base - Best practices: Collecting Data with MicaSense Sensors](https://support.micasense.com/hc/en-us/articles/224893167-Best-practices-Collecting-Data-with-MicaSense-Sensors#:~:text=Hold%20the%20aircraft%20at%20chest,offset%20slightly%20to%20prevent%20shadows.) for more details.
+  - Each panel has a unique set of calibration values provided by the manufacturer in a csv.  The Select Panel button in the Calibrate Reflectance tool will direct you to import the csv. 
+  - Agisoft Metashape takes the latest before the flight and the earliest after the flight panel captures and linearly interpolates between them.
+  - We select one panel capture from the start and one from the end of the flight, by visually selecting a centered capture without shadow or glare and moving the rest to an “Unused_Cal_Images” folder (this folder needs to be created in the GUI). 
+  - We run the calibration process using both the DLS and Calibration Panels checked in . However, Micasense recommends only calibrating with panels on full sun days. Please refer to the [Micasense Knowledge Base - Best practices: Collecting Data with MicaSense Sensors](https://support.micasense.com/hc/en-us/articles/224893167-Best-practices-Collecting-Data-with-MicaSense-Sensors#:~:text=Hold%20the%20aircraft%20at%20chest,offset%20slightly%20to%20prevent%20shadows.) for more details.
 
 5.	**Align Photos** – GUI - Processed. 3-10 hours.
 
-    - Photogrammetric alignment is the process of matching and orienting overlapping images by identifying common features known as tie points, across multiple images. This alignment generates a geometrically accurate sparse point cloud from the tie points.
-    - We use the batch processing tool and settings as seen in Figure \@ref(fig: align-photo-agisoft).
-    - The sparse clouds vary greatly in density, the P1 clouds on a closed canopy can be as low as 150,000 points.  The MS_P sparse clouds could be 48 million points on the same flight plan.  
+  - Photogrammetric alignment is the process of matching and orienting overlapping images by identifying common features known as tie points, across multiple images. This alignment generates a geometrically accurate sparse point cloud from the tie points.
+  - We use the batch processing tool and settings as seen in Figure \@ref(fig: align-photo-agisoft).
+  - The sparse clouds vary greatly in density, the P1 clouds on a closed canopy can be as low as 150,000 points.  The MS_P sparse clouds could be 48 million points on the same flight plan.  
 
 ```{r align-photo-agisoft, echo=FALSE, out.width="40%", fig.align='center', fig.cap = "Photogrametric camera alignment settings using the alignment tool in Metashape"}
 knitr::include_graphics(here("Photos_&_gifs\\align_photos_metashape.png"))
@@ -103,48 +103,48 @@ knitr::include_graphics(here("Photos_&_gifs\\align_photos_metashape.png"))
 
 6.	**Import and Align GCPs** – Manual. 15 minutes.
 
-    - The GCP coordinates are imported in WGS 84.
-    -	**Note** GCPs can be used either actively as control points in which case they will “pull” the images into alignment or passively as check points to measure error.
-    - We are only using GCPs as check points now, but they will be implemented if registration fails.
-    -Instructions to align GCPs if necessary
-      -	In the Reference pane check GCP_1 right click on it and filter photos by marker
-      - Open the photos tab, and double click the first photo.  Drag the marker to the center of the photo.  Do this for several photos - then click on the update transform tool found in the Reference pane.
-      - Scroll through at least 3 more pics to make sure they are aligned.
-      - Repeat for each GCPs hitting update transform tool located in the reference panel once you have set the photos.
-      - Leave at least one GCP for a “checkpoint”.
+  - The GCP coordinates are imported in WGS 84.
+  -	**Note** GCPs can be used either actively as control points in which case they will “pull” the images into alignment or passively as check points to measure error.
+  - We are only using GCPs as check points now, but they will be implemented if registration fails.
+  -Instructions to align GCPs if necessary
+    -	In the Reference pane check GCP_1 right click on it and filter photos by marker
+    - Open the photos tab, and double click the first photo.  Drag the marker to the center of the photo.  Do this for several photos - then click on the update transform tool found in the Reference pane.
+    - Scroll through at least 3 more pics to make sure they are aligned.
+    - Repeat for each GCPs hitting update transform tool located in the reference panel once you have set the photos.
+    - Leave at least one GCP for a “checkpoint”.
 
 7.	 **Sparse Cloud - Filter and Optimize Camera Alignment** - manual. 30-45 minutes.
 
-      - This iterative step filters the sparse cloud for outliers and optimizes the camera calibration.  Most literature suggests more aggressive filtering, but on closed canopy sites this tends to cause loss.  Visually assess the cloud at each stage to confirm the sparse cloud is not becoming too sparse.
-     - In the GUI select Model – Gradual Selection – Reconstruction Uncertainty: Adjust the slider until the value is 25-75, while selecting a Max of %10 of the points.
-     - In Figure \@ref(fig:sparseCloud-agisoft), there are 400,000 points selected out of 40 million and the uncertainty is at 30.
-     - Hit okay and delete to remove points.
+  - This iterative step filters the sparse cloud for outliers and optimizes the camera calibration.  Most literature suggests more aggressive filtering, but on closed canopy sites this tends to cause loss.  Visually assess the cloud at each stage to confirm the sparse cloud is not becoming too sparse.
+  - In the GUI select Model – Gradual Selection – Reconstruction Uncertainty: Adjust the slider until the value is 25-75, while selecting a Max of %10 of the points.
+  - In Figure \@ref(fig:sparseCloud-agisoft), there are 400,000 points selected out of 40 million and the uncertainty is at 30.
+  - Hit okay and delete to remove points.
 ```{r sparseCloud-agisoft, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Sparse cloud created in image alignment. Pink points are those selected by the Gradual Selection tool that have a reconstruction uncertainty greater than or equal to 30.4608. These points will be filtered out."}
 knitr::include_graphics(here("Photos_&_gifs\\sparse_cloud_metashape.png"))
 ```
 
-     - Next we optimize the camera alignment. Tools - Optimize Camera Alignment: default settings as in Figure \@ref(fig:opt-align-agisoft).
+  - Next we optimize the camera alignment. Tools - Optimize Camera Alignment: default settings as in Figure \@ref(fig:opt-align-agisoft).
      
 ```{r opt-align-agisoft, echo=FALSE, out.width="60%",fig.align='center', fig.cap = "Settings used for the Optimize Camera Alignment tool"}
 knitr::include_graphics(here("Photos_&_gifs\\opt_camera_align_metashape.png"))
 ```
-
-    -We now go through the same steps again filtering points and optimizing the cameras for the following settings.
-    - Model – Gradual Selection – Projection Accuracy: 5-20. Max%10
-    - Optimize Camera Alignment at stock - check estimate tiepoint covariance
-    - Model – Gradual Selection – Reprojection Error: 0.3-1. Max%10
-    - Optimize Camera Alignment at stock with fit additional corrections and estimate tiepoint covariance.
-      - Finall using the select tool we manually clip any edge points not cohesive to the flight.
+  
+  - We now go through the same steps again filtering points and optimizing the cameras for the following settings.
+  - Model – Gradual Selection – Projection Accuracy: 5-20. Max%10
+  - Optimize Camera Alignment at stock - check estimate tiepoint covariance
+  - Model – Gradual Selection – Reprojection Error: 0.3-1. Max%10
+  - Optimize Camera Alignment at stock with fit additional corrections and estimate tiepoint covariance.
+  - Finally using the select tool we manually clip any edge points not cohesive to the flight.
 
 8.	**Point based chunk alignment:** multispectral to P1 - (requires manual verification). 2-6 hours. Batch processing
 
-     - Leveraging the accuracy of the P1 as a reference, the MS sparse cloud is aligned to the higher accuracy P1 sparse cloud using the batch processing steps according to the settings in Figure \@ref(fig:chunk-align-agisoft).
+  - Leveraging the accuracy of the P1 as a reference, the MS sparse cloud is aligned to the higher accuracy P1 sparse cloud using the batch processing steps according to the settings in Figure \@ref(fig:chunk-align-agisoft).
 Figure \@ref(fig:chunk-align-agisoft)
 ```{r chunk-align-agisoft, echo=FALSE, out.width="60%", fig.align='center',fig.cap = "Settings used for point based chunk alignment when aligning the multispectral data to the P1."}
 knitr::include_graphics(here("Photos_&_gifs\\align_chunks_metashape.png"))
 ```
 
-     - Visually confirm each multispectral has in fact aligned by seeing the [T] for transposed as in Figure \@ref(fig:chunk-align-agisoft).  If the chunk align on medium setting fails, try again on low.  If this also fails, you will need to align with GCP's or attempt georeferencing the output orthomosaics in a GIS.
+  - Visually confirm each multispectral has in fact aligned by seeing the [T] for transposed as in Figure \@ref(fig:chunk-align-agisoft).  If the chunk align on medium setting fails, try again on low.  If this also fails, you will need to align with GCP's or attempt georeferencing the output orthomosaics in a GIS.
 
 ```{r chunk-align-confirm-agisoft, echo=FALSE, out.width="60%",fig.align='center', fig.cap = "Visual of the [T] that will appear next to chunks that have successfully aligned via chunk alignment."}
 knitr::include_graphics(here("Photos_&_gifs\\transposed_metashape.png"))
@@ -152,7 +152,7 @@ knitr::include_graphics(here("Photos_&_gifs\\transposed_metashape.png"))
 
 9.	**Build Depth Maps and Dense Cloud** – Script or Batch Process. 5-24 hours.
 
-    -A dense point cloud, a high-resolution 3D representation with significantly more detail than the sparse cloud is built in this step.  First depth maps are created for each image, capturing detailed information about the distance to surfaces in the scene. These depth maps are then combined to generate the dense point cloud. This is a primary product and can be exported.  We have been building these to the highest settings as outlined in Figure \@ref(fig:DC-settings-agisoft), but if this is not required significant time can be saved by lowering the setting.  An example dense cloud is seen in Figure \@ref(fig:aligned-agisoft)
+  - A dense point cloud, a high-resolution 3D representation with significantly more detail than the sparse cloud is built in this step.  First depth maps are created for each image, capturing detailed information about the distance to surfaces in the scene. These depth maps are then combined to generate the dense point cloud. This is a primary product and can be exported.  We have been building these to the highest settings as outlined in Figure \@ref(fig:DC-settings-agisoft), but if this is not required significant time can be saved by lowering the setting.  An example dense cloud is seen in Figure \@ref(fig:aligned-agisoft)
      
 Figure \@ref(fig:DC-settings-agisoft)     
 ```{r DC-settings-agisoft, echo=FALSE, out.width="60%",fig.align='center', fig.cap = "Metashape settings for building the depth maps and the dense cloud."}
@@ -161,7 +161,7 @@ knitr::include_graphics(here("Photos_&_gifs\\DC_settings_metashape.png"))
 
 10.	**Build DEM** – Script or Batch Processed. ~1 hour.
 
-     -Generates a Digital Elevation Model from the dense cloud data. Batch settings in Figure \@ref(fig:DEM-settings-agisoft)
+  - Generates a Digital Elevation Model from the dense cloud data. Batch settings in Figure \@ref(fig:DEM-settings-agisoft)
 
 ```{r DEM-settings-agisoft, echo=FALSE, out.width="60%",fig.align='center', fig.cap = "Metashape settings for DEM generation."}
 knitr::include_graphics(here("Photos_&_gifs\\build_DEM_metashape.png"))
@@ -169,8 +169,8 @@ knitr::include_graphics(here("Photos_&_gifs\\build_DEM_metashape.png"))
 
 11.	**Build Orthomosaic** – Script - Processed. 1-4 hours.
 
-     - Creates an orthomosaic by stitching together the aligned images and the DEM according to batch processing steps in Figure \@ref(fig:ortho-settings-agisoft).
-     - **NOTE: We do NOT enable hole filling for multispectral** – only used for RGB orthomosaics that were needed strictly for visual purposes and not analysis.
+  - Creates an orthomosaic by stitching together the aligned images and the DEM according to batch processing steps in Figure \@ref(fig:ortho-settings-agisoft).
+  - **NOTE: We do NOT enable hole filling for multispectral** – only used for RGB orthomosaics that were needed strictly for visual purposes and not analysis.
 
 ```{r ortho-settings-agisoft, echo=FALSE, out.width="60%", fig.align='center', fig.cap = "Metashape settings for building the orthomosaic."}
 knitr::include_graphics(here("Photos_&_gifs\\build_ortho_metashape.png"))
@@ -178,30 +178,30 @@ knitr::include_graphics(here("Photos_&_gifs\\build_ortho_metashape.png"))
 
 12.	**Check Orthomosaic Registration* - Manual. 15 minutes to redo from GCP alignment.
 
-     - The orthomosaic is checked for alignment to the GCPs. If it is not close on each GCP, we go back and try alignment with GCPs. It is very important to check all corners, as occasionally three out of four will align beautifully, and the fourth will be 25-50cm out of alignment.
-     - In the cases where we were unable to establish GCPs the orthomosaic is exported and checked against the P1 in a GIS. 
+  - The orthomosaic is checked for alignment to the GCPs. If it is not close on each GCP, we go back and try alignment with GCPs. It is very important to check all corners, as occasionally three out of four will align beautifully, and the fourth will be 25-50cm out of alignment.
+  - In the cases where we were unable to establish GCPs the orthomosaic is exported and checked against the P1 in a GIS. 
     
 13.	**Sanity Check Reflectance Values** – Manual. 15 minutes – 2 hours if remaking orthomosaics.
 
-     - The orthomosaic is sanity checked for reflectance values. We look at the histogram of three different bands to ensure the values make sense. If they do not, another calibration panel is chosen, the reflectance is recalibrated, and the orthomosaic is rebuilt.
-     - To check values - go into Raster Transform - Enable Transform
-     - Select B1 (blue band). Click the circular arrows to the left of the “interpolate colors” button, then click auto and then apply. B1 should be around ~0.02 for the trees. The range it gives will be for the entire ortho so roads and other vegetation will increase the range so I suggest zooming into the ortho so you can see approximately what values correspond to trees. Repeat for B4 (green) and B10 (NIR). If the values are too large or small, i.e. B10 (NIR) > 1, choose another calibration panel, delete the ortho, recalibrate, remake the ortho and recheck the values. 
-     -**Note** these values are general estimates of what a “tree” should look like however, different vegetation will have different ranges, for example values for cedar may be a little lower compared to Douglas fir.
+  - The orthomosaic is sanity checked for reflectance values. We look at the histogram of three different bands to ensure the values make sense. If they do not, another calibration panel is chosen, the reflectance is recalibrated, and the orthomosaic is rebuilt.
+  - To check values - go into Raster Transform - Enable Transform
+  - Select B1 (blue band). Click the circular arrows to the left of the “interpolate colors” button, then click auto and then apply. B1 should be around ~0.02 for the trees. The range it gives will be for the entire ortho so roads and other vegetation will increase the range so I suggest zooming into the ortho so you can see approximately what values correspond to trees. Repeat for B4 (green) and B10 (NIR). If the values are too large or small, i.e. B10 (NIR) > 1, choose another calibration panel, delete the ortho, recalibrate, remake the ortho and recheck the values. 
+  -**Note** these values are general estimates of what a “tree” should look like however, different vegetation will have different ranges, for example values for cedar may be a little lower compared to Douglas fir.
 **General benchmarks:**
 
-     - B1 should be around ~0.02.
+  - B1 should be around ~0.02.
 ```{r b1-check-ref-agisoft, echo=FALSE, fig.align='center',out.width="100%", fig.cap = "Raster calculator tool in Metashape to look at reflectance values of trees for band 1 (Blue - 444nm) prior to exporting the orthomosaic."}
 knitr::include_graphics(here("Photos_&_gifs\\reflectance_values_metashape.png"))
 
 ```
 
-     - B4 should be around ~0.06
+  - B4 should be around ~0.06
 ```{r b4-check-ref-agisoft, echo=FALSE, fig.align='center',out.width="100%", fig.cap = "Reflectance values of trees for band 4 (Green - 560nm)."}
 knitr::include_graphics(here("Photos_&_gifs\\b4_reflectance_values_metashape.png"))
 
 ```
 
-     - B10 should be around ~0.3 – 0.5, but shouldn’t exceed 0.7
+  - B10 should be around ~0.3 – 0.5, but shouldn’t exceed 0.7
 ```{r b10-check-ref-agisoft, echo=FALSE, fig.align='center', out.width="100%", fig.cap = "Reflectance values of trees for band 10 (NIR - 842nm)."}
 knitr::include_graphics(here("Photos_&_gifs\\b10_reflectance_values_metashape.png"))
 
@@ -209,15 +209,20 @@ knitr::include_graphics(here("Photos_&_gifs\\b10_reflectance_values_metashape.pn
 
 14.	Normalize, pan sharpen and export – Script 5 minutes.
 
-     - Run the closing script for each multispectral sensor after entering the variables into the script.  This script will:
-     - Normalize the 16bit pixel values for the MS.  For the MS_P it will normalize and pan sharpen.
-     - Import the 15m buffered shape of the trial and export the orthomosaic clipped to this shape in NAD83 to the project specific folder.
+  - Run the closing script for each multispectral sensor after entering the variables into the script.  This script will:
+    - Normalize the 16bit pixel values for the MS.  For the MS_P it will normalize and pan sharpen.
+    - Import the 15m buffered shape of the trial and export the orthomosaic clipped to this shape in NAD83 to the project specific folder.
       
 The following are helpful Agisoft processing references:
-Agisoft LLC. (2024). [Agisoft Metashape User Manual: Professional Edition, Version 2.1.](https://www.agisoft.com/downloads/user-manuals/)
-[USGS_ Processing Coastal Imagery With Agisoft Metashape Professional Edition](https://pubs.usgs.gov/publication/ofr20211039)
-[Micasense - Process MicaSense sensor data in Agisoft Metashape]()
-Processing Multi-spectral Imagery with Agisoft MetaShape Pro:Dr. Eric Saczuk
+
+  - [Agisoft Metashape User Manual: Professional Edition, Version 2.1.](https://www.agisoft.com/downloads/user-manuals/)
+  
+  - [USGS_ Processing Coastal Imagery With Agisoft Metashape Professional Edition](https://pubs.usgs.gov/publication/ofr20211039)
+  
+  - [Micasense - Process MicaSense sensor data in Agisoft Metashape](https://support.micasense.com/hc/en-us/articles/360002693373-Process-MicaSense-sensor-data-in-Agisoft-Metashape)
+  
+  - [Processing Multi-spectral Imagery with Agisoft MetaShape Pro](https://pressbooks.bccampus.ca/ericsaczuk/)
+
 The knowledge base at Agisoft also has many other useful articles.
 
 
