@@ -1,57 +1,58 @@
 # MicaSense Irradiance Correction
 
-
 ## Background
+
 The MicaSense system measures radiance at the camera, which needs to be transformed into surface reflectance. The basic relationship is given by:
 
 $$
 R = \frac{L}{I_{\text{hor}}}
 $$
 
-where \(L\) is the at-camera radiance and \(I_{\text{hor}}\) is the horizontal irradiance.
+where $L$ is the at-camera radiance and $I_{\text{hor}}$ is the horizontal irradiance.
 
 ### Deriving Horizontal Irradiance
 
-Below we go through the derivation to compute \(I_{\text{hor}}\).
+Below we go through the derivation to compute $I_{\text{hor}}$.
 
-The MicaSense system includes both the cameras and a downwelling light sensor (DLS). Since the DLS is tilted at the angle of the drone during flight and the sun is rarely directly overheard the sensor, the DLS measures non-horizontal irradiance, referred to as spectral irradiance (\(I_{\text{spec}}\)). Spectral irradiance is a function of direct irradiance (\(I_{\text{direct}}\)), scattered irradiance (\(I_{\text{scattered}}\)), and the angle between the sun and the sensor ( \(\theta_{\text{sun-sensor}}\)):
+The MicaSense system includes both the cameras and a downwelling light sensor (DLS). Since the DLS is tilted at the angle of the drone during flight and the sun is rarely directly overheard the sensor, the DLS measures non-horizontal irradiance, referred to as spectral irradiance ($I_{\text{spec}}$). Spectral irradiance is a function of direct irradiance ($I_{\text{direct}}$), scattered irradiance ($I_{\text{scattered}}$), and the angle between the sun and the sensor ( $\theta_{\text{sun-sensor}}$):
 
 $$
 I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}
 $$
 
-If we take  \( r\) to be the ratio of scattered to direct irradiance, \( r = \frac{I_{\text{scattered}}}{I_{\text{direct}}} \), we can substitute \( I_{\text{scattered}} = r \cdot I_{\text{direct}} \) into the equation:
+If we take $r$ to be the ratio of scattered to direct irradiance, $r = \frac{I_{\text{scattered}}}{I_{\text{direct}}}$, we can substitute $I_{\text{scattered}} = r \cdot I_{\text{direct}}$ into the equation:
 
 $$
 I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + r \cdot I_{\text{direct}}
 $$
 
-Next, by factoring out \( I_{\text{direct}} \) from the equation:
+Next, by factoring out $I_{\text{direct}}$ from the equation:
 
 $$
 I_{\text{spec}} = I_{\text{direct}} \cdot \left( \cos(\theta_{\text{sun-sensor}}) + r \right)
 $$
 
-We can solve for \( I_{\text{direct}} \) by dividing both sides of the equation by \( \cos(\theta_{\text{sun-sensor}}) + r \):
+We can solve for $I_{\text{direct}}$ by dividing both sides of the equation by $\cos(\theta_{\text{sun-sensor}}) + r$:
 
 $$
 I_{\text{direct}} = \frac{I_{\text{spec}}}{\cos(\theta_{\text{sun-sensor}}) + r}
 $$
 
-If we assume that \( I_{\text{hor}} \) can be expressed in terms of \( I_{\text{direct}} \) with a similar function involving the zenith angle, we can express this as:
+If we assume that $I_{\text{hor}}$ can be expressed in terms of $I_{\text{direct}}$ with a similar function as seen above for $I_{\text{spec}}$ however using the zenith angle, we can express this as:
 
 $$
 I_{\text{hor}} = I_{\text{direct}} \cdot \left( \cos(\theta_{\text{zenith}}) + r \right)
 $$
 
-Substituting the equation for \( I_{\text{direct}} \) into the equation for \( I_{\text{hor}} \) gives:
+Substituting the equation for $I_{\text{direct}}$ into the equation for $I_{\text{hor}}$ gives:
 
 $$
 I_{\text{hor}} = \frac{I_{\text{spec}}}{\cos(\theta_{\text{sun-sensor}}) + r} \cdot \left( \cos(\theta_{\text{zenith}}) + r \right)
 $$
 
 ### Calculating Reflectance
-Finally, substituting \( I_{\text{hor}} \) into the equation for reflectance, we obtain:
+
+Finally, substituting $I_{\text{hor}}$ into the equation for reflectance, we obtain:
 
 $$
 R = L \cdot \frac{\cos(\theta_{\text{sun-sensor}}) + r}{I_{\text{spec}} \cdot \left( \cos(\theta_{\text{zenith}}) + r \right)}
@@ -60,20 +61,21 @@ $$
 Thus we see that reflectance is highly dependent on the ratio of scattered to direct irradiance as well as the sun-sensor angle. This is important for understanding the issue we have found when working with the DLS2 and the MicaSense MX Dual camera system.
 
 ## The Problem
+
 The issue we have noticed is that the sun-sensor angle can be absurdly high or low, especially in strong illumination conditions. This leads to equally absurd, sometimes impossible, values for direct and scattered irradiance, that can be multiples higher than the direct solar irradiance.
 
-To begin, let us first look at some main differences between the legacy DLS1 and the current DLS2 system. 
+To begin, let us first look at some main differences between the legacy DLS1 and the current DLS2 system.
 
 The DLS1:
 
-- calculates the sun zenith angle using the GPS location of the drone and the time of acquisition 
+-   calculates the sun zenith angle using the GPS location of the drone and the time of acquisition
 
-- calculates the sun-sensor angle from the yaw/pitch/roll of the drone
+-   calculates the sun-sensor angle from the yaw/pitch/roll of the drone
 
 The DLS2:
 
-- directly measures the sun sensor angle and the direct and diffuse irradiance components using a proprietary method that takes in information from the light sensors on the surface of the DSL2
- 
+-   directly measures the sun sensor angle and the direct and diffuse irradiance components using a proprietary method that takes in information from the light sensors on the surface of the DSL2
+
 ## Is Correction Needed?
 
 Deciding whether data needs to be corrected can be challenging. We have found that looking at these three questions can be helpful:
@@ -84,56 +86,55 @@ Deciding whether data needs to be corrected can be challenging. We have found th
 
 *3) Does the scattered: direct ratio look right for the lighting conditions of that day?*
 
-Below we have plotted the sun sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right) from the exif data of the Micasense images. We have used the yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning (red). 
+Below we have plotted the sun sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right) from the exif data of the MicaSense images (Figure \@ref(fig:Irradiance-flight-lines)). We used the yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning (red).
 
-This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line in the above figure, the solar zenith angle at the time of the flight was around 30°. 
+This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line in the above figure, the solar zenith angle at the time of the flight was around 30°.
 
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+```{r Irradiance-flight-lines, echo=FALSE, out.width="100%", fig.align = 'center',fig.cap= " "}
 knitr::include_graphics(here("Photos_&_gifs\\Irradiance_flight_lines_with_turning_all_with_spatial_plot_CROPPED.PNG"))
-
 ```
-
 
 ### Do the sun sensor angles make sense?
 
-Solar zenith angle is the angle between the normal (vertical from the Earths surface) at the location of interest and the position of the sun. Given the tilt of the Earth, the solar zenith reaches its maximum (i.e. greatest angle between the sun and the normal to the Earths surface) in the winter, as the northern hemisphere is tilted away from the sun, and its minimum in the summer when the northern hemisphere is tilted towards the sun. 
+Solar zenith angle is the angle between the normal (vertical from the Earths surface) at the location of interest and the position of the sun. Given the tilt of the Earth, the solar zenith reaches its maximum (i.e. greatest angle between the sun and the normal to the Earths surface) in the winter, as the northern hemisphere is tilted away from the sun, and its minimum in the summer when the northern hemisphere is tilted towards the sun.
 
-The solar zenith also changes throughout the day, with its minimum occurring at solar noon, a.k.a. when the sun is at its highest. This is why it is suggested to fly within +/- 2 hours of solar noon to avoid shadows in your imagery.
+The solar zenith also changes throughout the day, with its minimum occurring at solar noon, a.k.a. when the sun is at its highest. This is why it is suggested to fly within ± 2 hours of solar noon to avoid shadows in your imagery.
 
-Below we have graphed solar zenith angles over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024) that will be used in this example to demonstrate the daily and seasonal change in values. 
+Below we have graphed solar zenith angles over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024) that will be used in this example to demonstrate the daily and seasonal change in values (Figure \@ref(fig:zenith-overview)).
 
-The gray vertical bar highlights the flight time, which was just within the +/- 2 hours of solar noon bounds and shows the solar zenith at around 30°, as we saw in the above figure.
+The gray vertical bar highlights the flight time, which was just within the ± 2 hours of solar noon bounds and shows the solar zenith at around 30°, as we saw in Figure \@ref(fig:Irradiance-flight-lines).
 
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+```{r zenith-overview, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap = " "}
 knitr::include_graphics(here("Photos_&_gifs\\Solar_zenith_solstice_flight.PNG"))
 ```
 
-Now that we've refreshed our understanding of the solar zenith, let's dive into the sun sensor angle. The sun sensor angle is, as it sounds, the angle between the normal (perpendicular) of the sensor and the direction of the sun. Given that drone flights occur relatively close to the ground compared to the distance from the Earth to the sun, this difference is often negligible. Therefore, the solar zenith angle can serve as a rough estimate of the sun sensor angle for a sensor that is parallel to the Earth's surface - making it a helpful check to see if the sun sensor angle recorded by the DLS2 is within a reasonable range.
+Now that we've refreshed our understanding of the solar zenith, let's dive into the sun sensor angle. The sun sensor angle is, as it sounds, the angle between the normal (perpendicular) of the sensor and the direction of the sun (Figure \@ref(fig:SSA-diagram)). Given that drone flights occur relatively close to the ground compared to the distance from the Earth to the sun, this difference is often negligible. Therefore, the solar zenith angle can serve as a rough estimate of the sun sensor angle for a sensor that is parallel to the Earth's surface - making it a helpful check to see if the sun sensor angle recorded by the DLS2 is within a reasonable range.
 
-
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+```{r SSA-diagram, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap=" " }
 knitr::include_graphics(here("Photos_&_gifs\\SSA_verse_solarZenith_diagram.PNG"))
 ```
-However, drones often fly at an angle, which can cause a cyclical pattern in sun sensor angles depending on flight direction. For example, let's take a look at the diagram below. When the drone is flying in the general direction of the sun (left), the forward tilt of the drone mid-flight results in a smaller sun sensor angle compared to when the drone is flying away from the general direction of the sun, where the tilt of the drone away from the sun increases the sun sensor angle (right).
 
+However, drones often fly at an angle, which can cause a cyclical pattern in sun sensor angles depending on flight direction. For example, let's take a look at Figure \@ref(fig:SSA-flight-direction). When the drone is flying in the general direction of the sun (left), the forward tilt of the drone mid-flight results in a smaller sun sensor angle compared to when the drone is flying away from the general direction of the sun, where the tilt of the drone away from the sun increases the sun sensor angle (right).
 
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+```{r SSA-flight-direction, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap = "  " }
 knitr::include_graphics(here("Photos_&_gifs\\SSA_flight_direction_diagram.PNG"))
 ```
 
-This pattern of sun sensor angle dependence on drone orientation relative to the sun can be see for the June 25th flight. Below are the uncorrected sun sensor angles, derived from the DLS2 sensor located on the top of the drone, colored by flight line direction. Here red indicates turning and blue and green are opposite flight directions.
+This pattern of sun sensor angle dependence on drone orientation relative to the sun can be seen for the June 25th flight. Figure \@ref(fig:SSA-DSL2-data) shows the uncorrected sun sensor angles, derived from the DLS2 sensor located on the top of the drone, colored by flight line direction. Here red indicates turning and blue and green are opposite flight directions.
 
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+```{r SSA-DSL2-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap="  "}
 knitr::include_graphics(here("Photos_&_gifs\\SSA_flightlines.PNG"))
 ```
-Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value (plotted as the horizontal black line) to make an informed decision on whether or not the values need correcting. 
 
-To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method [LINK] which will be referred to as the "corrected" values.
+Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value (plotted as the horizontal black line in Figure \@ref(fig:SSA-DSL2-data)) to make an informed decision on whether or not the values need correcting.
 
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method, see section \@ref(DLS1-correction), which will be referred to as the "corrected" values.
+
+```{r SSA-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap="  "}
 knitr::include_graphics(here("Photos_&_gifs\\SSA_DLS1_verse_DLS2.PNG"))
 ```
-The dashed horizontal lines are the moving averages for the DLS1 and DLS2. Here the moving average of the DLS2 is at times almost 10°lower than the solar zenith, whereas the moving average of the DLS1 (corrected method) is more or less consistently 2-3° lower than the solar zenith. 
+
+In Figure \@ref(fig:SSA-DSL2-DLS1-data) the dashed horizontal lines are the moving averages for the DLS1 and DLS2. Here the moving average of the DLS2 is at times almost 10°lower than the solar zenith, whereas the moving average of the DLS1 (corrected method) is more or less consistently 2-3° lower than the solar zenith.
 
 Given this data, we would conclude that the DLS1 method provides more accurate sun sensor angles compared to the DLS2. We will now continue to look at irradiance to confirm if correction is needed.
 
@@ -145,70 +146,68 @@ First, lets define direct and horizontal irradiance with respect to the DLS:
 
 **Scattered Irradiance**: The sunlight that is scattered by particles in the atmosphere. This component is generally weaker on sunny days and higher on overcast days.
 
-**Horiztonal Irradiance**: The total irradiance on a horizontal surface, including both direct sunlight (projected onto the horizontal plane) and diffuse light. Hence, if the sun is directly above the sensor and it is a clear sunny day, the direct irradiance component will likely be quite close to the horizontal irradiance, however still lower given that horizontal irradiance inlcudes diffuse light as well. 
+**Horiztonal Irradiance**: The total irradiance on a horizontal surface, including both direct sunlight (projected onto the horizontal plane) and diffuse light. Hence, if the sun is directly above the sensor and it is a clear sunny day, the direct irradiance component will likely be quite close to the horizontal irradiance, however still lower given that horizontal irradiance includes diffuse light as well.
 
-Below, we have plotted the direct and horizontal irradiance from the DLS2 and values calculated with the [DLS1 method](0_Micasense_Irradiance_Correction##Correcting Irradiance Values for Micasense Cameras). We can see that the direct irradiance from the DLS2 is greater than the horizontal irradiance, which is physically impossible. In contrast, the direct irradiance from the DLS1 method is approximately 50 W/m²/nm less than the horizontal irradiance. 
+Below we have plotted the direct and horizontal irradiance from the DLS2 and values calculated with the [DLS1 method](0_Micasense_Irradiance_Correction##Correcting%20Irradiance%20Values%20for%20Micasense%20Cameras) (Figure \@ref(fig:Irr-DSL2-DLS1-data). We can see that the direct irradiance from the DLS2 is greater than the horizontal irradiance, which is physically impossible. In contrast, the direct irradiance from the DLS1 method is approximately 50 W/m² less than the horizontal irradiance.
 
 Explanations for the lower direct irradiance from the DLS1 compared to the horizontal irradiance include:
 
-- The ~30° sun sensor angle, which reduces the effective direct component captured by the sensor.
+-   The \~30° sun sensor angle, which reduces the effective direct component captured by the sensor.
 
-- The portion of scattered irradiance in the horizontal irradiance signal that is not included in the direct irradiance value.
+-   The portion of scattered irradiance in the horizontal irradiance signal that is not included in the direct irradiance value.
 
-
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+```{r Irr-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap="  "}
 knitr::include_graphics(here("Photos_&_gifs\\Hor_dir_irradiance_DLS1_v_DLS2.PNG"))
 ```
-From this graph, we would recommend correcting the data using the [DLS1 method](0_Micasense_Irradiance_Correction##Correcting Irradiance Values for Micasense Cameras) outlined below 
 
+From Figure \@ref(fig:Irr-DSL2-DLS1-data), we would recommend correcting the data using the [DLS1 method](0_Micasense_Irradiance_Correction##Correcting%20Irradiance%20Values%20for%20Micasense%20Cameras) outlined below
 
 ### Does the scattered: direct ratio make sense for the lighting conditions of that day?
 
-For a clear sunny day when the sun is around its peak, direct radiation generally accounts for ~85% of the total insolation with scattered radiation accounting for the remaining ~15%. For an completely overcast day, scattered radiation contributes to 100% of solar radiation.<!-- https://www.ftexploring.com/solar-energy/direct-and-diffuse-radiation.htm -->
+For a clear sunny day around solar noon, direct radiation generally accounts for \~85% of the total insolation with scattered radiation accounting for the remaining \~15%. For a completely overcast day, scattered radiation contributes to 100% of solar radiation.<!-- https://www.ftexploring.com/solar-energy/direct-and-diffuse-radiation.htm -->
 
-Hence for a clear sunny day in the summer a ratio of 1:6 scattered to direct irradiance is often used as an estimate. This means that direct irradiance is around 6 times stronger than the scattered irradiance.
+Hence, for a clear sunny day in the summer a ratio of 1:6 scattered to direct irradiance is often used as an estimate. This means that direct irradiance is around 6 times stronger than the scattered irradiance.
 
-The data plotted below from June 25th was captured on a sunny day with occasional clouds.
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+Irradiance data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data ) from June 25th was captured on a sunny day with occasional light clouds.
+
+```{r Dir-Irr-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap = "  "}
 knitr::include_graphics(here("Photos_&_gifs\\Dir_Scat_irradiance_DLS1_v_DLS2.PNG"))
 ```
 
-The scattered: direct ratio for the data plotted above is 0.09 for the DLS2 and 0.46 for the DLS1. 
+The scattered: direct ratio for the data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data ) is 0.09 for the DLS2 and 0.46 for the DLS1.
 
-**DLS2:** The ratio of 0.08 scattered:direct components from the DSL2 states that the direct irradiance during the flight was 12.5 time greater than the scattered irradiance, or in other words that 91% of the total radiation reaching the earth was direct radiation and 9% was scattered radiation. 
+**DLS2:** The ratio of 0.08 scattered:direct components from the DSL2 states that the direct irradiance during the flight was 12.5 times greater than the scattered irradiance, or in other words that 91% of the total radiation reaching the earth was direct radiation and 9% was scattered radiation.
 
-**DLS1:** The ratio of 0.46 scattered:direct components from the DLS1 states that the direct component was 2.17 time greater than the scattered component, hence 46% of the solar radiation was from the scattered component and the remaining 54% from the direct component.
+**DLS1:** The ratio of 0.46 scattered:direct components from the DLS1 states that the direct component was 2.17 times greater than the scattered component, hence 46% of the solar radiation was from the scattered component and the remaining 54% from the direct component.
 
-Given that the flight on June 25th was flown just at the end of the 2 hour solar noon window under a sunny sky with the occasional cloud, we would assume that the scattered component would be greater than the minimum ~15% for fully clear skies at solar noon. Hence a value of 46% scattered radiation could be the result of extra scattering by the occasional clouds and a slight increase in scattering from a greater solar zenith angle. Overall the value of 0.46 is more logical than the value of 0.09, since 0.09 implies less scattered radiation than the generally accepted minimum scattered component percentage on a clear sunny day. 
+Given that the flight on June 25th was flown just at the end of the 2 hour solar noon window under a sunny sky with the occasional cloud, we would assume that the scattered component would be greater than the minimum \~15% for fully clear skies at solar noon. Hence a value of 46% scattered radiation could be the result of extra scattering by the occasional clouds and a slight increase in scattering from a greater solar zenith angle. Overall the value of 0.46 is more logical than the value of 0.09, since 0.09 implies less scattered radiation than the generally accepted minimum scattered component percentage on a clear sunny day.
 
-Overall, we recommend correcting this flight using the DLS1 method. The DLS1 corrections are done on individual photos, if the orthomosaic has already been built, no need to rebuild the dense cloud, you can re-upload the imagery, re-calibrate, and re-build the orthomosaic. 
+Overall, we recommend correcting this flight using the DLS1 method. The DLS1 corrections are done on individual photos, if the orthomosaic has already been built, you can re-upload the imagery, re-calibrate, and re-build the orthomosaic in metashape without needing to reprocess the dense cloud.
 
-## Correcting Irradiance Values for Micasense Cameras
+## Correcting Irradiance Values for MicaSense Cameras {#DLS1-correction}
 
-This chapter explains the process of correcting irradiance values for Micasense cameras using R. The correction involves several steps, including filtering and mutating data, calculating solar angles, and estimating scattered to direct light ratios. Each step is crucial for ensuring accurate irradiance readings, which are essential for downstream analyses. The code was taken largely from [Micasense's GitHub](https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb) and converted into R to use in our workflow.
-
+This chapter explains the process of correcting irradiance values for MicaSense cameras using R. The correction involves several steps, including filtering and mutating data, calculating solar angles, and estimating scattered to direct light ratios. Each step is crucial for ensuring accurate irradiance readings, which are essential for downstream analyses. The code was taken largely from [MicaSense's GitHub](https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb) and converted into R to use in our workflow.
 
 To fix the sun-sensor angle and irradiance values we have taken the methodology used by the DLS1. The process involves:
 
-- Using the GPS location and time of acquisition to determine the solar zenith angle, and the yaw/pitch/roll of the drone to determine the sun sensor angle
+-   Using the GPS location and time of acquisition to determine the solar zenith angle, and the yaw/pitch/roll of the drone to determine the sun sensor angle
 
-- Generating a rolling regression of the relationship: \(I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}\) to determine the direct/ scattered irradiance ratio, \(r\), and only keeping realistic models with good fits
+-   Generating a rolling regression of the relationship: $I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}$ to determine the direct/ scattered irradiance ratio, $r$, and only keeping realistic models with good fits
 
-- Computing the horizontal irradiance using \(I_{\text{hor}} = I_{\text{direct}} \cdot (cos(\theta_{\text{zenith}}) + r) \)
+-   Computing the horizontal irradiance using $I_{\text{hor}} = I_{\text{direct}} \cdot (cos(\theta_{\text{zenith}}) + r)$
 
-- Editing the exif data of the images so that the imagery can be processed by Metashape with the corrected irradiance values
+-   Editing the exif data of the images so that the imagery can be processed by Metashape with the corrected irradiance values
 
 ### Reading Exif Data
 
 First, we read in the exif data of the imagery we want to correct using the exifr package.
 
-
 ```{r eval=FALSE, include=TRUE}
 # This code was written to be within a for loop that looped through many acquisition dates. Hence the path names used will be in the form " paste0(dir, date,"\\1_Data\\",MS_folder_name,"\\"...etc)". Change these path names to match your data
 library(exifr)
 dir <- "directory to folder holding folders representing each flight aquisition date" #change to match your data
-MS_folder_name <- "Micasense" #change to match the name of your folder holding the folders of imagery from the Micasense camera
-band_length <-  10 # 10 bands for Micasense RedEdge-MX Dual
+MS_folder_name <- "MicaSense" #change to match the name of your folder holding the folders of imagery from the MicaSense camera
+band_length <-  10 # 10 bands for MicaSense RedEdge-MX Dual
 #Loops through bands
  for (j in 1:band_length){ # bands 1 through 10 
    pics = list.files(paste0(dir, date,"\\1_Data\\",MS_folder_name,"\\"), #path the original data that will NOT be written over
@@ -222,7 +221,7 @@ band_length <-  10 # 10 bands for Micasense RedEdge-MX Dual
   mask_img_names <- gsub("_mask\\.png$", "", mask_images) # removes the suffix "_mask.png" from each element in the 'mask_images' list, ie : IMG_0027_1_mask.png becomes : IMG_0027_1 
   print(paste0("example of mask name: ",mask_img_names[[1]])) #print to ensure your naming is correct, the list of mask_img_names will be used to identify panel images in the micasense image 
   # Loops through images in each band
-  for (i in 1:length(pics)){ #for each image in Micasense_Cleaned_save, one at a time
+  for (i in 1:length(pics)){ #for each image in MicaSense_Cleaned_save, one at a time
     pic = pics[i]
     pic_root <- gsub(".*/(IMG_.*)(\\.tif)$", "\\1", pic)# The pattern captures the filename starting with "IMG_" and ending with ".tif".Ie: IMG_0027_1.tiff becomes IMG_0027_1
     print(pic_root)
@@ -295,6 +294,7 @@ xmp_all_filtered_mis <- xmp_all_filtered %>% #removing images with missing date 
 
 ```
 
+````{=html}
 <!--
 ### Caluclating DNI
 
@@ -316,14 +316,13 @@ dni <- solar_constant * exp(-0.2 * air_mass * turbidity)
 print(dni)
 ```
 -->
-
+````
 
 ### Caluclating Sun-Sensor Angles
 
-Here we explain the difference between the archived DLS1 method and the current DLS2 method. 
+Here we show the difference between the archived DLS1 method and the current DLS2 method.
 
-*DSL1:*
-The following code has been taken from [Micasense's GitHub](https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb) and coded in R to match our workflow
+*DSL1:* The following code has been taken from [MicaSense's GitHub](https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb) and coded in R to match our workflow
 
 ```{r eval=FALSE, include=TRUE}
 compute_sun_angle <- function(SolarElevation, SolarAzimuth, Roll, Pitch, Yaw) {
@@ -367,14 +366,14 @@ saveRDS(SSA_xmp_all_filtered,paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\
 
 ```
 
-
 *DLS2:*
+
 ```{r eval=FALSE, include=TRUE}
 SSA_xmp_all_filtered$SunSensorAngle_DLS2_rad <- sapply(xmp_all_filtered$EstimatedDirectLightVector, function(vec) acos(-1 * as.numeric(vec[[3]])))
 SSA_xmp_all_filtered$SunSensorAngle_DLS2_deg <- as.numeric(SSA_xmp_all_filtered$SunSensorAngle_DLS2_rad) / pi * 180
 ```
 
-Check that the sun-sensor angles are within a reasonable range. They should range from ~30 degrees mid summer to ~80 degrees mid winter.
+Check that the sun-sensor angles are within a reasonable range. They should range from \~30 degrees mid summer to \~80 degrees mid winter.
 
 ```{r eval=FALSE, include=TRUE}
 xmp_all_ssa = SSA_xmp_all_filtered %>%
@@ -409,6 +408,7 @@ xmp_all_ssa = SSA_xmp_all_filtered %>%
 )
 ```
 
+````{=html}
 <!--
 ```{r eval=FALSE, include=TRUE}
 ggsave(plot = SSA_plot, #save out the plot for reference
@@ -421,6 +421,7 @@ ggsave(plot = SSA_plot, #save out the plot for reference
        bg = 'white')
 ```
 -->
+````
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics(here("Photos_&_gifs\\0_SSA_plot.PNG"))
@@ -432,13 +433,13 @@ Here we estimate scattered:direct ratio for each flight by relating cosine of th
 
 Below are three main steps to find the estimated scattered:direct ratio:
 
-1) First, generate a rolling regression of this linear relationship over a certain time window
+1)  First, generate a rolling regression of this linear relationship over a certain time window
 
-2) Second, eliminate all models with poor fits using the R\(^2\) value
+2)  Second, eliminate all models with poor fits using the R$^2$ value
 
-3) Third, drop any models with negative slopes or intercepts (physically impossible)
+3)  Third, drop any models with negative slopes or intercepts (physically impossible)
 
-First, we generate a rolling regression of the linear relationship \(I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}\) via a regression of irradiance on \(\cos(\theta_{\text{sun-sensor}})\) over a specified time window (we used 30 seconds here). 
+First, we generate a rolling regression of the linear relationship $I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}$ via a regression of irradiance on $\cos(\theta_{\text{sun-sensor}})$ over a specified time window (we used 30 seconds here).
 
 ```{r eval=FALSE, include=TRUE}
 # via a regression of Irradiance on cos_SSA over a specified time window (30s here)
@@ -479,7 +480,7 @@ df_filtered = df_params %>%
          dir_diff = Intercept/Slope)
 ```
 
-Next, we eliminate all models with poor fits. In this case we eliminate models with R\(^2\) < 0.4 and drop any models with negative slopes or intercepts (physically impossible)
+Next, we eliminate all models with poor fits. In this case we eliminate models with R$^2$ \< 0.4 and drop any models with negative slopes or intercepts (physically impossible)
 
 ```{r eval=FALSE, include=TRUE}
 df_to_use = df_filtered %>% 
@@ -512,6 +513,7 @@ Below we plot the pattern in the rolling regression and make sure you're keeping
                scales = "free"))
 ```
 
+````{=html}
 <!--
 ```{r eval=FALSE, include=TRUE}
 
@@ -525,12 +527,13 @@ ggsave(plot = RR_params,
        bg = 'white')
 ```
 -->
+````
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics(here("Photos_&_gifs\\1_CheckRollingRegressionParams_plot.PNG"))
 ```
 
-Next, check that the linear relationships you're keeping look realistic. The slope should be steeper for sunny days (i.e. more direct irradiance) and shallower for overcast days. 
+Next, check that the linear relationships you're keeping look realistic. The slope should be steeper for sunny days (i.e. more direct irradiance) and shallower for overcast days.
 
 ```{r eval=FALSE, include=TRUE}
 (linear_plots <- df_to_use %>%
@@ -549,6 +552,7 @@ Next, check that the linear relationships you're keeping look realistic. The slo
                scales = "free_y"))
 ```
 
+````{=html}
 <!--
 ```{r eval=FALSE, include=TRUE}
 ggsave(plot = linear_plots,
@@ -562,6 +566,7 @@ ggsave(plot = linear_plots,
 ```
 
 -->
+````
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics(here("Photos_&_gifs\\2_LinearRegression_plot.jpeg"))
@@ -583,7 +588,7 @@ We recommend checking that there is no excessive spatial pattern in the data by 
 
 ```
 
-Lastly, we compute the scattered/ direct irradiance ratios dataframe from the dataframe of filtered models 
+Lastly, we compute the scattered/ direct irradiance ratios dataframe from the dataframe of filtered models
 
 ```{r eval=FALSE, include=TRUE}
 (ratios = df_to_use %>% 
@@ -601,10 +606,11 @@ saveRDS(ratios,paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\\",date,"_rati
 round(ratios$dir_diff_ratio, 2)
 ```
 
-The ratio for the DLS1 was 0.46 and the mean_scattered component was ~32 W/m\(^2\).
+The ratio for the DLS1 was 0.46 and the mean_scattered component was \~32 W/m$^2$.
 
-### Computing Horizontal (Corrected) Irradiance 
-This is the Fresnel correction, which adjusts for the DLS reflecting, rather than measuring, some of the irradiance that hits it. We aquired this code from [Micasense's GitHub](https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb) and converted to R to use in this workflow.
+### Computing Horizontal (Corrected) Irradiance
+
+This is the Fresnel correction, which adjusts for the DLS reflecting, rather than measuring, some of the irradiance that hits it. We aquired this code from [MicaSense's GitHub](https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb) and converted to R to use in this workflow.
 
 ```{r eval=FALSE, include=TRUE}
 fresnel_transmission = function(phi, n1, n2, polarization) {
@@ -688,6 +694,7 @@ Now we plot the sensor irradiance along with the corrected horizontal, direct, a
     labs(color = "Irradiance Type"))
 ```
 
+````{=html}
 <!--
 ```{r eval=FALSE, include=TRUE}
 
@@ -702,6 +709,7 @@ ggsave(plot = Sensor_irr,
 ```
 
 -->
+````
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics(here("Photos_&_gifs\\4_SensorIrradiance_w_CorrectedIrradiance.PNG"))
@@ -791,6 +799,7 @@ data = avg_ratio_data %>% filter(BandName %in% c("Blue")) # only need to look at
 )
 ```
 
+````{=html}
 <!--
 ```{r eval=FALSE, include=TRUE}
 
@@ -805,26 +814,26 @@ ggsave(plot = Dir_scat_irr_plot,
 ```
 
 -->
+````
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics(here("Photos_&_gifs\\5_Irradiance_DLS1_DLS2_plot.jpeg"))
 ```
 
-Refer to the section [Is Correction Needed?](0_Micasense_Irradiance_Correction##Is Correction Needed?) to help decide whether or not your data needs correcting.
+Refer to the section [Is Correction Needed?](0_Micasense_Irradiance_Correction##Is%20Correction%20Needed?) to help decide whether or not your data needs correcting.
 
 Up to this point, we have calculated "corrected" irradiance and sun sensor angles however have not overwritten the exif data within the MicaSense imagery. In this next step, we will overwrite image exif data with the corrected DLS1 values. Before moving on to this step ensure that :
 
-1) You have decided that your data needs correcting
+1)  You have decided that your data needs correcting
 
-2) You have created a backup of your original data, since you will be irreversibly overwriting the exif data of the imagery. Prior to running the code below we copied all images in our Micasense folder to a folder in the same directory as the Micasense folder however named named Micasense_cor. Imagery in the Micasense_cor folder will be the imagery we will be editing, and the Micasense folder will contain the unedited imagery
+2)  You have created a backup of your original data, since you will be irreversibly overwriting the exif data of the imagery. Prior to running the code below we copied all images in our MicaSense folder to a folder in the same directory as the MicaSense folder however named named MicaSense_cor. Imagery in the MicaSense_cor folder will be the imagery we will be editing, and the MicaSense folder will contain the unedited imagery
 
-3) The MicaSense.config has been downloaded from [GitHub](https://github.com/owaite/GenomeBC_BPG), the file can be found in the "Scripts" folder under MicaSense
-
+3)  The MicaSense.config has been downloaded from [GitHub](https://github.com/owaite/GenomeBC_BPG), the file can be found in the "Scripts" folder under MicaSense
 
 ```{r eval=FALSE, include=TRUE}
 # Writing over exif data with corrected SSA, horizontal irradiance, direct irradiance, and scattered irradiance
 
-corrected_directory <- paste0(dir,date,"\\1_Data\\",MS_folder_name,"_cor\\") #i.e. this folder is called Micasense_cor and is a copied version of the Micasense folder, we will be correcting the exif data of images in the Micasense_cor folder and leaving the Micasense folder untouched with the original exif data
+corrected_directory <- paste0(dir,date,"\\1_Data\\",MS_folder_name,"_cor\\") #i.e. this folder is called MicaSense_cor and is a copied version of the MicaSense folder, we will be correcting the exif data of images in the MicaSense_cor folder and leaving the MicaSense folder untouched with the original exif data
 original_directory <- paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\") # path the folder of micasense images
 
 xmp_corrected = readRDS(paste0(dir, date, "\\", MS_folder_name,"\\CSV\\",date,"_xmp_corrected.rds")) %>% #path to corrected xmp data .rds file
@@ -861,4 +870,3 @@ for (i in seq_along(targets)) {
 ```
 
 Lastly, check the exif data of the first and last image to ensure that the data has been properly overwritten.
-
