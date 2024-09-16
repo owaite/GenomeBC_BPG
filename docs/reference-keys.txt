@@ -39,6 +39,13 @@ fig:Qgis-ref-tree-fit
 fig:Qgis-maintained-ref-tree-fit
 fig:prop-circle-crowns
 fig:seg-parts
+fig:seg-intersection
+fig:seg-initial
+fig:seg-keep
+fig:seg-merge
+fig:seg-merge-smooth
+fig:seg-smooth-np
+fig:crown-seg
 fig:CC-las-input
 fig:CC-stem-transform
 fig:indv-tree-metrics
@@ -84,7 +91,7 @@ crown-delineation
 circles-proportional-to-tree-height.
 supercell-raster
 filter-merge-supercells
-manually-edite-crowns
+manually-edit-crowns
 lidar-processing-workflow
 dji-terra
 register-the-lidar-to-the-dap-point-cloud
