@@ -86,12 +86,14 @@ Deciding whether data needs to be corrected can be challenging. We have found th
 
 *3) Does the scattered: direct ratio look right for the lighting conditions of that day?*
 
-Below we have plotted the sun sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right) from the exif data of the MicaSense images (Figure \@ref(fig:Irradiance-flight-lines)). We used the yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning (red).
+Below we have plotted the sun sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right) from the exif data of MicaSense imagery captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada (Figure \@ref(fig:Irradiance-flight-lines)). We used yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning (red). The black horizontal line is the calculated solar zenith angle at the time of the flight. This value was calculated using the latitude and longitude of the imagery and the time of day and was around 30°.
 
-This data was captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada. As seen by the black horizontal line in the above figure, the solar zenith angle at the time of the flight was around 30°.
+<!-- ```{r Irradiance-flight-lines, echo=FALSE, out.width="100%", fig.align = 'center',fig.cap= " "} -->
+<!-- knitr::include_graphics(here("Photos_&_gifs\\labelled_time_Irradiance_flight_lines_with_turning_all_with_spatial_plot_CROPPED.PNG")) -->
+<!-- ``` -->
 
-```{r Irradiance-flight-lines, echo=FALSE, out.width="100%", fig.align = 'center',fig.cap= " "}
-knitr::include_graphics(here("Photos_&_gifs\\Irradiance_flight_lines_with_turning_all_with_spatial_plot_CROPPED.PNG"))
+```{r Irradiance-flight-lines, echo=FALSE, out.width="100%", fig.align = 'center',fig.cap= "The sun sensor angle (top left), position of each photo (bottom left) and direct, scattered, horizontal, and spectral irradiance values (right) taken from the exif data of MicaSense images captured on June 25th, 2024 on Vancouver Island, BC, Canada. Flight line direction (blue and green) was identified using yaw values  and images taken while the drone was turning were identified using roll (red)."}
+knitr::include_graphics(here("Photos_&_gifs\\time_Irradiance_flight_lines_with_turning_all_with_spatial_plot_CROPPED.PNG"))
 ```
 
 ### Do the sun sensor angles make sense?
@@ -100,41 +102,41 @@ Solar zenith angle is the angle between the normal (vertical from the Earths sur
 
 The solar zenith also changes throughout the day, with its minimum occurring at solar noon, a.k.a. when the sun is at its highest. This is why it is suggested to fly within ± 2 hours of solar noon to avoid shadows in your imagery.
 
-Below we have graphed solar zenith angles over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024) that will be used in this example to demonstrate the daily and seasonal change in values (Figure \@ref(fig:zenith-overview)).
+Below we have graphed solar zenith angles over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024) to demonstrate the daily and seasonal change in values (Figure \@ref(fig:zenith-overview)).
 
 The gray vertical bar highlights the flight time, which was just within the ± 2 hours of solar noon bounds and shows the solar zenith at around 30°, as we saw in Figure \@ref(fig:Irradiance-flight-lines).
 
-```{r zenith-overview, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap = " "}
+```{r zenith-overview, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap = "Solar zenith values plotted over the winter solstice (December 24, 2024), summer solstice (June 21, 2024) and the date of the flight acquisition (June 25th, 2024). Vertical lines indicate solar noon for the winter solstice (blue), summer solstice (red), and the duration of the drone flight (grey)."}
 knitr::include_graphics(here("Photos_&_gifs\\Solar_zenith_solstice_flight.PNG"))
 ```
 
 Now that we've refreshed our understanding of the solar zenith, let's dive into the sun sensor angle. The sun sensor angle is, as it sounds, the angle between the normal (perpendicular) of the sensor and the direction of the sun (Figure \@ref(fig:SSA-diagram)). Given that drone flights occur relatively close to the ground compared to the distance from the Earth to the sun, this difference is often negligible. Therefore, the solar zenith angle can serve as a rough estimate of the sun sensor angle for a sensor that is parallel to the Earth's surface - making it a helpful check to see if the sun sensor angle recorded by the DLS2 is within a reasonable range.
 
-```{r SSA-diagram, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap=" " }
+```{r SSA-diagram, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap="Visual representation of the solar zenith angle (left) and the sun sensor angle (right)." }
 knitr::include_graphics(here("Photos_&_gifs\\SSA_verse_solarZenith_diagram.PNG"))
 ```
 
 However, drones often fly at an angle, which can cause a cyclical pattern in sun sensor angles depending on flight direction. For example, let's take a look at Figure \@ref(fig:SSA-flight-direction). When the drone is flying in the general direction of the sun (left), the forward tilt of the drone mid-flight results in a smaller sun sensor angle compared to when the drone is flying away from the general direction of the sun, where the tilt of the drone away from the sun increases the sun sensor angle (right).
 
-```{r SSA-flight-direction, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap = "  " }
+```{r SSA-flight-direction, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap = "Schematic illustrating the impact of drone tilt during flight on the sun sensor angle." }
 knitr::include_graphics(here("Photos_&_gifs\\SSA_flight_direction_diagram.PNG"))
 ```
 
 This pattern of sun sensor angle dependence on drone orientation relative to the sun can be seen for the June 25th flight. Figure \@ref(fig:SSA-DSL2-data) shows the uncorrected sun sensor angles, derived from the DLS2 sensor located on the top of the drone, colored by flight line direction. Here red indicates turning and blue and green are opposite flight directions.
 
-```{r SSA-DSL2-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap="  "}
-knitr::include_graphics(here("Photos_&_gifs\\SSA_flightlines.PNG"))
+```{r SSA-DSL2-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap="Sun sensor angles aquired from the DLS2 sensor colored by flight line direction."}
+knitr::include_graphics(here("Photos_&_gifs\\time_SSA_flightlines.PNG"))
 ```
 
-Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value (plotted as the horizontal black line in Figure \@ref(fig:SSA-DSL2-data)) to make an informed decision on whether or not the values need correcting.
+Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value, plotted as the horizontal black line in Figure \@ref(fig:SSA-DSL2-data), to make an informed decision on whether or not the values need correcting.
 
-To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method, see section \@ref(DLS1-correction), which will be referred to as the "corrected" values.
+To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method which will be referred to as the "corrected" values, see section \@ref(DLS1-correction) for the correction method.
 
-```{r SSA-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap="  "}
+```{r SSA-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap=" Sun sensor angles over the flight duration from the DLS2 (purple) and corrected to mimic the DLS1 method (orange). Horizontal lines indicate the moving averages for the DLS2 (purple) and DLS1 (orange), where the balack line is the solar zenith calculated from GPS longitude, latitude, and time."}
 knitr::include_graphics(here("Photos_&_gifs\\SSA_DLS1_verse_DLS2.PNG"))
 ```
 
-In Figure \@ref(fig:SSA-DSL2-DLS1-data) the dashed horizontal lines are the moving averages for the DLS1 and DLS2. Here the moving average of the DLS2 is at times almost 10°lower than the solar zenith, whereas the moving average of the DLS1 (corrected method) is more or less consistently 2-3° lower than the solar zenith.
+In Figure \@ref(fig:SSA-DSL2-DLS1-data) the dashed horizontal lines are the moving averages of the sun sensor angles for the DLS1 and DLS2. Here the moving average of the sun sensor angles from the DLS2 is at times almost 10°lower than the solar zenith, whereas the moving average of the DLS1 (corrected method) is more or less consistently ~2-3° lower than the solar zenith.
 
 Given this data, we would conclude that the DLS1 method provides more accurate sun sensor angles compared to the DLS2. We will now continue to look at irradiance to confirm if correction is needed.
 
@@ -156,7 +158,7 @@ Explanations for the lower direct irradiance from the DLS1 compared to the horiz
 
 -   The portion of scattered irradiance in the horizontal irradiance signal that is not included in the direct irradiance value.
 
-```{r Irr-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap="  "}
+```{r Irr-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap="Direct and horizontal irradiance values throughout the flight from the DLS2 (purple) and corrected DLS1 method (orange)."}
 knitr::include_graphics(here("Photos_&_gifs\\Hor_dir_irradiance_DLS1_v_DLS2.PNG"))
 ```
 
@@ -170,13 +172,13 @@ Hence, for a clear sunny day in the summer a ratio of 1:6 scattered to direct ir
 
 Irradiance data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data ) from June 25th was captured on a sunny day with occasional light clouds.
 
-```{r Dir-Irr-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap = "  "}
+```{r Dir-Irr-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap = "Direct and scattered irradiance values throughout the duration of the flight from the DLS2 (purple) and corrected DLS1 method (orange)."}
 knitr::include_graphics(here("Photos_&_gifs\\Dir_Scat_irradiance_DLS1_v_DLS2.PNG"))
 ```
 
-The scattered: direct ratio for the data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data ) is 0.09 for the DLS2 and 0.46 for the DLS1.
+The scattered: direct ratio for the data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data ) is ~0.09 for the DLS2 and ~0.46 for the DLS1.
 
-**DLS2:** The ratio of 0.08 scattered:direct components from the DSL2 states that the direct irradiance during the flight was 12.5 times greater than the scattered irradiance, or in other words that 91% of the total radiation reaching the earth was direct radiation and 9% was scattered radiation.
+**DLS2:** The ratio of 0.09 scattered:direct components from the DSL2 states that the direct irradiance during the flight was ~11 times greater than the scattered irradiance, or in other words that 91% of the total radiation reaching the earth was direct radiation and 9% was scattered radiation.
 
 **DLS1:** The ratio of 0.46 scattered:direct components from the DLS1 states that the direct component was 2.17 times greater than the scattered component, hence 46% of the solar radiation was from the scattered component and the remaining 54% from the direct component.
 
@@ -494,7 +496,7 @@ df_to_use = df_filtered %>%
 saveRDS(df_to_use,paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\\",date,"_rolling_regression_filteredModels_used_plot1.rds"))  #SET PATH to save the rds to 
 ```
 
-Below we plot the pattern in the rolling regression and make sure you're keeping enough models. If you are loosing too many models, adjust the filters.
+Below we plot the pattern in the rolling regression and make sure you're keeping enough models (Figure \@ref(fig:check-regression-plot)). If you are loosing too many models, adjust the filters.
 
 ```{r eval=FALSE, include=TRUE}
 (RR_params <- df_to_use %>%
@@ -529,11 +531,11 @@ ggsave(plot = RR_params,
 -->
 ````
 
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
+```{r check-regression-plot, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap= "  "}
 knitr::include_graphics(here("Photos_&_gifs\\1_CheckRollingRegressionParams_plot.PNG"))
 ```
 
-Next, check that the linear relationships you're keeping look realistic. The slope should be steeper for sunny days (i.e. more direct irradiance) and shallower for overcast days.
+Next, check that the linear relationships you're keeping look realistic. The slope should be steeper for sunny days (i.e. more direct irradiance) and shallower for overcast days (Figure \@ref(fig:linear-plot-cosSSA)).
 
 ```{r eval=FALSE, include=TRUE}
 (linear_plots <- df_to_use %>%
@@ -568,8 +570,8 @@ ggsave(plot = linear_plots,
 -->
 ````
 
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics(here("Photos_&_gifs\\2_LinearRegression_plot.jpeg"))
+```{r linear-plot-cosSSA, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap= "Output of the linear regression models run on spectral irradiance and cos(sun sensor angle) over 30 second time windows. These models were filtered to only retain those that had an R2 value greater than 0.4 and both a positive slope and intercept."}
+knitr::include_graphics(here("Photos_&_gifs\\2_LinearRegression_plot_reDone.PNG"))
 ```
 
 We recommend checking that there is no excessive spatial pattern in the data by plotting the locations of imagery used in the models. Here you want to ensure that imagery throughout the plot is being used rather than only images from a certain location. The code to do this is below:
@@ -711,11 +713,11 @@ ggsave(plot = Sensor_irr,
 -->
 ````
 
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics(here("Photos_&_gifs\\4_SensorIrradiance_w_CorrectedIrradiance.PNG"))
+```{r DLS1-corrected-irradiance, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap= "Direct, horizontal, sensor, and scattered irradiance across the duration of the flight corrected using the DLS1 method."}
+knitr::include_graphics(here("Photos_&_gifs\\4_SensorIrradiance_w_CorrectedIrradiance_reDone.PNG"))
 ```
 
-Now that we have corrected the data using the DLS1 method, we can compare the DLS1 values to the DLS2 values to see if correction is needed. The code below creates a dataframe that has the median scatted/direct ratios and median percent scattered irradiance values for the DLS1 method and from the DLS2 sensor. These values will be used to annotate the following comparison plots.
+Now that we have corrected the data using the DLS1 method (Figure \@ref(fig:DLS1-corrected-irradiance)), we can compare the DLS1 values to the DLS2 values to see if correction is needed. The code below creates a dataframe that has the median scatted/direct ratios and median percent scattered irradiance values for the DLS1 method and from the DLS2 sensor. These values will be used to annotate the comparison plot in Figure \@ref(fig:DLS1-vs-DLS2-irr).
 
 ```{r eval=FALSE, include=TRUE}
 avg_ratio_data <- xmp_corrected %>%
@@ -744,7 +746,7 @@ saveRDS(avg_ratio_data,paste0(dir,date,"\\1_Data\\",MS_folder_name ,"\\CSV\\",da
 
 ```
 
-Plotting original VS corrected exif irradiance data to compare values from the DLS2 to corrected values (DLS1 method).
+Plotting original VS correctedirradiance exif data to compare values from the DLS2 to corrected values using the DLS1 method (Figure \@ref(fig:DLS1-vs-DLS2-irr)).
 
 ```{r eval=FALSE, include=TRUE}
 data = avg_ratio_data %>% filter(BandName %in% c("Blue")) # only need to look at one band
@@ -816,8 +818,8 @@ ggsave(plot = Dir_scat_irr_plot,
 -->
 ````
 
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics(here("Photos_&_gifs\\5_Irradiance_DLS1_DLS2_plot.jpeg"))
+```{r DLS1-vs-DLS2-irr, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap="Direct, horizontal, scattered, and spectral irradiance from the DLS2 and DLS1 method from the MicaSense exif data, flown on June 25th, 2024. Average ratio of scattered: direct irradiance componenets for the DLS1 was 0.46 and 0.09 for the DSL2."}
+knitr::include_graphics(here("Photos_&_gifs\\5_Irradiance_DLS1_DLS2_plot_reDone.PNG"))
 ```
 
 Refer to the section [Is Correction Needed?](0_Micasense_Irradiance_Correction##Is%20Correction%20Needed?) to help decide whether or not your data needs correcting.
