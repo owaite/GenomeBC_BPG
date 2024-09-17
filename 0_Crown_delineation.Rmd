@@ -86,7 +86,7 @@ st_write(prop_hulls_forSEG, paste0(crown_dir,"Buffer_radius_ttops_",buffer_radiu
 
 See Figure \@ref(fig:prop-circle-crowns) below for an example of the above output.
 
-```{r prop-circle-crowns, echo=FALSE,fig.align = 'center',out.width="100%", fig.cap= "Red circles proprotional to 10% of the 99th height percentile for each plot tree, with grid points representing the top of the plot trees shown in blue. This data has been overlain on a P1 orthomosaic."}
+```{r prop-circle-crowns, echo=FALSE,fig.align = 'center',out.width="100%", fig.cap= "A section of the P1 orthomosaic with red circles outlining the circles proprotional to 10% of the 99th height percentile for each plot tree and grid points representing the top of the plot trees shown in blue."}
 knitr::include_graphics(here("Photos_&_gifs\\prop_cirlce_Crowndelin.PNG"))
 ```
 
@@ -290,11 +290,11 @@ st_write(obj = seg5_smooth,
          append = FALSE)
 ```
 
-```{r seg-merge-smooth, echo=FALSE,fig.align = 'center',out.width="100%", fig.cap= "Crown boundaries (yellow) overlain on top of crown boundaries that have been edited to remove holes smaller than 2000 cm^2. In this section of the plot there were no holes in the crowns and hence, there is no change between the original crowns (yellow) and those that have been cleaned via hole filling (red)"}
+```{r seg-merge-smooth, echo=FALSE,fig.align = 'center',out.width="100%", fig.cap= "Yellow crown boundaries are overlaid on top of crowns that have been edited to remove holes smaller than 2000 cm² (red). In this portion of the plot, no holes were present within the crowns, resulting in no visible differences between the original crowns (yellow) and those that have been refined through hole filling (red)."}
 knitr::include_graphics(here("Photos_&_gifs\\seg_merge_smooth_Crowndelin.PNG"))
 ```
 
-Next, we cast the crowns as polygons to remove instances of multipolygons associated with the same tree ID. Figure \@ref(fig:seg-smooth-np) shows the new polygons overlain with blue dotted lines. Here we can see an instance of a smaller polygon shown in yellow and red that was originally grouped with the larger crown polygon within the circle, however has been filtered out in this step.
+Next, we cast the crowns as polygons to remove instances of multipolygons associated with the same tree ID. Figure \@ref(fig:seg-smooth-np) displays the new polygons, outlined with blue dotted lines. Here we can see an instance of a smaller polygon shown in yellow and red that was originally grouped with the larger crown polygon within the circle, however has been filtered out in this step.
 
 ```{r, eval=FALSE, echo=TRUE}
 seg5_smooth_NM <- st_cast(seg5_smooth, "POLYGON")
@@ -305,7 +305,7 @@ st_write(obj = seg5_smooth_NM, #saving out the crowns for manual editing
          append = FALSE)
 ```
 
-```{r seg-smooth-np, echo=FALSE,fig.align = 'center',out.width="100%", fig.cap= "Blue dotted lines indicating crowns that have been converted to polygon class only overlain on yellow (original crowns) and red (holes removed). Within the upper center of the figure we can see a polygon (highlighted in red and yellow) that was originally part of a multipolygon with the other polygon within it's respective proportional circle however has been removed in the conversion to polygon in this step."}
+```{r seg-smooth-np, echo=FALSE,fig.align = 'center',out.width="100%", fig.cap= "Blue dotted lines represent crowns that have been converted to polygon class, overlaid on the original crowns in yellow and those with holes removed in red. In the upper center of the figure, a polygon (highlighted in red and yellow) that was initially part of a multipolygon within its proportional circle has been removed during the conversion to polygon in this step."}
 knitr::include_graphics(here("Photos_&_gifs\\seg_merge_smooth_NMP_Crowndelin.PNG"))
 ```
 
