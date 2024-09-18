@@ -28,7 +28,7 @@ Date last updated: `r Sys.Date()`
 ## GitHub link {-}
 Below is the link to the GitHub where you can access full scripts referenced in this document
 
-**GitHub Link: ** [PARSER-GBC-GitHub](https://github.com/owaite/PARSER-GBC-GitHub.git)
+**GitHub Link: ** [GBC-GitHub](https://github.com/owaite/GenomeBC_BPG)
 
 ```{r echo=FALSE, results='asis'}
 # Define the image paths
