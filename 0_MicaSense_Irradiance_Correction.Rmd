@@ -17,19 +17,19 @@ Below we go through the derivation to compute $I_{\text{hor}}$.
 The MicaSense system includes both the cameras and a downwelling light sensor (DLS). Since the DLS is tilted at the angle of the drone during flight and the sun is rarely directly overheard the sensor, the DLS measures non-horizontal irradiance, referred to as spectral irradiance ($I_{\text{spec}}$). Spectral irradiance is a function of direct irradiance ($I_{\text{direct}}$), scattered irradiance ($I_{\text{scattered}}$), and the angle between the sun and the sensor ( $\theta_{\text{sun-sensor}}$):
 
 $$
-I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}
+I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}} 
 $$
 
 If we take $r$ to be the ratio of scattered to direct irradiance, $r = \frac{I_{\text{scattered}}}{I_{\text{direct}}}$, we can substitute $I_{\text{scattered}} = r \cdot I_{\text{direct}}$ into the equation:
 
 $$
-I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + r \cdot I_{\text{direct}}
+I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + r \cdot I_{\text{direct}} 
 $$
 
 Next, by factoring out $I_{\text{direct}}$ from the equation:
 
 $$
-I_{\text{spec}} = I_{\text{direct}} \cdot \left( \cos(\theta_{\text{sun-sensor}}) + r \right)
+I_{\text{spec}} = I_{\text{direct}} \cdot \left( \cos(\theta_{\text{sun-sensor}}) + r \right) 
 $$
 
 We can solve for $I_{\text{direct}}$ by dividing both sides of the equation by $\cos(\theta_{\text{sun-sensor}}) + r$:
@@ -89,7 +89,9 @@ Deciding whether data needs to be corrected can be challenging. We have found th
 Below we have plotted the sun sensor angle (top left), the position of each photo (bottom left) and the irradiance values (right) from the exif data of MicaSense imagery captured on June 25th, 2024 on Vancouver Island in British Columbia, Canada (Figure \@ref(fig:Irradiance-flight-lines)). We used yaw values to identify flight lines (blue and green) and roll to filter for images taken when the drone is turning (red). The black horizontal line is the calculated solar zenith angle at the time of the flight. This value was calculated using the latitude and longitude of the imagery and the time of day and was around 30°.
 
 <!-- ```{r Irradiance-flight-lines, echo=FALSE, out.width="100%", fig.align = 'center',fig.cap= " "} -->
+
 <!-- knitr::include_graphics(here("Photos_&_gifs\\labelled_time_Irradiance_flight_lines_with_turning_all_with_spatial_plot_CROPPED.PNG")) -->
+
 <!-- ``` -->
 
 ```{r Irradiance-flight-lines, echo=FALSE, out.width="100%", fig.align = 'center',fig.cap= "The sun sensor angle (top left), position of each photo (bottom left) and direct, scattered, horizontal, and spectral irradiance values (right) taken from the exif data of MicaSense images captured on June 25th, 2024 on Vancouver Island, BC, Canada. Flight line direction (blue and green) was identified using yaw values  and images taken while the drone was turning were identified using roll (red)."}
@@ -136,7 +138,7 @@ To help this decision we recommend plotting the DLS2 sun sensor values and the s
 knitr::include_graphics(here("Photos_&_gifs\\SSA_DLS1_verse_DLS2.PNG"))
 ```
 
-In Figure \@ref(fig:SSA-DSL2-DLS1-data) the dashed horizontal lines are the moving averages of the sun sensor angles for the DLS1 and DLS2. Here the moving average of the sun sensor angles from the DLS2 is at times almost 10°lower than the solar zenith, whereas the moving average of the DLS1 (corrected method) is more or less consistently ~2-3° lower than the solar zenith.
+In Figure \@ref(fig:SSA-DSL2-DLS1-data) the dashed horizontal lines are the moving averages of the sun sensor angles for the DLS1 and DLS2. Here the moving average of the sun sensor angles from the DLS2 is at times almost 10°lower than the solar zenith, whereas the moving average of the DLS1 (corrected method) is more or less consistently \~2-3° lower than the solar zenith.
 
 Given this data, we would conclude that the DLS1 method provides more accurate sun sensor angles compared to the DLS2. We will now continue to look at irradiance to confirm if correction is needed.
 
@@ -176,9 +178,9 @@ Irradiance data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data ) from June 2
 knitr::include_graphics(here("Photos_&_gifs\\Dir_Scat_irradiance_DLS1_v_DLS2.PNG"))
 ```
 
-The scattered: direct ratio for the data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data ) is ~0.09 for the DLS2 and ~0.46 for the DLS1.
+The scattered: direct ratio for the data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data ) is \~0.09 for the DLS2 and \~0.46 for the DLS1.
 
-**DLS2:** The ratio of 0.09 scattered:direct components from the DSL2 states that the direct irradiance during the flight was ~11 times greater than the scattered irradiance, or in other words that 91% of the total radiation reaching the earth was direct radiation and 9% was scattered radiation.
+**DLS2:** The ratio of 0.09 scattered:direct components from the DSL2 states that the direct irradiance during the flight was \~11 times greater than the scattered irradiance, or in other words that 91% of the total radiation reaching the earth was direct radiation and 9% was scattered radiation.
 
 **DLS1:** The ratio of 0.46 scattered:direct components from the DLS1 states that the direct component was 2.17 times greater than the scattered component, hence 46% of the solar radiation was from the scattered component and the remaining 54% from the direct component.
 
@@ -364,7 +366,7 @@ SSA_xmp_all_filtered <- xmp_all_filtered %>%
   mutate(SunSensorAngle_DLS1_rad = compute_sun_angle(SolarElevation, SolarAzimuth, Roll, Pitch, Yaw),
          SunSensorAngle_DLS1_deg = SunSensorAngle_DLS1_rad * 180 / pi)
 
-saveRDS(SSA_xmp_all_filtered,paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\\XMP_", date,"_with_SSA.rds")) # Save XMP rds file with sun sensor angle added
+saveRDS(SSA_xmp_all_filtered,paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\\XMP_", date,"_with_SSA.rds")) #Save XMP rds file with sun sensor angle added
 
 ```
 
@@ -375,7 +377,7 @@ SSA_xmp_all_filtered$SunSensorAngle_DLS2_rad <- sapply(xmp_all_filtered$Estimate
 SSA_xmp_all_filtered$SunSensorAngle_DLS2_deg <- as.numeric(SSA_xmp_all_filtered$SunSensorAngle_DLS2_rad) / pi * 180
 ```
 
-Check that the sun-sensor angles are within a reasonable range. They should range from \~30 degrees mid summer to \~80 degrees mid winter.
+Check that the sun-sensor angles are within a reasonable range. They should range from \~30 degrees mid summer to \~80 degrees mid winter. This code outputs Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data) facet wrapped for each of the 10 bands (Figure \@ref(fig:SSA-bands)). This is a good visual to compare DLS2 to DLS1 sun sensor angles as well as to check that data is consistent between bands and there is no missing information.
 
 ```{r eval=FALSE, include=TRUE}
 xmp_all_ssa = SSA_xmp_all_filtered %>%
@@ -394,20 +396,40 @@ xmp_all_ssa = SSA_xmp_all_filtered %>%
 
 (SSA_plot <- xmp_all_ssa %>%
     ggplot(aes(Date_time)) +
-    geom_line(aes(y = SunSensorAngle_DLS2_deg, color = "DLS2 (from metadata)"), linewidth = 1) +
-    geom_line(aes(y = SunSensorAngle_DLS1_deg, color = "DLS1 (calculated)"), linewidth = 1) +
+    geom_line(aes(y = SunSensorAngle_DLS2_deg, color = "DLS2"), linewidth = 1) +
+    geom_line(aes(y = SunSensorAngle_DLS1_deg, color = "DLS1"), linewidth = 1) +
     geom_vline(data = subset(xmp_all_ssa, panel_flag == 1), aes(xintercept = as.numeric(Date_time)), color = "grey", alpha = 0.3) +
     geom_line(aes(y = solar_angle), color = "black", linewidth = 1, alpha = 1) +
+    geom_smooth(
+      aes(y = SunSensorAngle_DLS2_deg),
+      method = "loess",
+      se = FALSE,
+      color = "blue",
+      linetype = "dashed",
+      size = 1
+    ) +
+    # Moving average for DLS1
+    geom_smooth(
+      aes(y = SunSensorAngle_DLS1_deg),
+      method = "loess",
+      se = FALSE,
+      color = "red",
+      linetype = "dashed",
+      size = 1
+    ) +
     scale_x_datetime(date_breaks = "10 min", date_labels = "%H:%M") +
     labs(x = "Time", y = "Sun Sensor Angle", title = paste0("SSA, Site: ",site_to_plot,", Date: ", date_to_plot, ", Camera: ", camera_to_plot))+
     labs(subtitle = "Grey vertical lines are calibration panel images, black hoirzontal line is the solar angle (calculated from lat, long, and flight time)", size = 10) + 
-    scale_color_manual(values = c("blue", "red"),
-                       labels = c("DLS2 (from metadata)", "DLS1 (calculated)"),
+     scale_color_manual(values = c("DLS2" = "blue",
+                                  "DLS1" = "red"),
+                       labels = c("DLS2" = "DLS2 (from metadata)", 
+                                  "DLS1" = "DLS1 (calculated)"),
                        name = "Sun Sensor Angle Comparison")+
     facet_wrap(. ~BandName_Wavelength, 
                scales = "free_x", ncol = 2)+ # this will plot each band as its own plot as a check for all data
     theme_bw()
 )
+
 ```
 
 ````{=html}
@@ -425,8 +447,8 @@ ggsave(plot = SSA_plot, #save out the plot for reference
 -->
 ````
 
-```{r echo=FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics(here("Photos_&_gifs\\0_SSA_plot.PNG"))
+```{r SSA-bands, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap= "Sun sensor angles across the duration of the flight for each of the 10 MicaSense bands from image metadata written by the DLS2 compared to sun sensor angles corrected using the DLS1 method. The black horiztonal lines plotted are the calculated solar zenith throughout the flight, where as the dotted lines are the moving average of sun sensor angles from the DLS1 (red) and DLS2 (blue). Grey vertical lines highlight calibration imagery taken when the drone was on the ground."}
+knitr::include_graphics(here("Photos_&_gifs\\0_SSA_plot_updated.jpeg"))
 ```
 
 ### Scattered:Direct Ratio Estimate
@@ -496,7 +518,7 @@ df_to_use = df_filtered %>%
 saveRDS(df_to_use,paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\\",date,"_rolling_regression_filteredModels_used_plot1.rds"))  #SET PATH to save the rds to 
 ```
 
-Below we plot the pattern in the rolling regression and make sure you're keeping enough models (Figure \@ref(fig:check-regression-plot)). If you are loosing too many models, adjust the filters.
+Below we plot the percent of scattered irradiance calculated from the models kept (blues) and those removed (grey). Percent scattered was calculated by diving the intercept (scattered component) by the sum of the intercept and the slope (direct component), see equation:$I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}$. The maroon horizontal line shows the mean percent scattered irradiance, in this case just above 30% (Figure \@ref(fig:check-percent-scat-plot)). If you are loosing too many models, adjust the filters.
 
 ```{r eval=FALSE, include=TRUE}
 (RR_params <- df_to_use %>%
@@ -531,8 +553,8 @@ ggsave(plot = RR_params,
 -->
 ````
 
-```{r check-regression-plot, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap= "  "}
-knitr::include_graphics(here("Photos_&_gifs\\1_CheckRollingRegressionParams_plot.PNG"))
+```{r check-percent-scat-plot, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap= "Percent scattered irradiance calculated from the slope and y-intercept of the regression models. Blue points are those from regression models that remain after the models were filtered, where the shade of blue represents the R-squared of the regression model the value was calculated from. Grey point are values from mdoels that have been filtered out.  "}
+knitr::include_graphics(here("Photos_&_gifs\\1_CheckRollingRegressionParams_plot_panel_paths_removed.jpeg"))
 ```
 
 Next, check that the linear relationships you're keeping look realistic. The slope should be steeper for sunny days (i.e. more direct irradiance) and shallower for overcast days (Figure \@ref(fig:linear-plot-cosSSA)).
@@ -570,11 +592,11 @@ ggsave(plot = linear_plots,
 -->
 ````
 
-```{r linear-plot-cosSSA, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap= "Output of the linear regression models run on spectral irradiance and cos(sun sensor angle) over 30 second time windows. These models were filtered to only retain those that had an R2 value greater than 0.4 and both a positive slope and intercept."}
+```{r linear-plot-cosSSA, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap= "Output of the linear regression models run on spectral irradiance and cos(sun sensor angle) over 30 second time windows. These models were filtered to only retain those that had an R2 greater than 0.4 and both a positive slope and intercept."}
 knitr::include_graphics(here("Photos_&_gifs\\2_LinearRegression_plot_reDone.PNG"))
 ```
 
-We recommend checking that there is no excessive spatial pattern in the data by plotting the locations of imagery used in the models. Here you want to ensure that imagery throughout the plot is being used rather than only images from a certain location. The code to do this is below:
+We recommend checking that there is no excessive spatial pattern in the data by plotting the locations of imagery used in the models. Here you want to ensure that imagery throughout the plot is being used rather than only images from a certain location (Figure \@ref(fig:spatial-regression-kept)). The code to do this is below:
 
 ```{r eval=FALSE, include=TRUE}
 (photos_kept <- df_to_use %>%
@@ -588,6 +610,10 @@ We recommend checking that there is no excessive spatial pattern in the data by 
     scale_color_viridis_c() +
     facet_wrap(. ~ Date, scales = "free"))
 
+```
+
+```{r spatial-regression-kept, echo=FALSE, out.width="60%", fig.align = 'center', fig.cap= "Location of MicaSense imagery aquired over the June 25th, 2024 flight on Vancouver Island. Grey points are the locations of images that were filtered out in the above steps and not used in the final regression models. Coloured dots are those used in the regression models kept and are coloured by sun sensor angle calculated with the DLS1 method."}
+knitr::include_graphics(here("Photos_&_gifs\\3_GPSphotosKept_plot_lat_cutoff.jpeg"))
 ```
 
 Lastly, we compute the scattered/ direct irradiance ratios dataframe from the dataframe of filtered models

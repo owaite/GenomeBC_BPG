@@ -242,7 +242,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.3.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>10.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
 <li class="chapter" data-level="10.3.3" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>10.3.3</b> Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
 </ul></li>
-<li class="chapter" data-level="10.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#correcting-irradiance-values-for-micasense-cameras"><i class="fa fa-check"></i><b>10.4</b> Correcting Irradiance Values for Micasense Cameras</a>
+<li class="chapter" data-level="10.4" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#DLS1-correction"><i class="fa fa-check"></i><b>10.4</b> Correcting Irradiance Values for MicaSense Cameras</a>
 <ul>
 <li class="chapter" data-level="10.4.1" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#reading-exif-data"><i class="fa fa-check"></i><b>10.4.1</b> Reading Exif Data</a></li>
 <li class="chapter" data-level="10.4.2" data-path="micasense-irradiance-correction.html"><a href="micasense-irradiance-correction.html#calculating-solar-zenith-anlge"><i class="fa fa-check"></i><b>10.4.2</b> Calculating Solar Zenith Anlge</a></li>
@@ -261,6 +261,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.3.2" data-path="thermal-conversion.html"><a href="thermal-conversion.html#running-the-sdk"><i class="fa fa-check"></i><b>11.3.2</b> Running the SDK</a></li>
 </ul></li>
 <li class="chapter" data-level="11.4" data-path="thermal-conversion.html"><a href="thermal-conversion.html#convert-to-raster"><i class="fa fa-check"></i><b>11.4</b> Convert to Raster</a></li>
+<li class="chapter" data-level="11.5" data-path="thermal-conversion.html"><a href="thermal-conversion.html#examples"><i class="fa fa-check"></i><b>11.5</b> Examples</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -358,9 +359,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb16-55"><a href="crown-delineation.html#cb16-55" tabindex="-1"></a><span class="fu">st_write</span>(prop_hulls_forSEG, <span class="fu">paste0</span>(crown_dir,<span class="st">&quot;Buffer_radius_ttops_&quot;</span>,buffer_radius,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,site,<span class="st">&quot;_proportional_Hulls_Diam&quot;</span>,percent,<span class="st">&quot;percent_zq99_forSEG_.shp&quot;</span>), <span class="at">append =</span> <span class="cn">FALSE</span>) <span class="co">#Save shapefile of circles proportional to height for each tree</span></span></code></pre></div>
 <p>See Figure <a href="crown-delineation.html#fig:prop-circle-crowns">8.1</a> below for an example of the above output.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:prop-circle-crowns"></span>
-<img src="Photos_&_gifs/prop_cirlce_Crowndelin.PNG" alt="Red circles proprotional to 10% of the 99th height percentile for each plot tree, with grid points representing the top of the plot trees shown in blue. This data has been overlain on a P1 orthomosaic." width="100%" />
+<img src="Photos_&_gifs/prop_cirlce_Crowndelin.PNG" alt="A section of the P1 orthomosaic with red circles outlining the circles proprotional to 10% of the 99th height percentile for each plot tree and grid points representing the top of the plot trees shown in blue." width="100%" />
 <p class="caption">
-Figure 8.1: Red circles proprotional to 10% of the 99th height percentile for each plot tree, with grid points representing the top of the plot trees shown in blue. This data has been overlain on a P1 orthomosaic.
+Figure 8.1: A section of the P1 orthomosaic with red circles outlining the circles proprotional to 10% of the 99th height percentile for each plot tree and grid points representing the top of the plot trees shown in blue.
 </p>
 </div>
 </div>
@@ -546,12 +547,12 @@ Figure 8.6: Retained supercells (orange) merged to form crown boundaries (yellow
 <span id="cb22-6"><a href="crown-delineation.html#cb22-6" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
 <span id="cb22-7"><a href="crown-delineation.html#cb22-7" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:seg-merge-smooth"></span>
-<img src="Photos_&_gifs/seg_merge_smooth_Crowndelin.PNG" alt="Crown boundaries (yellow) overlain on top of crown boundaries that have been edited to remove holes smaller than 2000 cm^2. In this section of the plot there were no holes in the crowns and hence, there is no change between the original crowns (yellow) and those that have been cleaned via hole filling (red)" width="100%" />
+<img src="Photos_&_gifs/seg_merge_smooth_Crowndelin.PNG" alt="Yellow crown boundaries are overlaid on top of crowns that have been edited to remove holes smaller than 2000 cm² (red). In this portion of the plot, no holes were present within the crowns, resulting in no visible differences between the original crowns (yellow) and those that have been refined through hole filling (red)." width="100%" />
 <p class="caption">
-Figure 8.7: Crown boundaries (yellow) overlain on top of crown boundaries that have been edited to remove holes smaller than 2000 cm^2. In this section of the plot there were no holes in the crowns and hence, there is no change between the original crowns (yellow) and those that have been cleaned via hole filling (red)
+Figure 8.7: Yellow crown boundaries are overlaid on top of crowns that have been edited to remove holes smaller than 2000 cm² (red). In this portion of the plot, no holes were present within the crowns, resulting in no visible differences between the original crowns (yellow) and those that have been refined through hole filling (red).
 </p>
 </div>
-<p>Next, we cast the crowns as polygons to remove instances of multipolygons associated with the same tree ID. Figure <a href="crown-delineation.html#fig:seg-smooth-np">8.8</a> shows the new polygons overlain with blue dotted lines. Here we can see an instance of a smaller polygon shown in yellow and red that was originally grouped with the larger crown polygon within the circle, however has been filtered out in this step.</p>
+<p>Next, we cast the crowns as polygons to remove instances of multipolygons associated with the same tree ID. Figure <a href="crown-delineation.html#fig:seg-smooth-np">8.8</a> displays the new polygons, outlined with blue dotted lines. Here we can see an instance of a smaller polygon shown in yellow and red that was originally grouped with the larger crown polygon within the circle, however has been filtered out in this step.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="crown-delineation.html#cb23-1" tabindex="-1"></a>seg5_smooth_NM <span class="ot">&lt;-</span> <span class="fu">st_cast</span>(seg5_smooth, <span class="st">&quot;POLYGON&quot;</span>)</span>
 <span id="cb23-2"><a href="crown-delineation.html#cb23-2" tabindex="-1"></a><span class="fu">unique</span>(<span class="fu">st_geometry_type</span>(seg5_smooth_NM)) <span class="co"># CHECK: should only have &quot;Polygon&quot; no more multipolygons</span></span>
 <span id="cb23-3"><a href="crown-delineation.html#cb23-3" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg5_smooth_NM, <span class="co">#saving out the crowns for manual editing</span></span>
@@ -559,23 +560,22 @@ Figure 8.7: Crown boundaries (yellow) overlain on top of crown boundaries that h
 <span id="cb23-5"><a href="crown-delineation.html#cb23-5" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
 <span id="cb23-6"><a href="crown-delineation.html#cb23-6" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:seg-smooth-np"></span>
-<img src="Photos_&_gifs/seg_merge_smooth_NMP_Crowndelin.PNG" alt="Blue dotted lines indicating crowns that have been converted to polygon class only overlain on yellow (original crowns) and red (holes removed). Within the upper center of the figure we can see a polygon (highlighted in red and yellow) that was originally part of a multipolygon with the other polygon within it's respective proportional circle however has been removed in the conversion to polygon in this step." width="100%" />
+<img src="Photos_&_gifs/seg_merge_smooth_NMP_Crowndelin.PNG" alt="Blue dotted lines represent crowns that have been converted to polygon class, overlaid on the original crowns in yellow and those with holes removed in red. In the upper center of the figure, a polygon (highlighted in red and yellow) that was initially part of a multipolygon within its proportional circle has been removed during the conversion to polygon in this step." width="100%" />
 <p class="caption">
-Figure 8.8: Blue dotted lines indicating crowns that have been converted to polygon class only overlain on yellow (original crowns) and red (holes removed). Within the upper center of the figure we can see a polygon (highlighted in red and yellow) that was originally part of a multipolygon with the other polygon within it’s respective proportional circle however has been removed in the conversion to polygon in this step.
+Figure 8.8: Blue dotted lines represent crowns that have been converted to polygon class, overlaid on the original crowns in yellow and those with holes removed in red. In the upper center of the figure, a polygon (highlighted in red and yellow) that was initially part of a multipolygon within its proportional circle has been removed during the conversion to polygon in this step.
 </p>
 </div>
 <p>Lastly, we join the attributes from the original grid that contained information on each tree to the crowns shapefile.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="crown-delineation.html#cb24-1" tabindex="-1"></a><span class="do">## adding in attributes back</span></span>
-<span id="cb24-2"><a href="crown-delineation.html#cb24-2" tabindex="-1"></a>att <span class="ot">&lt;-</span> ttops <span class="sc">%&gt;%</span></span>
-<span id="cb24-3"><a href="crown-delineation.html#cb24-3" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()<span class="sc">%&gt;%</span></span>
-<span id="cb24-4"><a href="crown-delineation.html#cb24-4" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(geometry))</span>
-<span id="cb24-5"><a href="crown-delineation.html#cb24-5" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="crown-delineation.html#cb24-6" tabindex="-1"></a>(seg5_smooth_NM_attributes <span class="ot">&lt;-</span> <span class="fu">left_join</span>(seg5_smooth_NM,att, <span class="at">by =</span> unique_id ))</span>
-<span id="cb24-7"><a href="crown-delineation.html#cb24-7" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="crown-delineation.html#cb24-8" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg5_smooth_NM_attributes, </span>
-<span id="cb24-9"><a href="crown-delineation.html#cb24-9" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">HULLS</span><span class="sc">\\</span><span class="st">SEGS_merge_smooth_NoMultipolygon_Attributes.shp&quot;</span>),</span>
-<span id="cb24-10"><a href="crown-delineation.html#cb24-10" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
-<span id="cb24-11"><a href="crown-delineation.html#cb24-11" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="crown-delineation.html#cb24-1" tabindex="-1"></a>att <span class="ot">&lt;-</span> ttops <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="crown-delineation.html#cb24-2" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()<span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="crown-delineation.html#cb24-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(geometry))</span>
+<span id="cb24-4"><a href="crown-delineation.html#cb24-4" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="crown-delineation.html#cb24-5" tabindex="-1"></a>(seg5_smooth_NM_attributes <span class="ot">&lt;-</span> <span class="fu">left_join</span>(seg5_smooth_NM,att, <span class="at">by =</span> unique_id )) <span class="do">## adding in attributes back</span></span>
+<span id="cb24-6"><a href="crown-delineation.html#cb24-6" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="crown-delineation.html#cb24-7" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg5_smooth_NM_attributes, </span>
+<span id="cb24-8"><a href="crown-delineation.html#cb24-8" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">HULLS</span><span class="sc">\\</span><span class="st">SEGS_merge_smooth_NoMultipolygon_Attributes.shp&quot;</span>),</span>
+<span id="cb24-9"><a href="crown-delineation.html#cb24-9" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
+<span id="cb24-10"><a href="crown-delineation.html#cb24-10" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="manually-edit-crowns" class="section level2 hasAnchor" number="8.4">
 <h2><span class="header-section-number">8.4</span> Manually Edit Crowns<a href="crown-delineation.html#manually-edit-crowns" class="anchor-section" aria-label="Anchor link to header"></a></h2>

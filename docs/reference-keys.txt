@@ -49,6 +49,20 @@ fig:crown-seg
 fig:CC-las-input
 fig:CC-stem-transform
 fig:indv-tree-metrics
+fig:Irradiance-flight-lines
+fig:zenith-overview
+fig:SSA-diagram
+fig:SSA-flight-direction
+fig:SSA-DSL2-data
+fig:SSA-DSL2-DLS1-data
+fig:Irr-DSL2-DLS1-data
+fig:Dir-Irr-DSL2-DLS1-data
+fig:SSA-bands
+fig:check-percent-scat-plot
+fig:linear-plot-cosSSA
+fig:spatial-regression-kept
+fig:DLS1-corrected-irradiance
+fig:DLS1-vs-DLS2-irr
 fig:2-crown-temp-NIR
 fig:crown-temp-RGB
 abstract
@@ -118,7 +132,7 @@ is-correction-needed
 do-the-sun-sensor-angles-make-sense
 does-the-relationship-between-direct-and-horizontal-irradiance-make-sense
 does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day
-correcting-irradiance-values-for-micasense-cameras
+DLS1-correction
 reading-exif-data
 calculating-solar-zenith-anlge
 caluclating-sun-sensor-angles
@@ -131,3 +145,4 @@ dji-thermal-sdk-temperature-conversion
 parameters
 running-the-sdk
 convert-to-raster
+examples
