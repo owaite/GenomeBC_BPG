@@ -92,6 +92,7 @@ data-collection-sensors-parameters-and-ideal-conditions
 micasense-10-band-spectral-sensor-for-vegetative-indices
 zenmuse-p1-high-quality-natural-colour-rgb-imagery
 zenmuse-l1-lidar-and-rgb
+zenmuse-h20t-thermal-and-rgb
 data-processing-photogrammetry-pipeline.
 agisoft-photogrammetry-processing-p1-data-and-registering-multispectral-to-it.
 overview.

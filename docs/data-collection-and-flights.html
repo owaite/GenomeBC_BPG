@@ -184,6 +184,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.5.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#micasense-10-band-spectral-sensor-for-vegetative-indices"><i class="fa fa-check"></i><b>5.5.1</b> MicaSense: 10-Band Spectral Sensor for Vegetative Indices</a></li>
 <li class="chapter" data-level="5.5.2" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#zenmuse-p1-high-quality-natural-colour-rgb-imagery"><i class="fa fa-check"></i><b>5.5.2</b> Zenmuse P1: High-Quality Natural-Colour (RGB) Imagery</a></li>
 <li class="chapter" data-level="5.5.3" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#zenmuse-l1-lidar-and-rgb"><i class="fa fa-check"></i><b>5.5.3</b> Zenmuse L1: LiDAR and RGB</a></li>
+<li class="chapter" data-level="5.5.4" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#zenmuse-h20t-thermal-and-rgb"><i class="fa fa-check"></i><b>5.5.4</b> Zenmuse H20T: Thermal and RGB</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="data-processing-photogrammetry-pipeline..html"><a href="data-processing-photogrammetry-pipeline..html"><i class="fa fa-check"></i><b>6</b> Data Processing: Photogrammetry pipeline.</a>
@@ -304,8 +305,7 @@ Figure 5.1: DJI Matrice 300 RTK in flight over one of our Vancouver Island field
 </div>
 <div id="workflow-site-reconnaissance" class="section level2 hasAnchor" number="5.3">
 <h2><span class="header-section-number">5.3</span> Workflow: Site Reconnaissance<a href="data-collection-and-flights.html#workflow-site-reconnaissance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Ahead of the first data collection flights we follow the reconnaissance workflow outlined in Figure <a href="data-collection-and-flights.html#fig:Reconnasissance-flowDiagram">5.2</a>. This is to assess for hazards, confirm site perimeter, layout GCPs and collect their coordinates (where possible), and to locate trees to enable georeferencing existing trial data to the imagery. We followed this workflow in March 2024 at the Big Tree creek trial where were able to find suitable locations to install GCPs and were able to collect precise GPS points for the GCPs. We also measured azimuth and distance from the GCPs to the nearest trees to enable us to tie the row column grid to the imagery (georeferencing) later in the processing.
-Please refer to the <a href="https://github.com/owaite/GenomeBC_BPG/tree/main/SOPs">SOP_Emlid_RS3</a> for detailed instructions on using the Emlid GNSS receivers. The <a href="https://docs.emlid.com/reachrs3/">Emlid RS3 documentation</a> is excellent and covers a wide range of applications.</p>
+<p>Ahead of the first data collection flights we follow the reconnaissance workflow outlined in Figure <a href="data-collection-and-flights.html#fig:Reconnasissance-flowDiagram">5.2</a>. This is to assess for hazards, confirm site perimeter, layout GCPs and collect their coordinates (where possible), and to locate trees to enable georeferencing existing trial data to the imagery. We followed this workflow in March 2024 at the Big Tree creek trial where were able to find suitable locations to install GCPs and were able to collect precise GPS points for the GCPs. We also measured azimuth and distance from the GCPs to the nearest trees to enable us to tie the row column grid to the imagery (georeferencing) later in the processing. Please refer to the <a href="https://github.com/owaite/GenomeBC_BPG/tree/main/SOPs">SOP_Emlid_RS3</a> for detailed instructions on using the Emlid GNSS receivers. The <a href="https://docs.emlid.com/reachrs3/">Emlid RS3 documentation</a> is excellent and covers a wide range of applications.</p>
 <div class="figure"><span style="display:block;" id="fig:Reconnasissance-flowDiagram"></span>
 <img src="Photos_&_gifs/Reconnasissance_flowDiagram.PNG" alt="Reconnaissance workflow." width="100%" />
 <p class="caption">
@@ -341,6 +341,7 @@ Figure 5.4: Flight planning a P1 flight on the remote controller.
 </div>
 <div id="data-collection-sensors-parameters-and-ideal-conditions" class="section level2 hasAnchor" number="5.5">
 <h2><span class="header-section-number">5.5</span> Data Collection: Sensors, Parameters, and Ideal Conditions<a href="data-collection-and-flights.html#data-collection-sensors-parameters-and-ideal-conditions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The parameters we have listed for each sensor are based on collecting data on gridded 1.5 - 2 Ha closed canopy coastal Douglas fir and Western redcedar sites. The parameters are conservative and should allow for less than ideal flight conditions.</p>
 <div id="micasense-10-band-spectral-sensor-for-vegetative-indices" class="section level3 hasAnchor" number="5.5.1">
 <h3><span class="header-section-number">5.5.1</span> MicaSense: 10-Band Spectral Sensor for Vegetative Indices<a href="data-collection-and-flights.html#micasense-10-band-spectral-sensor-for-vegetative-indices" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The MicaSense RedEdge-MX Dual (MS) and its replacement, the Micasense RedEdge-P Dual (MS_P), (where P represents panchromatic), are 10-Band multispectral sensors that detect reflectance in ten specific wavebands of reflected light that provide useful information on vegetation health. The MS_P includes an 11th camera that is senstive to a wide range of wavelengths across the visible and NIR spectra, allowing it to capture a much larger amount of light (photons) per capture, and thus producing a higher spatial resolution product that allows for pansharpening.</p>
@@ -348,8 +349,7 @@ Figure 5.4: Flight planning a P1 flight on the remote controller.
 <p>The multispectral cameras are passive sensors and as such are sensitive to changing light conditions. To detect these changes Micasense cameras use a Downwelling Light Sensor (DLS), which is mounted to the top of the M300, to measure ambient light conditions during flight and sun to sensor angles. These measurements are written into the metadata of each photo. We are using the DLS2 which measures the ambient light and sun angle using 10 small circular sensors spread across the top of the DLS. Hence, it is imperative that these sensors are clean to avoid erroneous measurements.</p>
 <p>Multispectral sensors also require calibration photos to be taken at the start and end of each flight. This involves taking pictures of a specialized MicaSense calibration panel with known reflectance values. These pictures need to be taken in an open area for the DLS to correctly mimic the current flight conditions, ideally the location is large enough to avoid scattering from nearby vegetation or other objects. Ensure there are no shadows being cast onto the panel or over the DLS as these calibration pictures are taken, either from nearby objects, vegetation, or the person taking the photos.</p>
 <p>As seen in Figure <a href="data-collection-and-flights.html#fig:DLS-Micasense-connection">5.5</a> the MicaSense Dual cameras are two sets of cameras, each captures 5 unique wavebands. The cameras write images as .tif with an _(x) for each of (x) wavelengths and organizes the images into folders with 1000 images per folder, in as many folders as needed. Image capture rate can be set as high as one image per second. A 25–30-minute flight that covers a 1.5-2 Ha site using the flight parameters outlined below will yield 5-6 folders per camera system producing 10-12 thousand images.</p>
-<p>The MS sensors are particularly prone to difficulties writing to data cards and the data must be carefully checked and reflown if necessary. We keep a spare set of SD cards for each sensor and will not overwrite any cards until the data has been confirmed by loading into the processing software.
-For the MS sensors, ensure SD cards used are formatted FAT32, they will not work in EXFAT32 or other formats. Formatting cards should be done through the MicaSense wireless connection using the built in format card button.</p>
+<p>The MS sensors are particularly prone to difficulties writing to data cards and the data must be carefully checked and reflown if necessary. We keep a spare set of SD cards for each sensor and will not overwrite any cards until the data has been confirmed by loading into the processing software. For the MS sensors, ensure SD cards used are formatted FAT32, they will not work in EXFAT32 or other formats. Formatting cards should be done through the MicaSense wireless connection using the built in format card button.</p>
 <p>Figure <a href="data-collection-and-flights.html#fig:DLS-Micasense-connection">5.5</a></p>
 <div class="figure"><span style="display:block;" id="fig:DLS-Micasense-connection"></span>
 <img src="Photos_&_gifs/DLS2_Micasense_connection.png" alt="Micasense RedEdge-MX Dual and the DLS2 mounted on the M300. Here we are connecting the DLS2 to the Micasense camera." width="100%" />
@@ -451,9 +451,9 @@ Figure 5.5: Micasense RedEdge-MX Dual and the DLS2 mounted on the M300. Here we 
 <li><p><strong>Output:</strong> 5-6 folders per camera (10-12 thousand images) for a 25–30-minute flight covering a 1.5-2 Ha site</p></li>
 <li><p><strong>GSD:</strong> 2.5-4cm at 40m above canopy. 1.5-2cm when processed pansharpened with the panchromatic band.</p></li>
 </ul>
-<p><strong>Flight Parameters: </strong></p>
+<p><strong>Flight Parameters:</strong></p>
 <ul>
-<li><p><strong>Flight Elevation: </strong></p>
+<li><p><strong>Flight Elevation:</strong></p>
 <ul>
 <li>40 m above canopy</li>
 </ul></li>
@@ -466,7 +466,7 @@ Figure 5.5: Micasense RedEdge-MX Dual and the DLS2 mounted on the M300. Here we 
 <li><p><strong>Margins:</strong> 10 m around the site perimeter is sufficient for flight planning due to the wide-angle shot of the MS camera</p></li>
 <li><p><strong>Flight Time:</strong> Approximately 30 minutes for a 1.5-2 Ha area site. This allows for a single battery flight, which helps to maintain even light conditions.</p></li>
 </ul>
-<p><strong>Best Practices: </strong></p>
+<p><strong>Best Practices:</strong></p>
 <ul>
 <li><p><strong>Weather Conditions:</strong> Avoid flying in any precipitation as MicaSense cameras are unprotected from moisture, with exposed data and power connections.</p></li>
 <li><p><strong>Lighting:</strong> Conduct flights within two hours of solar noon to minimize shadowing in the imagery.</p>
@@ -513,7 +513,7 @@ Figure 5.6: Left: MS orthomosaic in variable light. Right: MS orthomosaic in eve
 <li><p><strong>Wind Conditions:</strong> Ideal on days with little or no wind; &lt;10 km/h for coastal species (e.g., western redcedar, Douglas-fir); up to 20 km/h may be suitable for other species (e.g., juvenile interior spruce).</p></li>
 <li><p><strong>Lighting:</strong> Best results are achieved on overcast days due to diffuse lighting conditions which reduces shadows and enhances detail. We have found that of full sun days using the “Auto” settings will produce oversaturated imagery. The <a href="https://en.wikipedia.org/wiki/Sunny_16_rule">sunny 16 rule</a> of photography does help with the P1 on full sun days.</p></li>
 </ul>
-Figure <a href="data-collection-and-flights.html#fig:P1-RGB">5.7</a>
+<p>Figure <a href="data-collection-and-flights.html#fig:P1-RGB">5.7</a></p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:P1-RGB"></span>
 <img src="Photos_&_gifs/P1_pre_greenup.png" alt="These images are the same area, the left was taken with the above parameters with the P1 before greenup. The right was taken with the wide angle RGB on the Zenmuse H20T, a lower resolution camera, mid-August." width="50%" /><img src="Photos_&_gifs/RGB_mid_Aug.jpg" alt="These images are the same area, the left was taken with the above parameters with the P1 before greenup. The right was taken with the wide angle RGB on the Zenmuse H20T, a lower resolution camera, mid-August." width="50%" />
 <p class="caption">
@@ -550,6 +550,28 @@ Figure 5.8: L1 LiDAR screenshot from the remote controller during a flight at Bi
 <li><p><strong>Timing of Flight:</strong> When possible, it is best to collect LiDAR before greenup in the spring. LiDAR is typically taken before or after multispectral flights as it is not constricted to the -/+ 2 hours of solar noon window.</p></li>
 </ul>
 <p><strong>Zenmuse L2 LiDAR:</strong> The recently released L2 LiDAR sensor offers improved positional accuracy due to a smaller beam footprint and more precise IMU. It also supports up to five returns per pulse, enhancing the within canopy detail of the point cloud and potentially defining a more accurate DTM for areas with understory.</p>
+</div>
+<div id="zenmuse-h20t-thermal-and-rgb" class="section level3 hasAnchor" number="5.5.4">
+<h3><span class="header-section-number">5.5.4</span> Zenmuse H20T: Thermal and RGB<a href="data-collection-and-flights.html#zenmuse-h20t-thermal-and-rgb" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Thermal Imaging (H20T DJI Thermal Camera): The H20T is a multi-sensor camera with thermal imaging, zoom, and wide-angle RGB (visible light) cameras in one sensor, allowing it to capture detailed visual and thermal data. The thermal sensor detects infrared radiation and converts it into temperature data, which can then be used to analyze heat signatures of objects, terrain, or structures. The H20T also integrates a laser rangefinder for accurate distance measurements, which can be useful for checking and confirming terrain following flight mission altitudes.</p>
+<p><strong>Note:</strong> The H20T was not designed for thermal mapping and the raw thermal imagery needs to be converted to single band temperature tiffs.  The methodology we developed for this conversion is detailed the Thermal Conversion chapter.</p>
+<p><strong>Sensor Specifications:</strong></p>
+<ul>
+<li><p><strong>GSD:</strong> Thermal ~6cm at 70m, RGB wide ~2cm at 70m.</p></li>
+<li><p><strong>Zoom:</strong> The H20T has a 23x hybrid optical zoom with digital zoom capabilities for a combined zoom of up to 200x in RGB mode.</p></li>
+<li><p><strong>Thermal Sensitivity:</strong> &lt;50 mK at f/1.0, providing high sensitivity for detecting slight differences in temperature.</p></li>
+<li><p><strong>Spectral Band:</strong> The thermal sensor operates in the 7.5 - 13.5 µm range, which is ideal for detecting heat sources in various environmental conditions.</p></li>
+<li><p><strong>Thermal Accuracy:</strong> The temperature measurement accuracy is ±2°C or ±2%, whichever is greater.</p></li>
+<li><p><strong>Gain Mode:</strong> The High Gain mode measures temperatures from -40°C to 150°C at a finer scale than the regular gain mode.  It is highly recommended to ensure the high gain mode is set for this application.</p></li>
+</ul>
+<p><strong>Flight Parameters:</strong></p>
+<ul>
+<li><p><strong>Optimal Flight Altitude:</strong> The size of our sites required ~70 m altitude. Flying as low as possible based on system and terrain restrictions yields more detailed thermal data.</p></li>
+<li><p><strong>Flight Speed:</strong> Recommended at 1.5-4m/s depending on site size, aim for slower speeds if possible to maximize thermal data quality.</p></li>
+<li><p><strong>Overlap:</strong> Thermal: &gt;85% front and side overlap (85x85) to ensure comprehensive coverage</p></li>
+<li><p><strong>Environmental Conditions:</strong> Best in low wind clear conditions.</p></li>
+<li><p><strong>Timing of Flight:</strong> Recommend early afternoon, 1-3 hours after solar noon.</p></li>
+</ul>
 
 </div>
 </div>
