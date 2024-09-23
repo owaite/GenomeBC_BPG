@@ -454,6 +454,10 @@ Figure 10.8: Direct and scattered irradiance values throughout the duration of t
 <div id="reading-exif-data" class="section level3 hasAnchor" number="10.4.1">
 <h3><span class="header-section-number">10.4.1</span> Reading Exif Data<a href="micasense-irradiance-correction.html#reading-exif-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>First, we read in the exif data of the imagery we want to correct using the exifr package.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="micasense-irradiance-correction.html#cb44-1" tabindex="-1"></a><span class="co"># This code was written to be within a for loop that looped through many acquisition dates. Hence the path names used will be in the form &quot; paste0(dir, date,&quot;\\1_Data\\&quot;,MS_folder_name,&quot;\\&quot;...etc)&quot;. Change these path names to match your data</span></span>
 <span id="cb44-2"><a href="micasense-irradiance-correction.html#cb44-2" tabindex="-1"></a><span class="fu">library</span>(exifr)</span>
 <span id="cb44-3"><a href="micasense-irradiance-correction.html#cb44-3" tabindex="-1"></a>dir <span class="ot">&lt;-</span> <span class="st">&quot;directory to folder holding folders representing each flight aquisition date&quot;</span> <span class="co">#change to match your data</span></span>
@@ -503,12 +507,70 @@ Figure 10.8: Direct and scattered irradiance values throughout the duration of t
 <span id="cb44-47"><a href="micasense-irradiance-correction.html#cb44-47" tabindex="-1"></a>    }</span>
 <span id="cb44-48"><a href="micasense-irradiance-correction.html#cb44-48" tabindex="-1"></a>  <span class="fu">saveRDS</span>(df_full, <span class="fu">paste0</span>(dir,date,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">&quot;</span>,MS_folder_name,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">CSV</span><span class="sc">\\</span><span class="st">XMP_data_&quot;</span>, date,<span class="st">&quot;_AllBands.rds&quot;</span>)) <span class="co">#.rds file containing the original exif data if all images for the flight</span></span>
 <span id="cb44-49"><a href="micasense-irradiance-correction.html#cb44-49" tabindex="-1"></a> } </span></code></pre></div>
-<p>Read in the exif data for all bands.</p>
+</details>
+<!-- ```{r eval=FALSE, include=TRUE} -->
+<!-- # This code was written to be within a for loop that looped through many acquisition dates. Hence the path names used will be in the form " paste0(dir, date,"\\1_Data\\",MS_folder_name,"\\"...etc)". Change these path names to match your data -->
+<!-- library(exifr) -->
+<!-- dir <- "directory to folder holding folders representing each flight aquisition date" #change to match your data -->
+<!-- MS_folder_name <- "MicaSense" #change to match the name of your folder holding the folders of imagery from the MicaSense camera -->
+<!-- band_length <-  10 # 10 bands for MicaSense RedEdge-MX Dual -->
+<!-- #Loops through bands -->
+<!--  for (j in 1:band_length){ # bands 1 through 10  -->
+<!--    pics = list.files(paste0(dir, date,"\\1_Data\\",MS_folder_name,"\\"), #path the original data that will NOT be written over -->
+<!--                      pattern = c(paste0("IMG_...._", j, ".tif"), paste0("IMG_...._", j, "_", ".tif")), recursive = TRUE,  -->
+<!--                      full.names = TRUE) # list of directories to all images -->
+<!--   if(!dir.exists(paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\\"))){ #creating CSV folders -->
+<!--       dir.create(paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\\"))} -->
+<!--   mask_images <- list.files(paste0(dir,date,"\\2_Inputs\\metashape\\MASKS\\",MS_folder_name,"\\")) #path to folder with masks that are exported from metashape  -->
+<!--   mask_img_names <- gsub("_mask\\.png$", "", mask_images) # removes the suffix "_mask.png" from each element in the 'mask_images' list, ie : IMG_0027_1_mask.png becomes : IMG_0027_1  -->
+<!--   print(paste0("example of mask name: ",mask_img_names[[1]])) #print to ensure your naming is correct, the list of mask_img_names will be used to identify panel images in the micasense image  -->
+<!--   # Loops through images in each band -->
+<!--   for (i in 1:length(pics)){ #for each image in MicaSense_Cleaned_save, one at a time -->
+<!--     pic = pics[i] -->
+<!--     pic_root <- gsub(".*/(IMG_.*)(\\.tif)$", "\\1", pic)# The pattern captures the filename starting with "IMG_" and ending with ".tif".Ie: IMG_0027_1.tiff becomes IMG_0027_1 -->
+<!--     print(pic_root) -->
+<!--     if (substr(pic_root,11,11) == "0"){ # Distinguishes between _1 (band 1) and _10 (band 10), ie IMG_0027_1 verse IMG_0027_10 -->
+<!--         band = substr(pic_root,10,11) # for _10 -->
+<!--         } else { -->
+<!--           band = substr(pic_root,10,10) # for _1, _2, _3, ... _9 (bands 1-9) -->
+<!--           }  -->
+<!--     img_exif = exifr::read_exif(pic) # read the XMP data  -->
+<!--     print(paste0(date, " band ", j, " ", i, "/", length(pics))) # keep track of progress -->
+<!--     # Creating df with same column names as exif data -->
+<!--     if (i == 1){ # If it's the first image, make new df from XMP data  -->
+<!--       exif_df = as.data.frame(img_exif)%>% -->
+<!--         mutate(panel_flag = ifelse( gsub(".*/(IMG_.*)(\\.tif)$", "\\1", SourceFile) %in% mask_img_names, 1, 0)) # Give a value of 1 if the pic root name is in the list of mask root names and is therefore a calibration panel, give 0 otherwise (ie not a panel)  -->
+<!--       } else {   # Add each new image exif to dataframe -->
+<!--         exif_df = merge(exif_df, img_exif, by = intersect(names(exif_df), names(img_exif)), all = TRUE)%>% -->
+<!--           mutate(panel_flag = ifelse( gsub(".*/(IMG_.*)(\\.tif)$", "\\1", SourceFile) %in% mask_img_names, 1, 0)) # Give a value of 1 if the pic root name is in the list of mask root names and is therefore a calibration panel, give 0 otherwise (ie not a panel)  -->
+<!--         } -->
+<!--     } -->
+<!--   saveRDS(exif_df, paste0(dir,date, "\\1_Data\\",MS_folder_name,"\\CSV\\XMP_data_", date, "_", j, ".rds")) # save output for each band, set path -->
+<!--   #binding all bands into one dataframe -->
+<!--   if (j == 1){ -->
+<!--     df_full = exif_df -->
+<!--     }else{ -->
+<!--       # Add missing columns to xmp_all and fill with NA values -->
+<!--       df_full= rbind(df_full, exif_df) -->
+<!--     } -->
+<!--   saveRDS(df_full, paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\\XMP_data_", date,"_AllBands.rds")) #.rds file containing the original exif data if all images for the flight -->
+<!--  }  -->
+<!-- ``` -->
+<p>Next, we read in the exif data extracted above for all bands.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="micasense-irradiance-correction.html#cb45-1" tabindex="-1"></a>xmp_all <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(dir,date,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">&quot;</span>,MS_folder_name,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">CSV</span><span class="sc">\\</span><span class="st">XMP_data_&quot;</span>, date,<span class="st">&quot;_AllBands.rds&quot;</span>))</span></code></pre></div>
+</details>
 </div>
 <div id="calculating-solar-zenith-anlge" class="section level3 hasAnchor" number="10.4.2">
 <h3><span class="header-section-number">10.4.2</span> Calculating Solar Zenith Anlge<a href="micasense-irradiance-correction.html#calculating-solar-zenith-anlge" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below we convert the DateTimeOrginal column from the exif data to a date object and use the date object and average lat and lon to calculate solar angle.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="micasense-irradiance-correction.html#cb46-1" tabindex="-1"></a>xmp_all_filtered <span class="ot">&lt;-</span> xmp_all <span class="sc">%&gt;%</span></span>
 <span id="cb46-2"><a href="micasense-irradiance-correction.html#cb46-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Date_time =</span> <span class="fu">ymd_hms</span>(DateTimeOriginal),</span>
 <span id="cb46-3"><a href="micasense-irradiance-correction.html#cb46-3" tabindex="-1"></a>         <span class="at">BandName_Wavelength =</span> <span class="fu">paste0</span>(BandName, <span class="st">&quot;_&quot;</span>, CentralWavelength),</span>
@@ -524,39 +586,45 @@ Figure 10.8: Direct and scattered irradiance values throughout the duration of t
 <span id="cb46-13"><a href="micasense-irradiance-correction.html#cb46-13" tabindex="-1"></a>                                                 <span class="at">geocode =</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">lon =</span> <span class="fu">unique</span>(site_avg_long),</span>
 <span id="cb46-14"><a href="micasense-irradiance-correction.html#cb46-14" tabindex="-1"></a>                                                                          <span class="at">lat =</span> <span class="fu">unique</span>(site_avg_lat),</span>
 <span id="cb46-15"><a href="micasense-irradiance-correction.html#cb46-15" tabindex="-1"></a>                                                                          <span class="at">address =</span> <span class="st">&quot;Greenwich&quot;</span>)))</span></code></pre></div>
+</details>
 <p>Next, we check for any missing timestamps in image metadata as this usually indicates that the image was not saved properly and can’t be opened which will throw errors later in the workflow. In our experience, these images are few and far between, so we remove them from the analysis. We recommend manually checking that the image is in fact corrupted before removing it from analysis.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="micasense-irradiance-correction.html#cb47-1" tabindex="-1"></a>missing_imgs <span class="ot">&lt;-</span> xmp_all[<span class="fu">is.na</span>(<span class="fu">as.Date</span>(xmp_all<span class="sc">$</span>CreateDate, <span class="at">format =</span> <span class="st">&quot;%Y:%m:%d&quot;</span>))]<span class="sc">$</span>FileName</span>
 <span id="cb47-2"><a href="micasense-irradiance-correction.html#cb47-2" tabindex="-1"></a>missing_imgs_roots <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;_[^_]*$&quot;</span>, <span class="st">&quot;&quot;</span>, missing_imgs)</span>
 <span id="cb47-3"><a href="micasense-irradiance-correction.html#cb47-3" tabindex="-1"></a></span>
 <span id="cb47-4"><a href="micasense-irradiance-correction.html#cb47-4" tabindex="-1"></a>xmp_all_filtered_mis <span class="ot">&lt;-</span> xmp_all_filtered <span class="sc">%&gt;%</span> <span class="co">#removing images with missing date information</span></span>
 <span id="cb47-5"><a href="micasense-irradiance-correction.html#cb47-5" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>FileName <span class="sc">%in%</span> <span class="fu">c</span>(missing_imgs))</span></code></pre></div>
-<!--
-### Caluclating DNI
-
-The solar position and irradiance values are necessary to understand whether or not DLS acquired values are reasonable. We calculate the direct normal irradaiance using the average latitude and longitude from the GPS coordinates of the imagery and the time of the acquisition. 
-
-
-```r
-(lat <- unique(xmp_all_filtered$site_avg_lat))
-(lon <- unique(xmp_all_filtered$site_avg_long))
-(time <- mean(xmp_all_filtered$Date_time, na.rm = TRUE))
-
-sun_pos <- getSunlightPosition(date = time, lat = lat, lon = lon)
-elevation_angle <- sun_pos$altitude
-turbidity <- 2.5
-solar_constant <- 1367
-
-air_mass <- 1 / cos(pi/2 - elevation_angle)
-dni <- solar_constant * exp(-0.2 * air_mass * turbidity)
-
-print(dni)
-```
--->
+</details>
+<!-- ````{=html} -->
+<!-- <!-- -->
+<!-- ### Caluclating DNI -->
+<!-- The solar position and irradiance values are necessary to understand whether or not DLS acquired values are reasonable. We calculate the direct normal irradaiance using the average latitude and longitude from the GPS coordinates of the imagery and the time of the acquisition.  -->
+<!-- ```{r eval=FALSE, include=TRUE} -->
+<!-- (lat <- unique(xmp_all_filtered$site_avg_lat)) -->
+<!-- (lon <- unique(xmp_all_filtered$site_avg_long)) -->
+<!-- (time <- mean(xmp_all_filtered$Date_time, na.rm = TRUE)) -->
+<!-- sun_pos <- getSunlightPosition(date = time, lat = lat, lon = lon) -->
+<!-- elevation_angle <- sun_pos$altitude -->
+<!-- turbidity <- 2.5 -->
+<!-- solar_constant <- 1367 -->
+<!-- air_mass <- 1 / cos(pi/2 - elevation_angle) -->
+<!-- dni <- solar_constant * exp(-0.2 * air_mass * turbidity) -->
+<!-- print(dni) -->
+<!-- ``` -->
+<!-- -->
+<p>–&gt;</p>
 </div>
 <div id="caluclating-sun-sensor-angles" class="section level3 hasAnchor" number="10.4.3">
 <h3><span class="header-section-number">10.4.3</span> Caluclating Sun-Sensor Angles<a href="micasense-irradiance-correction.html#caluclating-sun-sensor-angles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here we show the difference between the archived DLS1 method and the current DLS2 method.</p>
 <p><em>DSL1:</em> The following code has been taken from <a href="https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb">MicaSense’s GitHub</a> and coded in R to match our workflow</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="micasense-irradiance-correction.html#cb48-1" tabindex="-1"></a>compute_sun_angle <span class="ot">&lt;-</span> <span class="cf">function</span>(SolarElevation, SolarAzimuth, Roll, Pitch, Yaw) {</span>
 <span id="cb48-2"><a href="micasense-irradiance-correction.html#cb48-2" tabindex="-1"></a>    ori <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>)</span>
 <span id="cb48-3"><a href="micasense-irradiance-correction.html#cb48-3" tabindex="-1"></a>    SolarElevation <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(SolarElevation)</span>
@@ -595,10 +663,20 @@ print(dni)
 <span id="cb48-36"><a href="micasense-irradiance-correction.html#cb48-36" tabindex="-1"></a>         <span class="at">SunSensorAngle_DLS1_deg =</span> SunSensorAngle_DLS1_rad <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi)</span>
 <span id="cb48-37"><a href="micasense-irradiance-correction.html#cb48-37" tabindex="-1"></a></span>
 <span id="cb48-38"><a href="micasense-irradiance-correction.html#cb48-38" tabindex="-1"></a><span class="fu">saveRDS</span>(SSA_xmp_all_filtered,<span class="fu">paste0</span>(dir,date,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">&quot;</span>,MS_folder_name,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">CSV</span><span class="sc">\\</span><span class="st">XMP_&quot;</span>, date,<span class="st">&quot;_with_SSA.rds&quot;</span>)) <span class="co">#Save XMP rds file with sun sensor angle added</span></span></code></pre></div>
+</details>
 <p><em>DLS2:</em></p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="micasense-irradiance-correction.html#cb49-1" tabindex="-1"></a>SSA_xmp_all_filtered<span class="sc">$</span>SunSensorAngle_DLS2_rad <span class="ot">&lt;-</span> <span class="fu">sapply</span>(xmp_all_filtered<span class="sc">$</span>EstimatedDirectLightVector, <span class="cf">function</span>(vec) <span class="fu">acos</span>(<span class="sc">-</span><span class="dv">1</span> <span class="sc">*</span> <span class="fu">as.numeric</span>(vec[[<span class="dv">3</span>]])))</span>
 <span id="cb49-2"><a href="micasense-irradiance-correction.html#cb49-2" tabindex="-1"></a>SSA_xmp_all_filtered<span class="sc">$</span>SunSensorAngle_DLS2_deg <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(SSA_xmp_all_filtered<span class="sc">$</span>SunSensorAngle_DLS2_rad) <span class="sc">/</span> pi <span class="sc">*</span> <span class="dv">180</span></span></code></pre></div>
+</details>
 <p>Check that the sun-sensor angles are within a reasonable range. They should range from ~30 degrees mid summer to ~80 degrees mid winter. This code outputs Figure <a href="micasense-irradiance-correction.html#fig:Dir-Irr-DSL2-DLS1-data">10.8</a> facet wrapped for each of the 10 bands (Figure <a href="micasense-irradiance-correction.html#fig:SSA-bands">10.9</a>). This is a good visual to compare DLS2 to DLS1 sun sensor angles as well as to check that data is consistent between bands and there is no missing information.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="micasense-irradiance-correction.html#cb50-1" tabindex="-1"></a>xmp_all_ssa <span class="ot">=</span> SSA_xmp_all_filtered <span class="sc">%&gt;%</span></span>
 <span id="cb50-2"><a href="micasense-irradiance-correction.html#cb50-2" tabindex="-1"></a>  <span class="co"># Converting from radians to degrees</span></span>
 <span id="cb50-3"><a href="micasense-irradiance-correction.html#cb50-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Yaw_deg =</span> <span class="fu">as.numeric</span>(Yaw)<span class="sc">*</span><span class="dv">180</span><span class="sc">/</span>pi,</span>
@@ -648,19 +726,21 @@ print(dni)
 <span id="cb50-47"><a href="micasense-irradiance-correction.html#cb50-47" tabindex="-1"></a>               <span class="at">scales =</span> <span class="st">&quot;free_x&quot;</span>, <span class="at">ncol =</span> <span class="dv">2</span>)<span class="sc">+</span> <span class="co"># this will plot each band as its own plot as a check for all data</span></span>
 <span id="cb50-48"><a href="micasense-irradiance-correction.html#cb50-48" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span>
 <span id="cb50-49"><a href="micasense-irradiance-correction.html#cb50-49" tabindex="-1"></a>)</span></code></pre></div>
-<!--
-
-```r
-ggsave(plot = SSA_plot, #save out the plot for reference
-       filename = paste0(plot_dir, "0_SSA_plot.jpeg"), #change plot_dir to the location you would like to save to
-       device = jpeg,
-       width = 6,
-       height = 6,
-       units = 'in',
-       dpi = 300,
-       bg = 'white')
-```
--->
+</details>
+<!-- ````{=html} -->
+<!-- <!-- -->
+<!-- ```{r eval=FALSE, include=TRUE} -->
+<!-- ggsave(plot = SSA_plot, #save out the plot for reference -->
+<!--        filename = paste0(plot_dir, "0_SSA_plot.jpeg"), #change plot_dir to the location you would like to save to -->
+<!--        device = jpeg, -->
+<!--        width = 6, -->
+<!--        height = 6, -->
+<!--        units = 'in', -->
+<!--        dpi = 300, -->
+<!--        bg = 'white') -->
+<!-- ``` -->
+<!-- -->
+<!-- ```` -->
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:SSA-bands"></span>
 <img src="Photos_&_gifs/0_SSA_plot_updated.jpeg" alt="Sun sensor angles across the duration of the flight for each of the 10 MicaSense bands from image metadata written by the DLS2 compared to sun sensor angles corrected using the DLS1 method. The black horiztonal lines plotted are the calculated solar zenith throughout the flight, where as the dotted lines are the moving average of sun sensor angles from the DLS1 (red) and DLS2 (blue). Grey vertical lines highlight calibration imagery taken when the drone was on the ground." width="100%" />
 <p class="caption">
@@ -678,6 +758,10 @@ Figure 10.9: Sun sensor angles across the duration of the flight for each of the
 <li><p>Third, drop any models with negative slopes or intercepts (physically impossible)</p></li>
 </ol>
 <p>First, we generate a rolling regression of the linear relationship <span class="math inline">\(I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}\)</span> via a regression of irradiance on <span class="math inline">\(\cos(\theta_{\text{sun-sensor}})\)</span> over a specified time window (we used 30 seconds here).</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="micasense-irradiance-correction.html#cb51-1" tabindex="-1"></a><span class="co"># via a regression of Irradiance on cos_SSA over a specified time window (30s here)</span></span>
 <span id="cb51-2"><a href="micasense-irradiance-correction.html#cb51-2" tabindex="-1"></a>mod_frame <span class="ot">=</span> xmp_all_ssa_site_date <span class="sc">%&gt;%</span></span>
 <span id="cb51-3"><a href="micasense-irradiance-correction.html#cb51-3" tabindex="-1"></a>  <span class="fu">drop_na</span>(Date2) <span class="sc">%&gt;%</span> </span>
@@ -714,7 +798,12 @@ Figure 10.9: Sun sensor angles across the duration of the flight for each of the
 <span id="cb51-34"><a href="micasense-irradiance-correction.html#cb51-34" tabindex="-1"></a>  <span class="fu">left_join</span>(xmp_all_ssa_site_date) <span class="sc">%&gt;%</span> </span>
 <span id="cb51-35"><a href="micasense-irradiance-correction.html#cb51-35" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_scattered =</span> Intercept <span class="sc">/</span> (Slope <span class="sc">+</span> Intercept),</span>
 <span id="cb51-36"><a href="micasense-irradiance-correction.html#cb51-36" tabindex="-1"></a>         <span class="at">dir_diff =</span> Intercept<span class="sc">/</span>Slope)</span></code></pre></div>
+</details>
 <p>Next, we eliminate all models with poor fits. In this case we eliminate models with R<span class="math inline">\(^2\)</span> &lt; 0.4 and drop any models with negative slopes or intercepts (physically impossible)</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="micasense-irradiance-correction.html#cb52-1" tabindex="-1"></a>df_to_use <span class="ot">=</span> df_filtered <span class="sc">%&gt;%</span> </span>
 <span id="cb52-2"><a href="micasense-irradiance-correction.html#cb52-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">R2 =</span> <span class="fu">as.numeric</span>(R2)) <span class="sc">%&gt;%</span> </span>
 <span id="cb52-3"><a href="micasense-irradiance-correction.html#cb52-3" tabindex="-1"></a>  <span class="fu">filter</span>(R2 <span class="sc">&gt;</span> .<span class="dv">4</span> </span>
@@ -724,7 +813,12 @@ Figure 10.9: Sun sensor angles across the duration of the flight for each of the
 <span id="cb52-7"><a href="micasense-irradiance-correction.html#cb52-7" tabindex="-1"></a>         <span class="at">dir_diff_ratio =</span> <span class="fu">mean</span>(dir_diff))</span>
 <span id="cb52-8"><a href="micasense-irradiance-correction.html#cb52-8" tabindex="-1"></a><span class="co">#save out dataframe as an rds</span></span>
 <span id="cb52-9"><a href="micasense-irradiance-correction.html#cb52-9" tabindex="-1"></a><span class="fu">saveRDS</span>(df_to_use,<span class="fu">paste0</span>(dir,date,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">&quot;</span>,MS_folder_name,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">CSV</span><span class="sc">\\</span><span class="st">&quot;</span>,date,<span class="st">&quot;_rolling_regression_filteredModels_used_plot1.rds&quot;</span>))  <span class="co">#SET PATH to save the rds to </span></span></code></pre></div>
+</details>
 <p>Below we plot the percent of scattered irradiance calculated from the models kept (blues) and those removed (grey). Percent scattered was calculated by diving the intercept (scattered component) by the sum of the intercept and the slope (direct component), see equation:<span class="math inline">\(I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}\)</span>. The maroon horizontal line shows the mean percent scattered irradiance, in this case just above 30% (Figure <a href="micasense-irradiance-correction.html#fig:check-percent-scat-plot">10.10</a>). If you are loosing too many models, adjust the filters.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="micasense-irradiance-correction.html#cb53-1" tabindex="-1"></a>(RR_params <span class="ot">&lt;-</span> df_to_use <span class="sc">%&gt;%</span></span>
 <span id="cb53-2"><a href="micasense-irradiance-correction.html#cb53-2" tabindex="-1"></a>    <span class="fu">group_by</span>(Date, BandName) <span class="sc">%&gt;%</span> </span>
 <span id="cb53-3"><a href="micasense-irradiance-correction.html#cb53-3" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Date2, <span class="at">y =</span> percent_scattered, <span class="at">color =</span> R2)) <span class="sc">+</span></span>
@@ -739,19 +833,20 @@ Figure 10.9: Sun sensor angles across the duration of the flight for each of the
 <span id="cb53-12"><a href="micasense-irradiance-correction.html#cb53-12" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
 <span id="cb53-13"><a href="micasense-irradiance-correction.html#cb53-13" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(. <span class="sc">~</span> Date, </span>
 <span id="cb53-14"><a href="micasense-irradiance-correction.html#cb53-14" tabindex="-1"></a>               <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>))</span></code></pre></div>
-<!--
-
-```r
-ggsave(plot = RR_params,
-       filename = paste0(plot_dir,"1_CheckRollingRegressionParams_plot.jpeg"),
-       device = jpeg,
-       width = 15,
-       height = 10,
-       units = 'in',
-       dpi = 300,
-       bg = 'white')
-```
--->
+</details>
+<!-- ````{=html} -->
+<!-- <!-- -->
+<!-- ```{r eval=FALSE, include=TRUE} -->
+<!-- ggsave(plot = RR_params, -->
+<!--        filename = paste0(plot_dir,"1_CheckRollingRegressionParams_plot.jpeg"), -->
+<!--        device = jpeg, -->
+<!--        width = 15, -->
+<!--        height = 10, -->
+<!--        units = 'in', -->
+<!--        dpi = 300, -->
+<!--        bg = 'white') -->
+<!-- ``` -->
+<!-- ```` -->
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:check-percent-scat-plot"></span>
 <img src="Photos_&_gifs/1_CheckRollingRegressionParams_plot_panel_paths_removed.jpeg" alt="Percent scattered irradiance calculated from the slope and y-intercept of the regression models. Blue points are those from regression models that remain after the models were filtered, where the shade of blue represents the R-squared of the regression model the value was calculated from. Grey point are values from mdoels that have been filtered out.  " width="100%" />
 <p class="caption">
@@ -759,6 +854,10 @@ Figure 10.10: Percent scattered irradiance calculated from the slope and y-inter
 </p>
 </div>
 <p>Next, check that the linear relationships you’re keeping look realistic. The slope should be steeper for sunny days (i.e. more direct irradiance) and shallower for overcast days (Figure <a href="micasense-irradiance-correction.html#fig:linear-plot-cosSSA">10.11</a>).</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="micasense-irradiance-correction.html#cb54-1" tabindex="-1"></a>(linear_plots <span class="ot">&lt;-</span> df_to_use <span class="sc">%&gt;%</span></span>
 <span id="cb54-2"><a href="micasense-irradiance-correction.html#cb54-2" tabindex="-1"></a>    <span class="fu">filter</span>(BandName <span class="sc">==</span> <span class="st">&quot;Blue&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb54-3"><a href="micasense-irradiance-correction.html#cb54-3" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> cos_SSA, <span class="at">y =</span> Irradiance, <span class="at">color =</span> R2)) <span class="sc">+</span></span>
@@ -773,20 +872,19 @@ Figure 10.10: Percent scattered irradiance calculated from the slope and y-inter
 <span id="cb54-12"><a href="micasense-irradiance-correction.html#cb54-12" tabindex="-1"></a>    <span class="fu">scale_color_viridis_c</span>() <span class="sc">+</span></span>
 <span id="cb54-13"><a href="micasense-irradiance-correction.html#cb54-13" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(. <span class="sc">~</span> Date, </span>
 <span id="cb54-14"><a href="micasense-irradiance-correction.html#cb54-14" tabindex="-1"></a>               <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>))</span></code></pre></div>
-<!--
-
-```r
-ggsave(plot = linear_plots,
-       filename = paste0(plot_dir,"2_LinearRegression_plot.jpeg"),
-       device = jpeg,
-       width = 15,
-       height = 10,
-       units = 'in',
-       dpi = 300,
-       bg = 'white')
-```
-
--->
+</details>
+<!-- ````{=html} -->
+<!-- <!-- -->
+<!-- ```{r eval=FALSE, include=TRUE} -->
+<!-- ggsave(plot = linear_plots, -->
+<!--        filename = paste0(plot_dir,"2_LinearRegression_plot.jpeg"), -->
+<!--        device = jpeg, -->
+<!--        width = 15, -->
+<!--        height = 10, -->
+<!--        units = 'in', -->
+<!--        dpi = 300, -->
+<!--        bg = 'white') -->
+<!-- ``` -->
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:linear-plot-cosSSA"></span>
 <img src="Photos_&_gifs/2_LinearRegression_plot_reDone.PNG" alt="Output of the linear regression models run on spectral irradiance and cos(sun sensor angle) over 30 second time windows. These models were filtered to only retain those that had an R2 greater than 0.4 and both a positive slope and intercept." width="100%" />
 <p class="caption">
@@ -794,6 +892,10 @@ Figure 10.11: Output of the linear regression models run on spectral irradiance 
 </p>
 </div>
 <p>We recommend checking that there is no excessive spatial pattern in the data by plotting the locations of imagery used in the models. Here you want to ensure that imagery throughout the plot is being used rather than only images from a certain location (Figure <a href="micasense-irradiance-correction.html#fig:spatial-regression-kept">10.12</a>). The code to do this is below:</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="micasense-irradiance-correction.html#cb55-1" tabindex="-1"></a>(photos_kept <span class="ot">&lt;-</span> df_to_use <span class="sc">%&gt;%</span></span>
 <span id="cb55-2"><a href="micasense-irradiance-correction.html#cb55-2" tabindex="-1"></a>    <span class="fu">filter</span>(GPSLongitude <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> GPSLatitude <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="co"># Filter out imgs with GPSLongitude and GPSLatitude of zero, </span></span>
 <span id="cb55-3"><a href="micasense-irradiance-correction.html#cb55-3" tabindex="-1"></a>    <span class="co"># this is rare and in my experience were corrupted imgs where the XMP could not be properly read</span></span>
@@ -804,6 +906,7 @@ Figure 10.11: Output of the linear regression models run on spectral irradiance 
 <span id="cb55-8"><a href="micasense-irradiance-correction.html#cb55-8" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb55-9"><a href="micasense-irradiance-correction.html#cb55-9" tabindex="-1"></a>    <span class="fu">scale_color_viridis_c</span>() <span class="sc">+</span></span>
 <span id="cb55-10"><a href="micasense-irradiance-correction.html#cb55-10" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(. <span class="sc">~</span> Date, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>))</span></code></pre></div>
+</details>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:spatial-regression-kept"></span>
 <img src="Photos_&_gifs/3_GPSphotosKept_plot_lat_cutoff.jpeg" alt="Location of MicaSense imagery aquired over the June 25th, 2024 flight on Vancouver Island. Grey points are the locations of images that were filtered out in the above steps and not used in the final regression models. Coloured dots are those used in the regression models kept and are coloured by sun sensor angle calculated with the DLS1 method." width="60%" />
 <p class="caption">
@@ -811,6 +914,10 @@ Figure 10.12: Location of MicaSense imagery aquired over the June 25th, 2024 fli
 </p>
 </div>
 <p>Lastly, we compute the scattered/ direct irradiance ratios dataframe from the dataframe of filtered models</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="micasense-irradiance-correction.html#cb56-1" tabindex="-1"></a>(<span class="at">ratios =</span> df_to_use <span class="sc">%&gt;%</span> </span>
 <span id="cb56-2"><a href="micasense-irradiance-correction.html#cb56-2" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(Date, mean_scattered, dir_diff_ratio,</span>
 <span id="cb56-3"><a href="micasense-irradiance-correction.html#cb56-3" tabindex="-1"></a>                  GPSLatitude, GPSLongitude, Date2) <span class="sc">%&gt;%</span> </span>
@@ -824,11 +931,16 @@ Figure 10.12: Location of MicaSense imagery aquired over the June 25th, 2024 fli
 <span id="cb56-11"><a href="micasense-irradiance-correction.html#cb56-11" tabindex="-1"></a></span>
 <span id="cb56-12"><a href="micasense-irradiance-correction.html#cb56-12" tabindex="-1"></a><span class="co"># Print the values to use in the calibration as a check (does this ratio looks reasonable?)</span></span>
 <span id="cb56-13"><a href="micasense-irradiance-correction.html#cb56-13" tabindex="-1"></a><span class="fu">round</span>(ratios<span class="sc">$</span>dir_diff_ratio, <span class="dv">2</span>)</span></code></pre></div>
+</details>
 <p>The ratio for the DLS1 was 0.46 and the mean_scattered component was ~32 W/m<span class="math inline">\(^2\)</span>.</p>
 </div>
 <div id="computing-horizontal-corrected-irradiance" class="section level3 hasAnchor" number="10.4.5">
 <h3><span class="header-section-number">10.4.5</span> Computing Horizontal (Corrected) Irradiance<a href="micasense-irradiance-correction.html#computing-horizontal-corrected-irradiance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This is the Fresnel correction, which adjusts for the DLS reflecting, rather than measuring, some of the irradiance that hits it. We aquired this code from <a href="https://github.com/micasense/imageprocessing/blob/master/MicaSense%20Image%20Processing%20Tutorial%203.ipynb">MicaSense’s GitHub</a> and converted to R to use in this workflow.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="micasense-irradiance-correction.html#cb57-1" tabindex="-1"></a>fresnel_transmission <span class="ot">=</span> <span class="cf">function</span>(phi, n1, n2, polarization) {</span>
 <span id="cb57-2"><a href="micasense-irradiance-correction.html#cb57-2" tabindex="-1"></a>  f1 <span class="ot">=</span> <span class="fu">cos</span>(phi)</span>
 <span id="cb57-3"><a href="micasense-irradiance-correction.html#cb57-3" tabindex="-1"></a>  f2 <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> (n1 <span class="sc">/</span> n2 <span class="sc">*</span> <span class="fu">sin</span>(phi))<span class="sc">^</span><span class="dv">2</span>)</span>
@@ -867,7 +979,12 @@ Figure 10.12: Location of MicaSense imagery aquired over the June 25th, 2024 fli
 <span id="cb57-36"><a href="micasense-irradiance-correction.html#cb57-36" tabindex="-1"></a>  Fresnel <span class="ot">&lt;-</span> <span class="fu">multilayer_transmission</span>(SunSensorAngle_DLS1_rad, <span class="fu">c</span>(n1, n2), polarization)</span>
 <span id="cb57-37"><a href="micasense-irradiance-correction.html#cb57-37" tabindex="-1"></a>  <span class="fu">return</span>(Fresnel)</span>
 <span id="cb57-38"><a href="micasense-irradiance-correction.html#cb57-38" tabindex="-1"></a>}</span></code></pre></div>
+</details>
 <p>Now we put it all together to compute the horizontal irradiance. Here the horizontal irradiance can be thought of as a corrected value for the total irradiance that is reaching a point on the flat ground directly underneath the drone.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="micasense-irradiance-correction.html#cb58-1" tabindex="-1"></a>xmp_corrected <span class="ot">=</span> xmp_all_ssa  <span class="sc">%&gt;%</span> </span>
 <span id="cb58-2"><a href="micasense-irradiance-correction.html#cb58-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Date, BandName) <span class="sc">%&gt;%</span> </span>
 <span id="cb58-3"><a href="micasense-irradiance-correction.html#cb58-3" tabindex="-1"></a>  <span class="co">#filter(BandName == &quot;Red&quot;) %&gt;% </span></span>
@@ -882,7 +999,12 @@ Figure 10.12: Location of MicaSense imagery aquired over the June 25th, 2024 fli
 <span id="cb58-12"><a href="micasense-irradiance-correction.html#cb58-12" tabindex="-1"></a>         <span class="at">HorizontalIrradiance_new =</span> DirectIrradiance_new <span class="sc">*</span> (dir_diff_ratio <span class="sc">+</span> <span class="fu">sin</span>(<span class="fu">as.numeric</span>(SolarElevation))), </span>
 <span id="cb58-13"><a href="micasense-irradiance-correction.html#cb58-13" tabindex="-1"></a>         <span class="at">ScatteredIrradiance_new =</span> HorizontalIrradiance_new <span class="sc">-</span> DirectIrradiance_new)</span>
 <span id="cb58-14"><a href="micasense-irradiance-correction.html#cb58-14" tabindex="-1"></a><span class="fu">saveRDS</span>(xmp_corrected,<span class="fu">paste0</span>(dir,date,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">&quot;</span>,MS_folder_name,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">CSV</span><span class="sc">\\</span><span class="st">&quot;</span>,date,<span class="st">&quot;_xmp_corrected.rds&quot;</span>))  <span class="co">#SET PATH to save the rds to</span></span></code></pre></div>
+</details>
 <p>Now we plot the sensor irradiance along with the corrected horizontal, direct, and scattered irradiance values</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="micasense-irradiance-correction.html#cb59-1" tabindex="-1"></a>(Sensor_irr <span class="ot">&lt;-</span> xmp_corrected <span class="sc">%&gt;%</span> </span>
 <span id="cb59-2"><a href="micasense-irradiance-correction.html#cb59-2" tabindex="-1"></a>    <span class="fu">filter</span>(BandName <span class="sc">==</span> <span class="st">&quot;Blue&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb59-3"><a href="micasense-irradiance-correction.html#cb59-3" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Date2)) <span class="sc">+</span></span>
@@ -898,20 +1020,19 @@ Figure 10.12: Location of MicaSense imagery aquired over the June 25th, 2024 fli
 <span id="cb59-13"><a href="micasense-irradiance-correction.html#cb59-13" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(. <span class="sc">~</span> Date, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>,</span>
 <span id="cb59-14"><a href="micasense-irradiance-correction.html#cb59-14" tabindex="-1"></a>               <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb59-15"><a href="micasense-irradiance-correction.html#cb59-15" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">&quot;Irradiance Type&quot;</span>))</span></code></pre></div>
-<!--
-
-```r
-ggsave(plot = Sensor_irr,
-       filename = paste0(plot_dir,"4_SensorIrradiance_w_CorrectedIrradiance_plot.jpeg"),
-       device = jpeg,
-       width = 15,
-       height = 10,
-       units = 'in',
-       dpi = 300,
-       bg = 'white')
-```
-
--->
+</details>
+<!-- ````{=html} -->
+<!-- <!-- -->
+<!-- ```{r eval=FALSE, include=TRUE} -->
+<!-- ggsave(plot = Sensor_irr, -->
+<!--        filename = paste0(plot_dir,"4_SensorIrradiance_w_CorrectedIrradiance_plot.jpeg"), -->
+<!--        device = jpeg, -->
+<!--        width = 15, -->
+<!--        height = 10, -->
+<!--        units = 'in', -->
+<!--        dpi = 300, -->
+<!--        bg = 'white') -->
+<!-- ``` -->
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:DLS1-corrected-irradiance"></span>
 <img src="Photos_&_gifs/4_SensorIrradiance_w_CorrectedIrradiance_reDone.PNG" alt="Direct, horizontal, sensor, and scattered irradiance across the duration of the flight corrected using the DLS1 method." width="100%" />
 <p class="caption">
@@ -919,6 +1040,10 @@ Figure 10.13: Direct, horizontal, sensor, and scattered irradiance across the du
 </p>
 </div>
 <p>Now that we have corrected the data using the DLS1 method (Figure <a href="micasense-irradiance-correction.html#fig:DLS1-corrected-irradiance">10.13</a>), we can compare the DLS1 values to the DLS2 values to see if correction is needed. The code below creates a dataframe that has the median scatted/direct ratios and median percent scattered irradiance values for the DLS1 method and from the DLS2 sensor. These values will be used to annotate the comparison plot in Figure <a href="micasense-irradiance-correction.html#fig:DLS1-vs-DLS2-irr">10.14</a>.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="micasense-irradiance-correction.html#cb60-1" tabindex="-1"></a>avg_ratio_data <span class="ot">&lt;-</span> xmp_corrected <span class="sc">%&gt;%</span></span>
 <span id="cb60-2"><a href="micasense-irradiance-correction.html#cb60-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(BandName))<span class="sc">%&gt;%</span></span>
 <span id="cb60-3"><a href="micasense-irradiance-correction.html#cb60-3" tabindex="-1"></a>  <span class="fu">group_by</span>(BandName) <span class="sc">%&gt;%</span></span>
@@ -942,7 +1067,12 @@ Figure 10.13: Direct, horizontal, sensor, and scattered irradiance across the du
 <span id="cb60-21"><a href="micasense-irradiance-correction.html#cb60-21" tabindex="-1"></a><span class="fu">unique</span>(xmp_corrected<span class="sc">$</span>CenterWavelength) <span class="co">#make sure all wavebands are present</span></span>
 <span id="cb60-22"><a href="micasense-irradiance-correction.html#cb60-22" tabindex="-1"></a></span>
 <span id="cb60-23"><a href="micasense-irradiance-correction.html#cb60-23" tabindex="-1"></a><span class="fu">saveRDS</span>(avg_ratio_data,<span class="fu">paste0</span>(dir,date,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">&quot;</span>,MS_folder_name ,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">CSV</span><span class="sc">\\</span><span class="st">&quot;</span>,date,<span class="st">&quot;_avg_ratio_data.rds&quot;</span>))  <span class="co">#SET PATH to save the rds to</span></span></code></pre></div>
+</details>
 <p>Plotting original VS correctedirradiance exif data to compare values from the DLS2 to corrected values using the DLS1 method (Figure <a href="micasense-irradiance-correction.html#fig:DLS1-vs-DLS2-irr">10.14</a>).</p>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="micasense-irradiance-correction.html#cb61-1" tabindex="-1"></a>data <span class="ot">=</span> avg_ratio_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(BandName <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Blue&quot;</span>)) <span class="co"># only need to look at one band</span></span>
 <span id="cb61-2"><a href="micasense-irradiance-correction.html#cb61-2" tabindex="-1"></a></span>
 <span id="cb61-3"><a href="micasense-irradiance-correction.html#cb61-3" tabindex="-1"></a>(Dir_scat_irr_plot <span class="ot">&lt;-</span> xmp_corrected <span class="sc">%&gt;%</span></span>
@@ -993,20 +1123,19 @@ Figure 10.13: Direct, horizontal, sensor, and scattered irradiance across the du
 <span id="cb61-48"><a href="micasense-irradiance-correction.html#cb61-48" tabindex="-1"></a>    <span class="fu">facet_grid</span>(BandName <span class="sc">~</span> camera, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>)<span class="sc">+</span></span>
 <span id="cb61-49"><a href="micasense-irradiance-correction.html#cb61-49" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span>
 <span id="cb61-50"><a href="micasense-irradiance-correction.html#cb61-50" tabindex="-1"></a>)</span></code></pre></div>
-<!--
-
-```r
-ggsave(plot = Dir_scat_irr_plot,
-       filename = paste0(plot_dir, "5_Irradiance_DLS1_DLS2_plot.jpeg"),
-       device = jpeg,
-       width = 15,
-       height = 10,
-       units = 'in',
-       dpi = 300,
-       bg = 'white')
-```
-
--->
+</details>
+<!-- ````{=html} -->
+<!-- <!-- -->
+<!-- ```{r eval=FALSE, include=TRUE} -->
+<!-- ggsave(plot = Dir_scat_irr_plot, -->
+<!--        filename = paste0(plot_dir, "5_Irradiance_DLS1_DLS2_plot.jpeg"), -->
+<!--        device = jpeg, -->
+<!--        width = 15, -->
+<!--        height = 10, -->
+<!--        units = 'in', -->
+<!--        dpi = 300, -->
+<!--        bg = 'white') -->
+<!-- ``` -->
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:DLS1-vs-DLS2-irr"></span>
 <img src="Photos_&_gifs/5_Irradiance_DLS1_DLS2_plot_reDone.PNG" alt="Direct, horizontal, scattered, and spectral irradiance from the DLS2 and DLS1 method from the MicaSense exif data, flown on June 25th, 2024. Average ratio of scattered: direct irradiance componenets for the DLS1 was 0.46 and 0.09 for the DSL2." width="100%" />
 <p class="caption">
@@ -1020,6 +1149,10 @@ Figure 10.14: Direct, horizontal, scattered, and spectral irradiance from the DL
 <li><p>You have created a backup of your original data, since you will be irreversibly overwriting the exif data of the imagery. Prior to running the code below we copied all images in our MicaSense folder to a folder in the same directory as the MicaSense folder however named named MicaSense_cor. Imagery in the MicaSense_cor folder will be the imagery we will be editing, and the MicaSense folder will contain the unedited imagery</p></li>
 <li><p>The MicaSense.config has been downloaded from <a href="https://github.com/owaite/GenomeBC_BPG">GitHub</a>, the file can be found in the “Scripts” folder under MicaSense</p></li>
 </ol>
+<details>
+<summary>
+Click to show the code
+</summary>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="micasense-irradiance-correction.html#cb62-1" tabindex="-1"></a><span class="co"># Writing over exif data with corrected SSA, horizontal irradiance, direct irradiance, and scattered irradiance</span></span>
 <span id="cb62-2"><a href="micasense-irradiance-correction.html#cb62-2" tabindex="-1"></a></span>
 <span id="cb62-3"><a href="micasense-irradiance-correction.html#cb62-3" tabindex="-1"></a>corrected_directory <span class="ot">&lt;-</span> <span class="fu">paste0</span>(dir,date,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">1_Data</span><span class="sc">\\</span><span class="st">&quot;</span>,MS_folder_name,<span class="st">&quot;_cor</span><span class="sc">\\</span><span class="st">&quot;</span>) <span class="co">#i.e. this folder is called MicaSense_cor and is a copied version of the MicaSense folder, we will be correcting the exif data of images in the MicaSense_cor folder and leaving the MicaSense folder untouched with the original exif data</span></span>
@@ -1056,6 +1189,7 @@ Figure 10.14: Direct, horizontal, scattered, and spectral irradiance from the DL
 <span id="cb62-34"><a href="micasense-irradiance-correction.html#cb62-34" tabindex="-1"></a>  <span class="fu">exiftool_call</span>(call, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb62-35"><a href="micasense-irradiance-correction.html#cb62-35" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(i, <span class="st">&quot;/&quot;</span>, <span class="fu">length</span>(targets), <span class="st">&quot; updated img:&quot;</span>,img_list[i] ))</span>
 <span id="cb62-36"><a href="micasense-irradiance-correction.html#cb62-36" tabindex="-1"></a>}</span></code></pre></div>
+</details>
 <p>Lastly, check the exif data of the first and last image to ensure that the data has been properly overwritten.</p>
 
 </div>

@@ -555,6 +555,7 @@ Figure 5.8: L1 LiDAR screenshot from the remote controller during a flight at Bi
 <h3><span class="header-section-number">5.5.4</span> Zenmuse H20T: Thermal and RGB<a href="data-collection-and-flights.html#zenmuse-h20t-thermal-and-rgb" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Thermal Imaging (H20T DJI Thermal Camera): The H20T is a multi-sensor camera with thermal imaging, zoom, and wide-angle RGB (visible light) cameras in one sensor, allowing it to capture detailed visual and thermal data. The thermal sensor detects infrared radiation and converts it into temperature data, which can then be used to analyze heat signatures of objects, terrain, or structures. The H20T also integrates a laser rangefinder for accurate distance measurements, which can be useful for checking and confirming terrain following flight mission altitudes.</p>
 <p><strong>Note:</strong> The H20T was not designed for thermal mapping and the raw thermal imagery needs to be converted to single band temperature tiffs.  The methodology we developed for this conversion is detailed the Thermal Conversion chapter.</p>
+<p>GCP’s are very helpful with thermal imagery. It is dificult to confirm that the crown polygons are positionally accurate without them, especially in closed canopy sites.</p>
 <p><strong>Sensor Specifications:</strong></p>
 <ul>
 <li><p><strong>GSD:</strong> Thermal ~6cm at 70m, RGB wide ~2cm at 70m.</p></li>
@@ -570,7 +571,7 @@ Figure 5.8: L1 LiDAR screenshot from the remote controller during a flight at Bi
 <li><p><strong>Flight Speed:</strong> Recommended at 1.5-4m/s depending on site size, aim for slower speeds if possible to maximize thermal data quality.</p></li>
 <li><p><strong>Overlap:</strong> Thermal: &gt;85% front and side overlap (85x85) to ensure comprehensive coverage</p></li>
 <li><p><strong>Environmental Conditions:</strong> Best in low wind clear conditions.</p></li>
-<li><p><strong>Timing of Flight:</strong> Recommend early afternoon, 1-3 hours after solar noon.</p></li>
+<li><p><strong>Timing of Flight:</strong> Best results from early afternoon. We found that imagery taken later in the day can be overwhelmed by radiant heat and ealier has heavy “shadows” from overnight temperatures.</p></li>
 </ul>
 
 </div>
