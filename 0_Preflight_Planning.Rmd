@@ -167,7 +167,6 @@ The Senterra 6X, is a six-band (five plus RGB) sensor that is also RTK capable. 
 
 Table \@ref(tab:droneTable) shows a breakdown of drone and sensor costs, where newer versions are available, both are listed.  The * would be a “wishlist” full set up.  This is just the major purchases and doesn’t include general field equipment.  The section at the bottom details some options untested by our group.
 
-
 ### Hardware Costs
 
 Table \@ref(tab:droneTable)

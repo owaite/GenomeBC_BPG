@@ -44,11 +44,9 @@ knitr::include_graphics(here("Photos_&_gifs\\effective_overlap.png"))
 
 ### Flight planning with DJI Pilot
 
-There are various flight planning software options. We chose the DJI Pilot app, which comes installed on the remote control (RC), for its ease of use. The Big Tree creek Douglas fir site has approximately 2900 gridded tree planting positions at 2 m spacing. Because there was no accurate polygon for the site prior to the project, we marked positions for GCPs and made waypoints for the corners of the site with the DJI Pilot app during the reconnaissance flight. We then built the flight plan polygon from the corner points and added an extra margin for the first flights. Once the site corners were confirmed, for subsequent flights, we remade the polygon in a Geographic Information System (GIS) and clipped to 15 meters outside the edge trees. This polygon is the flight shape and was 2 Ha for the Big Tree site. While doing this reconnaissance flight, the pilot scouted the site for hazards and noted that, within 20 meters of the site, there were mature wildlife trees left standing after the last harvest. The median tree height for plot trees was 12.5 m however, the wildlife trees were approximately 45 m tall. To allow for a 10m safety margin above the wildlife trees the minimum elevation was set to 55 m. Additionally, the site is on a 25 percent slope, which required terrain following. Flight planning is sensor-specific: After entering the sensor, the app presents a list of options. The recommended flight parameters for each sensor are quoted in the next section.
+There are various flight planning software options. We chose the DJI Pilot app, which comes installed on the remote control (RC), for its ease of use. The Big Tree creek Douglas fir site has approximately 2900 gridded tree planting positions at 2 m spacing. Because there was no accurate polygon for the site prior to the project, we marked positions for GCPs and made waypoints for the corners of the site with the DJI Pilot app during the reconnaissance flight. We then built the flight plan polygon from the corner points and added an extra margin for the first flights. Once the site corners were confirmed, for subsequent flights, we remade the polygon in a Geographic Information System (GIS) and clipped to 15 meters outside the edge trees. This polygon is the flight shape and was 2 Ha for the Big Tree site. While doing this reconnaissance flight, the pilot scouted the site for hazards and noted that, within 20 meters of the site, there were mature wildlife trees left standing after the last harvest. The median tree height for plot trees was 12.5m however, the wildlife trees were approximately 45 m tall. To allow for a 10m safety margin above the wildlife trees the minimum elevation was set to 55 m. Additionally, the site is on a 25 percent slope, which required terrain following. Flight planning is sensor-specific, after entering the sensor, the app presents a list of options. See Figure \@ref(fig:P1-flightPlan) for a visual of the site polygon and flight parameters for a P1 flight. The recommended flight parameters for each sensor are quoted in the next section.
 
-Figure \@ref(fig:P1-flightPlan)
-
-```{r P1-flightPlan, echo=FALSE, out.width="100%", fig.cap = "Flight planning a P1 flight on the remote controller."}
+```{r P1-flightPlan, echo=FALSE, out.width="100%", fig.cap = "Flight planning a P1 flight on the remote controller. Colored lines represent terrain following elevation."}
 knitr::include_graphics(here("Photos_&_gifs\\P1_flight_plan.png"))
 ```
 
@@ -183,8 +181,7 @@ Figure \@ref(fig:drone-variable-light)
 
 ```{r drone-variable-light, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: MS orthomosaic in variable light. Right: MS orthomosaic in even diffuse light."}
 knitr::include_graphics(c(here("Photos_&_gifs\\variable_light.png"),
-                          here("Photos_&_gifs\\diffuse_light.png")
-                        )
+                          here("Photos_&_gifs\\diffuse_light.png"))
 )
 ```
 
@@ -284,10 +281,9 @@ The L1 LiDAR is used to build DTMs for terrain following when one is not availab
 
 Thermal Imaging (H20T DJI Thermal Camera): The H20T is a multi-sensor camera with thermal imaging, zoom, and wide-angle RGB (visible light) cameras in one sensor, allowing it to capture detailed visual and thermal data. The thermal sensor detects infrared radiation and converts it into temperature data, which can then be used to analyze heat signatures of objects, terrain, or structures. The H20T also integrates a laser rangefinder for accurate distance measurements, which can be useful for checking and confirming terrain following flight mission altitudes.
 
-**Note:** The H20T was not designed for thermal mapping and the raw thermal imagery needs to be converted to single band temperature tiffs.  The methodology we developed for this conversion is detailed the Thermal Conversion chapter.
+**Note:** The H20T was not designed for thermal mapping and the raw thermal imagery needs to be converted to single band temperature tiffs. Our conversion method is detailed in the [Thermal Conversion](#Thermal-Conversion) chapter.
 
 GCP's are very helpful with thermal imagery.  It is dificult to confirm that the crown polygons are positionally accurate without them, especially in closed canopy sites.
-
 
 **Sensor Specifications:**
 

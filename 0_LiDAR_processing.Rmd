@@ -36,7 +36,9 @@ The unparsed script can be found on the project GitHub, see [GitHub link](index.
     - path_to_L1_las is the path to the LiDAR .las file from DJI terra.
     - path_to_write is where the path the projected .laz file will be written to. The files will be saved out with the same file name as the origianl LiDAR file with a "_nad83" suffix.
     - "REM" works to comment out a line in LAStools as "#" does in R.
-  
+
+<details>
+<summary>Click to show the code</summary>
 ```{LAStools eval=FALSE, include=TRUE}
 REM Project DAP and save out as a .laz
 las2las -i path_to_DAP_las_file ^
@@ -59,11 +61,14 @@ las2las -i path_to_L1_las ^
 	-v
 
 ```
-
+</details>
 
 2. Drops points in the LiDAR point cloud above a user defined threshold to remove noisy points that are not from the canopy (i.e. due to air moisture, birds, etc.). To determine this height threshold you can plot a histogram of Z values or visualize the point cloud in a software that allows 3D point cloud visualization to ensure that the threshold will not result in any top canopy points being removed. Though we use CloudCompare for point cloud registration, we recommend Potree to visualize point clouds as it handles large point clouds quickly and with ease. Both Potree and CloudCompare are open-source software.
     - If you do not have any point above the canopy or below the ground that need removing you can skip this step.
     - path_to_projected_L1 is the path to the projected LiDAR .laz file from above
+    
+<details>
+<summary>Click to show the code</summary>
 ```{LAStools eval=FALSE, include=TRUE}
 REM dropping points above 160m (160m is the height cutoff for this dataset)
 las2las -i path_to_projected_L1 ^
@@ -74,15 +79,19 @@ las2las -i path_to_projected_L1 ^
 	-cpu64 ^
 	-v
 ```
+</details>
 
 3. Lastly we clip the LiDAR file to a boundary polygon of the site to remove excess surrounding data that can slow processing in CloudCompare.
     - path_to_shp is the path to the site shapefile.
     - path_to_projected_below160m_L1 is the path to .laz file that has been projected and filtered for points above a set threshold in steps 1 and 2 above.
     - "-odix _clipped" will save the new laz file with the same name as the input file with "_clipped" attached to the end, change the "_clipped" to work with your naming system.
 
+<details>
+<summary>Click to show the code</summary>
 ```{LAStools eval=FALSE, include=TRUE}
 lasclip -i path_to_projected_below160m_L1 -merged -path_to_shp -odir path_to_write -odix _clipped -olaz
 ```
+</details>
 
 ### Register LiDAR to DAP cloud in CloudCompare
 Import both the LiDAR and DAP clouds into CloudCompare (CC).  This can take up to twenty minutes.  Allow all for the first two warnings. 
@@ -173,6 +182,8 @@ The unparsed script can be found on the project GitHub, see [GitHub link](index.
     - "\*.las" takes the las file in that folder, change to the file name if have more than one .las in the folder and you want to specify a specific file.
     - Change "path_to_write\01_proj_NAD83" to the path you would like the new projected  .laz file to be written to.
 
+<details>
+<summary>Click to show the code</summary>
 ```{LAStools eval=FALSE, include=TRUE}
 set cores=4
 
@@ -186,12 +197,16 @@ las2las -i path_to_registered_lidar\*.las ^
     -v ^
     -cores %cores% 
 ```
+</details>
 
 2. Rescales the data which is necessary to later load into R for normalization and metric calculations.
     - Registered LiDAR is exported from CloudCompare at the highest resolution which changes the scale of the data, hence rescaling the x,y,z to 0.01 is necessary to avoid warnings/errors in R
     - "path_to_write" is in the input dir and the output dir because its the main folder we are now working in
     - "path_to_write\01_proj_NAD83\*.laz" selects the .laz file in the "path_to_write\01_proj_NAD83" folder, if there are more than one .laz file in your folder and you want to specify which to call, change the "*" to the name of the file.
     - The output .laz file will be written to the "path_to_write\02_rescaled" folder with the same name as the original file.
+    
+<details>
+<summary>Click to show the code</summary>
 ```{LAStools eval=FALSE, include=TRUE}
 las2las -i path_to_write\01_proj_NAD83\*.laz ^
         -rescale 0.01 0.01 0.01 ^
@@ -201,17 +216,25 @@ las2las -i path_to_write\01_proj_NAD83\*.laz ^
         -odir path_to_write\02_rescaled ^
         -olaz
 ```
+</details>
 
 3. Next the code indexes the LiDAR data. Indexing creates a ".lax" file for a given .las or .laz file that contains spatial indexing information. When this LAX file is present it will be used to speed up access to the relevant areas of the LAS/LAZ file for spatial queries.
+
+<details>
+<summary>Click to show the code</summary>
 ```{LAStools eval=FALSE, include=TRUE}
 REM Indexing
 lasindex -i path_to_write\02_rescaled\*.laz
 ```
+</details>
 
 4. Lastly tiling divides the point clouds into tiles to allow for parallel processing in the following R steps.
     - "tile_size 15" sets the size of the tiles to 15m.
     - "buffer 4 " sets the size of the buffer surrounding the tiles to 4m.
     - "flag_as_withheld " flags the buffer points so that they can be easily filtered out in the following steps in R.
+    
+<details>
+<summary>Click to show the code</summary>
 ```{LAStools eval=FALSE, include=TRUE}
 REM Creating 15m tiles 
 lastile -i path_to_write\02_rescaled\*.laz ^
@@ -221,6 +244,7 @@ lastile -i path_to_write\02_rescaled\*.laz ^
     -odir path_to_write\03_tile ^
     -olaz 
 ```
+</details>
 
 ## Normalization and individual tree point clouds
 
@@ -245,6 +269,8 @@ Note: The full code that can be found on the project [GitHub](index.html#github-
 To being, when working with LiDAR data in R, an incredibly useful package is the lidR package. We highly recommend taking a look at the [lidR bookdown](https://r-lidar.github.io/lidRbook/) for useful tips and examples on using the package. 
 
 The packages required for our workflow are:
+<details>
+<summary>Click to show the code</summary>
 ```{r eval=FALSE, include=TRUE}
 library(tidyverse)
 library(sf)
@@ -268,10 +294,12 @@ library(alphashape3d) # Creates alpha shapes used to calculate crown volume
 library(lwgeom)
 library(dplyr)
 ```
-
+</details>
 
 Here we are reading in the output tiles from the [tiling and rescaling step above](index.html#Rescale-and-tile-the-registered-LiDAR). We then drop the buffer points that were flagged as withheld in the LAStools tiling stage, set the new chunk buffer to 0.5m and set the opt_output_files to empty given that we do not want to save DTMs for the individual tiles but rather one for the entire site.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
   dir <- "set_path_to_folders"
   
@@ -282,9 +310,12 @@ Here we are reading in the output tiles from the [tiling and rescaling step abov
   opt_output_files(TILES) = ""   # set output file options for the LAScatalog object to empty
   opt_progress(TILES) = TRUE # enable progress tracking for processing
 ```
+</details>
 
 Next we create a 10cm DTM using the tin() algorithm and smooth the raster by using the mean focal statistic and a focal window of 25 by 25 cells over the DTM. As the focal window shifts over the raster, it updates the pixel that sits at its center to the mean value within the 25 x 25 cell window. We then assigned the proper CRS and exported the raster as a tif. 
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
   # Create a DTM
   DTM = grid_terrain(TILES, res = 0.1, tin(), full_raster = FALSE) %>% 
@@ -298,13 +329,14 @@ Next we create a 10cm DTM using the tin() algorithm and smooth the raster by usi
   
   writeRaster(DTM, paste0(dir, "\\04_RASTER\\", site, "_DTM_0.1m.tif"), overwrite = TRUE) #save the DTM
 ```
-
-
+</details>
 
 ### Normalizing the tiles using the DTM  
 
 The R code below reads in the tiled registered LiDAR as a LAScatalog and normalizes the tiles to the DTM made in the previous step. The normalized tiles are then saved out and read back into R to filter out points below "ground" designated to be -0.25m. Here we save out the "cleaned" normalized tiles in a new folder, however for space saving reasons you can also overwrite the original normalized tiles by setting the "opt_output_files()" parameter in the filtering step to the same path as that set for the normalization step. 
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 # Read the tiles again, but with high-res parameters
   CTG = readLAScatalog(folder = paste0(dir, "\\03_tile\\"))
@@ -328,11 +360,14 @@ The R code below reads in the tiled registered LiDAR as a LAScatalog and normali
   NORM_clean = catalog_retile(NORM) # applying the filter to all files in the catalog
   
 ```
+</details>
 
 ### Creating a 4cm CHM from the max Z values   
 
 A 4cm CHM was made using max Z values. We chose a resolution of 4cm as it gave us a good looking (no holes, no visible noise) high resolution CHM. We recommend testing out multiple resolutions at this stage to narrow down parameters that work for your data.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 # Making a 4cm resolution CHM
 CHM_max = grid_metrics(NORM_clean, #NORM_clean is the catalog the CHM is being made from
@@ -343,10 +378,11 @@ crs(CHM_max) <- CRS("+proj=utm +zone=10 +datum=NAD83") # assign a CRS to the ras
 writeRaster(CHM_max, paste0(dir, "\\04_RASTER\\", site, "_CHM_max_0.04m.tif"), overwrite = TRUE) #saving out the CHM
   
 ```
+</details>
 
 ### Segmenting tiles
 
-The normalized tiles were then segmented to only retain the top 25% of each tree. This was done using a shapefile (.shp) containing a polygon for each tree crown, see the chapter on [crown delineation](09-Crown_delineation#Crown-delineation) for a detailed workflow showing how to create crown polygons. 
+The normalized tiles were then segmented to only retain the top 25% of each tree. This was done using a shapefile (.shp) containing a polygon for each tree crown, see the chapter on [crown delineation](#crown-delineation) for a detailed workflow showing how to create crown polygons. 
 
 The threshold set for segmentation will be site specific. We chose to only retain the top 25% of the point cloud for each tree in our mature (~25 years old) sites with crown closure in order to:
   1. limit the chance of capturing invading branches in our LiDAR data
@@ -365,6 +401,8 @@ Important:
 - If zq = 0.75, then the points in the bottom 75% of the tree will be removed, leaving a point cloud for the top 25% only.
 - "treeID" is a column in our dataset that functions as a unique identifier per tree within the site, ensure you change each instance of treeID to a column containing a unique identifying for your trees. The unique identifiers can come from the experimental site setup or the [crown delineation](09-Crown_delineation#Crown-delineation) step.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 # Function that will segment the LiDAR tiles to only retain points above a defined cutoff
 polys_to_las = function(chunk, zq = zq, polygons = pols) { #edit zq = zq here if you would like the function to always use the same zq value, ie zq = 0.75, otherwise leave zq = zq as you will be able to define zq in the next code chunk
@@ -388,14 +426,15 @@ polys_to_las = function(chunk, zq = zq, polygons = pols) { #edit zq = zq here if
   } else {
     return(las3)#return the las file that has a treeID associated with it and only contains points in the top zq%
   }
-  
 }
 ```
+</details>
 
 Next we read in the normalized files, set our zq threshold and run the tiles through the polys_to_las segmentation function using the catalog_apply function.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
-
 # Read in the normalized cloud from the end of the last step
 NORM = readLAScatalog(paste0(dir, "\\06_NORM_clean\\"))
 crs(NORM) <- st_crs(26910) # setting CRS
@@ -409,6 +448,7 @@ zq = 0.75 # Height percentile to drop, here we will be filtering for the top 25%
 SEGMENTED = catalog_apply(NORM, polys_to_las) # apply the poly_to_las function to the NORM catalog
 
 ```
+</details>
 
 ### Merging segmented tiles to create one large point cloud containing the top defined height % of each tree
 
@@ -420,6 +460,8 @@ This is done to facilitate clipping out individual tree point clouds in the next
 
 - The *catalog_retile* function merges the point clouds into one large point cloud 
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 SEGMENTED = readLAScatalog(paste0(dir, "\\07_SEGMENTED\\"))
 opt_chunk_buffer(SEGMENTED) = 0 #zero buffer
@@ -432,15 +474,19 @@ opt_output_files(SEGMENTED) = paste0(dir, "\\08_MERGED\\", site, "_HULLS_merged"
 MERGED = catalog_retile(SEGMENTED) #apply the above opt_ commands
 print("merged") #print statement to show where the code is at
 ```
+</details>
 
 ### Clipping the point cloud into individual point clouds per tree
 
 This step results in individual tree point clouds that represent the top #% of the tree, where # is the height percentile defined in the segmentation step above. 
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 opt_output_files(MERGED) = paste0(dir, "\\09_CROWNS\\", site, "_fam{fam}_rep{rep}_tag{tag}_treeID{treeID}") #where the individual crown point clouds will be written to and the suffix they will have. Note values associated with the laz file will replace the names in {}
 CROWNS = clip_roi(MERGED, pols) #clip the MERGED laz file to individual crowns using the crown polygons 
 ```
+</details>
 
 Below we define the clean_crowns function that ensures that only points:
 - with the correct treeID remain in each individual tree point cloud. 
@@ -448,6 +494,8 @@ Below we define the clean_crowns function that ensures that only points:
 
 This function was added to double check that only the points that meet the criteria remain in the point clouds
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 clean_crowns = function(chunk) {
   las = readLAS(chunk) #reading in las file                 
@@ -468,13 +516,7 @@ clean_crowns = function(chunk) {
   las4 = filter_poi(las3, Z <= quantile(Z, 0.999)) #removing points too high
 }
 
-```
-
-
-
-
-```{r, eval=FALSE, echo=TRUE}
-## CLEANING crowns
+## Cleaning crowns
 CROWNS = readLAScatalog(paste0(dir, "\\09_CROWNS\\"), filter = "-drop_withheld") #read in the clipped crown point clouds
 opt_chunk_size(CROWNS) = 0 # processing by files
 opt_laz_compression(CROWNS) = TRUE
@@ -484,8 +526,7 @@ opt_output_files(CROWNS) = paste0(dir, "\\10_CROWNS_clean\\{*}") #location for o
 print("cleaning crowns")
 CROWNS_clean = catalog_apply(CROWNS, clean_crowns) #applying the clean_crowns function on the CROWNS
 ```
-
-
+</details>
 
 ## Individual Tree Metrics
 
@@ -508,6 +549,8 @@ This script calculates the following metrics for each tree:
   - Canopy Rugosity Ratio (CRR) quantifies the vertical complexity of the canopy or crown. 
   - Coefficient of variation of height quantifies the variability of points in the point cloud. This metric is often used to look at structural diversity of a stand, however we added it to look at variation in point distribution within individual trees, to give an idea of variation in vegetation density between crowns. 
   
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 Z = las@data$Z # Z values of each point in the .laz cloud
 chm = grid_metrics(las, func = ~max(Z,na.rm = TRUE), res = 0.05) # 5cm CHM with max Z values #grid_metrics, replaced by pixel_metrics :https://github.com/r-lidar/lidR/releases
@@ -557,6 +600,7 @@ if (!dir.exists(paste0(dir,"\\10_CROWNS_clean\\Structural_metrics\\"))) {
 saveRDS(structural_metrics_df, paste0(dir,"\\10_CROWNS_clean\\Structural_metrics\\",name,"_", date,"_structuralMetrics_tag",tag_value,".rds")) #USED PERT= TRUE : https://cran.r-project.org/web/packages/alphashape3d/alphashape3d.pdf
     
 ```
+</details>
 
 Below are a individual tree point cloud (left), clipped to the top 25% of the tree and its corresponding alphashape used for volume (right).
 

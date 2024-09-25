@@ -1,6 +1,6 @@
 # Data Processing: Photogrammetry pipeline.
 
-## Agisoft Photogrammetry: Processing P1 data and registering multispectral to it.
+## Agisoft Photogrammetry: Processing P1 data and registering multispectral to it {#processing-orthomosaics}
 
 Software: Agisoft LLC. (2024). _Agisoft Metashape Professional, Version 2.1.1_. 
 
@@ -74,7 +74,7 @@ knitr::include_graphics(here("Photos_&_gifs\\cal_ref_metashape.png"))
 
 2. **Micasense Corrections outside of Agisoft(if necessary)** – R Script. 2 hours.
 
-  - We have encountered incorrect irradiance data in metadata of MicaSense imagery due to incorrect measurements by the DLS2. To correct the irradiance data prior to processing we use methods from MicaSense’s DLS1 system. See the chapter on MicaSense Irradiance Correction for checks on whether your data needs correction and a detailed explanation of the correction process.
+  - We have encountered incorrect irradiance data in metadata of MicaSense imagery due to incorrect measurements by the DLS2. To correct the irradiance data prior to processing we use methods from MicaSense’s DLS1 system. See the chapter on [MicaSense Irradiance Correction](#MicaSense-Irradiance-Correction) for checks on whether your data needs correction and a detailed explanation of the correction process.
 
 3.	**Visually Assess Flight Trajectory and Disable Outliers** – Manual. 10 minutes.
 
@@ -139,7 +139,6 @@ knitr::include_graphics(here("Photos_&_gifs\\opt_camera_align_metashape.png"))
 8.	**Point based chunk alignment:** multispectral to P1 - (requires manual verification). 2-6 hours. Batch processing
 
   - Leveraging the accuracy of the P1 as a reference, the MS sparse cloud is aligned to the higher accuracy P1 sparse cloud using the batch processing steps according to the settings in Figure \@ref(fig:chunk-align-agisoft).
-Figure \@ref(fig:chunk-align-agisoft)
 ```{r chunk-align-agisoft, echo=FALSE, out.width="60%", fig.align='center',fig.cap = "Settings used for point based chunk alignment when aligning the multispectral data to the P1."}
 knitr::include_graphics(here("Photos_&_gifs\\align_chunks_metashape.png"))
 ```
@@ -154,7 +153,6 @@ knitr::include_graphics(here("Photos_&_gifs\\transposed_metashape.png"))
 
   - A dense point cloud, a high-resolution 3D representation with significantly more detail than the sparse cloud is built in this step.  First depth maps are created for each image, capturing detailed information about the distance to surfaces in the scene. These depth maps are then combined to generate the dense point cloud. This is a primary product and can be exported.  We have been building these to the highest settings as outlined in Figure \@ref(fig:DC-settings-agisoft), but if this is not required significant time can be saved by lowering the setting.  An example dense cloud is seen in Figure \@ref(fig:aligned-agisoft)
      
-Figure \@ref(fig:DC-settings-agisoft)     
 ```{r DC-settings-agisoft, echo=FALSE, out.width="60%",fig.align='center', fig.cap = "Metashape settings for building the depth maps and the dense cloud."}
 knitr::include_graphics(here("Photos_&_gifs\\DC_settings_metashape.png"))
 ```
@@ -187,6 +185,7 @@ knitr::include_graphics(here("Photos_&_gifs\\build_ortho_metashape.png"))
   - To check values - go into Raster Transform - Enable Transform
   - Select B1 (blue band). Click the circular arrows to the left of the “interpolate colors” button, then click auto and then apply. B1 should be around ~0.02 for the trees. The range it gives will be for the entire ortho so roads and other vegetation will increase the range so I suggest zooming into the ortho so you can see approximately what values correspond to trees. Repeat for B4 (green) and B10 (NIR). If the values are too large or small, i.e. B10 (NIR) > 1, choose another calibration panel, delete the ortho, recalibrate, remake the ortho and recheck the values. 
   -**Note** these values are general estimates of what a “tree” should look like however, different vegetation will have different ranges, for example values for cedar may be a little lower compared to Douglas fir.
+  
 **General benchmarks:**
 
   - B1 should be around ~0.02.
@@ -225,9 +224,6 @@ The following are helpful Agisoft processing references:
 
 The knowledge base at Agisoft also has many other useful articles.
 
-
-## Processing Orthomosaics
-
 ## Shadow Masks {#shadow-mask}
 
 Pixels containing shadows and openings in the canopy can introduce error in vegetation indices as reflectance values are often lower in shaded pixels (Malenovský et al., 2013; Zhang et al., 2024).  Masking out shaded pixels and openings within the crown is necessary to calculate accurate vegetation indices. We found masking with NIR reflectance to be a consistent and effective approach for masking out shadows and gaps. We use the NIR reflectance band (842nm) from the Micasense RedEgde-MX Dual. NIR thresholds are determined using the shape of the NIR distribution. If the NIR distribution is bimodal, the threshold is set to the local minimum, whereas if the distribution is unimodal, the threshold is set to the local maximum (Chen et al., 2007; D’Odorico et al., 2021; Otsu et al., 2019).
@@ -249,6 +245,8 @@ The above parameters were added to describe each minimum found by the function s
 
 This function will be used in the next few steps to isolate minimums in the NIR distribution.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 # This function finds local minimums and ranks how defined they are by the 'definition' attribute
 find_local_min <- function(values) { #input "values" is a list of 1st derivatives of NIR values
@@ -285,10 +283,12 @@ find_local_min <- function(values) { #input "values" is a list of 1st derivative
   return(data.frame(neg_value = neg_slope, pos_value = pos_slope, Index = index_of_closest, definition = definition, neg_def = neg_sum, pos_def = pos_sum))
 }
 ```
-
+</details>
 
 To begin, we load the necessary packages, the multispectral orthomosaic that contains the NIR (842nm) band, and the delineated crowns shapefile and create the folder where the shadow mask will be saved to:
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 #Required Packages
 library(ggplot2) # to plot 
@@ -317,8 +317,8 @@ Nir_shadow_folder_baseName <- "NIR_shadow_mask_localMinOrMax" #name of the folde
 if (!dir.exists(paste0(dir, Nir_shadow_folder_baseName,"\\"))) {
   dir.create(paste0(dir,Nir_shadow_folder_baseName,"\\"))
   }
-
 ```
+</details>
 
 Next, the NIR band is selected from the multispectral orthomosaic. Here you can choose to:
 
@@ -328,6 +328,8 @@ Next, the NIR band is selected from the multispectral orthomosaic. Here you can 
 
 Below we crop the raster to the extent of the polygons and reformat from a raster to a vector of values:
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 #Create a vector of near-infrared (NIR) values from the 10th multispectral band (842nm)
 NIR = ms_temp[[10]] %>% #isolating the NIR (842nm) band
@@ -336,17 +338,18 @@ NIR = ms_temp[[10]] %>% #isolating the NIR (842nm) band
   as.vector()
 
 ```
+</details>
 
 Density of the NIR values is calculated and plotted, after removing NA values.
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 NIR_na <- na.omit(NIR) #remove NA values from the NIR vector
 density_values <- density(NIR_na) # calculates density of NIR values
-
 # Plot to see the distribution of NIR values
 plot(density_values) # check to see the distribution of NIR values (ie a visual check for whether or not a local min exists)
-  
 ```
-
+</details>
 
 At this point the threshold can be estimated manually from the graph however, this is not a feasible method when you have many data acquisitions, nor is it the most accurate method. Below we describe the method we used to create shadow masks for many acquisitions withouth having to visually inspect the NIR distributions. To computationally find the threshold we first need to decipher whether the NIR distribution is unimodal (one peak) or multimodal (more than one peak). To do so we use the *is.multimodal* function from the LaplacesDemon package. 
 
@@ -368,6 +371,8 @@ If the distribution was not multimodal (and therefore unimodal), we found the lo
 
 **Note:** for each method there are **mode** and **thresh_name** variables defined. These variables are used to annotate the histrogram made in the next step 
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 if(is.multimodal(NIR_na)){ # if the NIR distribution is multimodal, continue to the below steps
     
@@ -412,6 +417,7 @@ if(is.multimodal(NIR_na)){ # if the NIR distribution is multimodal, continue to 
     mode <- "Unimodal"
   }
 ```
+</details>
 
 Next, we plot a histogram of the NIR values and annotate it to contain:
 
@@ -421,6 +427,8 @@ Next, we plot a histogram of the NIR values and annotate it to contain:
 
 - the mode (i.e. unimodal verse mulitmodal)
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 (hist = NIR %>% #plotting a histogram of NIR values with a vertical red line for the defined threshold value
     as_tibble() %>% 
@@ -439,7 +447,7 @@ ggsave(hist, #saving out the plot
        width = 8,
        height = 8)
 ```
-
+</details>
 
 ```{r echo=FALSE, out.width="60%", fig.align = 'center'}
 knitr::include_graphics(here("Photos_&_gifs\\multimodal_hist_canoe_2022_08_05.jfif"))
@@ -447,6 +455,8 @@ knitr::include_graphics(here("Photos_&_gifs\\multimodal_hist_canoe_2022_08_05.jf
 
 We then isolate the NIR band from the multispectral orthomosaic and filter the raster to set pixels with NIR values greater than the threshold to NA and those that are less than or equal to the threshold to 1.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 shadow_mask = ms_temp[[10]] #isolating the NIR band of the multispectral ortho
 shadow_mask[shadow_mask > threshold] = NA #for NIR values > threshold, make them NA
@@ -456,7 +466,7 @@ shadow_mask[shadow_mask <= threshold] = 1 #for NIR values < or = to the threshol
 terra::writeRaster(shadow_mask, paste0(dir, Nir_shadow_folder_baseName,"\\",  date_list[x], "_NIR_shadow_thresh",threshold ,"_",thresh_name, ".tif"),
                      overwrite = TRUE)
 ```
-
+</details>
 
 ```{r echo=FALSE, out.width="100%", fig.align = 'center'}
 knitr::include_graphics(here("Photos_&_gifs\\shadow_mask_example_no_filter_2022_08_05.PNG"))
@@ -464,18 +474,18 @@ knitr::include_graphics(here("Photos_&_gifs\\shadow_mask_example_no_filter_2022_
 
 
 Lastly, we apply the *clump* function to group adjacent pixels that represent shadows creating "clumps" a.k.a. shadow patches. These shadow patches are then converted into a dataframe containing a unique ID per shadow patch and the number of pixels within each patch. 
-
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 # Grouping adjacent pixels with the same value (i.e. representing shadowed areas) into distinct patches or clumps
 shadow_patches = raster::clump(raster::raster(shadow_mask), directions = 4) %>%
   rast()
-  
 # Summarizing the clumps obtained from the shadow patches raster. It contains two columns: 
 #1. value: representing the unique ID of each clump:
 #2. count: representing the number of pixels within each clump
 clumps = data.frame(freq(shadow_patches))
- 
 ```
+</details>
 
 Here we filter the shadow patches by a threshold to remove insignificant patches and write out the cleaned shadow mask for future use.
 
@@ -487,6 +497,8 @@ The threshold **num_pix** is calculated by:
 
 In our case, the resolution of the raster was just over ~3cm, giving us a threshold of ~23 pixels.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 # Calculating the threshold for the number of pixels that a clump must contain to be considered significant
 # It is calculated based on the desired area threshold (200 cm²) divided by the area of a single pixel
@@ -501,6 +513,7 @@ new_mask[new_mask == 0] = NA # make clumps that are zero, NA
 terra::writeRaster(new_mask, paste0(dir, Nir_shadow_folder_baseName,"\\",  date_list[x], "_NIR_shadow_thresh",threshold ,"_",thresh_name, "_mask2.tif"),
                      overwrite = TRUE)
 ```
+</details>
 
 Below you can see that in this case the filter did not result in a large change in the shadow mask as there were minimal small patches to begin with. Here the white areas in the filtered mask image on the right are areas that will not be masked given that the mask did not contain enough pixels. This will result in a less patchy shadow mask.
 
@@ -528,10 +541,11 @@ Below we describe a few commonly used VIs that will be calculated in this workfl
 
 ### VI Workflow 
 
-Below are code chunks that take the [delineated crowns](09-Crown_delineation#Crown-delineation) and [multispectral orthomosaics](Photogrametric_processing#Processing Orthomosaics) and output a .rds file containing several popular vegetation indices at the crown-level. In this script we demonstrate how to calculate both mean and median values of vegetation indices per crown.
+Below are code chunks that take the [delineated crowns](#crown-delineation) and [multispectral orthomosaics](#processing-orthomosaics) and output a .rds file containing several popular vegetation indices at the crown-level. In this script we demonstrate how to calculate both mean and median values of vegetation indices per crown.
 
 We begin by loading the necessary packages:
-
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 library(terra) # to work with the orthomosaics (rasters)
 library(dplyr) #for data manipulation
@@ -540,28 +554,29 @@ library(sf) # to work with the delineated crown polygons
 library(exactextractr) # for the exact_extract function
 
 ```
+</details>
 
-Next, we read in the mulispectral orthomosaic and shadow mask. The shadow mask will work to remove shadowed pixels so they do not skew the values for the vegetation indices. See the section on [shadow masks](Photogrametric_processing#Shadow Masks) for a detailed workflow.
+Next, we read in the multispectral orthomosaic and shadow mask. The shadow mask will work to remove shadowed pixels so they do not skew the values for the vegetation indices. See the section on [shadow masks](#shadow-mask) for a detailed workflow.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 # Load in multispectral orthomosaic 
 ms_ortho = rast(list.files(paste0(dir, "metashape\\3_MS_ORTHO\\"), pattern = ".*MS_Calibrated.*_bestPanel.tif$", full.names = TRUE)) #path to multispectral ortho
-
 # Reading in the NIR shadow mask
 shadow_mask = rast(list.files(paste0(dir, Nir_shadow_folder,"\\"),  pattern = ".*_NIR_shadow.*_thresh.*_mask2.tif$", full.names = TRUE))# NIR shadow mask
-
-
 # Below selects the root name of the multispectral ortho ie: "Name_of_multispectral_ortho" that will be used to name the multispectral shadow masked orthos created in the following steps
 ms_ortho_name_root <- substr(names(ms_ortho)[1], 1, nchar(names(ms_ortho)[1]) - 2)
-
 #names(ms_ortho)[1] grabs the name for band 1 of the ms_ortho: ie: "Name_of_multispectral_ortho_1", so that the substr function can selection the rootname as done above
-  
 ```
+</details>
 
 To speed up processing, we mask the shadow mask to only contain areas inside delineated crowns.
 
 The shadow mask is a raster containing values 1 (shadowed pixel) and NA (not shadowed pixel). The *mask* function below identifies pixels in the multispectral orthomosaic that align with shadowed pixels in the shadow mask and changes their value to NA. 
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 # Mask shadow mask to delineated crowns:
 shadow_mask <- terra::mask(shadow_mask, pols)
@@ -574,22 +589,25 @@ terra::writeRaster(ms_mask, paste0(dir, Nir_shadow_folder,"\\",ms_ortho_name_roo
                      overwrite = TRUE)
   
 ```
+</details>
 
 The shadow masked multispectral orthomosaic is then masked to the delineated crowns polygon to speed raster calculations in the next step.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
-
 # Mask shadow masked raster to delineated crowns
 ms_mask <- terra::mask(ms_mask, pols)
-
 # Write out the masked raster
 terra::writeRaster(ms_mask, paste0(dir, Nir_shadow_folder,"\\",ms_ortho_name_root,"_NirShadow_ms_mask_to_pols.tif"),
                      overwrite = TRUE)
-
 ```
+</details>
 
 Here we calculate several vegetation indices using the multispectral orthomosaic from above with shadowed pixels and non-crown pixels removed.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
 # List of band reflectances (R444 - R842) and index values that will be calculated per tree crown
 rast_list = list(
@@ -629,10 +647,9 @@ rast_list = list(
   RE_lower = (ms_mask[[8]] - ms_mask[[7]]) / 12,             
   RE_total = (ms_mask[[9]] - ms_mask[[7]]) / 35
 )
-  
 rast_all = rast(rast_list)
 ```
-
+</details>
 
 Below is an example of the resolution of the calculated vegetation indices. The image shows the chlorophyll carotenoid index (CCI) of a single crown across four summer time points. Greener pixels represent a higher ratio of chlorophylls to carotenoids. As you can see, the proportion of the crown with high CCI values increases from the May to July acquisitions, when productivity is likely at its highest, and decreases during the august acquisition suggesting lower productivity, likely due to end of summer drought conditions. 
 
@@ -644,9 +661,9 @@ Lastly, we use the *exact_extract* function to calculate crown-level statistics 
 
 **Note:** the append_cols parameter should be set to a list of column names that exist in pols  (the shapefile of delineated crowns) that you would like to be appended to the dataframe containing vegetation indcies per tree crown. As you can see below we have attached many columns we found useful, however the only column necessary to append is a column in pols that represents a unique ID per tree crown.
 
-
+<details>
+<summary>Click to show the code</summary>
 ```{r,eval=FALSE, echo=TRUE}
-
 # Calculating Mean Index values per crown
 df_spectral_mean = exact_extract(rast_all, pols, fun = "mean", append_cols = c("treeID","Edited","tag__","rep","blk","fam","fem"))
   
@@ -667,7 +684,7 @@ df_spectral_median_count <- merge(df_spectral_median,df_count, by = c("treeID","
 # Saving out median crown values + non masked pixel count to an rds file
 saveRDS(df_spectral_median_count, paste0(dir_D,"\\",updated_metrics_folder,"\\", date_list[x], "_NIRshadowMask_MedianCrownSpectralIndices.rds"))
 ```
-
+</details>
 
 References: 
 

@@ -14,7 +14,7 @@ knitr::include_graphics(here("Photos_&_gifs\\genetic_layout_P1.png"))
 
 We have recently developed a “Grid Georeferencer” plugin in QGIS that does the initial rough georeferencing of the census data. We also have a version that works in R.  Both are detailed below.
 
-**Workflow in QGIS.** 
+## Workflow in QGIS
 
 1.	The census data is examined, and a unique identifier column is found or created.
 
@@ -43,7 +43,7 @@ knitr::include_graphics(here("Photos_&_gifs\\Qgis_grid_georef.png"))
     
     4b.	Then applies an affine transformation to better fit the grid to the reference trees. It saves this as _transformed and loads it into QGIS.
 
-**Alternate Workflow in R.**
+## Alternate Workflow in R
 
 1.	The census data is examined, and a unique identifier column is found or created. 
 
@@ -69,7 +69,7 @@ knitr::include_graphics(here("Photos_&_gifs\\Qgis_grid_georef.png"))
     h.	Merge and Save Results: Merge the rotated coordinates with the original grid data. Set the CRS and save the resulting grid as a shapefile.
     i.	Plot Final Grid: Plot the final rotated grid to visualize the tree locations.
 
-**Final Steps in QGIS**
+## Final Steps in QGIS
 The grid is loaded into the GIS and examined.  The first-first corner with row 1 column 1 looks great, but the top right corner is at least 2 meters off as you can see below.  This is one of the better ones we have georeferenced.  The site is on even ground and was quite square.  Some of the sites were 6 meters off from one corner to the other.
 
 ```{r ref-trees, echo=FALSE,  fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: treeID 1, reference for the bottom left corner of the plot. Right: treeID 2757, reference for the top right of the plot"}

@@ -1,4 +1,4 @@
-# MicaSense Irradiance Correction
+# MicaSense Irradiance Correction {#MicaSense-Irradiance-Correction}
 
 ## Background
 
@@ -76,7 +76,7 @@ The DLS2:
 
 -   directly measures the sun sensor angle and the direct and diffuse irradiance components using a proprietary method that takes in information from the light sensors on the surface of the DSL2
 
-## Is Correction Needed?
+## Is Correction Needed? {#is-correction-needed}
 
 Deciding whether data needs to be corrected can be challenging. We have found that looking at these three questions can be helpful:
 
@@ -132,7 +132,7 @@ knitr::include_graphics(here("Photos_&_gifs\\time_SSA_flightlines.PNG"))
 
 Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value, plotted as the horizontal black line in Figure \@ref(fig:SSA-DSL2-data), to make an informed decision on whether or not the values need correcting.
 
-To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method which will be referred to as the "corrected" values, see section \@ref(DLS1-correction) for the correction method.
+To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method which will be referred to as the "corrected" values, see the section on [sun sensor anlge correction](#SSA-correction) for the correction method.
 
 ```{r SSA-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap=" Sun sensor angles over the flight duration from the DLS2 (purple) and corrected to mimic the DLS1 method (orange). Horizontal lines indicate the moving averages for the DLS2 (purple) and DLS1 (orange), where the balack line is the solar zenith calculated from GPS longitude, latitude, and time."}
 knitr::include_graphics(here("Photos_&_gifs\\SSA_DLS1_verse_DLS2.PNG"))
@@ -152,7 +152,7 @@ First, lets define direct and horizontal irradiance with respect to the DLS:
 
 **Horiztonal Irradiance**: The total irradiance on a horizontal surface, including both direct sunlight (projected onto the horizontal plane) and diffuse light. Hence, if the sun is directly above the sensor and it is a clear sunny day, the direct irradiance component will likely be quite close to the horizontal irradiance, however still lower given that horizontal irradiance includes diffuse light as well.
 
-Below we have plotted the direct and horizontal irradiance from the DLS2 and values calculated with the [DLS1 method](0_Micasense_Irradiance_Correction##Correcting%20Irradiance%20Values%20for%20Micasense%20Cameras) (Figure \@ref(fig:Irr-DSL2-DLS1-data). We can see that the direct irradiance from the DLS2 is greater than the horizontal irradiance, which is physically impossible. In contrast, the direct irradiance from the DLS1 method is approximately 50 W/m² less than the horizontal irradiance.
+Below we have plotted the direct and horizontal irradiance from the DLS2 and values calculated with the DLS1 method (Figure \@ref(fig:Irr-DSL2-DLS1-data) ). We can see that the direct irradiance from the DLS2 is greater than the horizontal irradiance, which is physically impossible. In contrast, the direct irradiance from the DLS1 method is approximately 50 W/m² less than the horizontal irradiance.
 
 Explanations for the lower direct irradiance from the DLS1 compared to the horizontal irradiance include:
 
@@ -160,11 +160,11 @@ Explanations for the lower direct irradiance from the DLS1 compared to the horiz
 
 -   The portion of scattered irradiance in the horizontal irradiance signal that is not included in the direct irradiance value.
 
-```{r Irr-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap="Direct and horizontal irradiance values throughout the flight from the DLS2 (purple) and corrected DLS1 method (orange)."}
+```{r Irr-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap= "Direct and horizontal irradiance values throughout the flight from the DLS2 (purple) and corrected DLS1 method (orange)."}
 knitr::include_graphics(here("Photos_&_gifs\\Hor_dir_irradiance_DLS1_v_DLS2.PNG"))
 ```
 
-From Figure \@ref(fig:Irr-DSL2-DLS1-data), we would recommend correcting the data using the [DLS1 method](0_Micasense_Irradiance_Correction##Correcting%20Irradiance%20Values%20for%20Micasense%20Cameras) outlined below
+From Figure \@ref(fig:Irr-DSL2-DLS1-data), we would recommend correcting the data using the DLS1 method outlined below
 
 ### Does the scattered: direct ratio make sense for the lighting conditions of that day?
 
@@ -172,13 +172,13 @@ For a clear sunny day around solar noon, direct radiation generally accounts for
 
 Hence, for a clear sunny day in the summer a ratio of 1:6 scattered to direct irradiance is often used as an estimate. This means that direct irradiance is around 6 times stronger than the scattered irradiance.
 
-Irradiance data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data ) from June 25th was captured on a sunny day with occasional light clouds.
+Irradiance data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data) from June 25th was captured on a sunny day with occasional light clouds.
 
 ```{r Dir-Irr-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap = "Direct and scattered irradiance values throughout the duration of the flight from the DLS2 (purple) and corrected DLS1 method (orange)."}
 knitr::include_graphics(here("Photos_&_gifs\\Dir_Scat_irradiance_DLS1_v_DLS2.PNG"))
 ```
 
-The scattered: direct ratio for the data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data ) is \~0.09 for the DLS2 and \~0.46 for the DLS1.
+The scattered: direct ratio for the data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data) is \~0.09 for the DLS2 and \~0.46 for the DLS1.
 
 **DLS2:** The ratio of 0.09 scattered:direct components from the DSL2 states that the direct irradiance during the flight was \~11 times greater than the scattered irradiance, or in other words that 91% of the total radiation reaching the earth was direct radiation and 9% was scattered radiation.
 
@@ -386,7 +386,7 @@ xmp_all_filtered_mis <- xmp_all_filtered %>% #removing images with missing date 
 <!-- print(dni) -->
 <!-- ``` -->
 
-### Caluclating Sun-Sensor Angles
+### Caluclating Sun-Sensor Angles {#SSA-correction}
 
 Here we show the difference between the archived DLS1 method and the current DLS2 method.
 
@@ -947,7 +947,7 @@ data = avg_ratio_data %>% filter(BandName %in% c("Blue")) # only need to look at
 knitr::include_graphics(here("Photos_&_gifs\\5_Irradiance_DLS1_DLS2_plot_reDone.PNG"))
 ```
 
-Refer to the section [Is Correction Needed?](0_Micasense_Irradiance_Correction##Is%20Correction%20Needed?) to help decide whether or not your data needs correcting.
+Refer to the section [Is Correction Needed?](#is-correction-needed) to help decide whether or not your data needs correcting.
 
 Up to this point, we have calculated "corrected" irradiance and sun sensor angles however have not overwritten the exif data within the MicaSense imagery. In this next step, we will overwrite image exif data with the corrected DLS1 values. Before moving on to this step ensure that :
 

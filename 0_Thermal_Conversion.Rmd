@@ -1,4 +1,4 @@
-# Thermal Conversion
+# Thermal Conversion {#Thermal-Conversion}
 
 This method converts raw imagery from the Zenmuse H20T to single band temperature tiffs. We use this method to bypass the DJI thermal analysis tool app since we had thousands of images to process and the app would often crash when a few images were uploaded. This method uses the DJI thermal analysis tool's software developer kit (SDK) instead to loop through a folder of images and return temperature rasters.
 
@@ -35,6 +35,8 @@ Here we:
 
 -   paste0("I:\\PARSER_Ext\\",site,"\\Flights\\", data_date, "\\1_Data\\H20T"), where "site" is a string of the site name that we defined prior to the for loop and data_date is a string representing the flight date that is defined in the for loop. This was done so we could easily iterate over sites and dates. Feel free to change this to match your folder structure.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 library(exiftoolr)
 library(dplyr)
@@ -74,13 +76,16 @@ for(i in 1:length(flight_dates)){
   }
 }
 ```
+</details>
 
 ## Weather Data
 
-DJI thermal's SDK requires inputs of humidity, reflection (or ambient temperature), distance, and emissivity (see section \@ref(parameters) for more detail on each of the inputs). In this section we will take hourly weather data from an on-site HOBO climate logger and calculate weighted averages for humidity and ambient temperature.
+DJI thermal's SDK requires inputs of humidity, reflection (or ambient temperature), distance, and emissivity (see section on [parameters](#parameters) for more detail on each of the inputs). In this section we will take hourly weather data from an on-site HOBO climate logger and calculate weighted averages for humidity and ambient temperature.
 
 First, we use the first and last image in the Merged_T folder to define the start and end time of the flight, along with the date of the flight as a date object.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 #getting image capture date from exif data of the first image in the H20T folder
 
@@ -106,11 +111,14 @@ end_flight_date_time <- data.frame(exif_read(paste0(dir,"\\",merged,"\\",img_las
 (flight_date <- as.Date(start_exif_flight_date$CreateDate, '%Y:%m:%d %H:%M:%S')) #the flight date as a date object
 (flight_date_filt <- as.Date(flight_date, format = '%Y-%m-%d')) #flight date in the format of 2024-03-10, YYYY-mm-dd, this ill be used in the next step to filter weather data
 ```
+</details>
 
 Next, since our weather station provided hourly measurements, we calculate a weighted average of temperature and humidity values based on time intervals. This was done to account for the fact that variables will change throughout the flight. The hourly variables are weighted in proportion to how much of the hour fell within the flight window which gives us a better estimate of the overall weather variables than if a plain average was taken.
 
 To begin, we read in the weather data and set a start time and end time of the flight. Start time is rounded down to the nearest hour (i.e. 10:15am becomes 10:00am) and end time is rounded up to the nearest hour (i.e. 11:30am becomes 12:00pm). These values will be used to filter the weather data.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 cfs_weather <- "path to weather data" #loading in HOBO weather station data
 cfs_weather$Date <- as.Date(cfs_weather$Date, format = "%m/%d/%y") #converting date in the format m/d/Y to a date object written as YYY-mm-dd
@@ -119,6 +127,7 @@ start_time_avg <- "10:00:00" #Based off of start_flight_date_time of 10:15am
 stop_time_avg <- "12:00:00" #Based off of end_flight_date_time of 11:30am
 
 ```
+</details>
 
 For simplicity we kept weights as 0.25 (15min), 0.5 (30min), 0.75 (45min) or 1 (1 hr) and rounded the start time to the earliest 15 min marker and the end time to the latest 15 min marker. For example, for a flight that started at 10:03am and ended at 11:09am, we rounded 10:03am to 10:00am and 11:09am to 11:15am.
 
@@ -130,6 +139,8 @@ Weights for start, middle, and end hours:
 
 -   The end weight applies similarly for the last hour of the flight. If the flight ends at 11:30, 30 minutes (or 0.5 of the hour) are included in that hour, so the end weight is 0.5.
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 #Ie: Flight starts at 10:15am and ends at 11:30am
 start_weight <- 0.75 # 75% of 10am
@@ -171,6 +182,7 @@ flight_amb_temp <- Canoe_flight_table[Canoe_flight_table$date == flight_date, "a
 flight_amb_temp
 
 ```
+</details>
 
 ## DJI Thermal SDK: temperature conversion
 
@@ -186,6 +198,8 @@ The parameters required as inputs for DJI thermal's SDK are:
 
 -   **Emissivity**: The emissivity of a material is a measure of its ability to emit energy as thermal radiation. The default value is 1. We used a value of 0.98 as an estimate for all conifers (Rubio et al., 1997).
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 #setting parameters:
 (flight_amb_temp) # already set above, () to print out the value in the console to ensure it is the correct one
@@ -193,6 +207,7 @@ The parameters required as inputs for DJI thermal's SDK are:
 distance <- 25 # max distance that can be set
 emissivity <- 0.98 # approximate value for trees
 ```
+</details>
 
 ### Running the SDK
 
@@ -200,6 +215,8 @@ The SDK is run using a batch script that calls the SDK in a for loop to iterate 
 
 The original [.bat file](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/DJI_SDK_loop.bat) can be found on GitHub and looks like this:
 
+<details>
+<summary>Click to show the code</summary>
 ```{cmd, eval=FALSE, echo=TRUE}
 REM to change dir to the location of this file
 REM start time used to average humidity and temperature values: start_time_avg
@@ -216,6 +233,7 @@ C:\dji_thermal_sdk_v1.3_20220517\utility\bin\windows\release_x64\dji_irp.exe -s 
 )
 pause
 ```
+</details>
 
 This script makes a folder called DJI_SDK_raw in the directory the .bat is saved in (which will become the Merged_T folder once we copy it over in the below code) and converts the imagery in the Merged_T folder ending in .JPG to temperature using DJI's thermal anlysis tool's SDK.
 
@@ -229,6 +247,8 @@ Before continuing to the next steps:
 
     -   i.e. replace the "C:\\dji_thermal_sdk_v1.3_20220517\\utility\\bin\\windows\\release_x64\\dji_irp.exe" in the above script to the directory you saved the dji_irp.exe file from step 2
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 omp_dir <- "C:/Users/owaite/Documents/Scripts/DJI_SDK_TemperatureConversion_Script" #change to the directory where you saved the original .bat script from the above GitHub link to
 
@@ -256,12 +276,16 @@ fileConn <- file(paste0(dir,"\\",merged,"\\DJI_SDK_loop_updated.bat"))
 writeLines(bat_new, fileConn)
 close(fileConn)
 ```
+</details>
 
 Next, we run the updated .bat file in windows terminal using the R code below. This will automatically output a folder of new raw images with temperature in binary saved to the Merged_T/DJI_SDK_raw folder
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 shell.exec(paste0(dir,"\\",merged,"\\DJI_SDK_loop_updated.bat"))
 ```
+</details>
 
 ## Convert to Raster
 
@@ -273,6 +297,8 @@ The following R script:
 
 -   updates the new temperature raster with exif data from original \_T.JPG H20T imagery
 
+<details>
+<summary>Click to show the code</summary>
 ```{r, eval=FALSE, echo=TRUE}
 dir_raw <- paste0(dir,"\\",merged,"\\DJI_SDK_raw\\")
 raw_list <- list.files(dir_raw) #check this is a list of the images saved out from the SDK step above
@@ -332,6 +358,7 @@ for (i in 1:length(raw_list)){#loop that only writes out a folder with the Tempe
 end.time <- Sys.time()
 (time.taken <- round(end.time - start.time,2)) #time taken for the script to run
 ```
+</details>
 
 The output are single band thermal tiffs that can be loaded into metashape to create a thermal orthomosaic.
 
