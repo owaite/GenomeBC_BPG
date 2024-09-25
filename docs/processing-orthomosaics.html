@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Abstract | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
-  <meta name="description" content="Chapter 1 Abstract | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <title>Chapter 6 Agisoft Photogrammetry pipeline | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
+  <meta name="description" content="Chapter 6 Agisoft Photogrammetry pipeline | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Abstract | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta property="og:title" content="Chapter 6 Agisoft Photogrammetry pipeline | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Abstract | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta name="twitter:title" content="Chapter 6 Agisoft Photogrammetry pipeline | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
   
   
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="background-and-basis-of-knowledge.html"/>
+<link rel="prev" href="data-collection-and-flights.html"/>
+<link rel="next" href="Georeferencing-Plot-Trees.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -284,21 +284,292 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="abstract" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Abstract<a href="abstract.html#abstract" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>There is significant potential for broad deployment of scalable drone-mounted remote sensing technologies in forestry. For example, forest genetics programs rely on large-scale phenotyping of individual trees throughout pre-selection, selection, and post-selection to inform seed choices that will promote resilient, productive forests. However, the number of sites and trees within sites that can be phenotyped is often constrained by the time and cost of labour. As climate change intensifies environmental stress for forest trees and forestry policies shift towards a focus on climate adaptation, there is increased need for efficient and cost-effective data collection methods to measure key phenotypic traits relating to climate adaptation and resilience. Drone-mounted sensors can be used to quantify a range of standard phenotypic data (i.e. height) and novel traits (i.e. vegetation indices) with data captured over entire trials within hours.</p>
-<p>The information and workflows in this guide are informed by a collaborative project. Our team included the University of British Columbia (UBC), Natural Resources Canada (NRCan) and the BC provincial Ministry of Forests (MOF). The project objective was to use remote sensing tools to better understand how trees respond to climatic stressors by analyzing phenotypic (i.e. spectral indices and structural metrics) and genetic correlations at the tree level to guide genetics programs in the selection of trees better able to cope with future climates.</p>
-<p>This guide is intended as a resource for the forestry community interested in incorporating remote-sensing tools for phenotyping. While this platform was built on gridded forest genetics trials, the data collection and processing on any gridded forest research trial capturing individual tree data would essentially remain the same. This guide covers ideal site selection for the remote sensing tools, flight preparations, equipment considerations and parameters, data management, step-by-step LiDAR and photogrammetric (multispectral and RGB imagery) workflows, tree georeferencing and crown delineation workflows, and a breakdown of equipment cost. All workflows are illustrated step-by-step with example images and code. This information has been published as a living bookdown document to allow for updates and the incorporation of edits by readers. It is designed to be a start to finish workflow with the final product being individual tree metrics and vegetation indices for analysis.</p>
-<p>See the index for a more detailed breakdown of the information provided</p>
+<div id="processing-orthomosaics" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Agisoft Photogrammetry pipeline<a href="processing-orthomosaics.html#processing-orthomosaics" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Processing P1 data and registering multispectral to it</strong></p>
+<p>Software: Agisoft LLC. (2024). <em>Agisoft Metashape Professional, Version 2.1.1</em>.</p>
+<p>We use Agisoft Metashape Pro to process aerial photogrammetry into orthomosaics. The following is a complete workflow for processing a P1 RGB that is geometrically accurate, registering the less accurate multispectral imagery to it, and producing calibrated ten band orthomosaics for further processing into vegetative indices. We process all DAP flights from the same site on the same day in one Agisoft project. Each flight is referred to as a “chunk” by Agisoft. In this case we are processing both a MS and MS_P chunk in order to test and provide examples, but normally only one would be used. The settings used will vastly affect processing times and quality and each setting has been carefully considered.</p>
+<p>Agisoft processes can be started using GUI tools or scripted using the python console. We don’t use a full scripted workflow as there are several manual steps outlined below, but we do use snippets of code for some steps.</p>
+<p>The workflow is based on a site approximately 1.5 Ha buffered to 2Ha and the raw data would be approximately:</p>
+<ul>
+<li>P1 (RGB): 500 photos and 12 GB of data</li>
+<li>MS_P (10 band plus panchro): 12,000 photos equaling 42 GB</li>
+<li>MS (10 band): 10,500 photos equaling 25GB</li>
+</ul>
+<div id="overview." class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Overview.<a href="processing-orthomosaics.html#overview." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Run the Opening script that will import all photos for each chunk and locate the calibration panel captures for the multispectral chunks. Then saves to the project file structure.</li>
+<li>Manually assess all flight lines and disable outliers.</li>
+<li>Build the P1 through to orthomosaic using the settings detailed below.</li>
+<li>Confirm the P1 is aligned to the GCPs and template P1 if this is not the primary flight.</li>
+<li>For each of the other DAP sensors, specifically MS and MS_P chunks, build through to orthomosaic following the steps outlined below paying particular attention to the chunk align.</li>
+<li>Check the ortho registration and reflectance values.</li>
+<li>Run the closing script for each multispectral sensor after entering the variables into the script. This script will:
+<ul>
+<li>Normalize the 16bit pixel values.<br />
+</li>
+<li>Import the 15m buffered shape of the trial and export the orthomosaic clipped to this shape in NAD83 to the project specific folder.</li>
+</ul></li>
+</ol>
+<p>Approximate processing times:</p>
+<ul>
+<li>~12 hours for the P1 RGB.</li>
+<li>~18-38 hours for each of the Micasense Dual sensors, with the MS_P on the higher end.</li>
+</ul>
+<p>This process produces an Agisoft folder with the P1 and MS chunks containing ~80GB of files.
+The exported orthomosaic tifs contain 10 (MS) or 11 (MS_P) bands and are ready for analysis.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:aligned-agisoft"></span>
+<img src="Photos_&_gifs/Aligned_agisoft.png" alt="A dense point cloud processed in Agisoft Metashape with the camera locations turned on and disabled flight trajectories shown." width="100%" />
+<p class="caption">
+Figure 6.1: A dense point cloud processed in Agisoft Metashape with the camera locations turned on and disabled flight trajectories shown.
+</p>
+</div>
+<p><strong>Coordinate Reference Systems:</strong></p>
+<ul>
+<li>DJI drones and GNSS units work in the geodetic coordinate system (GCS) WGS84, EPSG:4326</li>
+<li>We chose to work in WGS84 during photogrammetry processing until exporting orthomosaics. We export orthomosaics for further processing into the coordinate reference system NAD83/UTM.</li>
+</ul>
+<p><strong>Agisoft Preferences Setup:</strong>
+Prior to commencing processing, we recommend the following settings in Tools-Preferences.</p>
+<ul>
+<li>GPU tab: Uncheck the Use CPU when performing GPU accelerated processing. This will free up your CPU during the heavy processing steps.</li>
+<li>Advanced tab: The settings in Figure <a href="processing-orthomosaics.html#fig:metashape-pref">6.2</a> are recommended.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:metashape-pref"></span>
+<img src="Photos_&_gifs/metashape_pref.png" alt="Recommended Metashape preferences setup in Tools, Metashape Preferences, under the Advanced tab." width="50%" /><img src="Photos_&_gifs/metashape_pref_2.png" alt="Recommended Metashape preferences setup in Tools, Metashape Preferences, under the Advanced tab." width="50%" />
+<p class="caption">
+Figure 6.2: Recommended Metashape preferences setup in Tools, Metashape Preferences, under the Advanced tab.
+</p>
+</div>
+</div>
+<div id="detailed-workflow" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Detailed Workflow<a href="processing-orthomosaics.html#detailed-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><strong>Load Photos and locate calibration panels</strong> - Script (or GUI). 15 minutes.</li>
+</ol>
+<ul>
+<li>Agisoft processes all ten bands as a multicamera with one primary channel. We import imagery using a python script located here on GitHub. However, you can also import folders containing imagery in metashape via the import tool or by dragging and dropping the folder into the specified chunk.</li>
+<li>This will import all photos for each chunk, then locate the calibration panel captures for the multispectral and move them to a “Calibration images” folder in the Agisoft Workspace tab. If you chose to manually import imagery, you can locate calibration panels using the Calibrate Reflectance tool in the Tools GUI as seen below in Figure <a href="processing-orthomosaics.html#fig:cal-ref-agisoft">6.3</a>.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cal-ref-agisoft"></span>
+<img src="Photos_&_gifs/cal_ref_metashape.png" alt="Calibrate reflectance tool found under Tools in Metashape." width="100%" />
+<p class="caption">
+Figure 6.3: Calibrate reflectance tool found under Tools in Metashape.
+</p>
+</div>
+<p><strong>Note:</strong> To process a pansharpened image the MS_P sensor requires the panchromatic camera to be set as the primary channel for processing. Go to Tools – Set Primary Channel – select Panchro.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Micasense Corrections outside of Agisoft(if necessary)</strong> – R Script. 2 hours.</li>
+</ol>
+<ul>
+<li>We have encountered incorrect irradiance data in metadata of MicaSense imagery due to incorrect measurements by the DLS2. To correct the irradiance data prior to processing we use methods from MicaSense’s DLS1 system. See the chapter on <a href="MicaSense-Irradiance-Correction.html#MicaSense-Irradiance-Correction">MicaSense Irradiance Correction</a> for checks on whether your data needs correction and a detailed explanation of the correction process.</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Visually Assess Flight Trajectory and Disable Outliers</strong> – Manual. 10 minutes.</li>
+</ol>
+<ul>
+<li>The MS cameras start taking pictures as soon as image capture has been started via the webpage on the ground and don’t stop until we power off at the end of the flight. Hence, we examine the flight trajectory and disable photos taken during flight to and from the site.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cal-ref-sunPanel-agisoft"></span>
+<img src="Photos_&_gifs/cal_ref_sun_panel_metashape.png" alt="Calibrate reflectance tool found under Tools in Metashape with sun sensor and reflectance panels enabled for calibration." width="100%" />
+<p class="caption">
+Figure 6.4: Calibrate reflectance tool found under Tools in Metashape with sun sensor and reflectance panels enabled for calibration.
+</p>
+</div>
+<ol start="4" style="list-style-type: decimal">
+<li><strong>Select the Best Calibration Panels and Calibrate Reflectance</strong> – Manual and Processed. 15 minutes.</li>
+</ol>
+<ul>
+<li>Each panel has a unique set of calibration values provided by the manufacturer in a csv. The Select Panel button in the Calibrate Reflectance tool will direct you to import the csv.</li>
+<li>Agisoft Metashape takes the latest before the flight and the earliest after the flight panel captures and linearly interpolates between them.</li>
+<li>We select one panel capture from the start and one from the end of the flight, by visually selecting a centered capture without shadow or glare and moving the rest to an “Unused_Cal_Images” folder (this folder needs to be created in the GUI).</li>
+<li>We run the calibration process using both the DLS and Calibration Panels checked in . However, Micasense recommends only calibrating with panels on full sun days. Please refer to the <a href="https://support.micasense.com/hc/en-us/articles/224893167-Best-practices-Collecting-Data-with-MicaSense-Sensors#:~:text=Hold%20the%20aircraft%20at%20chest,offset%20slightly%20to%20prevent%20shadows.">Micasense Knowledge Base - Best practices: Collecting Data with MicaSense Sensors</a> for more details.</li>
+</ul>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>Align Photos</strong> – GUI - Processed. 3-10 hours.</li>
+</ol>
+<ul>
+<li>Photogrammetric alignment is the process of matching and orienting overlapping images by identifying common features known as tie points, across multiple images. This alignment generates a geometrically accurate sparse point cloud from the tie points.</li>
+<li>We use the batch processing tool and settings as seen in Figure @ref(fig: align-photo-agisoft).</li>
+<li>The sparse clouds vary greatly in density, the P1 clouds on a closed canopy can be as low as 150,000 points. The MS_P sparse clouds could be 48 million points on the same flight plan.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:align-photo-agisoft"></span>
+<img src="Photos_&_gifs/align_photos_metashape.png" alt="Photogrametric camera alignment settings using the alignment tool in Metashape" width="40%" />
+<p class="caption">
+Figure 6.5: Photogrametric camera alignment settings using the alignment tool in Metashape
+</p>
+</div>
+<ol start="6" style="list-style-type: decimal">
+<li><strong>Import and Align GCPs</strong> – Manual. 15 minutes.</li>
+</ol>
+<ul>
+<li>The GCP coordinates are imported in WGS 84.</li>
+<li><strong>Note</strong> GCPs can be used either actively as control points in which case they will “pull” the images into alignment or passively as check points to measure error.</li>
+<li>We are only using GCPs as check points now, but they will be implemented if registration fails.
+-Instructions to align GCPs if necessary
+<ul>
+<li>In the Reference pane check GCP_1 right click on it and filter photos by marker</li>
+<li>Open the photos tab, and double click the first photo. Drag the marker to the center of the photo. Do this for several photos - then click on the update transform tool found in the Reference pane.</li>
+<li>Scroll through at least 3 more pics to make sure they are aligned.</li>
+<li>Repeat for each GCPs hitting update transform tool located in the reference panel once you have set the photos.</li>
+<li>Leave at least one GCP for a “checkpoint”.</li>
+</ul></li>
+</ul>
+<ol start="7" style="list-style-type: decimal">
+<li><strong>Sparse Cloud - Filter and Optimize Camera Alignment</strong> - manual. 30-45 minutes.</li>
+</ol>
+<ul>
+<li>This iterative step filters the sparse cloud for outliers and optimizes the camera calibration. Most literature suggests more aggressive filtering, but on closed canopy sites this tends to cause loss. Visually assess the cloud at each stage to confirm the sparse cloud is not becoming too sparse.</li>
+<li>In the GUI select Model – Gradual Selection – Reconstruction Uncertainty: Adjust the slider until the value is 25-75, while selecting a Max of %10 of the points.</li>
+<li>In Figure <a href="processing-orthomosaics.html#fig:sparseCloud-agisoft">6.6</a>, there are 400,000 points selected out of 40 million and the uncertainty is at 30.</li>
+<li>Hit okay and delete to remove points.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sparseCloud-agisoft"></span>
+<img src="Photos_&_gifs/sparse_cloud_metashape.png" alt="Sparse cloud created in image alignment. Pink points are those selected by the Gradual Selection tool that have a reconstruction uncertainty greater than or equal to 30.4608. These points will be filtered out." width="100%" />
+<p class="caption">
+Figure 6.6: Sparse cloud created in image alignment. Pink points are those selected by the Gradual Selection tool that have a reconstruction uncertainty greater than or equal to 30.4608. These points will be filtered out.
+</p>
+</div></li>
+<li>Next we optimize the camera alignment. Tools - Optimize Camera Alignment: default settings as in Figure <a href="processing-orthomosaics.html#fig:opt-align-agisoft">6.7</a>.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:opt-align-agisoft"></span>
+<img src="Photos_&_gifs/opt_camera_align_metashape.png" alt="Settings used for the Optimize Camera Alignment tool" width="60%" />
+<p class="caption">
+Figure 6.7: Settings used for the Optimize Camera Alignment tool
+</p>
+</div>
+<ul>
+<li>We now go through the same steps again filtering points and optimizing the cameras for the following settings.</li>
+<li>Model – Gradual Selection – Projection Accuracy: 5-20. Max%10</li>
+<li>Optimize Camera Alignment at stock - check estimate tiepoint covariance</li>
+<li>Model – Gradual Selection – Reprojection Error: 0.3-1. Max%10</li>
+<li>Optimize Camera Alignment at stock with fit additional corrections and estimate tiepoint covariance.</li>
+<li>Finally using the select tool we manually clip any edge points not cohesive to the flight.</li>
+</ul>
+<ol start="8" style="list-style-type: decimal">
+<li><strong>Point based chunk alignment:</strong> multispectral to P1 - (requires manual verification). 2-6 hours. Batch processing</li>
+</ol>
+<ul>
+<li>Leveraging the accuracy of the P1 as a reference, the MS sparse cloud is aligned to the higher accuracy P1 sparse cloud using the batch processing steps according to the settings in Figure <a href="processing-orthomosaics.html#fig:chunk-align-agisoft">6.8</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:chunk-align-agisoft"></span>
+<img src="Photos_&_gifs/align_chunks_metashape.png" alt="Settings used for point based chunk alignment when aligning the multispectral data to the P1." width="60%" />
+<p class="caption">
+Figure 6.8: Settings used for point based chunk alignment when aligning the multispectral data to the P1.
+</p>
+</div></li>
+<li>Visually confirm each multispectral has in fact aligned by seeing the [T] for transposed as in Figure <a href="processing-orthomosaics.html#fig:chunk-align-agisoft">6.8</a>. If the chunk align on medium setting fails, try again on low. If this also fails, you will need to align with GCP’s or attempt georeferencing the output orthomosaics in a GIS.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:chunk-align-confirm-agisoft"></span>
+<img src="Photos_&_gifs/transposed_metashape.png" alt="Visual of the [T] that will appear next to chunks that have successfully aligned via chunk alignment." width="60%" />
+<p class="caption">
+Figure 6.9: Visual of the [T] that will appear next to chunks that have successfully aligned via chunk alignment.
+</p>
+</div>
+<ol start="9" style="list-style-type: decimal">
+<li><strong>Build Depth Maps and Dense Cloud</strong> – Script or Batch Process. 5-24 hours.</li>
+</ol>
+<ul>
+<li>A dense point cloud, a high-resolution 3D representation with significantly more detail than the sparse cloud is built in this step. First depth maps are created for each image, capturing detailed information about the distance to surfaces in the scene. These depth maps are then combined to generate the dense point cloud. This is a primary product and can be exported. We have been building these to the highest settings as outlined in Figure <a href="processing-orthomosaics.html#fig:DC-settings-agisoft">6.10</a>, but if this is not required significant time can be saved by lowering the setting. An example dense cloud is seen in Figure <a href="processing-orthomosaics.html#fig:aligned-agisoft">6.1</a></li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DC-settings-agisoft"></span>
+<img src="Photos_&_gifs/DC_settings_metashape.png" alt="Metashape settings for building the depth maps and the dense cloud." width="60%" />
+<p class="caption">
+Figure 6.10: Metashape settings for building the depth maps and the dense cloud.
+</p>
+</div>
+<ol start="10" style="list-style-type: decimal">
+<li><strong>Build DEM</strong> – Script or Batch Processed. ~1 hour.</li>
+</ol>
+<ul>
+<li>Generates a Digital Elevation Model from the dense cloud data. Batch settings in Figure <a href="processing-orthomosaics.html#fig:DEM-settings-agisoft">6.11</a></li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DEM-settings-agisoft"></span>
+<img src="Photos_&_gifs/build_DEM_metashape.png" alt="Metashape settings for DEM generation." width="60%" />
+<p class="caption">
+Figure 6.11: Metashape settings for DEM generation.
+</p>
+</div>
+<ol start="11" style="list-style-type: decimal">
+<li><strong>Build Orthomosaic</strong> – Script - Processed. 1-4 hours.</li>
+</ol>
+<ul>
+<li>Creates an orthomosaic by stitching together the aligned images and the DEM according to batch processing steps in Figure <a href="processing-orthomosaics.html#fig:ortho-settings-agisoft">6.12</a>.</li>
+<li><strong>NOTE: We do NOT enable hole filling for multispectral</strong> – only used for RGB orthomosaics that were needed strictly for visual purposes and not analysis.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ortho-settings-agisoft"></span>
+<img src="Photos_&_gifs/build_ortho_metashape.png" alt="Metashape settings for building the orthomosaic." width="60%" />
+<p class="caption">
+Figure 6.12: Metashape settings for building the orthomosaic.
+</p>
+</div>
+<ol start="12" style="list-style-type: decimal">
+<li>**Check Orthomosaic Registration* - Manual. 15 minutes to redo from GCP alignment.</li>
+</ol>
+<ul>
+<li>The orthomosaic is checked for alignment to the GCPs. If it is not close on each GCP, we go back and try alignment with GCPs. It is very important to check all corners, as occasionally three out of four will align beautifully, and the fourth will be 25-50cm out of alignment.</li>
+<li>In the cases where we were unable to establish GCPs the orthomosaic is exported and checked against the P1 in a GIS.</li>
+</ul>
+<ol start="13" style="list-style-type: decimal">
+<li><strong>Sanity Check Reflectance Values</strong> – Manual. 15 minutes – 2 hours if remaking orthomosaics.</li>
+</ol>
+<ul>
+<li>The orthomosaic is sanity checked for reflectance values. We look at the histogram of three different bands to ensure the values make sense. If they do not, another calibration panel is chosen, the reflectance is recalibrated, and the orthomosaic is rebuilt.</li>
+<li>To check values - go into Raster Transform - Enable Transform</li>
+<li>Select B1 (blue band). Click the circular arrows to the left of the “interpolate colors” button, then click auto and then apply. B1 should be around ~0.02 for the trees. The range it gives will be for the entire ortho so roads and other vegetation will increase the range so I suggest zooming into the ortho so you can see approximately what values correspond to trees. Repeat for B4 (green) and B10 (NIR). If the values are too large or small, i.e. B10 (NIR) &gt; 1, choose another calibration panel, delete the ortho, recalibrate, remake the ortho and recheck the values.
+-<strong>Note</strong> these values are general estimates of what a “tree” should look like however, different vegetation will have different ranges, for example values for cedar may be a little lower compared to Douglas fir.</li>
+</ul>
+<p><strong>General benchmarks:</strong></p>
+<ul>
+<li>B1 should be around ~0.02.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:b1-check-ref-agisoft"></span>
+<img src="Photos_&_gifs/reflectance_values_metashape.png" alt="Raster calculator tool in Metashape to look at reflectance values of trees for band 1 (Blue - 444nm) prior to exporting the orthomosaic." width="100%" />
+<p class="caption">
+Figure 6.13: Raster calculator tool in Metashape to look at reflectance values of trees for band 1 (Blue - 444nm) prior to exporting the orthomosaic.
+</p>
+</div></li>
+<li>B4 should be around ~0.06
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:b4-check-ref-agisoft"></span>
+<img src="Photos_&_gifs/b4_reflectance_values_metashape.png" alt="Reflectance values of trees for band 4 (Green - 560nm)." width="100%" />
+<p class="caption">
+Figure 6.14: Reflectance values of trees for band 4 (Green - 560nm).
+</p>
+</div></li>
+<li>B10 should be around ~0.3 – 0.5, but shouldn’t exceed 0.7
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:b10-check-ref-agisoft"></span>
+<img src="Photos_&_gifs/b10_reflectance_values_metashape.png" alt="Reflectance values of trees for band 10 (NIR - 842nm)." width="100%" />
+<p class="caption">
+Figure 6.15: Reflectance values of trees for band 10 (NIR - 842nm).
+</p>
+</div></li>
+</ul>
+<ol start="14" style="list-style-type: decimal">
+<li>Normalize, pan sharpen and export – Script 5 minutes.</li>
+</ol>
+<ul>
+<li>Run the closing script for each multispectral sensor after entering the variables into the script. This script will:
+<ul>
+<li>Normalize the 16bit pixel values for the MS. For the MS_P it will normalize and pan sharpen.</li>
+<li>Import the 15m buffered shape of the trial and export the orthomosaic clipped to this shape in NAD83 to the project specific folder.</li>
+</ul></li>
+</ul>
+<p>The following are helpful Agisoft processing references:</p>
+<ul>
+<li><p><a href="https://www.agisoft.com/downloads/user-manuals/">Agisoft Metashape User Manual: Professional Edition, Version 2.1.</a></p></li>
+<li><p><a href="https://pubs.usgs.gov/publication/ofr20211039">USGS_ Processing Coastal Imagery With Agisoft Metashape Professional Edition</a></p></li>
+<li><p><a href="https://support.micasense.com/hc/en-us/articles/360002693373-Process-MicaSense-sensor-data-in-Agisoft-Metashape">Micasense - Process MicaSense sensor data in Agisoft Metashape</a></p></li>
+<li><p><a href="https://pressbooks.bccampus.ca/ericsaczuk/">Processing Multi-spectral Imagery with Agisoft MetaShape Pro</a></p></li>
+</ul>
+<p>The knowledge base at Agisoft also has many other useful articles.</p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="background-and-basis-of-knowledge.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="data-collection-and-flights.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="Georeferencing-Plot-Trees.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -329,7 +600,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/owaite/GenomeBC_BPG/edit/main/0_Abstract.Rmd",
+"link": "https://github.com/owaite/GenomeBC_BPG/edit/main/0_Photogrametric_processing.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -337,7 +608,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/owaite/GenomeBC_BPG/blob/main/0_Abstract.Rmd",
+"link": "https://github.com/owaite/GenomeBC_BPG/blob/main/0_Photogrametric_processing.Rmd",
 "text": null
 },
 "download": null,

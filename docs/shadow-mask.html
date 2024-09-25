@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 9 Shadow Masks | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
+  <meta name="description" content="Chapter 9 Shadow Masks | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 9 Shadow Masks | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 9 Shadow Masks | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  
+  
+  
+
+<meta name="author" content="Jake King*, Olivia Waite, Miriam Isaac-Renton, Nicholas C. Coops, Samuel Grubinger, Liam Irwin, Lise Van Der Merwe, Jon Degner, Alex Liu" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="crown-delineation.html"/>
+<link rel="next" href="crown-level-vegetation-indicies-vegetation-indicies.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Drone Based Phenotyping for Research Trials</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#github-link"><i class="fa fa-check"></i>GitHub link</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-cite-this-report"><i class="fa fa-check"></i>How to cite this report:</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="abstract.html"><a href="abstract.html"><i class="fa fa-check"></i><b>1</b> Abstract</a></li>
+<li class="chapter" data-level="2" data-path="background-and-basis-of-knowledge.html"><a href="background-and-basis-of-knowledge.html"><i class="fa fa-check"></i><b>2</b> Background and basis of knowledge</a></li>
+<li class="chapter" data-level="3" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html"><i class="fa fa-check"></i><b>3</b> Range of Sites Assessed</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html#jordan-river"><i class="fa fa-check"></i><b>3.1</b> Jordan River</a></li>
+<li class="chapter" data-level="3.2" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html#powell-river"><i class="fa fa-check"></i><b>3.2</b> Powell River</a></li>
+<li class="chapter" data-level="3.3" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html#sites"><i class="fa fa-check"></i><b>3.3</b> 2024 Sites</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="preflight-planning.html"><a href="preflight-planning.html"><i class="fa fa-check"></i><b>4</b> Preflight Planning</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="preflight-planning.html"><a href="preflight-planning.html#achieving-positional-accuracy-on-multi-temporal-and-multi-sensor-data-collections"><i class="fa fa-check"></i><b>4.1</b> Achieving positional accuracy on multi-temporal and multi-sensor data collections</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="preflight-planning.html"><a href="preflight-planning.html#kinematic-processing-rtkppk"><i class="fa fa-check"></i><b>4.1.1</b> Kinematic processing: RTK/PPK</a></li>
+<li class="chapter" data-level="4.1.2" data-path="preflight-planning.html"><a href="preflight-planning.html#ground-control-points-gcp"><i class="fa fa-check"></i><b>4.1.2</b> Ground Control Points (GCP)</a></li>
+<li class="chapter" data-level="4.1.3" data-path="preflight-planning.html"><a href="preflight-planning.html#absolute-and-relative-reference-with-precise-point-positioning-ppp"><i class="fa fa-check"></i><b>4.1.3</b> Absolute and Relative Reference with Precise Point Positioning (PPP)</a></li>
+<li class="chapter" data-level="4.1.4" data-path="preflight-planning.html"><a href="preflight-planning.html#terrain-following-on-sites-with-elevation-change"><i class="fa fa-check"></i><b>4.1.4</b> Terrain Following on Sites with Elevation Change</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="preflight-planning.html"><a href="preflight-planning.html#site-selection-considerations"><i class="fa fa-check"></i><b>4.2</b> Site Selection Considerations</a></li>
+<li class="chapter" data-level="4.3" data-path="preflight-planning.html"><a href="preflight-planning.html#drone-and-sensors-what-will-i-need-to-purchase-and-how-much-will-it-cost"><i class="fa fa-check"></i><b>4.3</b> Drone and Sensors: What will I need to purchase and how much will it cost?</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="preflight-planning.html"><a href="preflight-planning.html#hardware-costs"><i class="fa fa-check"></i><b>4.3.1</b> Hardware Costs</a></li>
+<li class="chapter" data-level="4.3.2" data-path="preflight-planning.html"><a href="preflight-planning.html#drone-training-in-canada"><i class="fa fa-check"></i><b>4.3.2</b> Drone Training in Canada</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html"><i class="fa fa-check"></i><b>5</b> Data Collection and Flights</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#hardware---dji-matrice-3000-rtk-m300"><i class="fa fa-check"></i><b>5.1</b> Hardware - DJI Matrice 3000 RTK (M300)</a></li>
+<li class="chapter" data-level="5.2" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#battery-management"><i class="fa fa-check"></i><b>5.2</b> Battery Management</a></li>
+<li class="chapter" data-level="5.3" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#workflow-site-reconnaissance"><i class="fa fa-check"></i><b>5.3</b> Workflow: Site Reconnaissance</a></li>
+<li class="chapter" data-level="5.4" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#data-collection-flight-planning"><i class="fa fa-check"></i><b>5.4</b> Data Collection: Flight Planning</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#flight-planning-theory"><i class="fa fa-check"></i><b>5.4.1</b> Flight planning theory</a></li>
+<li class="chapter" data-level="5.4.2" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#flight-planning-with-dji-pilot"><i class="fa fa-check"></i><b>5.4.2</b> Flight planning with DJI Pilot</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#data-collection-sensors-parameters-and-ideal-conditions"><i class="fa fa-check"></i><b>5.5</b> Data Collection: Sensors, Parameters, and Ideal Conditions</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#micasense-10-band-spectral-sensor-for-vegetative-indices"><i class="fa fa-check"></i><b>5.5.1</b> MicaSense: 10-Band Spectral Sensor for Vegetative Indices</a></li>
+<li class="chapter" data-level="5.5.2" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#zenmuse-p1-high-quality-natural-colour-rgb-imagery"><i class="fa fa-check"></i><b>5.5.2</b> Zenmuse P1: High-Quality Natural-Colour (RGB) Imagery</a></li>
+<li class="chapter" data-level="5.5.3" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#zenmuse-l1-lidar-and-rgb"><i class="fa fa-check"></i><b>5.5.3</b> Zenmuse L1: LiDAR and RGB</a></li>
+<li class="chapter" data-level="5.5.4" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#zenmuse-h20t-thermal-and-rgb"><i class="fa fa-check"></i><b>5.5.4</b> Zenmuse H20T: Thermal and RGB</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html"><i class="fa fa-check"></i><b>6</b> Agisoft Photogrammetry pipeline</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html#overview."><i class="fa fa-check"></i><b>6.1</b> Overview.</a></li>
+<li class="chapter" data-level="6.2" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html#detailed-workflow"><i class="fa fa-check"></i><b>6.2</b> Detailed Workflow</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html"><i class="fa fa-check"></i><b>7</b> Georeferencing Plot Trees</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html#workflow-in-qgis"><i class="fa fa-check"></i><b>7.1</b> Workflow in QGIS</a></li>
+<li class="chapter" data-level="7.2" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html#alternate-workflow-in-r"><i class="fa fa-check"></i><b>7.2</b> Alternate Workflow in R</a></li>
+<li class="chapter" data-level="7.3" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html#final-steps-in-qgis"><i class="fa fa-check"></i><b>7.3</b> Final Steps in QGIS</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="crown-delineation.html"><a href="crown-delineation.html"><i class="fa fa-check"></i><b>8</b> Crown Delineation</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="crown-delineation.html"><a href="crown-delineation.html#circles-proportional-to-tree-height"><i class="fa fa-check"></i><b>8.1</b> Circles Proportional to Tree Height</a></li>
+<li class="chapter" data-level="8.2" data-path="crown-delineation.html"><a href="crown-delineation.html#supercell-raster"><i class="fa fa-check"></i><b>8.2</b> Supercell Raster</a></li>
+<li class="chapter" data-level="8.3" data-path="crown-delineation.html"><a href="crown-delineation.html#filter-merge-supercells"><i class="fa fa-check"></i><b>8.3</b> Filter &amp; Merge Supercells</a></li>
+<li class="chapter" data-level="8.4" data-path="crown-delineation.html"><a href="crown-delineation.html#manually-edit-crowns"><i class="fa fa-check"></i><b>8.4</b> Manually Edit Crowns</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="shadow-mask.html"><a href="shadow-mask.html"><i class="fa fa-check"></i><b>9</b> Shadow Masks</a></li>
+<li class="chapter" data-level="10" data-path="crown-level-vegetation-indicies-vegetation-indicies.html"><a href="crown-level-vegetation-indicies-vegetation-indicies.html"><i class="fa fa-check"></i><b>10</b> Crown-level Vegetation Indicies {Vegetation-Indicies}</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="crown-level-vegetation-indicies-vegetation-indicies.html"><a href="crown-level-vegetation-indicies-vegetation-indicies.html#vi-workflow"><i class="fa fa-check"></i><b>10.1</b> VI Workflow</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>11</b> LiDAR Processing Workflow</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>11.1</b> DJI Terra</a></li>
+<li class="chapter" data-level="11.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>11.2</b> Register the LiDAR to the DAP point cloud</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>11.2.1</b> Prepare LiDAR for registration</a></li>
+<li class="chapter" data-level="11.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>11.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
+<li class="chapter" data-level="11.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>11.2.3</b> Rescale and tile the registered LiDAR:</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>11.3</b> Normalization and individual tree point clouds</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>11.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
+<li class="chapter" data-level="11.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>11.3.2</b> Normalizing the tiles using the DTM</a></li>
+<li class="chapter" data-level="11.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>11.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
+<li class="chapter" data-level="11.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>11.3.4</b> Segmenting tiles</a></li>
+<li class="chapter" data-level="11.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>11.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
+<li class="chapter" data-level="11.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>11.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>11.4</b> Individual Tree Metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html"><i class="fa fa-check"></i><b>12</b> MicaSense Irradiance Correction</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#background"><i class="fa fa-check"></i><b>12.1</b> Background</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>12.1.1</b> Deriving Horizontal Irradiance</a></li>
+<li class="chapter" data-level="12.1.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>12.1.2</b> Calculating Reflectance</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#the-problem"><i class="fa fa-check"></i><b>12.2</b> The Problem</a></li>
+<li class="chapter" data-level="12.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#is-correction-needed"><i class="fa fa-check"></i><b>12.3</b> Is Correction Needed?</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>12.3.1</b> Do the sun sensor angles make sense?</a></li>
+<li class="chapter" data-level="12.3.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>12.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
+<li class="chapter" data-level="12.3.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>12.3.3</b> Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#DLS1-correction"><i class="fa fa-check"></i><b>12.4</b> Correcting Irradiance Values for MicaSense Cameras</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#reading-exif-data"><i class="fa fa-check"></i><b>12.4.1</b> Reading Exif Data</a></li>
+<li class="chapter" data-level="12.4.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#calculating-solar-zenith-anlge"><i class="fa fa-check"></i><b>12.4.2</b> Calculating Solar Zenith Anlge</a></li>
+<li class="chapter" data-level="12.4.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#SSA-correction"><i class="fa fa-check"></i><b>12.4.3</b> Caluclating Sun-Sensor Angles</a></li>
+<li class="chapter" data-level="12.4.4" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>12.4.4</b> Scattered:Direct Ratio Estimate</a></li>
+<li class="chapter" data-level="12.4.5" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#computing-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>12.4.5</b> Computing Horizontal (Corrected) Irradiance</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html"><i class="fa fa-check"></i><b>13</b> Thermal Conversion</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#folder-set-up"><i class="fa fa-check"></i><b>13.1</b> Folder Set-Up</a></li>
+<li class="chapter" data-level="13.2" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#weather-data"><i class="fa fa-check"></i><b>13.2</b> Weather Data</a></li>
+<li class="chapter" data-level="13.3" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#dji-thermal-sdk-temperature-conversion"><i class="fa fa-check"></i><b>13.3</b> DJI Thermal SDK: temperature conversion</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#parameters"><i class="fa fa-check"></i><b>13.3.1</b> Parameters</a></li>
+<li class="chapter" data-level="13.3.2" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#running-the-sdk"><i class="fa fa-check"></i><b>13.3.2</b> Running the SDK</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#convert-to-raster"><i class="fa fa-check"></i><b>13.4</b> Convert to Raster</a></li>
+<li class="chapter" data-level="13.5" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#examples"><i class="fa fa-check"></i><b>13.5</b> Examples</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="shadow-mask" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> Shadow Masks<a href="shadow-mask.html#shadow-mask" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Pixels containing shadows and openings in the canopy can introduce error in vegetation indices as reflectance values are often lower in shaded pixels (Malenovský et al., 2013; Zhang et al., 2024). Masking out shaded pixels and openings within the crown is necessary to calculate accurate vegetation indices. We found masking with NIR reflectance to be a consistent and effective approach for masking out shadows and gaps. We use the NIR reflectance band (842nm) from the Micasense RedEgde-MX Dual. NIR thresholds are determined using the shape of the NIR distribution. If the NIR distribution is bimodal, the threshold is set to the local minimum, whereas if the distribution is unimodal, the threshold is set to the local maximum (Chen et al., 2007; D’Odorico et al., 2021; Otsu et al., 2019).</p>
+<p>Below we define a function <em>find_local_min</em> that takes a list of first derivatives and returns a dataframe containing:</p>
+<ul>
+<li><p><strong>neg_value</strong>: The value of the first derivative directly before the minimum (i.e. the negative derivative value to the left of the minimum)</p></li>
+<li><p><strong>pos_value</strong>: The value of the first derivative directly after the minimum (i.e. the positive derivative value to the right of the minimum)</p></li>
+<li><p><strong>pos_def</strong>: The summation of the positive gradient values (a.k.a. slope values) in the first 15 gradient values following the local minimum. This value provides an idea of how great the increase in slope is after the local minimum.</p></li>
+<li><p><strong>neg_def</strong>: The summation of the negative gradient values in the first 15 gradient values preceding the local minimum. This value provides an idea of how great the decrease in slope is before the local minimum.</p></li>
+<li><p><strong>Index</strong>: Index position of the negative gradient value bordering the local minimum. This is the index of our threshold value since we do not get a true zero slope value at the local minimum but rather a change from a very small negative gradient value to a very small positive gradient value.</p></li>
+<li><p><strong>definition</strong>: The summation of the absolute value of pos_def and neg_def values. The greater this number, the more defined the minimum.
+The above parameters were added to describe each minimum found by the function so that the true local minimum could be filtered for.</p></li>
+</ul>
+<p>This function will be used in the next few steps to isolate minimums in the NIR distribution.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="shadow-mask.html#cb10-1" tabindex="-1"></a><span class="co"># This function finds local minimums and ranks how defined they are by the &#39;definition&#39; attribute</span></span>
+<span id="cb10-2"><a href="shadow-mask.html#cb10-2" tabindex="-1"></a>find_local_min <span class="ot">&lt;-</span> <span class="cf">function</span>(values) { <span class="co">#input &quot;values&quot; is a list of 1st derivatives of NIR values</span></span>
+<span id="cb10-3"><a href="shadow-mask.html#cb10-3" tabindex="-1"></a>  <span class="co">#initializing variables</span></span>
+<span id="cb10-4"><a href="shadow-mask.html#cb10-4" tabindex="-1"></a>  neg_slope <span class="ot">&lt;-</span> <span class="fu">numeric</span>() </span>
+<span id="cb10-5"><a href="shadow-mask.html#cb10-5" tabindex="-1"></a>  pos_slope <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
+<span id="cb10-6"><a href="shadow-mask.html#cb10-6" tabindex="-1"></a>  index_of_closest <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
+<span id="cb10-7"><a href="shadow-mask.html#cb10-7" tabindex="-1"></a>  definition <span class="ot">=</span> <span class="fu">numeric</span>()</span>
+<span id="cb10-8"><a href="shadow-mask.html#cb10-8" tabindex="-1"></a>  neg_sum <span class="ot">=</span> <span class="fu">numeric</span>()</span>
+<span id="cb10-9"><a href="shadow-mask.html#cb10-9" tabindex="-1"></a>  pos_sum <span class="ot">=</span> <span class="fu">numeric</span>()</span>
+<span id="cb10-10"><a href="shadow-mask.html#cb10-10" tabindex="-1"></a>  </span>
+<span id="cb10-11"><a href="shadow-mask.html#cb10-11" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co">#initializing iterator </span></span>
+<span id="cb10-12"><a href="shadow-mask.html#cb10-12" tabindex="-1"></a>  </span>
+<span id="cb10-13"><a href="shadow-mask.html#cb10-13" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(values)) { <span class="co">#skip index 1 so following &quot;values[i-1]...&quot; can properly index</span></span>
+<span id="cb10-14"><a href="shadow-mask.html#cb10-14" tabindex="-1"></a>    <span class="co">#print(i)</span></span>
+<span id="cb10-15"><a href="shadow-mask.html#cb10-15" tabindex="-1"></a>    <span class="cf">if</span> (values[i <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> values[i] <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> i <span class="sc">&gt;</span> <span class="dv">15</span>) { </span>
+<span id="cb10-16"><a href="shadow-mask.html#cb10-16" tabindex="-1"></a>      <span class="co">#finds a change from negative to positive 1st derivative (local min)</span></span>
+<span id="cb10-17"><a href="shadow-mask.html#cb10-17" tabindex="-1"></a>      <span class="co">#i&gt;15 because local min will not be in first 15 values and this stops an error occurring where a local min is found in the first 15 values and the def_positive indexing does not work</span></span>
+<span id="cb10-18"><a href="shadow-mask.html#cb10-18" tabindex="-1"></a>      def_positive <span class="ot">&lt;-</span> <span class="fu">c</span>(values[i<span class="sc">:</span>(i<span class="sc">+</span><span class="dv">15</span>)]) <span class="co"># vector of next 15 gradient values</span></span>
+<span id="cb10-19"><a href="shadow-mask.html#cb10-19" tabindex="-1"></a>      def_pos <span class="ot">&lt;-</span> def_positive[def_positive <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="co">#only taking positive 1st derivative values (aka positive slopes)</span></span>
+<span id="cb10-20"><a href="shadow-mask.html#cb10-20" tabindex="-1"></a>      pos_sum[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(def_pos) <span class="co">#adding up the positive 1st derivative values</span></span>
+<span id="cb10-21"><a href="shadow-mask.html#cb10-21" tabindex="-1"></a>      </span>
+<span id="cb10-22"><a href="shadow-mask.html#cb10-22" tabindex="-1"></a>      def_negative <span class="ot">&lt;-</span> <span class="fu">c</span>(values[(i <span class="sc">-</span> <span class="dv">15</span>)<span class="sc">:</span>i]) <span class="co"># vector of the 15 values to the left of the local min (negative 1st derivatives)</span></span>
+<span id="cb10-23"><a href="shadow-mask.html#cb10-23" tabindex="-1"></a>      def_neg <span class="ot">&lt;-</span> def_negative[def_negative <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="co">#only taking the negative slopes in the list</span></span>
+<span id="cb10-24"><a href="shadow-mask.html#cb10-24" tabindex="-1"></a>      neg_sum[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(def_neg) <span class="co">#adding up negative values</span></span>
+<span id="cb10-25"><a href="shadow-mask.html#cb10-25" tabindex="-1"></a>      </span>
+<span id="cb10-26"><a href="shadow-mask.html#cb10-26" tabindex="-1"></a>      neg_slope[k] <span class="ot">&lt;-</span> values[i <span class="sc">-</span> <span class="dv">1</span>] <span class="co">#1st derivative value at i-1 (right before sign change from neg to pos)</span></span>
+<span id="cb10-27"><a href="shadow-mask.html#cb10-27" tabindex="-1"></a>      pos_slope[k] <span class="ot">&lt;-</span> values[i] <span class="co">#1st derivative at i (at the switch from neg to positive)</span></span>
+<span id="cb10-28"><a href="shadow-mask.html#cb10-28" tabindex="-1"></a>      index_of_closest[k] <span class="ot">&lt;-</span> i <span class="sc">-</span> <span class="dv">1</span> <span class="co">#index value of the last neg 1st derivative before the local min</span></span>
+<span id="cb10-29"><a href="shadow-mask.html#cb10-29" tabindex="-1"></a>      definition[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">abs</span>(def_neg), <span class="fu">abs</span>(def_pos)) <span class="co"># higher the value, more pronounced the local min</span></span>
+<span id="cb10-30"><a href="shadow-mask.html#cb10-30" tabindex="-1"></a>      k <span class="ot">&lt;-</span> k <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb10-31"><a href="shadow-mask.html#cb10-31" tabindex="-1"></a>    }</span>
+<span id="cb10-32"><a href="shadow-mask.html#cb10-32" tabindex="-1"></a>  }</span>
+<span id="cb10-33"><a href="shadow-mask.html#cb10-33" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">neg_value =</span> neg_slope, <span class="at">pos_value =</span> pos_slope, <span class="at">Index =</span> index_of_closest, <span class="at">definition =</span> definition, <span class="at">neg_def =</span> neg_sum, <span class="at">pos_def =</span> pos_sum))</span>
+<span id="cb10-34"><a href="shadow-mask.html#cb10-34" tabindex="-1"></a>}</span></code></pre></div>
+</details>
+<p>To begin, we load the necessary packages, the multispectral orthomosaic that contains the NIR (842nm) band, and the delineated crowns shapefile and create the folder where the shadow mask will be saved to:</p>
+<details>
+<summary>
+Click to show the code
+</summary>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="shadow-mask.html#cb11-1" tabindex="-1"></a><span class="co">#Required Packages</span></span>
+<span id="cb11-2"><a href="shadow-mask.html#cb11-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co"># to plot </span></span>
+<span id="cb11-3"><a href="shadow-mask.html#cb11-3" tabindex="-1"></a><span class="fu">library</span>(terra) <span class="co"># to work with the orthomosaics (rasters)</span></span>
+<span id="cb11-4"><a href="shadow-mask.html#cb11-4" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co">#for data manipulation</span></span>
+<span id="cb11-5"><a href="shadow-mask.html#cb11-5" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># for data manipulation</span></span>
+<span id="cb11-6"><a href="shadow-mask.html#cb11-6" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="co"># to work with the delineated crown polygons</span></span>
+<span id="cb11-7"><a href="shadow-mask.html#cb11-7" tabindex="-1"></a><span class="fu">library</span>(pracma) <span class="co"># for gradient/ derivative function</span></span>
+<span id="cb11-8"><a href="shadow-mask.html#cb11-8" tabindex="-1"></a><span class="fu">library</span>(LaplacesDemon) <span class="co"># is.multimodal function</span></span>
+<span id="cb11-9"><a href="shadow-mask.html#cb11-9" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="shadow-mask.html#cb11-10" tabindex="-1"></a><span class="co"># Setting directory </span></span>
+<span id="cb11-11"><a href="shadow-mask.html#cb11-11" tabindex="-1"></a>dir <span class="ot">=</span> <span class="st">&quot;Change to match your folder strucutre&quot;</span> <span class="co">#directory where shadow mask folder will be made. This dir is also used in path names for the orhtomosaics. Change up paths throughout the code to call your data.</span></span>
+<span id="cb11-12"><a href="shadow-mask.html#cb11-12" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="shadow-mask.html#cb11-13" tabindex="-1"></a><span class="co"># Reading in the multispectral orthomosaic</span></span>
+<span id="cb11-14"><a href="shadow-mask.html#cb11-14" tabindex="-1"></a>ms_temp <span class="ot">=</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;metashape</span><span class="sc">\\</span><span class="st">3_MS_ORTHO</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">pattern =</span> <span class="st">&quot;.*MS_Calibrated.*_bestPanel.tif$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) <span class="co"># here we read in the ortho that is in the set directory and contains &quot;MS_Calibrated&quot; in the name and end in &quot;_bestPanel.tif&quot;. We had multiple orthos in this folder, so did this to ensure the proper one was called. Change to match your ortho name, or remove the pattern if you only have one ortho in the defined path.</span></span>
+<span id="cb11-15"><a href="shadow-mask.html#cb11-15" tabindex="-1"></a>  </span>
+<span id="cb11-16"><a href="shadow-mask.html#cb11-16" tabindex="-1"></a><span class="co"># Reading in the shapefile containing delineated crowns and buffering inward by 5cm to limit any mixed pixels from neighboring vegetation</span></span>
+<span id="cb11-17"><a href="shadow-mask.html#cb11-17" tabindex="-1"></a>dir_crowns <span class="ot">&lt;-</span> <span class="st">&quot;D:</span><span class="sc">\\</span><span class="st">Sync</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Crowns.shp&quot;</span> <span class="co">#path to crowns shapefile</span></span>
+<span id="cb11-18"><a href="shadow-mask.html#cb11-18" tabindex="-1"></a>pols_spat <span class="ot">=</span> <span class="fu">st_read</span>(<span class="fu">paste0</span>(dir_crowns)) <span class="sc">%&gt;%</span> <span class="co"># reading in crown shp</span></span>
+<span id="cb11-19"><a href="shadow-mask.html#cb11-19" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(.)) <span class="sc">%&gt;%</span> <span class="co">#removing empty</span></span>
+<span id="cb11-20"><a href="shadow-mask.html#cb11-20" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="at">dist =</span> <span class="sc">-</span>.<span class="dv">05</span>) <span class="sc">%&gt;%</span> <span class="co">#buffering inward by 5cm</span></span>
+<span id="cb11-21"><a href="shadow-mask.html#cb11-21" tabindex="-1"></a>  <span class="fu">vect</span>()</span>
+<span id="cb11-22"><a href="shadow-mask.html#cb11-22" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="shadow-mask.html#cb11-23" tabindex="-1"></a><span class="co"># Creating a folder for shadow masks</span></span>
+<span id="cb11-24"><a href="shadow-mask.html#cb11-24" tabindex="-1"></a>Nir_shadow_folder_baseName <span class="ot">&lt;-</span> <span class="st">&quot;NIR_shadow_mask_localMinOrMax&quot;</span> <span class="co">#name of the folder shadow masks will be written to. We have the folder name defined outside the folder creation step below so that we could change the folder name once without having to change it throughout the code.</span></span>
+<span id="cb11-25"><a href="shadow-mask.html#cb11-25" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))) {</span>
+<span id="cb11-26"><a href="shadow-mask.html#cb11-26" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir,Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
+<span id="cb11-27"><a href="shadow-mask.html#cb11-27" tabindex="-1"></a>  }</span></code></pre></div>
+</details>
+<p>Next, the NIR band is selected from the multispectral orthomosaic. Here you can choose to:</p>
+<ol style="list-style-type: decimal">
+<li><p>Crop the mulispectral othomosaic to the extent of the crowns shapefile. We have found this to be a good option for mature sites with minimal exposed ground.</p></li>
+<li><p>Mask the mulispectral othomosaic to the individual crowns. We have found this to be a good option for younger sites with lots of ground exposure.</p></li>
+</ol>
+<p>Below we crop the raster to the extent of the polygons and reformat from a raster to a vector of values:</p>
+<details>
+<summary>
+Click to show the code
+</summary>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="shadow-mask.html#cb12-1" tabindex="-1"></a><span class="co">#Create a vector of near-infrared (NIR) values from the 10th multispectral band (842nm)</span></span>
+<span id="cb12-2"><a href="shadow-mask.html#cb12-2" tabindex="-1"></a>NIR <span class="ot">=</span> ms_temp[[<span class="dv">10</span>]] <span class="sc">%&gt;%</span> <span class="co">#isolating the NIR (842nm) band</span></span>
+<span id="cb12-3"><a href="shadow-mask.html#cb12-3" tabindex="-1"></a>  <span class="fu">crop</span>(pols_spat) <span class="sc">%&gt;%</span> <span class="co">#cropping to the extent of the crown polygon shp</span></span>
+<span id="cb12-4"><a href="shadow-mask.html#cb12-4" tabindex="-1"></a>  <span class="fu">clamp</span>(<span class="at">upper =</span> <span class="dv">50000</span>, <span class="at">values =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-5"><a href="shadow-mask.html#cb12-5" tabindex="-1"></a>  <span class="fu">as.vector</span>()</span></code></pre></div>
+</details>
+Density of the NIR values is calculated and plotted, after removing NA values.
+<details>
+<summary>
+Click to show the code
+</summary>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="shadow-mask.html#cb13-1" tabindex="-1"></a>NIR_na <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(NIR) <span class="co">#remove NA values from the NIR vector</span></span>
+<span id="cb13-2"><a href="shadow-mask.html#cb13-2" tabindex="-1"></a>density_values <span class="ot">&lt;-</span> <span class="fu">density</span>(NIR_na) <span class="co"># calculates density of NIR values</span></span>
+<span id="cb13-3"><a href="shadow-mask.html#cb13-3" tabindex="-1"></a><span class="co"># Plot to see the distribution of NIR values</span></span>
+<span id="cb13-4"><a href="shadow-mask.html#cb13-4" tabindex="-1"></a><span class="fu">plot</span>(density_values) <span class="co"># check to see the distribution of NIR values (ie a visual check for whether or not a local min exists)</span></span></code></pre></div>
+</details>
+<p>At this point the threshold can be estimated manually from the graph however, this is not a feasible method when you have many data acquisitions, nor is it the most accurate method. Below we describe the method we used to create shadow masks for many acquisitions withouth having to visually inspect the NIR distributions. To computationally find the threshold we first need to decipher whether the NIR distribution is unimodal (one peak) or multimodal (more than one peak). To do so we use the <em>is.multimodal</em> function from the LaplacesDemon package.</p>
+<p>If the distribution was multimodal, we found the local minimum by:</p>
+<ol style="list-style-type: decimal">
+<li><p>calculating the first derivatives fo the NIR density values and storing the derivatives in dy_dt</p></li>
+<li><p>applying the <em>find_local_min</em> function to the list of first derivatives to find minimums</p></li>
+<li><p>filtering out small minimums that are not true minimums but rather dips on a larger slope</p></li>
+<li><p>Identifying false multimodals and assigning the threshold value to be the local maximum</p></li>
+<li><p>Identifying the largest minimum (a.k.a. the local minimum) and setting that as the threshold value</p></li>
+</ol>
+<p>If the distribution was not multimodal (and therefore unimodal), we found the local maximum by:</p>
+<ol style="list-style-type: decimal">
+<li>locating the NIR value that corresponds to the greatest density of values in the NIR distribution</li>
+</ol>
+<p><strong>Note:</strong> for each method there are <strong>mode</strong> and <strong>thresh_name</strong> variables defined. These variables are used to annotate the histrogram made in the next step</p>
+<details>
+<summary>
+Click to show the code
+</summary>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="shadow-mask.html#cb14-1" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">is.multimodal</span>(NIR_na)){ <span class="co"># if the NIR distribution is multimodal, continue to the below steps</span></span>
+<span id="cb14-2"><a href="shadow-mask.html#cb14-2" tabindex="-1"></a>    </span>
+<span id="cb14-3"><a href="shadow-mask.html#cb14-3" tabindex="-1"></a>    dy_dt <span class="ot">&lt;-</span> pracma<span class="sc">::</span><span class="fu">gradient</span>(density_values<span class="sc">$</span>y) <span class="co">#list of first derivatives of NIR vector</span></span>
+<span id="cb14-4"><a href="shadow-mask.html#cb14-4" tabindex="-1"></a>    </span>
+<span id="cb14-5"><a href="shadow-mask.html#cb14-5" tabindex="-1"></a>    zeros <span class="ot">&lt;-</span> <span class="fu">find_local_min</span>(dy_dt) <span class="co"># Finds index locations where slope switches from neg to post (local min) and ranks the intensity of each local min</span></span>
+<span id="cb14-6"><a href="shadow-mask.html#cb14-6" tabindex="-1"></a>    zeros_filtered <span class="ot">&lt;-</span> zeros[(zeros<span class="sc">$</span>pos_def <span class="sc">&gt;</span> <span class="dv">0</span>),] <span class="co"># Filters rows with pos_def &gt; 0, filtering out small minimums on negative slopes (not true local mins)</span></span>
+<span id="cb14-7"><a href="shadow-mask.html#cb14-7" tabindex="-1"></a>    </span>
+<span id="cb14-8"><a href="shadow-mask.html#cb14-8" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">nrow</span>(zeros_filtered)<span class="sc">==</span><span class="dv">0</span>){<span class="co">#if empty, then detected a false multimodal distribution and defaulting to max as threshold value</span></span>
+<span id="cb14-9"><a href="shadow-mask.html#cb14-9" tabindex="-1"></a>      <span class="fu">print</span>(<span class="st">&quot;It is a false multimodal&quot;</span>)</span>
+<span id="cb14-10"><a href="shadow-mask.html#cb14-10" tabindex="-1"></a>      max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-11"><a href="shadow-mask.html#cb14-11" tabindex="-1"></a>      threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
+<span id="cb14-12"><a href="shadow-mask.html#cb14-12" tabindex="-1"></a>      mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal (False Multi)&quot;</span></span>
+<span id="cb14-13"><a href="shadow-mask.html#cb14-13" tabindex="-1"></a>      thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
+<span id="cb14-14"><a href="shadow-mask.html#cb14-14" tabindex="-1"></a>      </span>
+<span id="cb14-15"><a href="shadow-mask.html#cb14-15" tabindex="-1"></a>      }<span class="cf">else</span>{ </span>
+<span id="cb14-16"><a href="shadow-mask.html#cb14-16" tabindex="-1"></a>      zeros_local_min <span class="ot">&lt;-</span> zeros_filtered[<span class="fu">which.max</span>(zeros_filtered<span class="sc">$</span>definition), ] <span class="co">#isolating the largest local min</span></span>
+<span id="cb14-17"><a href="shadow-mask.html#cb14-17" tabindex="-1"></a>      <span class="co"># x_zeros &lt;- density_values$x[zeros_local_min$Index] #selecting NIR (aka x_mid) value that corresponds to the index value of the most defined local min </span></span>
+<span id="cb14-18"><a href="shadow-mask.html#cb14-18" tabindex="-1"></a>      threshold <span class="ot">&lt;-</span> density_values<span class="sc">$</span>x[zeros_local_min<span class="sc">$</span>Index] <span class="co">#selecting NIR (aka x_mid) value that corresponds to the index value of the most defined local min </span></span>
+<span id="cb14-19"><a href="shadow-mask.html#cb14-19" tabindex="-1"></a>      </span>
+<span id="cb14-20"><a href="shadow-mask.html#cb14-20" tabindex="-1"></a>      <span class="co"># Catching cases of &quot;inf&quot; returns:</span></span>
+<span id="cb14-21"><a href="shadow-mask.html#cb14-21" tabindex="-1"></a>      <span class="cf">if</span> (threshold <span class="sc">&lt;=</span> <span class="fl">0.7</span> <span class="sc">&amp;</span> threshold <span class="sc">&gt;</span> <span class="dv">0</span>){<span class="co">#setting limits on the threshold to remove any thresholds from the tails of the distribution</span></span>
+<span id="cb14-22"><a href="shadow-mask.html#cb14-22" tabindex="-1"></a>        <span class="fu">print</span>(threshold)</span>
+<span id="cb14-23"><a href="shadow-mask.html#cb14-23" tabindex="-1"></a>        mode <span class="ot">&lt;-</span> <span class="st">&quot;Multimodal&quot;</span></span>
+<span id="cb14-24"><a href="shadow-mask.html#cb14-24" tabindex="-1"></a>        thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMin&quot;</span></span>
+<span id="cb14-25"><a href="shadow-mask.html#cb14-25" tabindex="-1"></a>        </span>
+<span id="cb14-26"><a href="shadow-mask.html#cb14-26" tabindex="-1"></a>        }<span class="cf">else</span>{</span>
+<span id="cb14-27"><a href="shadow-mask.html#cb14-27" tabindex="-1"></a>        <span class="fu">print</span>(<span class="st">&quot;Multimodal with org thresh &gt; 0.7&quot;</span>) <span class="co">#This output usually indicates an error in the function, make sure to look at the NIR distribution to confirm this is in fact correct or if the code needs modification for a special case</span></span>
+<span id="cb14-28"><a href="shadow-mask.html#cb14-28" tabindex="-1"></a>        <span class="co">#This often indicates a false multimodal as well, and therefore the NIR value with the max frequency in the NIR distribution with be used as the threshold</span></span>
+<span id="cb14-29"><a href="shadow-mask.html#cb14-29" tabindex="-1"></a>        max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-30"><a href="shadow-mask.html#cb14-30" tabindex="-1"></a>        threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
+<span id="cb14-31"><a href="shadow-mask.html#cb14-31" tabindex="-1"></a>        mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal (False Multi with org thresh &gt; 0.7)&quot;</span></span>
+<span id="cb14-32"><a href="shadow-mask.html#cb14-32" tabindex="-1"></a>        thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
+<span id="cb14-33"><a href="shadow-mask.html#cb14-33" tabindex="-1"></a>      }</span>
+<span id="cb14-34"><a href="shadow-mask.html#cb14-34" tabindex="-1"></a>    }</span>
+<span id="cb14-35"><a href="shadow-mask.html#cb14-35" tabindex="-1"></a>  }<span class="cf">else</span>{ <span class="co">#if the NIR vector is NOT multimodal, continue to the below steps</span></span>
+<span id="cb14-36"><a href="shadow-mask.html#cb14-36" tabindex="-1"></a>    <span class="co">#Finding NIR value with the greatest frequency in the distribution - this max value will be the threshold for unimodal distributions </span></span>
+<span id="cb14-37"><a href="shadow-mask.html#cb14-37" tabindex="-1"></a>    max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-38"><a href="shadow-mask.html#cb14-38" tabindex="-1"></a>    threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
+<span id="cb14-39"><a href="shadow-mask.html#cb14-39" tabindex="-1"></a>    <span class="fu">print</span>(threshold)</span>
+<span id="cb14-40"><a href="shadow-mask.html#cb14-40" tabindex="-1"></a>    thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
+<span id="cb14-41"><a href="shadow-mask.html#cb14-41" tabindex="-1"></a>    mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal&quot;</span></span>
+<span id="cb14-42"><a href="shadow-mask.html#cb14-42" tabindex="-1"></a>  }</span></code></pre></div>
+</details>
+<p>Next, we plot a histogram of the NIR values and annotate it to contain:</p>
+<ul>
+<li><p>a vertical line at the threshold</p></li>
+<li><p>the threshold value</p></li>
+<li><p>the mode (i.e. unimodal verse mulitmodal)</p></li>
+</ul>
+<details>
+<summary>
+Click to show the code
+</summary>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="shadow-mask.html#cb15-1" tabindex="-1"></a>(<span class="at">hist =</span> NIR <span class="sc">%&gt;%</span> <span class="co">#plotting a histogram of NIR values with a vertical red line for the defined threshold value</span></span>
+<span id="cb15-2"><a href="shadow-mask.html#cb15-2" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="shadow-mask.html#cb15-3" tabindex="-1"></a>    <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb15-4"><a href="shadow-mask.html#cb15-4" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> NIR), <span class="at">bins =</span> <span class="dv">150</span>) <span class="sc">+</span>      </span>
+<span id="cb15-5"><a href="shadow-mask.html#cb15-5" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> threshold, <span class="at">color =</span> <span class="st">&quot;red3&quot;</span>) <span class="sc">+</span></span>
+<span id="cb15-6"><a href="shadow-mask.html#cb15-6" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(mode, <span class="st">&quot; , threshold: &quot;</span>,<span class="fu">round</span>(threshold, <span class="at">digits =</span> <span class="dv">2</span>)))<span class="sc">+</span></span>
+<span id="cb15-7"><a href="shadow-mask.html#cb15-7" tabindex="-1"></a>    <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb15-8"><a href="shadow-mask.html#cb15-8" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),           </span>
+<span id="cb15-9"><a href="shadow-mask.html#cb15-9" tabindex="-1"></a>          <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb15-10"><a href="shadow-mask.html#cb15-10" tabindex="-1"></a>          <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>,<span class="at">hjust =</span> <span class="fl">0.75</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">28</span>)))</span>
+<span id="cb15-11"><a href="shadow-mask.html#cb15-11" tabindex="-1"></a>  </span>
+<span id="cb15-12"><a href="shadow-mask.html#cb15-12" tabindex="-1"></a><span class="fu">ggsave</span>(hist, <span class="co">#saving out the plot</span></span>
+<span id="cb15-13"><a href="shadow-mask.html#cb15-13" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, date_list[x], <span class="st">&quot;_NIR_shadow_hist_localMin_orMax.jpeg&quot;</span>),</span>
+<span id="cb15-14"><a href="shadow-mask.html#cb15-14" tabindex="-1"></a>       <span class="at">device =</span> jpeg,</span>
+<span id="cb15-15"><a href="shadow-mask.html#cb15-15" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">8</span>,</span>
+<span id="cb15-16"><a href="shadow-mask.html#cb15-16" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">8</span>)</span></code></pre></div>
+</details>
+<p><img src="Photos_&_gifs/multimodal_hist_canoe_2022_08_05.jfif" width="60%" style="display: block; margin: auto;" /></p>
+<p>We then isolate the NIR band from the multispectral orthomosaic and filter the raster to set pixels with NIR values greater than the threshold to NA and those that are less than or equal to the threshold to 1.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="shadow-mask.html#cb16-1" tabindex="-1"></a>shadow_mask <span class="ot">=</span> ms_temp[[<span class="dv">10</span>]] <span class="co">#isolating the NIR band of the multispectral ortho</span></span>
+<span id="cb16-2"><a href="shadow-mask.html#cb16-2" tabindex="-1"></a>shadow_mask[shadow_mask <span class="sc">&gt;</span> threshold] <span class="ot">=</span> <span class="cn">NA</span> <span class="co">#for NIR values &gt; threshold, make them NA</span></span>
+<span id="cb16-3"><a href="shadow-mask.html#cb16-3" tabindex="-1"></a>shadow_mask[shadow_mask <span class="sc">&lt;=</span> threshold] <span class="ot">=</span> <span class="dv">1</span> <span class="co">#for NIR values &lt; or = to the threshold value, make them 1</span></span>
+<span id="cb16-4"><a href="shadow-mask.html#cb16-4" tabindex="-1"></a>  </span>
+<span id="cb16-5"><a href="shadow-mask.html#cb16-5" tabindex="-1"></a><span class="co"># Writing out the shadow mask that has values of 1 for all pixels that will be masked out</span></span>
+<span id="cb16-6"><a href="shadow-mask.html#cb16-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(shadow_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,  date_list[x], <span class="st">&quot;_NIR_shadow_thresh&quot;</span>,threshold ,<span class="st">&quot;_&quot;</span>,thresh_name, <span class="st">&quot;.tif&quot;</span>),</span>
+<span id="cb16-7"><a href="shadow-mask.html#cb16-7" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+</details>
+<p><img src="Photos_&_gifs/shadow_mask_example_no_filter_2022_08_05.PNG" width="100%" style="display: block; margin: auto;" /></p>
+Lastly, we apply the <em>clump</em> function to group adjacent pixels that represent shadows creating “clumps” a.k.a. shadow patches. These shadow patches are then converted into a dataframe containing a unique ID per shadow patch and the number of pixels within each patch.
+<details>
+<summary>
+Click to show the code
+</summary>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="shadow-mask.html#cb17-1" tabindex="-1"></a><span class="co"># Grouping adjacent pixels with the same value (i.e. representing shadowed areas) into distinct patches or clumps</span></span>
+<span id="cb17-2"><a href="shadow-mask.html#cb17-2" tabindex="-1"></a>shadow_patches <span class="ot">=</span> raster<span class="sc">::</span><span class="fu">clump</span>(raster<span class="sc">::</span><span class="fu">raster</span>(shadow_mask), <span class="at">directions =</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="shadow-mask.html#cb17-3" tabindex="-1"></a>  <span class="fu">rast</span>()</span>
+<span id="cb17-4"><a href="shadow-mask.html#cb17-4" tabindex="-1"></a><span class="co"># Summarizing the clumps obtained from the shadow patches raster. It contains two columns: </span></span>
+<span id="cb17-5"><a href="shadow-mask.html#cb17-5" tabindex="-1"></a><span class="co">#1. value: representing the unique ID of each clump:</span></span>
+<span id="cb17-6"><a href="shadow-mask.html#cb17-6" tabindex="-1"></a><span class="co">#2. count: representing the number of pixels within each clump</span></span>
+<span id="cb17-7"><a href="shadow-mask.html#cb17-7" tabindex="-1"></a>clumps <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">freq</span>(shadow_patches))</span></code></pre></div>
+</details>
+<p>Here we filter the shadow patches by a threshold to remove insignificant patches and write out the cleaned shadow mask for future use.</p>
+<p>The threshold <strong>num_pix</strong> is calculated by:</p>
+<ul>
+<li><p>setting an initial area threshold of 0.02m^2 (200cm^2)</p></li>
+<li><p>dividing the 0.02m^2 threshold by the area of a pixel to determine the threshold number of pixels a shadow patch must have to not be filtered out</p></li>
+</ul>
+<p>In our case, the resolution of the raster was just over ~3cm, giving us a threshold of ~23 pixels.</p>
+<details>
+<summary>
+Click to show the code
+</summary>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="shadow-mask.html#cb18-1" tabindex="-1"></a><span class="co"># Calculating the threshold for the number of pixels that a clump must contain to be considered significant</span></span>
+<span id="cb18-2"><a href="shadow-mask.html#cb18-2" tabindex="-1"></a><span class="co"># It is calculated based on the desired area threshold (200 cm²) divided by the area of a single pixel</span></span>
+<span id="cb18-3"><a href="shadow-mask.html#cb18-3" tabindex="-1"></a>num_pix <span class="ot">=</span> <span class="fl">0.02</span> <span class="sc">/</span> (<span class="fu">res</span>(shadow_patches)[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>) <span class="co">#0.02 represents 200cm² in meters</span></span>
+<span id="cb18-4"><a href="shadow-mask.html#cb18-4" tabindex="-1"></a>flecks <span class="ot">=</span> clumps[clumps<span class="sc">$</span>count <span class="sc">&gt;</span> num_pix,] <span class="co"># remove clump observations with frequency smaller than the threshold</span></span>
+<span id="cb18-5"><a href="shadow-mask.html#cb18-5" tabindex="-1"></a>flecks <span class="ot">=</span> <span class="fu">as.vector</span>(flecks<span class="sc">$</span>value) <span class="co"># record IDs from clumps which met the criteria in previous step</span></span>
+<span id="cb18-6"><a href="shadow-mask.html#cb18-6" tabindex="-1"></a>  </span>
+<span id="cb18-7"><a href="shadow-mask.html#cb18-7" tabindex="-1"></a>new_mask <span class="ot">=</span> shadow_patches <span class="sc">%in%</span> flecks <span class="co">#keep clumps that have IDS in flecks</span></span>
+<span id="cb18-8"><a href="shadow-mask.html#cb18-8" tabindex="-1"></a>new_mask[new_mask <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">=</span> <span class="cn">NA</span> <span class="co"># make clumps that are zero, NA</span></span>
+<span id="cb18-9"><a href="shadow-mask.html#cb18-9" tabindex="-1"></a>  </span>
+<span id="cb18-10"><a href="shadow-mask.html#cb18-10" tabindex="-1"></a><span class="co">#writing out a &#39;cleaned&#39; shadow mask  </span></span>
+<span id="cb18-11"><a href="shadow-mask.html#cb18-11" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(new_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,  date_list[x], <span class="st">&quot;_NIR_shadow_thresh&quot;</span>,threshold ,<span class="st">&quot;_&quot;</span>,thresh_name, <span class="st">&quot;_mask2.tif&quot;</span>),</span>
+<span id="cb18-12"><a href="shadow-mask.html#cb18-12" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+</details>
+<p>Below you can see that in this case the filter did not result in a large change in the shadow mask as there were minimal small patches to begin with. Here the white areas in the filtered mask image on the right are areas that will not be masked given that the mask did not contain enough pixels. This will result in a less patchy shadow mask.</p>
+<p><img src="Photos_&_gifs/shadow_mask_example_filtered_2022_08_05.PNG" width="100%" style="display: block; margin: auto;" /></p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="crown-delineation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="crown-level-vegetation-indicies-vegetation-indicies.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/owaite/GenomeBC_BPG/edit/main/0_Shadow_Mask.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/owaite/GenomeBC_BPG/blob/main/0_Shadow_Mask.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

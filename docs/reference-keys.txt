@@ -93,13 +93,9 @@ micasense-10-band-spectral-sensor-for-vegetative-indices
 zenmuse-p1-high-quality-natural-colour-rgb-imagery
 zenmuse-l1-lidar-and-rgb
 zenmuse-h20t-thermal-and-rgb
-data-processing-photogrammetry-pipeline.
 processing-orthomosaics
 overview.
 detailed-workflow
-shadow-mask
-crown-level-vegetation-indicies
-vi-workflow
 Georeferencing-Plot-Trees
 workflow-in-qgis
 alternate-workflow-in-r
@@ -109,6 +105,9 @@ circles-proportional-to-tree-height
 supercell-raster
 filter-merge-supercells
 manually-edit-crowns
+shadow-mask
+crown-level-vegetation-indicies-vegetation-indicies
+vi-workflow
 lidar-processing-workflow
 dji-terra
 register-the-lidar-to-the-dap-point-cloud
