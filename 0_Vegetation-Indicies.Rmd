@@ -163,7 +163,9 @@ saveRDS(df_spectral_median_count, paste0(dir_D,"\\",updated_metrics_folder,"\\",
 ```
 </details>
 
-References: 
+
+
+**References:**
 
 Clevers, J. G. P. W., & Gitelson, A. A. (2013). Remote estimation of crop and grass chlorophyll and nitrogen content using red-edge bands on Sentinel-2 and -3. International Journal of Applied Earth Observation and Geoinformation, 23(1), 344–351. https://doi.org/10.1016/J.JAG.2012.10.008 
 

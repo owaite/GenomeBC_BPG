@@ -223,4 +223,3 @@ The following are helpful Agisoft processing references:
   - [Processing Multi-spectral Imagery with Agisoft MetaShape Pro](https://pressbooks.bccampus.ca/ericsaczuk/)
 
 The knowledge base at Agisoft also has many other useful articles.
-

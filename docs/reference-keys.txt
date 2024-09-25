@@ -106,7 +106,7 @@ supercell-raster
 filter-merge-supercells
 manually-edit-crowns
 shadow-mask
-crown-level-vegetation-indicies-vegetation-indicies
+Vegetation-Indicies
 vi-workflow
 lidar-processing-workflow
 dji-terra
