@@ -177,7 +177,6 @@ Below are snipets of a script written in LAStools that is used to project, resca
 The unparsed script can be found on the project GitHub, see [GitHub link](index.html#github-link)
 
 1. Projecting the registered LiDAR to the proper projection (NAD83 UTM 10N). 
-    - If you are working with already tiled data or multiple .laz/.las files on a multi-core computer than you can use the cores command shown below. Here we defined cores=4 which allows 4 cores to work on the command simultaneously on different files. If you are only working with one .laz/.las file at this point there is no need to specify the number of cores and the "^  -cores %cores%" following the "-v ^" should be removed from the below code
     - Change "path_to_registered_lidar" to the path to the registered LiDAR data exported from CloudCompare.
     - "\*.las" takes the las file in that folder, change to the file name if have more than one .las in the folder and you want to specify a specific file.
     - Change "path_to_write\01_proj_NAD83" to the path you would like the new projected  .laz file to be written to.
@@ -185,8 +184,6 @@ The unparsed script can be found on the project GitHub, see [GitHub link](index.
 <details>
 <summary>Click to show the code</summary>
 ```{LAStools eval=FALSE, include=TRUE}
-set cores=4
-
 las2las -i path_to_registered_lidar\*.las ^
     -odir path_to_write\01_proj_NAD83 ^
     -odix _nad83 ^
@@ -194,8 +191,7 @@ las2las -i path_to_registered_lidar\*.las ^
     -nad83 ^
     -utm 10north ^
     -cpu64 ^
-    -v ^
-    -cores %cores% 
+    -v 
 ```
 </details>
 
@@ -284,7 +280,6 @@ library(nngeo)
 library(future)
 library(rmapshaper)
 library(concaveman)
-library(parallel)
 library(foreach)
 library(smoothr)
 library(ForestTools)

@@ -544,7 +544,7 @@ First, we generate a rolling regression of the linear relationship $I_{\text{spe
 <summary>Click to show the code</summary>
 ```{r eval=FALSE, include=TRUE}
 # via a regression of Irradiance on cos_SSA over a specified time window (30s here)
-mod_frame = xmp_all_ssa_site_date %>%
+mod_frame = xmp_all_ssa %>%
   drop_na(Date2) %>% 
   drop_na(cos_SSA) %>% 
   drop_na(Irradiance) %>% 
@@ -576,7 +576,7 @@ df_p = df %>%
 # (spectral_irr = direct_irr * cos(SSA) + scattered_irr) to create % scattered and scattered/direct ratios
 df_filtered = df_params %>% 
   left_join(df_p) %>% 
-  left_join(xmp_all_ssa_site_date) %>% 
+  left_join(xmp_all_ssa) %>% 
   mutate(percent_scattered = Intercept / (Slope + Intercept),
          dir_diff = Intercept/Slope)
 ```
@@ -781,8 +781,6 @@ Now we put it all together to compute the horizontal irradiance. Here the horizo
 ```{r eval=FALSE, include=TRUE}
 xmp_corrected = xmp_all_ssa  %>% 
   group_by(Date, BandName) %>% 
-  #filter(BandName == "Red") %>% 
-  #slice_head(n = 900) %>% 
   nest(data = c(Irradiance, SunSensorAngle_DLS1_rad)) %>% # Creates a nested df where each group is stored as a list-column named data, containing the variables Irradiance and SunSensorAngle_DLS1_rad
   mutate(Fresnel = as.numeric(map(.x = data, .f = fresnel_correction))) %>% # Applies the fresnel_correction function to each group of nested data
   unnest(data) %>% #unnesting
@@ -871,7 +869,7 @@ saveRDS(avg_ratio_data,paste0(dir,date,"\\1_Data\\",MS_folder_name ,"\\CSV\\",da
 </details>
 
 
-Plotting original VS correctedirradiance exif data to compare values from the DLS2 to corrected values using the DLS1 method (Figure \@ref(fig:DLS1-vs-DLS2-irr)).
+Plotting original verse corrected irradiance exif data to compare values from the DLS2 to corrected values using the DLS1 method (Figure \@ref(fig:DLS1-vs-DLS2-irr)).
 
 <details>
 <summary>Click to show the code</summary>

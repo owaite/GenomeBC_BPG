@@ -3,10 +3,12 @@ REM (1) ensures the lidar cloud is in the right projection (UTM 10N)
 REM (2) rescales to be read into Rainbow_L1\2023_06_22\PlotB
 REM (3) writes 
 
+REM If you are working with already tiled data or multiple .laz/.las files on a multi-core computer than you can use the cores command shown below. Here we defined cores=4 which allows 4 cores to work on the command simultaneously on different files. If you are only working with one .laz/.las file at this point there is no need to specify the number of cores and the "^  -cores %cores%" following the "-v ^" should be removed from the below code
+
 set cores=4
 set date=2023_06_22
 
-REM plot B 
+REM 
 set f_wd=O:\PARSER_Ext\Rainbow_L1\2023_06_22\PlotB   
 REM projecting aligned Lidar to NAD 83 UTM 10N
 REM change "path_to_aligned_lidar" to the path to the aligned L1 data exported from CC

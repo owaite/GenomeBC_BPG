@@ -52,9 +52,10 @@ REM this step is done to decrease the storage size so that loading into cloud co
 REM path_to_projected_below160m_L1 <- path to .laz file that has been projected and filtered for points above a set threshold
 REM path_to_shp -> path to the site shapefile
 REM "-odix _clipped" will save the new laz file with the same name as the input file with "_clipped" attached to the end, change the "_clipped" to work with your naming system
+
 lasclip -i path_to_projected_below160m_L1 -merged -path_to_shp -odir path_to_write -odix _clipped -olaz
 	
 REM Next step: Align the L1 data to the DAP data in CloudCompare
 REM Note, convention is to align the DAP to the L1 however for this specific project it made more since to align the lidar to the DAP because:
-REM a) we had many more DAP datasets then L1
+REM a) we had many more DAP datasets than L1
 REM b) we could not load the lidar point cloud into agisoft metashape for alignment, and had been aligning all DAP clouds to a reference DAP cloud in agisoft 
