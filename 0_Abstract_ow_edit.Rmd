@@ -1,19 +1,23 @@
 # Abstract
-
+```{=html}
 <div class="slideshow-container">
-  <div class="slide fade">
+
+  <div class="mySlides fade">
     <img src="Photos_&_gifs/genetic_layout2.png" style="width:100%">
   </div>
-  <div class="slide fade">
+
+  <div class="mySlides fade">
     <img src="Photos_&_gifs/genetic_layout_P1.png" style="width:100%">
   </div>
-  <div class="slide fade">
+
+  <div class="mySlides fade">
     <img src="Photos_&_gifs/crowns.png" style="width:100%">
   </div>
-  <!-- Add more slides as necessary -->
+
 </div>
 
 <div class="text-container">
+
 There is significant potential for broad deployment of scalable drone-mounted remote sensing technologies in forestry. For example, forest genetics programs rely on large-scale phenotyping of individual trees throughout pre-selection, selection, and post-selection to inform seed choices that will promote resilient, productive forests. However, the number of sites and trees within sites that can be phenotyped is often constrained by the time and cost of labour. As climate change intensifies environmental stress for forest trees and forestry policies shift towards a focus on climate adaptation, there is increased need for efficient and cost-effective data collection methods to measure key phenotypic traits relating to climate adaptation and resilience. Drone-mounted sensors can be used to quantify a range of standard phenotypic data (i.e. height) and novel traits (i.e. vegetation indices) with data captured over entire trials within hours.
 
 The information and workflows in this guide are informed by a collaborative project. Our team included the University of British Columbia (UBC), Natural Resources Canada (NRCan) and the BC provincial Ministry of Forests (MOF). The project objective was to use remote sensing tools to better understand how trees respond to climatic stressors by analyzing phenotypic (i.e. spectral indices and structural metrics) and genetic correlations at the tree level to guide genetics programs in the selection of trees better able to cope with future climates.
@@ -28,15 +32,83 @@ let slideIndex = 0;
 showSlides();
 
 function showSlides() {
-  let slides = document.getElementsByClassName("slide");
+  let slides = document.getElementsByClassName("mySlides");
   for (let i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";  
+    slides[i].style.display = "none";
   }
   slideIndex++;
-  if (slideIndex > slides.length) {slideIndex = 1}    
-  slides[slideIndex-1].style.display = "block";  
+  if (slideIndex > slides.length) {slideIndex = 1}
+  slides[slideIndex-1].style.display = "block";
   setTimeout(showSlides, 3000); // Change slide every 3 seconds
 }
 </script>
+
+<!-- Below added for format by OW -->
+
+<style>
+.slideshow-container {
+  max-width: 1000px;
+  height: 50vh; /* Take up half of the screen */
+  position: relative;
+  margin: hidden;
+}
+
+.mySlides {
+  display: none;
+  height: 100%;
+}
+
+img {
+  vertical-align: middle;
+  height: 100%;
+  width: 100%;
+}
+
+.text-container {
+  height: 50vh; /* Bottom half of the screen */
+  overflow-y: auto; /* Allows scrolling through text if necessary */
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Animation for fade effect */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+.dot {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active {
+  background-color: #717171;
+}
+</style>
+
+```
+
+
 
 
