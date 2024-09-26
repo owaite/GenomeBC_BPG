@@ -26,6 +26,7 @@ See the index for a more detailed breakdown of the information provided
 <script>
 let slideIndex = 0;
 showSlides();
+ 
 
 function showSlides() {
   let slides = document.getElementsByClassName("slide");
