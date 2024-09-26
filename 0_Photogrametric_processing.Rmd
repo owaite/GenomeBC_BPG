@@ -16,9 +16,9 @@ The workflow is based on a site approximately 1.5 Ha buffered to 2Ha and the raw
 
 ## Overview.
 
-1.	Run the Opening script that will import all photos for each chunk and locate the calibration panel captures for the multispectral chunks. Then saves to the project file structure.
+1.	Import all photos for each chunk and locate the calibration panel captures for the multispectral chunks. Then save to the project file structure.
 2.	Manually assess all flight lines and disable outliers.
-3.	Build the P1 through to orthomosaic using the settings detailed below.
+3.	Build the P1 RGB through to orthomosaic using the settings detailed below.
 4.	Confirm the P1 is aligned to the GCPs and template P1 if this is not the primary flight.
 5.	For each of the other DAP sensors, specifically MS and MS_P chunks, build through to orthomosaic following the steps outlined below paying particular attention to the chunk align.
 6.	Check the ortho registration and reflectance values.
@@ -62,15 +62,16 @@ knitr::include_graphics(c(
 
 1. **Load Photos and locate calibration panels** - Script (or GUI). 15 minutes.
 
-  - Agisoft processes all ten bands as a multicamera with one primary channel. We import imagery using a python script located here on GitHub.  However, you can also import folders containing imagery in metashape via the import tool or by dragging and dropping the folder into the specified chunk. 
-  - This will import all photos for each chunk, then locate the calibration panel captures for the multispectral and move them to a “Calibration images” folder in the Agisoft Workspace tab. If you chose to manually import imagery, you can locate calibration panels using the Calibrate Reflectance tool in the Tools GUI as seen below in Figure \@ref(fig:cal-ref-agisoft).
+  - Agisoft processes all ten bands as a multicamera with one primary channel. We import imagery using a python script located [here](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/TheOpener_BPG.py).  However, you can also import folders containing imagery in metashape via the import tool or by dragging and dropping the folder into the specified chunk. 
+
+  - The script will import all photos for each chunk, then locate the calibration panel captures for the multispectral and move them to a “Calibration images” folder in the Agisoft Workspace tab. If you chose to manually import imagery, you can locate calibration panels using the Calibrate Reflectance tool in the Tools GUI as seen below in Figure \@ref(fig:cal-ref-agisoft).
 
 
 ```{r cal-ref-agisoft, echo=FALSE, out.width="100%", fig.align='center', fig.cap = "Calibrate reflectance tool found under Tools in Metashape."}
 knitr::include_graphics(here("Photos_&_gifs\\cal_ref_metashape.png"))
 ```
 
-**Note:** To process a pansharpened image the MS_P sensor requires the panchromatic camera to be set as the primary channel for processing.  Go to Tools – Set Primary Channel – select Panchro.
+**Note:** To leverage the higher resolution imagery available with the MS_P sensor you are required to set the panchromatic camera as the primary channel for processing.  Go to Tools – Set Primary Channel – select Panchro.
 
 2. **Micasense Corrections outside of Agisoft(if necessary)** – R Script. 2 hours.
 
@@ -80,8 +81,8 @@ knitr::include_graphics(here("Photos_&_gifs\\cal_ref_metashape.png"))
 
   - The MS cameras start taking pictures as soon as image capture has been started via the webpage on the ground and don’t stop until we power off at the end of the flight. Hence, we examine the flight trajectory and disable photos taken during flight to and from the site.
 
-```{r cal-ref-sunPanel-agisoft, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Calibrate reflectance tool found under Tools in Metashape with sun sensor and reflectance panels enabled for calibration."}
-knitr::include_graphics(here("Photos_&_gifs\\cal_ref_sun_panel_metashape.png"))
+```{r trajectory, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Flight trajectory with light blue disabled and dark blue as enabled cameras prior to photo alignment."}
+knitr::include_graphics(here("Photos_&_gifs\\trajectory.png"))
 ```
 
 4.	**Select the Best Calibration Panels and Calibrate Reflectance** – Manual and Processed. 15 minutes.
@@ -91,11 +92,16 @@ knitr::include_graphics(here("Photos_&_gifs\\cal_ref_sun_panel_metashape.png"))
   - We select one panel capture from the start and one from the end of the flight, by visually selecting a centered capture without shadow or glare and moving the rest to an “Unused_Cal_Images” folder (this folder needs to be created in the GUI). 
   - We run the calibration process using both the DLS and Calibration Panels checked in . However, Micasense recommends only calibrating with panels on full sun days. Please refer to the [Micasense Knowledge Base - Best practices: Collecting Data with MicaSense Sensors](https://support.micasense.com/hc/en-us/articles/224893167-Best-practices-Collecting-Data-with-MicaSense-Sensors#:~:text=Hold%20the%20aircraft%20at%20chest,offset%20slightly%20to%20prevent%20shadows.) for more details.
 
+```{r cal-ref-sunPanel-agisoft, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Calibrate reflectance tool found under Tools in Metashape with sun sensor and reflectance panels enabled for calibration."}
+knitr::include_graphics(here("Photos_&_gifs\\cal_ref_sun_panel_metashape.png"))
+```
+
 5.	**Align Photos** – GUI - Processed. 3-10 hours.
 
   - Photogrammetric alignment is the process of matching and orienting overlapping images by identifying common features known as tie points, across multiple images. This alignment generates a geometrically accurate sparse point cloud from the tie points.
-  - We use the batch processing tool and settings as seen in Figure \@ref(fig: align-photo-agisoft).
+  - We use the batch processing tool and settings as seen below.
   - The sparse clouds vary greatly in density, the P1 clouds on a closed canopy can be as low as 150,000 points.  The MS_P sparse clouds could be 48 million points on the same flight plan.  
+
 
 ```{r align-photo-agisoft, echo=FALSE, out.width="40%", fig.align='center', fig.cap = "Photogrametric camera alignment settings using the alignment tool in Metashape"}
 knitr::include_graphics(here("Photos_&_gifs\\align_photos_metashape.png"))
@@ -165,7 +171,7 @@ knitr::include_graphics(here("Photos_&_gifs\\DC_settings_metashape.png"))
 knitr::include_graphics(here("Photos_&_gifs\\build_DEM_metashape.png"))
 ```
 
-11.	**Build Orthomosaic** – Script - Processed. 1-4 hours.
+11.	**Build Orthomosaic** – Script or Batch Processed. 1-4 hours.
 
   - Creates an orthomosaic by stitching together the aligned images and the DEM according to batch processing steps in Figure \@ref(fig:ortho-settings-agisoft).
   - **NOTE: We do NOT enable hole filling for multispectral** – only used for RGB orthomosaics that were needed strictly for visual purposes and not analysis.
@@ -206,11 +212,11 @@ knitr::include_graphics(here("Photos_&_gifs\\b10_reflectance_values_metashape.pn
 
 ```
 
-14.	Normalize, pan sharpen and export – Script 5 minutes.
+14.	Normalize and export – Script 5 minutes.
 
-  - Run the closing script for each multispectral sensor after entering the variables into the script.  This script will:
-    - Normalize the 16bit pixel values for the MS.  For the MS_P it will normalize and pan sharpen.
-    - Import the 15m buffered shape of the trial and export the orthomosaic clipped to this shape in NAD83 to the project specific folder.
+  - Run the closing script for each multispectral sensor after entering the variables into the scripts.  [MS](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/BPG_closing_MS.py), [MS_P](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/BPG_closing_MS_.py) these scripts will:
+    - Normalize the 16bit pixel values for the MS and MS_P. **Note** We do not recommend pan sharpening, but if this is part of your workflow you would do it now as per the micasense knowledge base [here](https://support.micasense.com/hc/en-us/articles/4416696717847-Pan-sharpening-processing-data-from-Altum-PT-and-RedEdge-P-cameras-in-Agisoft-Metashape).
+    - Import the 15m buffered shape of the trial and export the orthomosaic clipped to this shape in NAD83 to the project specific folder. **Note** Importing and clipping the orthomosaic will reduce the size of the export and help speed up further processing.
       
 The following are helpful Agisoft processing references:
 

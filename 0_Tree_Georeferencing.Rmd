@@ -1,6 +1,6 @@
-# Georeferencing Plot Trees  {#Georeferencing-Plot-Trees}
+# Georeferencing Plot Trees {#Georeferencing-Plot-Trees}
 
-At this stage in the workflow we have processed high quality imagery into orthomosaics ready for analysis. The next step is to georeference the row and column census data and the high quality P1 template to geolocate the trees, which will be used later on to create individual tree polygons.  Figure \@ref(fig:genetic-layout) is an image of the spreadsheet map from the Big Tree creek site which is typical of many BC genetics trials. Figure \@ref(fig:P1-genetic-layout) is the P1 orthomosaic template flight we georeference the census data to.
+At this stage in the workflow we have processed high quality imagery into orthomosaics ready for analysis. The next step is to georeference the row and column census data and the high quality P1 template to geolocate the trees, which will be used later on to create individual tree polygons. Figure \@ref(fig:genetic-layout) is an image of the spreadsheet map from the Big Tree creek site which is typical of many BC genetics trials. Figure \@ref(fig:P1-genetic-layout) is the P1 orthomosaic template flight we georeference the census data to.
 
 ```{r genetic-layout, echo=FALSE, fig.align='center', out.width="100%", fig.cap = "The spreadsheet map of the layout of the site, each tree is located on a grid with a unique row and column value assigned to it."}
 knitr::include_graphics(here("Photos_&_gifs\\genetic_layout2.png"))
@@ -12,72 +12,156 @@ knitr::include_graphics(here("Photos_&_gifs\\genetic_layout_P1.png"))
 
 ```
 
-We have recently developed a “Grid Georeferencer” plugin in QGIS that does the initial rough georeferencing of the census data. We also have a version that works in R.  Both are detailed below.
+We have recently developed a “Grid Georeferencer” plugin in QGIS that does the initial rough georeferencing of the census data. We also have a version that works in R. Both are detailed below.
 
 ## Workflow in QGIS
 
-1.	The census data is examined, and a unique identifier column is found or created.
+1.  The census data is examined, and a unique identifier column is found or created.
 
-    a.	This column is “treeID” and will be used through the rest of the data processing pipeline.
-    
-      i.	The census data must also contain “row” and “col” (row and column identifiers).
-      
-2.	The information from the reconnaissance workflow is used to locate reference trees.
+    a.  This column is “treeID” and will be used through the rest of the data processing pipeline.
 
-    a.	The distance, Azimuth and treeID from each GCP to the nearest plot tree was recorded as a reference tree.
-    
-    b.	In a GIS (in this case QGIS) a shapefile is made with the reference trees.  Here they are visualized as red dots.  The shapefile is saved in the “working” reference system NAD83 UTM’s.
-    
-3.	The “Grid Georeferencer” plugin is run in QGIS as seen in Figure \@ref(fig:Qgis-ref).
+    b.  The census data must also contain “row” and “col” (row and column identifiers).
 
-    a.	Enter the Input csv, choose the extra fields to import, enter the grid spacing, enter the export location.
+2.  The information from the reconnaissance workflow is used to locate reference trees.
+
+    a.  The distance, Azimuth and treeID from each GCP to the nearest plot tree was recorded as a reference tree.
+
+    b.  In a GIS (in this case QGIS) a shapefile is made with the reference trees. Here they are visualized as red dots. The shapefile is saved in the “working” reference system NAD83 UTM’s.
+
+3.  The “Grid Georeferencer” plugin is run in QGIS as seen in Figure \@ref(fig:Qgis-ref).
+
+    a.  Enter the Input csv, choose the extra fields to import, enter the grid spacing, enter the export location.
 
 ```{r Qgis-ref, echo=FALSE, out.width="80%",fig.align='center', fig.cap = "Visual of the Grid Georeferenced plugin in QGIS."}
 knitr::include_graphics(here("Photos_&_gifs\\Qgis_grid_georef.png"))
                          
 ```
 
-4.	The plugin builds the grid based on the row and col fields at the spacing input.
+4.  The plugin builds the grid based on the row and col fields at the spacing input.
 
-    4a.	Then rotates the grid based on the input reference trees and saves a copy of this rotated version as _rotated in the export folder.
-    
-    4b.	Then applies an affine transformation to better fit the grid to the reference trees. It saves this as _transformed and loads it into QGIS.
+    4a. Then rotates the grid based on the input reference trees and saves a copy of this rotated version as \_rotated in the export folder.
+
+    4b. Then applies an affine transformation to better fit the grid to the reference trees. It saves this as \_transformed and loads it into QGIS.
 
 ## Alternate Workflow in R
 
-1.	The census data is examined, and a unique identifier column is found or created. 
+1.  The census data is examined, and a unique identifier column is found or created.
 
-2.	This column is “treeID” and will be used through the rest of the data processing pipeline. 
+2.  This column is “treeID” and will be used through the rest of the data processing pipeline.
 
-3.	The information from the reconnaissance workflow is used to locate corner trees.
+3.  The information from the reconnaissance workflow is used to locate corner trees.
 
-    a.	The distance, Azimuth and treeID from each GCP to the nearest plot tree was recorded as a reference tree.
-    b.	In a GIS (in this case QGIS) a shapefile is made with the reference trees.  Here they are visualized as red dots.
-    c.	We want to identify the tree that is in the first row and first column (first-first), which here is the bottom left corner, and the first row last column (first-last), which is the bottom right and coincidentally a reference tree.
-    d.	Ideally, we would have a GCP at the bottom left corner of the site, but this was the densest section, so the columns and rows were carefully counted in either direction from the nearest reference tree.
-    e.	We made shapefiles for the first-first and first-last trees.
-    
-4.	The “treetop_georeferencing” script is opened in R and site-specific variables entered including spacing, which on this site is 2m X 2m. The code then goes through the following steps. **Note this requires North up rows and East up columns to work as scripted.  Modifications will need to be made to sites with different orientations.
+    a.  The distance, Azimuth and treeID from each GCP to the nearest plot tree was recorded as a reference tree.
+    b.  In a GIS (in this case QGIS) a shapefile is made with the reference trees. Here they are visualized as red dots.
+    c.  We want to identify the tree that is in the first row and first column (first-first), which here is the bottom left corner, and the first row last column (first-last), which is the bottom right and coincidentally a reference tree.
+    d.  Ideally, we would have a GCP at the bottom left corner of the site, but this was the densest section, so the columns and rows were carefully counted in either direction from the nearest reference tree.
+    e.  We made shapefiles for the first-first and first-last trees.
 
-    a.	Read Shapefiles: Read the shapefiles for the first-first and first-last trees.
-    b.	Read and Filter Data: Load the CSV file, filter for the required columns. At Big Tree we want the row, col, treeID and the most recent assessments, which here are a 2012 remeasurement(ht12) and assessment(c12).
-    c.	Generate Initial Grid: Create a grid of tree locations using the row and column numbers, starting from the initial points (first-first). Adjust the coordinates to account for column and row spacing.
-    d.	Convert to Spatial Object: Convert the grid data to an sf (simple features) object in R.
-    e.	Identify Reference Point: Extract the coordinates of the tree in the first column and the last row (first_last_sf) from the grid.
-    f.	Calculate Rotation Angle: Define a function to rotate coordinates. Calculate the angle of rotation needed to align the grid with the actual positions of the initial points.
-    g.	Rotate Grid: Apply the rotation to all points in the grid.
-    h.	Merge and Save Results: Merge the rotated coordinates with the original grid data. Set the CRS and save the resulting grid as a shapefile.
-    i.	Plot Final Grid: Plot the final rotated grid to visualize the tree locations.
+4.  The “Treetop_georeference.R” script is opened in R and site-specific variables entered including spacing, which on this site is 2m X 2m. The code then goes through the following steps. \*\*Note this requires North up rows and East up columns to work as scripted. Modifications will need to be made to sites with different orientations. This code will install the required libraries, set up the file structure as we use it and folow these steps:
+
+<details>
+<summary>Click to show the code</summary>
+```{r, eval=FALSE, echo=TRUE}
+library(tidyverse)
+library(sf)
+library(spatial)
+library(rgdal)
+library(raster)
+library(lidR)
+library(sp)
+library(nngeo)
+library(future)
+
+dir = "Q:\\SNC\\Data\\Big_Tree_GCA\\"
+name <- "Big_Tree"
+csv_path = paste0(dir, "Census_Data\\#4_bigtree_gca_masterfile.csv")
+
+trees <- paste0("Site_Info\\03_GIS\\shapefiles")
+
+#shapfiles for the below trees were done in a GIS off high res imagery
+first_first = st_read(paste0(dir, trees, "\\first_first.shp")) %>% 
+  st_geometry()
+
+first_last = st_read(paste0(dir, trees, "\\first_last.shp")) %>% 
+  st_geometry()
+
+# column spacing in m 
+c_space = 2
+
+# row spacing in m 
+r_space = 2
+
+# read in the CSV
+csv_B = read.csv(csv_path) %>% 
+  dplyr::select(treeID, row, col, ht12, c12)
+  
+csv_B
+# produce a grid using row and column numbers, to be rotated
+grid = csv_B %>% 
+  mutate(
+    x_coord = st_coordinates(first_first)[1] + (col * c_space) - c_space,
+    y_coord = st_coordinates(first_first)[2] + (row * r_space) - c_space)
+
+# to sf object
+grid_sf = st_as_sf(grid, coords = c("x_coord", "y_coord"), crs = 26910)
+
+# get the coordinates of the first-last
+first_last_sf = grid_sf %>% 
+  filter(row == 1) %>%
+  filter(col == max(.$col)) %>% 
+  st_geometry()
+
+# define a FUNCTION which rotates coords for a given angle
+rot = function(a) matrix(c(cos(a), sin(a), -sin(a), cos(a)), 2, 2)
+
+# get the angle of rotation between the true (first, last) and
+# the current position of (first, last)
+a = st_coordinates(first_last - first_first)
+b = st_coordinates(first_last_sf - first_first)
+
+theta = acos( sum(a*b) / ( sqrt(sum(a * a)) * sqrt(sum(b * b)) ) )
+
+# rotate all points 
+grid_rot = (st_geometry(grid_sf) - first_first) * rot((theta)) + first_first
+
+# in order to merge the new coordinates and the census info,
+# copy the sf object created from the master csv
+grid_rot_sf = grid_sf
+# then replace its geometry with the rotated coords
+st_geometry(grid_rot_sf) = grid_rot
+# and set its CRS to the correct one
+st_crs(grid_rot_sf) = 26910
+
+#save rotated grid
+st_write(obj = grid_rot_sf,
+         dsn = paste0(dir, trees, "\\", name, "_grid_manual_bpg.shp"),
+         append = FALSE,
+         crs = 26910)
+
+plot(grid_rot_sf)
+```
+</details>
+         
+a.  Read Shapefiles: Read the shapefiles for the first-first and first-last trees.
+b.  Read and Filter Data: Load the CSV file, filter for the required columns. At Big Tree we want the row, col, treeID and the most recent assessments, which here are a 2012 remeasurement(ht12) and assessment(c12).
+c.  Generate Initial Grid: Create a grid of tree locations using the row and column numbers, starting from the initial points (first-first). Adjust the coordinates to account for column and row spacing.
+d.  Convert to Spatial Object: Convert the grid data to an sf (simple features) object in R.
+e.  Identify Reference Point: Extract the coordinates of the tree in the first column and the last row (first_last_sf) from the grid.
+f.  Calculate Rotation Angle: Define a function to rotate coordinates. Calculate the angle of rotation needed to align the grid with the actual positions of the initial points.
+g.  Rotate Grid: Apply the rotation to all points in the grid.
+h.  Merge and Save Results: Merge the rotated coordinates with the original grid data. Set the CRS and save the resulting grid as a shapefile.
+i.  Plot Final Grid: Plot the final rotated grid to visualize the tree locations.
 
 ## Final Steps in QGIS
-The grid is loaded into the GIS and examined.  The first-first corner with row 1 column 1 looks great, but the top right corner is at least 2 meters off as you can see below.  This is one of the better ones we have georeferenced.  The site is on even ground and was quite square.  Some of the sites were 6 meters off from one corner to the other.
+
+The grid is loaded into the GIS and examined. The first-first corner with row 1 column 1 looks great, but the top right corner is at least 2 meters off as you can see below. This is one of the better ones we have georeferenced. The site is on even ground and was quite square. Some of the sites were 6 meters off from one corner to the other.
 
 ```{r ref-trees, echo=FALSE,  fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: treeID 1, reference for the bottom left corner of the plot. Right: treeID 2757, reference for the top right of the plot"}
 knitr::include_graphics(c(here("Photos_&_gifs\\ref_treeID_1.png"),
                           here("Photos_&_gifs\\ref_treeID_2757.png")))
 ```
 
-We now use the reference trees and QGIS’ Georeferencer plugin if needed to tighten up the fit of the grid to the Orthomosaic.  Open the Georeferencer and select the Transformation Settings icon as seen to the left.  The polynomial 2 transformation works well, but another transformation can be tried if it doesn’t fit.  Once sufficient, add the vector layer that we exported from R and zoom in on the first point that matches a reference tree as below.  Then add a point and select the From Map Canvas button.  
+We now use the reference trees and QGIS’ Georeferencer plugin if needed to tighten up the fit of the grid to the Orthomosaic. Open the Georeferencer and select the Transformation Settings icon as seen to the left. The polynomial 2 transformation works well, but another transformation can be tried if it doesn’t fit. Once sufficient, add the vector layer that we exported from R and zoom in on the first point that matches a reference tree as below. Then add a point and select the From Map Canvas button.
 
 ```{r Qgis-ref-trees, echo=FALSE, fig.show="hold", fig.align='center', out.width=c("32.5%","67.5%"), fig.cap = "Left: Transformation settings. Right: zoom in on vector layer and place a point on the Map Canvas"}
 knitr::include_graphics(c(here("Photos_&_gifs\\Qgis_transformation_settings.png")))
@@ -85,16 +169,14 @@ knitr::include_graphics(c(here("Photos_&_gifs\\Qgis_transformation_settings.png"
 knitr::include_graphics(c(here("Photos_&_gifs\\Qgis_map_cor_setting.png")))
 ```
 
-Work through the reference trees.  With 6 reference trees spread evenly through the site the fit was quite good as seen here.
+Work through the reference trees. With 6 reference trees spread evenly through the site the fit was quite good as seen here.
 
 ```{r Qgis-ref-tree-fit, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Zoomed in visual of the georeferenced tree grid for 6 trees overlain on the P1 orthomosaic."}
 knitr::include_graphics(here("Photos_&_gifs\\Qgis-ref-tree-fit.jpg"))
                          
 ```
 
-From here we will manually move each tree position to its visible top. This is a time-consuming task, as care must be taken.  In the above imagery the tree between 1601 and 1680 is ingress (a Western hemlock, not planted as part of the trial), the P1 imagery helps to make the distinction visible. 
-On sites that have been recently maintained as pictured below, and if you already have a CHM, a time saving method is to follow the crown delineation workflow in R and buffer 30-40cm circles around your tree points, then snap the tree point to the local maximum.  Code and detailed instructions are available in the Crown Delineation workflow. 
-
+From here we will manually move each tree position to its visible top. This is a time-consuming task, as care must be taken. In the above imagery the tree between 1601 and 1680 is ingress (a Western hemlock, not planted as part of the trial), the P1 imagery helps to make the distinction visible. On sites that have been recently maintained as pictured below, and if you already have a CHM, a time saving method is to buffer 30-40cm circles around your tree points, then snap the tree point to the local maximum.  This can be done in R or a GIS.
 
 ```{r Qgis-maintained-ref-tree-fit, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Georeferenced grid overlain on P1 orthomosaic for a site that was well maintained. The georeferenced grid has been snapped to the highest point on the CHM within a given radius to pull the grid to the treetops."}
 knitr::include_graphics(here("Photos_&_gifs\\maintained-geo-ref-trees.png"))

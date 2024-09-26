@@ -10,6 +10,7 @@ rmd_files:
   - index.Rmd
   - 0_Abstract.Rmd
   - 0_Background.Rmd
+  - 0_Glossary.Rmd
   - 0_Sites.Rmd
   - 0_Preflight_Planning.Rmd
   - 0_Data_Collection_Flights.Rmd
