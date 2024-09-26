@@ -373,9 +373,9 @@ Figure 7.3: Calibrate reflectance tool found under Tools in Metashape.
 <li>The MS cameras start taking pictures as soon as image capture has been started via the webpage on the ground and don’t stop until we power off at the end of the flight. Hence, we examine the flight trajectory and disable photos taken during flight to and from the site.</li>
 </ul>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:trajectory"></span>
-<img src="Photos_&_gifs/trajectory.PNG" alt="Calibrate reflectance tool found under Tools in Metashape with sun sensor and reflectance panels enabled for calibration." width="100%" />
+<img src="Photos_&_gifs/trajectory.PNG" alt="Flight trajectory with light blue disabled and dark blue as enabled cameras prior to photo alignment." width="100%" />
 <p class="caption">
-Figure 7.4: Calibrate reflectance tool found under Tools in Metashape with sun sensor and reflectance panels enabled for calibration.
+Figure 7.4: Flight trajectory with light blue disabled and dark blue as enabled cameras prior to photo alignment.
 </p>
 </div>
 <ol start="4" style="list-style-type: decimal">
@@ -398,10 +398,9 @@ Figure 7.5: Calibrate reflectance tool found under Tools in Metashape with sun s
 </ol>
 <ul>
 <li>Photogrammetric alignment is the process of matching and orienting overlapping images by identifying common features known as tie points, across multiple images. This alignment generates a geometrically accurate sparse point cloud from the tie points.</li>
-<li>We use the batch processing tool and settings as seen in Figure @ref(fig: align-photo-agisoft).</li>
+<li>We use the batch processing tool and settings as seen below.</li>
 <li>The sparse clouds vary greatly in density, the P1 clouds on a closed canopy can be as low as 150,000 points. The MS_P sparse clouds could be 48 million points on the same flight plan.</li>
 </ul>
-Figure @ref(fig: align-photo-agisoft)
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:align-photo-agisoft"></span>
 <img src="Photos_&_gifs/align_photos_metashape.png" alt="Photogrametric camera alignment settings using the alignment tool in Metashape" width="40%" />
 <p class="caption">
