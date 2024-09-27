@@ -66,9 +66,7 @@ fig:DLS1-corrected-irradiance
 fig:DLS1-vs-DLS2-irr
 fig:2-crown-temp-NIR
 fig:crown-temp-RGB
-abstract
-abstract-1
-background-and-basis-of-knowledge
+introduction
 glossary
 range-of-sites-assessed
 jordan-river

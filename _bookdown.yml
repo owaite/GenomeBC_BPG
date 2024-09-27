@@ -8,9 +8,7 @@ language:
     chapter_name: "Chapter "
 rmd_files:
   - index.Rmd
-  - 0_Abstract.Rmd
-  - 0_Abstract_ow_edit.Rmd
-  - 0_Background.Rmd
+  - 0_Introduction.Rmd
   - 0_Glossary.Rmd
   - 0_Sites.Rmd
   - 0_Preflight_Planning.Rmd
