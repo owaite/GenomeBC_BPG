@@ -130,9 +130,9 @@ This pattern of sun sensor angle dependence on drone orientation relative to the
 knitr::include_graphics(here("Photos_&_gifs\\time_SSA_flightlines.PNG"))
 ```
 
-Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value, plotted as the horizontal black line in Figure \@ref(fig:SSA-DSL2-data), to make an informed decision on whether or not the values need correcting.
+Now that we understand the reason behind the cyclical pattern of the sun sensor angles, we can use the solar zenith value, plotted as the horizontal black line in Figure \@ref(fig:SSA-DSL2-data), to make an informed decision on whether the values need correcting.
 
-To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method which will be referred to as the "corrected" values, see the section on [sun sensor anlge correction](#SSA-correction) for the correction method.
+To help this decision we recommend plotting the DLS2 sun sensor values and the sun sensor values calculated with the DLS1 method which will be referred to as the "corrected" values, see the section on [sun sensor angle correction](#SSA-correction) for the correction method.
 
 ```{r SSA-DSL2-DLS1-data, echo=FALSE, out.width="100%", fig.align = 'center', fig.cap=" Sun sensor angles over the flight duration from the DLS2 (purple) and corrected to mimic the DLS1 method (orange). Horizontal lines indicate the moving averages for the DLS2 (purple) and DLS1 (orange), where the balack line is the solar zenith calculated from GPS longitude, latitude, and time."}
 knitr::include_graphics(here("Photos_&_gifs\\SSA_DLS1_verse_DLS2.PNG"))
@@ -144,13 +144,13 @@ Given this data, we would conclude that the DLS1 method provides more accurate s
 
 ### Does the relationship between direct and horizontal irradiance make sense?
 
-First, lets define direct and horizontal irradiance with respect to the DLS:
+First, let's define direct and horizontal irradiance with respect to the DLS:
 
 **Direct Irradiance**: The direct component of the sunlight reaching the sensor's surface that is not being scattered. On a clear sunny day, this component is high.
 
 **Scattered Irradiance**: The sunlight that is scattered by particles in the atmosphere. This component is generally weaker on sunny days and higher on overcast days.
 
-**Horiztonal Irradiance**: The total irradiance on a horizontal surface, including both direct sunlight (projected onto the horizontal plane) and diffuse light. Hence, if the sun is directly above the sensor and it is a clear sunny day, the direct irradiance component will likely be quite close to the horizontal irradiance, however still lower given that horizontal irradiance includes diffuse light as well.
+**Horizontal Irradiance**: The total irradiance on a horizontal surface, including both direct sunlight (projected onto the horizontal plane) and diffuse light. Hence, if the sun is directly above the sensor and it is a clear sunny day, the direct irradiance component will likely be quite close to the horizontal irradiance, however still lower given that horizontal irradiance includes diffuse light as well.
 
 Below we have plotted the direct and horizontal irradiance from the DLS2 and values calculated with the DLS1 method (Figure \@ref(fig:Irr-DSL2-DLS1-data) ). We can see that the direct irradiance from the DLS2 is greater than the horizontal irradiance, which is physically impossible. In contrast, the direct irradiance from the DLS1 method is approximately 50 W/m² less than the horizontal irradiance.
 
@@ -164,7 +164,7 @@ Explanations for the lower direct irradiance from the DLS1 compared to the horiz
 knitr::include_graphics(here("Photos_&_gifs\\Hor_dir_irradiance_DLS1_v_DLS2.PNG"))
 ```
 
-From Figure \@ref(fig:Irr-DSL2-DLS1-data), we would recommend correcting the data using the DLS1 method outlined below
+From Figure \@ref(fig:Irr-DSL2-DLS1-data), we would recommend correcting the data using the DLS1 method outlined below.
 
 ### Does the scattered: direct ratio make sense for the lighting conditions of that day?
 
@@ -180,11 +180,11 @@ knitr::include_graphics(here("Photos_&_gifs\\Dir_Scat_irradiance_DLS1_v_DLS2.PNG
 
 The scattered: direct ratio for the data plotted in Figure \@ref(fig:Dir-Irr-DSL2-DLS1-data) is \~0.09 for the DLS2 and \~0.46 for the DLS1.
 
-**DLS2:** The ratio of 0.09 scattered:direct components from the DSL2 states that the direct irradiance during the flight was \~11 times greater than the scattered irradiance, or in other words that 91% of the total radiation reaching the earth was direct radiation and 9% was scattered radiation.
+**DLS2:** The ratio of 0.09 scattered: direct components from the DSL2 states that the direct irradiance during the flight was \~11 times greater than the scattered irradiance, or in other words that 91% of the total radiation reaching the earth was direct radiation and 9% was scattered radiation.
 
-**DLS1:** The ratio of 0.46 scattered:direct components from the DLS1 states that the direct component was 2.17 times greater than the scattered component, hence 46% of the solar radiation was from the scattered component and the remaining 54% from the direct component.
+**DLS1:** The ratio of 0.46 scattered: direct components from the DLS1 states that the direct component was 2.17 times greater than the scattered component, hence 46% of the solar radiation was from the scattered component and the remaining 54% from the direct component.
 
-Given that the flight on June 25th was flown just at the end of the 2 hour solar noon window under a sunny sky with the occasional cloud, we would assume that the scattered component would be greater than the minimum \~15% for fully clear skies at solar noon. Hence a value of 46% scattered radiation could be the result of extra scattering by the occasional clouds and a slight increase in scattering from a greater solar zenith angle. Overall the value of 0.46 is more logical than the value of 0.09, since 0.09 implies less scattered radiation than the generally accepted minimum scattered component percentage on a clear sunny day.
+Given that the flight on June 25th was flown just at the end of the 2 hour solar noon window under a sunny sky with the occasional cloud, we would assume that the scattered component would be greater than the minimum \~15% for fully clear skies at solar noon. Hence a value of 46% scattered radiation could be the result of extra scattering by the occasional clouds and a slight increase in scattering from a greater solar zenith angle. Overall, the value of 0.46 is more logical than the value of 0.09, since 0.09 implies less scattered radiation than the generally accepted minimum scattered component percentage on a clear sunny day.
 
 Overall, we recommend correcting this flight using the DLS1 method. The DLS1 corrections are done on individual photos, if the orthomosaic has already been built, you can re-upload the imagery, re-calibrate, and re-build the orthomosaic in metashape without needing to reprocess the dense cloud.
 
@@ -324,7 +324,7 @@ xmp_all <- readRDS(paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\\XMP_data_
 ```
 </details>
 
-### Calculating Solar Zenith Anlge
+### Calculating Solar Zenith Angle
 
 Below we convert the DateTimeOrginal column from the exif data to a date object and use the date object and average lat and lon to calculate solar angle.
 
@@ -386,7 +386,7 @@ xmp_all_filtered_mis <- xmp_all_filtered %>% #removing images with missing date 
 <!-- print(dni) -->
 <!-- ``` -->
 
-### Caluclating Sun-Sensor Angles {#SSA-correction}
+### Calculating Sun-Sensor Angles {#SSA-correction}
 
 Here we show the difference between the archived DLS1 method and the current DLS2 method.
 
@@ -526,7 +526,7 @@ xmp_all_ssa = SSA_xmp_all_filtered %>%
 knitr::include_graphics(here("Photos_&_gifs\\0_SSA_plot_updated.jpeg"))
 ```
 
-### Scattered:Direct Ratio Estimate
+### Scattered: Direct Ratio Estimate
 
 Here we estimate scattered:direct ratio for each flight by relating cosine of the sun-sensor angle to spectral irradiance measured by the DLS2. This relationship, in a perfect world, should give you the scattered irradiance as the intercept, which is independent of angle, and the direct irradiance, which is the slope, and therefore perfectly proportional to sun angle. In reality, these relationships are extremely messy and most data needs to be discarded.
 
@@ -599,7 +599,7 @@ saveRDS(df_to_use,paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\\",date,"_r
 ```
 </details>
 
-Below we plot the percent of scattered irradiance calculated from the models kept (blues) and those removed (grey). Percent scattered was calculated by diving the intercept (scattered component) by the sum of the intercept and the slope (direct component), see equation:$I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}$. The maroon horizontal line shows the mean percent scattered irradiance, in this case just above 30% (Figure \@ref(fig:check-percent-scat-plot)). If you are loosing too many models, adjust the filters.
+Below we plot the percent of scattered irradiance calculated from the models kept (blues) and those removed (grey). Percent scattered was calculated by diving the intercept (scattered component) by the sum of the intercept and the slope (direct component), see equation:$I_{\text{spec}} = I_{\text{direct}} \cdot \cos(\theta_{\text{sun-sensor}}) + I_{\text{scattered}}$. The maroon horizontal line shows the mean percent scattered irradiance, in this case just above 30% (Figure \@ref(fig:check-percent-scat-plot)). If you are losing too many models, adjust the filters.
 
 <details>
 <summary>Click to show the code</summary>
@@ -795,7 +795,7 @@ saveRDS(xmp_corrected,paste0(dir,date,"\\1_Data\\",MS_folder_name,"\\CSV\\",date
 ```
 </details>
 
-Now we plot the sensor irradiance along with the corrected horizontal, direct, and scattered irradiance values
+Now we plot the sensor irradiance along with the corrected horizontal, direct, and scattered irradiance values.
 
 <details>
 <summary>Click to show the code</summary>
@@ -945,7 +945,7 @@ data = avg_ratio_data %>% filter(BandName %in% c("Blue")) # only need to look at
 knitr::include_graphics(here("Photos_&_gifs\\5_Irradiance_DLS1_DLS2_plot_reDone.PNG"))
 ```
 
-Refer to the section [Is Correction Needed?](#is-correction-needed) to help decide whether or not your data needs correcting.
+Refer to the section [Is Correction Needed?](#is-correction-needed) to help decide whether your data needs correcting.
 
 Up to this point, we have calculated "corrected" irradiance and sun sensor angles however have not overwritten the exif data within the MicaSense imagery. In this next step, we will overwrite image exif data with the corrected DLS1 values. Before moving on to this step ensure that :
 
