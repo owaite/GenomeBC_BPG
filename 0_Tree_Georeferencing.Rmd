@@ -12,7 +12,7 @@ knitr::include_graphics(here("Photos_&_gifs\\genetic_layout_P1.png"))
 
 ```
 
-We have recently developed a “Grid Georeferencer” plugin in QGIS that does the initial rough georeferencing of the census data. We also have a version that works in R. Both are detailed below.
+We have recently developed a “Grid Georeferencer” plugin in QGIS that does the initial rough georeferencing of the census data and is available for download [here](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/grid_georeferencer.zip). We also have a version that works in R. Both are detailed below.
 
 ## Workflow in QGIS {#Workflow-in-QGIS}
 
