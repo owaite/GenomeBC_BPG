@@ -22,3 +22,46 @@ data <- data.frame(
 kable(data, col.names = c("Software", "Purpose","Cost","Options - notes"),caption = 'Purpose, cost, and notes on software that we have used for this project.')
 
 ```
+
+
+Data management: Storage needs 
+
+Each project will have very different storage needs, but this will be a rough guide to help plan for the quantity of storage required and can be scaled according to project goals. 
+
+The flight day illustrated in Figure X at the Big Tree GCA site required 110 GB. 
+
+ 
+
+One flight per sensor: 
+
+L1 - 2Ha site produces ~510 pictures and approximately 8.5 GB of raw data total. 
+
+P1 - 2Ha flight area produces ~500 photos and 12 GB of data 
+
+MS_P - 2Ha flight area produces around 12,000 photos equaling 42 GB 
+
+MS - 2Ha flight area produces 10,500photos equaling 25GB  
+
+We are keeping all intermediate products while we are developing processes.  Processing more than doubles the raw data.  Consider 250GB a conservative estimate for total data storage needs for the one day on site.   
+
+A copy of the folder structure we use is available on GitHub 
+
+Computer Hardware: 
+
+The computer we are using has the following specifications 
+
+Processor	Intel(R) Xeon(R) Silver 4214R CPU @ 2.40GHz   2.39 GHz  (2 processors) 
+
+Installed RAM	256 GB  
+
+System type	64-bit operating system, x64-based processor 
+
+GPU		NVIDIA RTX A4000Raw Data Collection 
+
+2TB SSD for processing, we have found the processing is consistently faster and less prone to error if we process on the SSD rather than on the storage drives. 
+
+ 
+
+For storage we use an 8bay QNAP RAID6 with 12 TB hard drives.  
+
+We use 18Tb HDs for backups. 
