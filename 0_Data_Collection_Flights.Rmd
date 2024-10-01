@@ -20,7 +20,7 @@ For each set of batteries, it is also important to differentiate between them. I
 
 It is possible to manually set the discharge rate for each individual battery when it is slotted in the drone. The setting can be found under the battery logo of the triple dot menu in camera view. This can be helpful when you may have a few days before the next set of flights. By default, DJI batteries will automatically discharge to 95% after twelve hours, but after the user set time in days it will begin to discharge to 50-60%, the default setting is 2 days before safe discharge occurs.
 
-## Workflow: Site Reconnaissance
+## Workflow: Site Reconnaissance {#Site-Reconnaissance}
 
 Ahead of the first data collection flights we follow the reconnaissance workflow outlined in Figure \@ref(fig:Reconnasissance-flowDiagram). This is to assess for hazards, confirm site perimeter, layout GCPs and collect their coordinates (where possible), and to locate trees to enable georeferencing existing trial data to the imagery. We followed this workflow in March 2024 at the Big Tree creek trial where were able to find suitable locations to install GCPs and were able to collect precise GPS points for the GCPs. We also measured azimuth and distance from the GCPs to the nearest trees to enable us to tie the row column grid to the imagery (georeferencing) later in the processing. Please refer to the [SOP_Emlid_RS3](https://github.com/owaite/GenomeBC_BPG/tree/main/SOPs) for detailed instructions on using the Emlid GNSS receivers. The [Emlid RS3 documentation](https://docs.emlid.com/reachrs3/) is excellent and covers a wide range of applications.
 

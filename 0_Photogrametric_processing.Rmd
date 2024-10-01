@@ -14,7 +14,7 @@ The workflow is based on a site approximately 1.5 Ha buffered to 2Ha and the raw
 -	MS_P (10 band plus panchro): 12,000 photos equaling 42 GB
 -	MS (10 band): 10,500 photos equaling 25GB 
 
-## Overview.
+## Overview
 
 1.	Import all photos for each chunk and locate the calibration panel captures for the multispectral chunks. Then save to the project file structure.
 2.	Manually assess all flight lines and disable outliers.
@@ -62,10 +62,66 @@ knitr::include_graphics(c(
 
 1. **Load Photos and locate calibration panels** - Script (or GUI). 15 minutes.
 
-  - Agisoft processes all ten bands as a multicamera with one primary channel. We import imagery using a python script located [here](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/TheOpener_BPG.py).  However, you can also import folders containing imagery in metashape via the import tool or by dragging and dropping the folder into the specified chunk. 
+Agisoft processes all ten bands as a multicamera with one primary channel. We import imagery using a python script located [here](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/TheOpener_BPG.py) and shown below.  However, you can also import folders containing imagery in metashape via the import tool or by dragging and dropping the folder into the specified chunk. 
 
-  - The script will import all photos for each chunk, then locate the calibration panel captures for the multispectral and move them to a “Calibration images” folder in the Agisoft Workspace tab. If you chose to manually import imagery, you can locate calibration panels using the Calibrate Reflectance tool in the Tools GUI as seen below in Figure \@ref(fig:cal-ref-agisoft).
-
+  - The script will import all photos for each chunk, then locate the calibration panel captures for the multispectral and move them to a “Calibration images” folder in the Agisoft Workspace tab. 
+    <details> <summary>Click to show the code</summary>
+    ```{python, eval=FALSE, echo=TRUE, python.reticulate = FALSE}
+    import os, Metashape
+    import glob
+    # the location of all photos for the Agisoft psx, select site, check path, enter date YYYY_MM_DD
+    #name = "Fdc_JR_East_GCA"
+    name = "Hillcrest_GCA"
+    #name = "Big_Tree_GCA"
+    path = "Q:\\SNC\\Data"
+    date = "2024_08_28"
+    # make sure that subfolders with the name of this project exist
+    # Create folder structure specific to current project file setup
+    if not os.path.exists(path + "\\" + name + "\\" + "Flights" + "\\" + date + "\\2_Inputs\\metashape\\1_TILES\\"):
+         os.makedirs(path + "\\" + name + "\\" + "Flights" + "\\" + date + "\\2_Inputs\\metashape\\1_TILES\\")
+    
+    if not os.path.exists(path + "\\" + name + "\\" + "Flights" + "\\" + date + "\\2_Inputs\\metashape\\2_ORTHO\\"):
+        os.makedirs(path + "\\" + name + "\\" + "Flights" + "\\" + date + "\\2_Inputs\\metashape\\2_ORTHO\\")
+    
+    if not os.path.exists(path + "\\" + name + "\\" + "Flights" + "\\" + date +"\\2_Inputs\\metashape\\3_MS_ORTHO\\"):
+        os.makedirs(path + "\\" + name + "\\" + "Flights" + "\\" + date +"\\2_Inputs\\metashape\\3_MS_ORTHO\\")    
+    # P1 path    
+    rgb_P1_path = path + "\\" + name + "\\Flights\\" + date + "\\1_Data\\P1\\*\\*.JPG"  
+    #micasense mx path
+    ms_path = path + "\\" + name + "\\Flights" + "\\" + date + "\\1_Data"+ "\\Micasense\\*\\*\\*\\*"
+    #micasense Pan chromatic path
+    ms_P_path = path + "\\" + name + "\\Flights" + "\\" + date + "\\1_Data"+ "\\Micasense_P\\*\\*\\*\\*"
+    #path to save project
+    psx_path = path + "\\" + name + "\\" + "Flights" + "\\" + date + "\\2_Inputs\\metashape\\" + name + "_" + date +".psx"
+    #setting up the document 
+    doc = Metashape.app.document
+    doc.save(psx_path)
+    # Adding the RGB_P1 chunk, load photos with EXIF
+    chunk = doc.addChunk()
+    chunk.label = "RGB_P1"
+    photo_list = glob.glob(rgb_P1_path)
+    chunk.addPhotos(photo_list) # add the photos
+    chunk.loadReferenceExif(load_rotation=True, load_accuracy=True)# load the exif data
+    # Adding the MS_Mica chunk, loading photos and locating reflectance panels
+    chunk = doc.addChunk()
+    chunk.label = "MS_Mica"
+    photo_list = glob.glob(ms_path)
+    chunk.addPhotos(photo_list)# add the photos
+    chunk.loadReferenceExif(load_rotation=True, load_accuracy=True)#load the exif data
+    chunk.locateReflectancePanels()# locate reflectance panels
+    doc.save()
+    # Adding the MS_Mica_P chunk, loading photos and locating reflectance panels
+    chunk = doc.addChunk()
+    chunk.label = "MS_Mica_P"
+    photo_list = glob.glob(ms_P_path)
+    chunk.addPhotos(photo_list) # add the photos 
+    chunk.loadReferenceExif(load_rotation=True, load_accuracy=True)#load the exif data
+    chunk.locateReflectancePanels()# locate reflectance panels
+    doc.save()
+    ```
+    </details>
+      
+  - If you chose to manually import imagery, you can locate calibration panels using the Calibrate Reflectance tool in the Tools GUI as seen below in Figure \@ref(fig:cal-ref-agisoft).
 
 ```{r cal-ref-agisoft, echo=FALSE, out.width="100%", fig.align='center', fig.cap = "Calibrate reflectance tool found under Tools in Metashape."}
 knitr::include_graphics(here("Photos_&_gifs\\cal_ref_metashape.png"))
@@ -217,7 +273,57 @@ knitr::include_graphics(here("Photos_&_gifs\\b10_reflectance_values_metashape.pn
   - Run the closing script for each multispectral sensor after entering the variables into the scripts.  [MS](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/BPG_closing_MS.py), [MS_P](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/BPG_closing_MS_.py) these scripts will:
     - Normalize the 16bit pixel values for the MS and MS_P. **Note** We do not recommend pan sharpening, but if this is part of your workflow you would do it now as per the micasense knowledge base [here](https://support.micasense.com/hc/en-us/articles/4416696717847-Pan-sharpening-processing-data-from-Altum-PT-and-RedEdge-P-cameras-in-Agisoft-Metashape).
     - Import the 15m buffered shape of the trial and export the orthomosaic clipped to this shape in NAD83 to the project specific folder. **Note** Importing and clipping the orthomosaic will reduce the size of the export and help speed up further processing.
-      
+  
+See the closing script for the MS here:
+<details>
+<summary>Click to show the code</summary>
+```{python, eval=FALSE, echo=TRUE, python.reticulate = FALSE}
+import os, Metashape
+# select project variables, name, date, chosen calibration panel numbers, site perimeter 
+name = "Big_Tree_GCA"
+date = "2024_04_30"
+# enter chosen calibration panel numbers
+cal_pan_1 = "9"
+cal_pan_2 = "1085"
+
+site_perim = "Q:\\SNC\\Data\\Big_Tree_GCA\\Site_Info\\03_GIS\\shapefiles\\big_tree_15m_buf_WGS84.shp"
+# confirm project path
+path = "Q:\\SNC\\Data"
+
+## no change necessary from here
+# MS ortho export path
+ms_ortho_path = path + "\\" + name + "\\" + "Flights" + "\\" + date + "\\2_Inputs\\metashape\\3_MS_ORTHO\\" + name + "_" + date + "_Calp", cal_pan_1,"p", cal_pan_2, "_MS_clip.tif"
+# Get the current document
+doc = Metashape.app.document
+# Get the current chunk
+chunk = doc.chunk
+
+## Manually check the raster palette values, rebuild ortho if needed
+# setting raster transform values and disabling transform
+#  normalize the 16 bit pixel values
+chunk.raster_transform.formula = ["B1/32768", "B2/32768", "B3/32768","B4/32768", "B5/32768", "B6/32768","B7/32768", "B8/32768", "B9/32768","B10/32768" ]
+chunk.raster_transform.enabled = False
+#import the boundary
+chunk.importShapes(
+            path= site_perim,
+            boundary_type=Metashape.Shape.OuterBoundary,
+            format=Metashape.ShapesFormat.ShapesFormatSHP)
+# setting up the projection
+local_crs = Metashape.CoordinateSystem("EPSG::26910")
+proj = Metashape.OrthoProjection()
+proj.crs=local_crs
+# Export raster with index values, alpha=False, and adjust settings for BigTIFF
+compression = Metashape.ImageCompression()
+compression.tiff_big = True
+# export raster with index values, alpha= false, BigTIFF enabled
+# warning: this won't overwrite existing and won't give warnings that it hasn't 
+chunk.exportRaster(ms_ortho_path, raster_transform=Metashape.RasterTransformValue,
+                   image_format=Metashape.ImageFormatTIFF, projection=proj, clip_to_boundary=True,
+                   save_alpha=False, image_compression=compression)
+doc.save()
+```
+</details>
+
 The following are helpful Agisoft processing references:
 
   - [Agisoft Metashape User Manual: Professional Edition, Version 2.1.](https://www.agisoft.com/downloads/user-manuals/)

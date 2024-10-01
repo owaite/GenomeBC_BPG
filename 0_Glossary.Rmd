@@ -1,45 +1,45 @@
 # Glossary {#glossary}
 
-Census data – Traditional trial data in a spreadsheet with rows and columns denoting each position on a gridded site and a unique identifier for each tree.  It will also contain historical data like height and health assessments.
+**Census data** – Traditional trial data in a spreadsheet with rows and columns denoting each position on a gridded site and a unique identifier for each tree.  It will also contain historical data like height and health assessments.
 
-Common Garden Trial - A type of experiment where different genotypes (often from different locations) are grown in the same environmental conditions to assess how genetic differences influence the phenotype.  This helps isolate the genetic contribution to observed traits by minimizing environmental variation.
+**Common Garden Trial** - A type of experiment where different genotypes (often from different locations) are grown in the same environmental conditions to assess how genetic differences influence the phenotype.  This helps isolate the genetic contribution to observed traits by minimizing environmental variation.
 
-Crown delineation - Refers specifically to the process of defining the boundaries of individual tree crowns.  It focuses on outlining the exact perimeter of each tree's canopy.
+**Crown delineation** - Refers specifically to the process of defining the boundaries of individual tree crowns.  It focuses on outlining the exact perimeter of each tree's canopy.
 
-Crown polygon - a delineated boundary that represents the outer edge or perimeter of a tree's canopy when viewed from above.
+**Crown polygon** - a delineated boundary that represents the outer edge or perimeter of a tree's canopy when viewed from above.
 
-DAP – Digital Aerial Photogrammetry is the process of using overlapping aerial images to generate three-dimensional point clouds and orthorectified imagery (orthomosaics
+**DAP** – Digital Aerial Photogrammetry is the process of using overlapping aerial images to generate three-dimensional point clouds and orthorectified imagery (orthomosaics
 
-DEM - Digital Elevation Models are 2-dimensional, single-channel images that represent elevation.  Lower values in a DEM correspond to lower elevations, while higher values correspond to higher elevations.  We reference three types of DEMs:
+**DEM** - Digital Elevation Models are 2-dimensional, single-channel rasters that represent elevation.  Lower values in a DEM correspond to lower elevations, while higher values correspond to higher elevations.  We reference three types of DEMs:
 
--   DSM – Digital Surface Model:DSMs capture the elevation values from sea level to the surface of the canopy, including buildings, trees, and other objects.
+-   **DSM** – Digital Surface Model:DSMs capture the elevation values from sea level to the surface of the canopy, including buildings, trees, and other objects.
 
--   DTM – Digital Terrain Model:DTMs represent the bare ground elevation, typically, but not exclusively generated using LiDAR technology.  They exclude trees, shrubs, and other surface objects, showing the "ground" elevation.
+-   **DTM** – Digital Terrain Model:DTMs represent the bare ground elevation, typically, but not exclusively generated using LiDAR technology.  They exclude trees, shrubs, and other surface objects, showing the "ground" elevation.
 
--   CHM – Canopy Height Model:CHMs are created by normalizing the elevation values, representing the difference between the DSM and the DTM (CHM = DSM - DTM).  This model specifically highlights the height of the canopy above the ground.
+-   **CHM** – Canopy Height Model:CHMs are created by normalizing the elevation values, representing the difference between the DSM and the DTM (CHM = DSM - DTM).  This model specifically highlights the height of the canopy above the ground.
 
-EXIF data (Exchangeable Image File Format) refers to metadata embedded within digital image files that contains information about the image such as the camera settings, date and time the photo was taken, GPS location, and other technical details.
+**EXIF data** - (Exchangeable Image File Format) refers to metadata embedded within digital image files that contains information about the image such as the camera settings, date and time the photo was taken, GPS location, and other technical details.
 
-GCP – Ground Control Point.  GCPs are fixed points on the ground of known position that can be seen in the imagery  GCPs are used in photogrammetry data processing to tie images to known points, to aid in alignment and registration and to verify the accuracy of the results.
+**GCP** – Ground Control Point.  GCPs are fixed points on the ground of known position that can be seen in the imagery  GCPs are used in photogrammetry data processing to tie images to known points, to aid in alignment and registration and to verify the accuracy of the results.
 
-Genotype - The genetic makeup of an organism, representing the specific set of genes inherited from its parents. The genotype determines the potential traits an organism can exhibit, although the environment may influence the expression of these traits.
+**Genotype** - The genetic makeup of an organism, representing the specific set of genes inherited from its parents. The genotype determines the potential traits an organism can exhibit, although the environment may influence the expression of these traits.
 
-GIS – Geographic Information System.  A system designed to view, manage and analyze spatial data.  QGIS and ArcGIS are two commonly used GIS.
+**GIS** – Geographic Information System.  A system designed to view, manage and analyze spatial data.  QGIS and ArcGIS are two commonly used GIS.
 
-GNSS – global navigation satellite system. A broad term for all satellite-based navigation systems, including GPS, GLONASS, Galileo, and BeiDou, providing global positioning and timing data by combining signals from multiple satellite constellations.
+**GNSS** – global navigation satellite system. A broad term for all satellite-based navigation systems, including GPS, GLONASS, Galileo, and BeiDou, providing global positioning and timing data by combining signals from multiple satellite constellations.
 
-GPS – Global Positioning System. A satellite-based navigation system developed by the U.S. government that provides location and timing information, using a network of satellites.
+**GPS** – Global Positioning System. A satellite-based navigation system developed by the U.S. government that provides location and timing information, using a network of satellites.
 
-GSD - Ground Sampling Distance.  The distance between the centers of two consecutive pixels on the ground in a digital image. GSD is a measure of image resolution; a smaller GSD indicates higher resolution, providing more detailed imagery.
+**GSD** - Ground Sampling Distance.  The distance between the centers of two consecutive pixels on the ground in a digital image. GSD is a measure of image resolution; a smaller GSD indicates higher resolution, providing more detailed imagery.
 
-Orthomosaic – an orthorectified image produced by aligning images. A primary photogrammetric product.
+**Orthomosaic** – an orthorectified image produced by aligning images. A primary photogrammetric product.
 
-Phenotype - the observable physical and physiological traits of an organism, such as height, leaf color, or drought tolerance. The phenotype results from the interaction of the genotype with the environment.
+**Phenotype** - the observable physical and physiological traits of an organism, such as height, leaf color, or drought tolerance. The phenotype results from the interaction of the genotype with the environment.
 
-Progeny Trial **-** an experiment in forest genetics where the offspring (progeny) of specific parent trees are planted and evaluated across multiple locations. Progeny trials are used to assess the heritability of traits, estimate breeding values, and study the genetic variation within a population.
+**Progeny Trial** - an experiment in forest genetics where the offspring (progeny) of specific parent trees are planted and evaluated across multiple locations. Progeny trials are used to assess the heritability of traits, estimate breeding values, and study the genetic variation within a population.
 
-Registration(register) – aligning multi-temporal and or mutisensor orthomosaics to one another.
+**Registration(register)** – aligning multi-temporal and or mutisensor orthomosaics to one another.
 
-SOP – Standard Operating Procedures.  Documentation detailing workflows.
+**SOP** – Standard Operating Procedures.  Documentation detailing workflows.
 
-UAV – Unmanned Aerial Vehicle. Drone
+**UAV** – Unmanned Aerial Vehicle. Drone

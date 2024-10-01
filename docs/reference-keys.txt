@@ -85,7 +85,7 @@ drone-training-in-canada
 data-collection-and-flights
 hardware---dji-matrice-3000-rtk-m300
 battery-management
-workflow-site-reconnaissance
+Site-Reconnaissance
 data-collection-flight-planning
 flight-planning-theory
 flight-planning-with-dji-pilot
@@ -95,10 +95,10 @@ zenmuse-p1-high-quality-natural-colour-rgb-imagery
 zenmuse-l1-lidar-and-rgb
 zenmuse-h20t-thermal-and-rgb
 processing-orthomosaics
-overview.
+overview
 detailed-workflow
 Georeferencing-Plot-Trees
-workflow-in-qgis
+Workflow-in-QGIS
 alternate-workflow-in-r
 final-steps-in-qgis
 crown-delineation

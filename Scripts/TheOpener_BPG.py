@@ -74,5 +74,5 @@ chunk.loadReferenceExif(load_rotation=True, load_accuracy=True)
 chunk.locateReflectancePanels()
 doc.save()
 ##############################################
-# Manually isable irrelevant cameras now  #
+# Manually disable irrelevant cameras now  #
 ##############################################

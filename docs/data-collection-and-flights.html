@@ -173,7 +173,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#hardware---dji-matrice-3000-rtk-m300"><i class="fa fa-check"></i><b>5.1</b> Hardware - DJI Matrice 3000 RTK (M300)</a></li>
 <li class="chapter" data-level="5.2" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#battery-management"><i class="fa fa-check"></i><b>5.2</b> Battery Management</a></li>
-<li class="chapter" data-level="5.3" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#workflow-site-reconnaissance"><i class="fa fa-check"></i><b>5.3</b> Workflow: Site Reconnaissance</a></li>
+<li class="chapter" data-level="5.3" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#Site-Reconnaissance"><i class="fa fa-check"></i><b>5.3</b> Workflow: Site Reconnaissance</a></li>
 <li class="chapter" data-level="5.4" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#data-collection-flight-planning"><i class="fa fa-check"></i><b>5.4</b> Data Collection: Flight Planning</a>
 <ul>
 <li class="chapter" data-level="5.4.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#flight-planning-theory"><i class="fa fa-check"></i><b>5.4.1</b> Flight planning theory</a></li>
@@ -189,12 +189,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html"><i class="fa fa-check"></i><b>6</b> Agisoft Photogrammetry pipeline</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html#overview."><i class="fa fa-check"></i><b>6.1</b> Overview.</a></li>
+<li class="chapter" data-level="6.1" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html#overview"><i class="fa fa-check"></i><b>6.1</b> Overview</a></li>
 <li class="chapter" data-level="6.2" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html#detailed-workflow"><i class="fa fa-check"></i><b>6.2</b> Detailed Workflow</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html"><i class="fa fa-check"></i><b>7</b> Georeferencing Plot Trees</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html#workflow-in-qgis"><i class="fa fa-check"></i><b>7.1</b> Workflow in QGIS</a></li>
+<li class="chapter" data-level="7.1" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html#Workflow-in-QGIS"><i class="fa fa-check"></i><b>7.1</b> Workflow in QGIS</a></li>
 <li class="chapter" data-level="7.2" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html#alternate-workflow-in-r"><i class="fa fa-check"></i><b>7.2</b> Alternate Workflow in R</a></li>
 <li class="chapter" data-level="7.3" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html#final-steps-in-qgis"><i class="fa fa-check"></i><b>7.3</b> Final Steps in QGIS</a></li>
 </ul></li>
@@ -304,8 +304,8 @@ Figure 5.1: DJI Matrice 300 RTK in flight over one of our Vancouver Island field
 <p>For each set of batteries, it is also important to differentiate between them. If batteries are used interchangeably, their charge and discharge rates will quickly begin to vary and so will their capacity. Therefore, it is required to mark them in pairs and only use them as such.</p>
 <p>It is possible to manually set the discharge rate for each individual battery when it is slotted in the drone. The setting can be found under the battery logo of the triple dot menu in camera view. This can be helpful when you may have a few days before the next set of flights. By default, DJI batteries will automatically discharge to 95% after twelve hours, but after the user set time in days it will begin to discharge to 50-60%, the default setting is 2 days before safe discharge occurs.</p>
 </div>
-<div id="workflow-site-reconnaissance" class="section level2 hasAnchor" number="5.3">
-<h2><span class="header-section-number">5.3</span> Workflow: Site Reconnaissance<a href="data-collection-and-flights.html#workflow-site-reconnaissance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="Site-Reconnaissance" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Workflow: Site Reconnaissance<a href="data-collection-and-flights.html#Site-Reconnaissance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Ahead of the first data collection flights we follow the reconnaissance workflow outlined in Figure <a href="data-collection-and-flights.html#fig:Reconnasissance-flowDiagram">5.2</a>. This is to assess for hazards, confirm site perimeter, layout GCPs and collect their coordinates (where possible), and to locate trees to enable georeferencing existing trial data to the imagery. We followed this workflow in March 2024 at the Big Tree creek trial where were able to find suitable locations to install GCPs and were able to collect precise GPS points for the GCPs. We also measured azimuth and distance from the GCPs to the nearest trees to enable us to tie the row column grid to the imagery (georeferencing) later in the processing. Please refer to the <a href="https://github.com/owaite/GenomeBC_BPG/tree/main/SOPs">SOP_Emlid_RS3</a> for detailed instructions on using the Emlid GNSS receivers. The <a href="https://docs.emlid.com/reachrs3/">Emlid RS3 documentation</a> is excellent and covers a wide range of applications.</p>
 <div class="figure"><span style="display:block;" id="fig:Reconnasissance-flowDiagram"></span>
 <img src="Photos_&_gifs/Reconnasissance_flowDiagram.PNG" alt="Reconnaissance workflow." width="100%" />
