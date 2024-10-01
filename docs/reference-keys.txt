@@ -15,6 +15,7 @@ tab:MS-Table
 fig:drone-variable-light
 fig:P1-RGB
 fig:RC-L1
+tab:software-cost
 fig:aligned-agisoft
 fig:metashape-pref
 fig:cal-ref-agisoft
@@ -94,6 +95,8 @@ micasense-10-band-spectral-sensor-for-vegetative-indices
 zenmuse-p1-high-quality-natural-colour-rgb-imagery
 zenmuse-l1-lidar-and-rgb
 zenmuse-h20t-thermal-and-rgb
+data-processing-software-and-hardware-costs-and-options
+software-costs
 processing-orthomosaics
 overview
 detailed-workflow

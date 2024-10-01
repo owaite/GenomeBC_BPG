@@ -6,14 +6,26 @@ We chose open-source options where we could, but there are still significant sof
 ```{r software-cost, echo = FALSE}
 data <- data.frame(
   Software  = c("DJI Terra Pro",
-                "DJI Terra Pro"
+                "Agisoft Metashape Pro",
+                "LasTools",
+                "RedToolBox"
                  
   ),
-  Purpose = c(
+  Purpose = c("Raw LiDAR processing",
+              "Photogrammetry processing",
+              "LiDAR processing",
+              "PPK and geotagging"
+              
   ),
-  Cost = c(
+  Cost = c("$6,000 plus $500 yearly",
+           "$4,700",
+           "$3,100",
+           "$300"
   ),
-  Options_notes = c(
+  Options_notes = c("None, DJI LiDAR can only be processed in DJI Terra, and the yearly updates have included significant improvements",
+                    "Agisoft is industry standard.  Pix4D is often compared, but more for online processing.  Open Drone map (ODM) is a free open-source alternative, but has not been tested by this team.",
+                    "Excellent software that runs quickly, but most of the functions we used can be written in R.",
+                    "PPK can be free in RTKLiB. Recently, the free Emlid Studio V1.8 update can PPK and geotag"
   )
   
   
@@ -24,7 +36,7 @@ kable(data, col.names = c("Software", "Purpose","Cost","Options - notes"),captio
 ```
 
 
-Data management: Storage needs 
+##Data management: Storage needs 
 
 Each project will have very different storage needs, but this will be a rough guide to help plan for the quantity of storage required and can be scaled according to project goals. 
 
@@ -46,7 +58,7 @@ We are keeping all intermediate products while we are developing processes.  Pro
 
 A copy of the folder structure we use is available on GitHub 
 
-Computer Hardware: 
+##Computer Hardware: 
 
 The computer we are using has the following specifications 
 
@@ -60,7 +72,6 @@ GPU		NVIDIA RTX A4000Raw Data Collection
 
 2TB SSD for processing, we have found the processing is consistently faster and less prone to error if we process on the SSD rather than on the storage drives. 
 
- 
 
 For storage we use an 8bay QNAP RAID6 with 12 TB hard drives.  
 
