@@ -1,8 +1,9 @@
 # Range of Sites Assessed
 
-The original six trials this work is based on are three each of Western redcedar (Thuja plicata) and coastal Douglas-fir (Pseudotsuga menziesii var. menziesii). These are two iconic coastal BC tree species that are culturally and ecologically significant. These conifers also play a crucial role in the provincial forestry industry and economy. The sites are low elevation progeny trials in replicated single tree plots planted in a grid. After establishment a spreadsheet is made with each tree’s location recorded with a row and column denoting its position on the site and an identity linking parentage. These sites were chosen due to a wealth of historical phenotypic data available including tree size metrics and responses to biotic or abiotic stressors. They were also chosen for ease of access to enable repeated field campaigns and to comply with visual line-of-sight regulations for flying unmanned aerial vehicles. The trials vary in size, age, and site conditions, each of which plays a considerable role in the challenges involved in data collection and processing.  
-Our approach to data collection and processing has evolved with experience.  In March 2024 we began working on a sister site of the East main site from the original six sites.   It is a MOF Genetics Combining Ability (GCA) Douglas-fir trial named “Big Tree Creek”, due to its location near Big Tree creek.  This site is used as an example to illustrate our workflow because it is the most recent site we have worked on and represents the cumulation of practical knowledge gained over two years.  
+The original six trials this work is based on are three each of Western redcedar (Thuja plicata) and coastal Douglas-fir (Pseudotsuga menziesii var. menziesii). These are two iconic coastal BC tree species that are culturally and ecologically significant. These conifers also play a crucial role in the provincial forestry industry and economy. The sites are low elevation progeny trials in replicated single tree plots planted in a grid. After establishment a spreadsheet is made with each tree’s location recorded with a row and column denoting its position on the site and an identity linking parentage. These sites were chosen due to a wealth of historical phenotypic data available including tree size metrics and responses to biotic or abiotic stressors. They were also chosen for ease of access to enable repeated field campaigns and to comply with visual line-of-sight regulations for flying unmanned aerial vehicles. The trials vary in size, age, and site conditions, each of which plays a considerable role in the challenges involved in data collection and processing.\
+Our approach to data collection and processing has evolved with experience. In March 2024 we began working on a sister site of the East main site from the original six sites. It is a MOF Genetics Combining Ability (GCA) Douglas-fir trial named “Big Tree Creek”, due to its location near Big Tree creek. This site is used as an example to illustrate our workflow because it is the most recent site we have worked on and represents the cumulation of practical knowledge gained over two years.\
 The Big Tree GCA trial site is located near Sayward on northeastern Vancouver Island, BC. It was planted in 2003 at 2m spacing and tests 84 families with 32 replications. It has a southern aspect with an even 25% slope. Mid-slope, the elevation is 210 m above sea level, with 20 m elevation change over the site. In 2024, during a drone-based data collection campaign, there were 2229 live trees visible in the imagery on 2900 positions. The site had reached canopy closure and our LiDAR derived measurements indicated a median tree height of 12.5m.
+
 Although these guidelines were developed using forest genetics trials, the methodology could easily be applied to other gridded forestry trials or even to non-gridded trials with additional stem mapping workflows.
 
 Figure \@ref(fig:Site-location-map)
@@ -11,7 +12,13 @@ Figure \@ref(fig:Site-location-map)
 knitr::include_graphics(here("Photos_&_gifs\\map_site_location.png"))
 ```
 
+Species Range maps from:Mathys, A., Coops, N.C. and Waring, R.H. 2014. Soil water availability effects on the distribution of 20 tree species in western North America. Forest Ecology and Management 313: 144-152.
+[Douglas Fir:](https://databasin.org/datasets/38a6f62de3b44329bfb797f1afe9005f/)
+[Western redcedar:](https://databasin.org/datasets/bb40172fc44745a59039f136e3e83710/)
+
+
 ## Jordan River
+
 ```{r, echo = FALSE}
 library(knitr)
 library(kableExtra)
@@ -29,8 +36,8 @@ kable(data, col.names = c("Western Red cedar (Cw)", "Douglas fir (Fdc)"))
 
 ```
 
-
 ## Powell River
+
 ```{r, echo = FALSE}
 library(knitr)
 library(kableExtra)
@@ -45,7 +52,9 @@ data <- data.frame(
 kable(data, col.names = c("Western Red cedar (Cw)", "Douglas fir (Fdc)"))
 
 ```
+
 ## 2024 Sites
+
 ```{r, echo = FALSE}
 # Data as a dataframe
 data <- data.frame(

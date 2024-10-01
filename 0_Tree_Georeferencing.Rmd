@@ -29,14 +29,15 @@ We have recently developed a “Grid Georeferencer” plugin in QGIS that does t
     b.  In a GIS (in this case QGIS) a shapefile is made with the reference trees. They are visualized as red dots in Figure \@ref(fig:P1-genetic-layout). The shapefile is saved in the “working” reference system NAD83 UTM’s.
 
 3.  The **Grid Georeferencer** plugin is run in QGIS as seen in Figure \@ref(fig:Qgis-ref). This plugin:
-    a. builds the grid based on the row and col fields at the spacing input.
-    b. rotates the grid based on the input reference trees and saves a copy of this rotated version as "\_rotated" in the export folder.
-    c. applies an affine transformation to better fit the grid to the reference trees. It saves this as "\_transformed" and loads it into QGIS.
 
-    - To run the plugin (see Figure \@ref(fig:Qgis-ref)):
-      - enter the Input csv and choose the extra fields to import
-      - enter the grid spacing
-      - enter the export location
+    a.  builds the grid based on the row and col fields at the spacing input.
+    b.  rotates the grid based on the input reference trees and saves a copy of this rotated version as "\_rotated" in the export folder.
+    c.  applies an affine transformation to better fit the grid to the reference trees. It saves this as "\_transformed" and loads it into QGIS.
+
+    -   To run the plugin (see Figure \@ref(fig:Qgis-ref)):
+        -   enter the Input csv and choose the extra fields to import
+        -   enter the grid spacing
+        -   enter the export location
 
 ```{r Qgis-ref, echo=FALSE, out.width="80%",fig.align='center', fig.cap = "Visual of the Grid Georeferenced plugin in QGIS."}
 knitr::include_graphics(here("Photos_&_gifs\\Qgis_grid_georef.png"))
@@ -49,35 +50,36 @@ The **Grid Georeferencer** plugin described above was created by our team to mak
 
 Follow steps 1-2 from the [Workflow in QGIS](#Workflow-in-QGIS)
 
+3.  Identify the tree that is in the first row and first column and first row and last column:
 
-3. Identify the tree that is in the first row and first column and first row and last column:
-    - Here the tree in the first row and first column is the bottom left tree shown as a blue dot in Figures \@ref(fig:genetic-layout) & \@ref(fig:P1-genetic-layout)). Export this tree as a shapefile which will be read into the below R script as "first-first".
-      - \*\* Note ideally we would have a GCP at the bottom left corner of the site however, this was the densest section at this particular site, so the columns and rows were carefully counted in either direction from the nearest reference tree instead.
-    - The tree in the first row and last column is the bottom right tree in Figures \@ref(fig:genetic-layout) & \@ref(fig:P1-genetic-layout) and coincidentally a reference tree next to *GCP_2* (Figure  \@ref(fig:P1-genetic-layout)). Export this tree as a shapefile which will be read into the R script as "first-last" below.
-    
-  
-4. Run the R script that will create a grid with the correct orientation and spacing to match your plot trees. The R script can be found [here](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/Treetop_Georeference.R) or in the code chunk below. \*\* Note this script requires **North up rows** and **East up columns** to work as scripted. Modifications will need to be made to sites with different orientations. This code will install the required libraries, set up the file structure as we use it and follow these steps:
+    -   Here the tree in the first row and first column is the bottom left tree shown as a blue dot in Figures \@ref(fig:genetic-layout) & \@ref(fig:P1-genetic-layout)). Export this tree as a shapefile which will be read into the below R script as "first-first".
+        -   \*\* Note ideally we would have a GCP at the bottom left corner of the site however, this was the densest section at this particular site, so the columns and rows were carefully counted in either direction from the nearest reference tree instead.
+    -   The tree in the first row and last column is the bottom right tree in Figures \@ref(fig:genetic-layout) & \@ref(fig:P1-genetic-layout) and coincidentally a reference tree next to *GCP_2* (Figure \@ref(fig:P1-genetic-layout)). Export this tree as a shapefile which will be read into the R script as "first-last" below.
+
+4.  Run the R script that will create a grid with the correct orientation and spacing to match your plot trees. The R script can be found [here](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/Treetop_Georeference.R) or in the code chunk below. \*\* Note this script requires **North up rows** and **East up columns** to work as scripted. Modifications will need to be made to sites with different orientations. This code will install the required libraries, set up the file structure as we use it and follow these steps:
 
     a.  Read in the shapefiles for the first-first and first-last trees.
-    
+
     b.  Load the CSV file, filter for the required columns. At Big Tree we want the row, col, treeID and the most recent assessments, which here are a 2012 remeasurement (ht12) and assessment (c12).
-    
+
     c.  Generate Initial Grid: Create a grid of tree locations using the row and column numbers, starting from the initial point (first-first). Adjust the coordinates to account for column and row spacing.
-    
+
     d.  Convert to Spatial Object: Convert the grid data to an sf (simple features) object in R.
-    
+
     e.  Identify Reference Point: Extract the coordinates of the tree in the first column and the last row (first_last_sf) from the grid.
-    
+
     f.  Calculate Rotation Angle: Define a function to rotate coordinates. Calculate the angle of rotation needed to align the grid with the actual positions of the initial points.
-    
+
     g.  Rotate Grid: Apply the rotation to all points in the grid.
-    
+
     h.  Merge and Save Results: Merge the rotated coordinates with the original grid data. Set the CRS and save the resulting grid as a shapefile.
-    
+
     i.  Plot Final Grid: Plot the final rotated grid to visualize the tree locations.
 
 <details>
+
 <summary>Click to show the code</summary>
+
 ```{r, eval=FALSE, echo=TRUE}
 library(tidyverse)
 library(sf)
@@ -134,8 +136,8 @@ st_write(obj = grid_rot_sf,
          crs = 26910)
 #plot(grid_rot_sf) #uncomment to plot the rotated grid
 ```
+
 </details>
-         
 
 ## Final Steps in QGIS
 
@@ -161,7 +163,7 @@ knitr::include_graphics(here("Photos_&_gifs\\Qgis-ref-tree-fit.jpg"))
                          
 ```
 
-From here we will manually move each tree position to its visible top. This is a time-consuming task, as care must be taken. In the above imagery the tree between 1601 and 1680 is ingress (a Western hemlock, not planted as part of the trial), the P1 imagery helps to make the distinction visible. On sites that have been recently maintained as pictured below, and if you already have a CHM, a time saving method is to buffer 30-40cm circles around your tree points, then snap the tree point to the local maximum.  This can be done in R or a GIS.
+From here we will manually move each tree position to its visible top. This is a time-consuming task, as care must be taken. In the above imagery the tree between 1601 and 1680 is ingress (a Western hemlock, not planted as part of the trial), the P1 imagery helps to make the distinction visible. On sites that have been recently maintained as pictured below, and if you already have a CHM, a time saving method is to buffer 30-40cm circles around your tree points, then snap the tree point to the local maximum. This can be done in R or a GIS.
 
 ```{r Qgis-maintained-ref-tree-fit, echo=FALSE, out.width="100%",fig.align='center', fig.cap = "Georeferenced grid overlain on P1 orthomosaic for a site that was well maintained. The georeferenced grid has been snapped to the highest point on the CHM within a given radius to pull the grid to the treetops."}
 knitr::include_graphics(here("Photos_&_gifs\\maintained-geo-ref-trees.png"))
