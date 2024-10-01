@@ -96,7 +96,6 @@ zenmuse-p1-high-quality-natural-colour-rgb-imagery
 zenmuse-l1-lidar-and-rgb
 zenmuse-h20t-thermal-and-rgb
 data-processing-software-and-hardware-costs-and-options
-software-costs
 processing-orthomosaics
 overview
 detailed-workflow

@@ -1,9 +1,11 @@
 # Data Processing: Software and hardware costs and options
 
-## Software costs
-We chose open-source options where we could, but there are still significant software costs. Table \@ref(tab: software-cost) outlines cost and explores options.
+**Software costs**
+We chose open-source options where we could, but there are still significant software costs. Table \@ref(tab:software-cost) outlines cost and explores options.
 
 ```{r software-cost, echo = FALSE}
+library(knitr)
+library(kableExtra)
 data <- data.frame(
   Software  = c("DJI Terra Pro",
                 "Agisoft Metashape Pro",
@@ -25,40 +27,37 @@ data <- data.frame(
   Options_notes = c("None, DJI LiDAR can only be processed in DJI Terra, and the yearly updates have included significant improvements",
                     "Agisoft is industry standard.  Pix4D is often compared, but more for online processing.  Open Drone map (ODM) is a free open-source alternative, but has not been tested by this team.",
                     "Excellent software that runs quickly, but most of the functions we used can be written in R.",
-                    "PPK can be free in RTKLiB. Recently, the free Emlid Studio V1.8 update can PPK and geotag"
+                    "PPK can be free in RTKLiB. Recently, the free Emlid Studio V1.8 update can PPK and geotag."
   )
   
   
 )
 # Create the table and center it
-kable(data, col.names = c("Software", "Purpose","Cost","Options - notes"),caption = 'Purpose, cost, and notes on software that we have used for this project.')
+kable(data, col.names = c("Software", "Purpose","Cost","Options - notes"),caption = "Purpose, cost, and notes on software that we have used for this project.")
 
 ```
 
 
-##Data management: Storage needs 
+**Data management: Storage needs** 
 
 Each project will have very different storage needs, but this will be a rough guide to help plan for the quantity of storage required and can be scaled according to project goals. 
 
-The flight day illustrated in Figure X at the Big Tree GCA site required 110 GB. 
-
- 
 
 One flight per sensor: 
 
 L1 - 2Ha site produces ~510 pictures and approximately 8.5 GB of raw data total. 
 
-P1 - 2Ha flight area produces ~500 photos and 12 GB of data 
+P1 - 2Ha flight area produces ~500 photos and 12 GB of data. 
 
-MS_P - 2Ha flight area produces around 12,000 photos equaling 42 GB 
+MS_P - 2Ha flight area produces around 12,000 photos equaling 42 GB. 
 
-MS - 2Ha flight area produces 10,500photos equaling 25GB  
+H20T - 2Ha flight area produces aproximately 1500 RGB and thermal images equaling ~20GB.  
 
 We are keeping all intermediate products while we are developing processes.  Processing more than doubles the raw data.  Consider 250GB a conservative estimate for total data storage needs for the one day on site.   
 
 A copy of the folder structure we use is available on GitHub 
 
-##Computer Hardware: 
+**Computer Hardware:** 
 
 The computer we are using has the following specifications 
 

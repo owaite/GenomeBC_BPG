@@ -187,10 +187,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.5.4" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#zenmuse-h20t-thermal-and-rgb"><i class="fa fa-check"></i><b>5.5.4</b> Zenmuse H20T: Thermal and RGB</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="data-processing-software-and-hardware-costs-and-options.html"><a href="data-processing-software-and-hardware-costs-and-options.html"><i class="fa fa-check"></i><b>6</b> Data Processing: Software and hardware costs and options</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="data-processing-software-and-hardware-costs-and-options.html"><a href="data-processing-software-and-hardware-costs-and-options.html#software-costs"><i class="fa fa-check"></i><b>6.1</b> Software costs</a></li>
-</ul></li>
+<li class="chapter" data-level="6" data-path="data-processing-software-and-hardware-costs-and-options.html"><a href="data-processing-software-and-hardware-costs-and-options.html"><i class="fa fa-check"></i><b>6</b> Data Processing: Software and hardware costs and options</a></li>
 <li class="chapter" data-level="7" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html"><i class="fa fa-check"></i><b>7</b> Agisoft Photogrammetry pipeline</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html#overview"><i class="fa fa-check"></i><b>7.1</b> Overview</a></li>
@@ -290,16 +287,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="data-processing-software-and-hardware-costs-and-options" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> Data Processing: Software and hardware costs and options<a href="data-processing-software-and-hardware-costs-and-options.html#data-processing-software-and-hardware-costs-and-options" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="software-costs" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> Software costs<a href="data-processing-software-and-hardware-costs-and-options.html#software-costs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We chose open-source options where we could, but there are still significant software costs. Table @ref(tab: software-cost) outlines cost and explores options.</p>
+<p><strong>Software costs</strong>
+We chose open-source options where we could, but there are still significant software costs. Table <a href="data-processing-software-and-hardware-costs-and-options.html#tab:software-cost">6.1</a> outlines cost and explores options.</p>
 <table>
 <caption><span id="tab:software-cost">Table 6.1: </span>Purpose, cost, and notes on software that we have used for this project.</caption>
 <colgroup>
 <col width="8%" />
 <col width="10%" />
 <col width="9%" />
-<col width="72%" />
+<col width="71%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -313,7 +309,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="left">DJI Terra Pro</td>
 <td align="left">Raw LiDAR processing</td>
-<td align="left">6,000 plus $500 yearly</td>
+<td align="left">$6,000 plus $500 yearly</td>
 <td align="left">None, DJI LiDAR can only be processed in DJI Terra, and the yearly updates have included significant improvements</td>
 </tr>
 <tr class="even">
@@ -332,21 +328,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left">RedToolBox</td>
 <td align="left">PPK and geotagging</td>
 <td align="left">$300</td>
-<td align="left">PPK can be free in RTKLiB. Recently, the free Emlid Studio V1.8 update can PPK and geotag</td>
+<td align="left">PPK can be free in RTKLiB. Recently, the free Emlid Studio V1.8 update can PPK and geotag.</td>
 </tr>
 </tbody>
 </table>
-<p>##Data management: Storage needs</p>
+<p><strong>Data management: Storage needs</strong></p>
 <p>Each project will have very different storage needs, but this will be a rough guide to help plan for the quantity of storage required and can be scaled according to project goals.</p>
-<p>The flight day illustrated in Figure X at the Big Tree GCA site required 110 GB.</p>
 <p>One flight per sensor:</p>
 <p>L1 - 2Ha site produces ~510 pictures and approximately 8.5 GB of raw data total.</p>
-<p>P1 - 2Ha flight area produces ~500 photos and 12 GB of data</p>
-<p>MS_P - 2Ha flight area produces around 12,000 photos equaling 42 GB</p>
-<p>MS - 2Ha flight area produces 10,500photos equaling 25GB</p>
+<p>P1 - 2Ha flight area produces ~500 photos and 12 GB of data.</p>
+<p>MS_P - 2Ha flight area produces around 12,000 photos equaling 42 GB.</p>
+<p>H20T - 2Ha flight area produces aproximately 1500 RGB and thermal images equaling ~20GB.</p>
 <p>We are keeping all intermediate products while we are developing processes. Processing more than doubles the raw data. Consider 250GB a conservative estimate for total data storage needs for the one day on site.</p>
 <p>A copy of the folder structure we use is available on GitHub</p>
-<p>##Computer Hardware:</p>
+<p><strong>Computer Hardware:</strong></p>
 <p>The computer we are using has the following specifications</p>
 <p>Processor Intel(R) Xeon(R) Silver 4214R CPU @ 2.40GHz 2.39 GHz (2 processors)</p>
 <p>Installed RAM 256 GB</p>
@@ -356,7 +351,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>For storage we use an 8bay QNAP RAID6 with 12 TB hard drives.</p>
 <p>We use 18Tb HDs for backups.</p>
 
-</div>
 </div>
             </section>
 
