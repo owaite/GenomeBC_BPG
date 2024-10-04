@@ -1,4 +1,4 @@
-# Thermal Conversion {#Thermal-Conversion}
+# Thermal Conversion {#thermal-conversion}
 
 This method converts raw imagery from the Zenmuse H20T to single band temperature tiffs. We use this method to bypass the DJI thermal analysis tool app since we had thousands of images to process and the app would often crash when a few images were uploaded. This method uses the DJI thermal analysis tool's software developer kit (SDK) instead to loop through a folder of images and return temperature rasters.
 
@@ -213,7 +213,7 @@ emissivity <- 0.98 # approximate value for trees
 
 The SDK is run using a batch script that calls the SDK in a for loop to iterate over the imagery. To set up, first we copy the original .bat file into the Merged_T folder. We do this so that the original script does not get edited and instead each flight will have their own edited .bat file. This allows you to go back and see what parameters were used if needed.
 
-The original [.bat file](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/DJI_SDK_loop.bat) can be found on GitHub and looks like this:
+The original [.bat file](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/H20T_thermal/DJI_SDK_loop.bat) can be found on GitHub and looks like this:
 
 <details>
 <summary>Click to show the code</summary>
@@ -239,7 +239,7 @@ This script makes a folder called DJI_SDK_raw in the directory the .bat is saved
 
 Before continuing to the next steps:
 
-1)  save the [.bat file](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/DJI_SDK_loop.bat) from GitHub and update the omp_dir path in the below R code to the folder where this file was saved to
+1)  save the [.bat file](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/H20T_thermal/DJI_SDK_loop.bat) from GitHub and update the omp_dir path in the below R code to the folder where this file was saved to
 
 2)  download the dji thermal sdk [here](https://www.dji.com/ca/downloads/softwares/dji-thermal-sdk)
 
@@ -278,7 +278,7 @@ close(fileConn)
 ```
 </details>
 
-Next, we run the updated .bat file in windows terminal using the R code below. This will automatically output a folder of new raw images with temperature in binary saved to the Merged_T/DJI_SDK_raw folder
+Next, we run the updated .bat file in windows terminal using the R code below. This will automatically output a folder of new raw images with temperature in binary saved to the Merged_T/DJI_SDK_raw folder.
 
 <details>
 <summary>Click to show the code</summary>
@@ -364,9 +364,9 @@ The output are single band thermal tiffs that can be loaded into metashape to cr
 
 ## Examples
 
-Below are two examples of data aquired using the H20T to show both the radiometric and spatial resolution of the H20T within the crowns as well as some important factors to keep in mind when interpreting crown temperatures. 
+Below are two examples of data acquired using the H20T to show both the radiometric and spatial resolution of the H20T within the crowns as well as some important factors to keep in mind when interpreting crown temperatures. 
 
-Figure \@ref(fig:2-crown-temp-NIR) shows the temperature and NIR values of two mature (\~25 year old) Douglas-fir tree crowns, where the crowns delineate the upper 25th percentile of the tree, from a flight that occurred on July 27th, 2022 under heatdome conditions. These flights occurred in full sun conditions. Looking at the NIR plots, we can see shadowed areas (see chapter \@ref(shadow-mask) for shadow masking with NIR) towards the north east sides of both crowns. These shadowed areas roughly align with the areas of cooler temperature seen in the crown temperature plots. As you can see in the daily temperature plot on the left, the MicaSense flight occurred from 1:30-2:30pm and was followed by the thermal flight, flown with the H20T, from roughly 2:40-3:40pm. Hence, we see a greater area of cooler crown temperatures in the thermal imageru than the NIR proxy for shadow would suggest likely due to the increase in shadow from the MicaSense flight to the thermal flight as the solar zenith angle decreases into the afternoon.
+Figure \@ref(fig:2-crown-temp-NIR) shows the temperature and NIR values of two mature (\~25 year old) Douglas-fir tree crowns, where the crowns delineate the upper 25th percentile of the tree, from a flight that occurred on July 27th, 2022 under heatdome conditions. These flights occurred in full sun conditions. Looking at the NIR plots, we can see shadowed areas (see chapter \@ref(shadow-mask) for shadow masking with NIR) towards the north east sides of both crowns. These shadowed areas roughly align with the areas of cooler temperature seen in the crown temperature plots. As you can see in the daily temperature plot on the left, the MicaSense flight occurred from 1:30-2:30pm and was followed by the thermal flight, flown with the H20T, from roughly 2:40-3:40pm. We see a greater area of cooler crown temperatures in the thermal imagery compared to the NIR proxy for shadow likely due to the increase in shadow from the MicaSense flight to the thermal flight as the solar zenith angle decreases into the afternoon.
 
 ```{r 2-crown-temp-NIR, echo=FALSE, fig.align='center', out.width="100%", fig.cap = "Left: plot of hourly ambient tempatures from an on-site HOBO climate logger at Canoe for July 27th, 2022. Middle column: near-infrared (NIR) values for two Douglas-fir crowns aquired from a MicaSense flight flown directly before the thermal flight. Right column: temperature values within two mature Douglas-fir crowns flown under heatdome conditions. Pixels plotted for both the NIR and temperature rasters are those within a delineated crown representing the top 25th percentile of the tree."}
 knitr::include_graphics(here("Photos_&_gifs/two_crown_nir_rgb_temp_graph.PNG")

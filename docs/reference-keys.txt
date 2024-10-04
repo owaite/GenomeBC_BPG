@@ -99,7 +99,7 @@ data-processing-software-and-hardware-costs-and-options
 processing-orthomosaics
 overview
 detailed-workflow
-Georeferencing-Plot-Trees
+georeferencing-plot-trees
 Workflow-in-QGIS
 alternate-workflow-in-r
 final-steps-in-qgis
@@ -128,7 +128,7 @@ segmenting-tiles
 merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree
 clipping-the-point-cloud-into-individual-point-clouds-per-tree
 individual-tree-metrics
-MicaSense-Irradiance-Correction
+micasense-irradiance-correction
 background
 deriving-horizontal-irradiance
 calculating-reflectance
@@ -139,11 +139,11 @@ does-the-relationship-between-direct-and-horizontal-irradiance-make-sense
 does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day
 DLS1-correction
 reading-exif-data
-calculating-solar-zenith-anlge
+calculating-solar-zenith-angle
 SSA-correction
-scattereddirect-ratio-estimate
+scattered-direct-ratio-estimate
 computing-horizontal-corrected-irradiance
-Thermal-Conversion
+thermal-conversion
 folder-set-up
 weather-data
 dji-thermal-sdk-temperature-conversion
