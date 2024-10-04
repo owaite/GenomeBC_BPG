@@ -99,7 +99,7 @@ data-processing-software-and-hardware-costs-and-options
 processing-orthomosaics
 overview
 detailed-workflow
-Georeferencing-Plot-Trees
+georeferencing-plot-trees
 Workflow-in-QGIS
 alternate-workflow-in-r
 final-steps-in-qgis

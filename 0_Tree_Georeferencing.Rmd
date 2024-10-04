@@ -1,4 +1,4 @@
-# Georeferencing Plot Trees {#Georeferencing-Plot-Trees}
+# Georeferencing Plot Trees {#georeferencing-plot-trees}
 
 At this stage in the workflow we have processed high quality imagery into orthomosaics ready for analysis. The next step is to georeference the row and column census data and the high quality P1 template to geolocate the trees, which will be used later on to create individual tree polygons. Figure \@ref(fig:genetic-layout) is an image of the spreadsheet map from the Big Tree creek site which is typical of many BC genetics trials. Figure \@ref(fig:P1-genetic-layout) is the P1 orthomosaic template flight we georeference the census data to.
 

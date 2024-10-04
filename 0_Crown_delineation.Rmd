@@ -2,7 +2,7 @@
 
 [Supercells](https://jakubnowosad.com/supercells/) work to spatially group pixels with similar characteristics making it a great tool for crown delineation. The follow workflow shows how to create and filter supercells into delineated crowns and requires:
 
-1)  A shapefile (.shp) with a grid of tree locations derived by georeferencing the census data to the imagery. This will be referred to as the “grid”. Detailed steps for creating the grid can be found in the chapter on [georeferencing plot trees](#Georeferencing-Plot-Trees).
+1)  A shapefile (.shp) with a grid of tree locations derived by georeferencing the census data to the imagery. This will be referred to as the “grid”. Detailed steps for creating the grid can be found in the chapter on [georeferencing plot trees](#georeferencing-plot-trees).
 
 2)  Co-registered CHM made from normalized maximum elevation (Z) values, MicaSense orthomosaic, and P1 orthomosaic, ideally from around the same date.
 
