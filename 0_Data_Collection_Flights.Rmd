@@ -1,6 +1,6 @@
 # Data Collection and Flights
 
-## Hardware - DJI Matrice 3000 RTK (M300)
+## Hardware - DJI Matrice 300 RTK (M300)
 
 ```{r M300-flying, echo=FALSE, out.width="100%", fig.cap = "DJI Matrice 300 RTK in flight over one of our Vancouver Island field sites, taken by Alex Liu with a Mavic3."}
 knitr::include_graphics(here("Photos_&_gifs/M300_flying.png"))

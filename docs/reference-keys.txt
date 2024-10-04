@@ -15,6 +15,7 @@ tab:MS-Table
 fig:drone-variable-light
 fig:P1-RGB
 fig:RC-L1
+tab:software-cost
 fig:aligned-agisoft
 fig:metashape-pref
 fig:cal-ref-agisoft
@@ -83,7 +84,7 @@ drone-and-sensors-what-will-i-need-to-purchase-and-how-much-will-it-cost
 hardware-costs
 drone-training-in-canada
 data-collection-and-flights
-hardware---dji-matrice-3000-rtk-m300
+hardware---dji-matrice-300-rtk-m300
 battery-management
 Site-Reconnaissance
 data-collection-flight-planning
@@ -94,6 +95,7 @@ micasense-10-band-spectral-sensor-for-vegetative-indices
 zenmuse-p1-high-quality-natural-colour-rgb-imagery
 zenmuse-l1-lidar-and-rgb
 zenmuse-h20t-thermal-and-rgb
+data-processing-software-and-hardware-costs-and-options
 processing-orthomosaics
 overview
 detailed-workflow

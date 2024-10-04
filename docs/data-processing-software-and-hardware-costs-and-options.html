@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Data Processing: Software and hardware costs and options | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</title>
+  <meta name="description" content="Chapter 6 Data Processing: Software and hardware costs and options | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Data Processing: Software and hardware costs and options | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Data Processing: Software and hardware costs and options | Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials" />
+  
+  
+  
+
+<meta name="author" content="Jake King*, Olivia Waite, Miriam Isaac-Renton, Nicholas C. Coops, Samuel Grubinger, Liam Irwin, Lise Van Der Merwe, Jon Degner, Alex Liu" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data-collection-and-flights.html"/>
+<link rel="next" href="processing-orthomosaics.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Drone Based Phenotyping for Research Trials</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#github-link"><i class="fa fa-check"></i>GitHub link</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-cite-this-report"><i class="fa fa-check"></i>How to cite this report:</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="glossary.html"><a href="glossary.html"><i class="fa fa-check"></i><b>2</b> Glossary</a></li>
+<li class="chapter" data-level="3" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html"><i class="fa fa-check"></i><b>3</b> Range of Sites Assessed</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html#jordan-river"><i class="fa fa-check"></i><b>3.1</b> Jordan River</a></li>
+<li class="chapter" data-level="3.2" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html#powell-river"><i class="fa fa-check"></i><b>3.2</b> Powell River</a></li>
+<li class="chapter" data-level="3.3" data-path="range-of-sites-assessed.html"><a href="range-of-sites-assessed.html#sites"><i class="fa fa-check"></i><b>3.3</b> 2024 Sites</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="preflight-planning.html"><a href="preflight-planning.html"><i class="fa fa-check"></i><b>4</b> Preflight Planning</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="preflight-planning.html"><a href="preflight-planning.html#achieving-positional-accuracy-on-multi-temporal-and-multi-sensor-data-collections"><i class="fa fa-check"></i><b>4.1</b> Achieving positional accuracy on multi-temporal and multi-sensor data collections</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="preflight-planning.html"><a href="preflight-planning.html#kinematic-processing-rtkppk"><i class="fa fa-check"></i><b>4.1.1</b> Kinematic processing: RTK/PPK</a></li>
+<li class="chapter" data-level="4.1.2" data-path="preflight-planning.html"><a href="preflight-planning.html#ground-control-points-gcp"><i class="fa fa-check"></i><b>4.1.2</b> Ground Control Points (GCP)</a></li>
+<li class="chapter" data-level="4.1.3" data-path="preflight-planning.html"><a href="preflight-planning.html#absolute-and-relative-reference-with-precise-point-positioning-ppp"><i class="fa fa-check"></i><b>4.1.3</b> Absolute and Relative Reference with Precise Point Positioning (PPP)</a></li>
+<li class="chapter" data-level="4.1.4" data-path="preflight-planning.html"><a href="preflight-planning.html#terrain-following-on-sites-with-elevation-change"><i class="fa fa-check"></i><b>4.1.4</b> Terrain Following on Sites with Elevation Change</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="preflight-planning.html"><a href="preflight-planning.html#site-selection-considerations"><i class="fa fa-check"></i><b>4.2</b> Site Selection Considerations</a></li>
+<li class="chapter" data-level="4.3" data-path="preflight-planning.html"><a href="preflight-planning.html#drone-and-sensors-what-will-i-need-to-purchase-and-how-much-will-it-cost"><i class="fa fa-check"></i><b>4.3</b> Drone and Sensors: What will I need to purchase and how much will it cost?</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="preflight-planning.html"><a href="preflight-planning.html#hardware-costs"><i class="fa fa-check"></i><b>4.3.1</b> Hardware Costs</a></li>
+<li class="chapter" data-level="4.3.2" data-path="preflight-planning.html"><a href="preflight-planning.html#drone-training-in-canada"><i class="fa fa-check"></i><b>4.3.2</b> Drone Training in Canada</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html"><i class="fa fa-check"></i><b>5</b> Data Collection and Flights</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#hardware---dji-matrice-300-rtk-m300"><i class="fa fa-check"></i><b>5.1</b> Hardware - DJI Matrice 300 RTK (M300)</a></li>
+<li class="chapter" data-level="5.2" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#battery-management"><i class="fa fa-check"></i><b>5.2</b> Battery Management</a></li>
+<li class="chapter" data-level="5.3" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#Site-Reconnaissance"><i class="fa fa-check"></i><b>5.3</b> Workflow: Site Reconnaissance</a></li>
+<li class="chapter" data-level="5.4" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#data-collection-flight-planning"><i class="fa fa-check"></i><b>5.4</b> Data Collection: Flight Planning</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#flight-planning-theory"><i class="fa fa-check"></i><b>5.4.1</b> Flight planning theory</a></li>
+<li class="chapter" data-level="5.4.2" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#flight-planning-with-dji-pilot"><i class="fa fa-check"></i><b>5.4.2</b> Flight planning with DJI Pilot</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#data-collection-sensors-parameters-and-ideal-conditions"><i class="fa fa-check"></i><b>5.5</b> Data Collection: Sensors, Parameters, and Ideal Conditions</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#micasense-10-band-spectral-sensor-for-vegetative-indices"><i class="fa fa-check"></i><b>5.5.1</b> MicaSense: 10-Band Spectral Sensor for Vegetative Indices</a></li>
+<li class="chapter" data-level="5.5.2" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#zenmuse-p1-high-quality-natural-colour-rgb-imagery"><i class="fa fa-check"></i><b>5.5.2</b> Zenmuse P1: High-Quality Natural-Colour (RGB) Imagery</a></li>
+<li class="chapter" data-level="5.5.3" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#zenmuse-l1-lidar-and-rgb"><i class="fa fa-check"></i><b>5.5.3</b> Zenmuse L1: LiDAR and RGB</a></li>
+<li class="chapter" data-level="5.5.4" data-path="data-collection-and-flights.html"><a href="data-collection-and-flights.html#zenmuse-h20t-thermal-and-rgb"><i class="fa fa-check"></i><b>5.5.4</b> Zenmuse H20T: Thermal and RGB</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="data-processing-software-and-hardware-costs-and-options.html"><a href="data-processing-software-and-hardware-costs-and-options.html"><i class="fa fa-check"></i><b>6</b> Data Processing: Software and hardware costs and options</a></li>
+<li class="chapter" data-level="7" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html"><i class="fa fa-check"></i><b>7</b> Agisoft Photogrammetry pipeline</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html#overview"><i class="fa fa-check"></i><b>7.1</b> Overview</a></li>
+<li class="chapter" data-level="7.2" data-path="processing-orthomosaics.html"><a href="processing-orthomosaics.html#detailed-workflow"><i class="fa fa-check"></i><b>7.2</b> Detailed Workflow</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html"><i class="fa fa-check"></i><b>8</b> Georeferencing Plot Trees</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html#Workflow-in-QGIS"><i class="fa fa-check"></i><b>8.1</b> Workflow in QGIS</a></li>
+<li class="chapter" data-level="8.2" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html#alternate-workflow-in-r"><i class="fa fa-check"></i><b>8.2</b> Alternate Workflow in R</a></li>
+<li class="chapter" data-level="8.3" data-path="Georeferencing-Plot-Trees.html"><a href="Georeferencing-Plot-Trees.html#final-steps-in-qgis"><i class="fa fa-check"></i><b>8.3</b> Final Steps in QGIS</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="crown-delineation.html"><a href="crown-delineation.html"><i class="fa fa-check"></i><b>9</b> Crown Delineation</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="crown-delineation.html"><a href="crown-delineation.html#circles-proportional-to-tree-height"><i class="fa fa-check"></i><b>9.1</b> Circles Proportional to Tree Height</a></li>
+<li class="chapter" data-level="9.2" data-path="crown-delineation.html"><a href="crown-delineation.html#supercell-raster"><i class="fa fa-check"></i><b>9.2</b> Supercell Raster</a></li>
+<li class="chapter" data-level="9.3" data-path="crown-delineation.html"><a href="crown-delineation.html#filter-merge-supercells"><i class="fa fa-check"></i><b>9.3</b> Filter &amp; Merge Supercells</a></li>
+<li class="chapter" data-level="9.4" data-path="crown-delineation.html"><a href="crown-delineation.html#manually-edit-crowns"><i class="fa fa-check"></i><b>9.4</b> Manually Edit Crowns</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="shadow-mask.html"><a href="shadow-mask.html"><i class="fa fa-check"></i><b>10</b> Shadow Masks</a></li>
+<li class="chapter" data-level="11" data-path="Vegetation-Indicies.html"><a href="Vegetation-Indicies.html"><i class="fa fa-check"></i><b>11</b> Crown-level Vegetation Indicies</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="Vegetation-Indicies.html"><a href="Vegetation-Indicies.html#vi-workflow"><i class="fa fa-check"></i><b>11.1</b> VI Workflow</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>12</b> LiDAR Processing Workflow</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>12.1</b> DJI Terra</a></li>
+<li class="chapter" data-level="12.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>12.2</b> Register the LiDAR to the DAP point cloud</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>12.2.1</b> Prepare LiDAR for registration</a></li>
+<li class="chapter" data-level="12.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>12.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
+<li class="chapter" data-level="12.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>12.2.3</b> Rescale and tile the registered LiDAR:</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>12.3</b> Normalization and individual tree point clouds</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>12.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
+<li class="chapter" data-level="12.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>12.3.2</b> Normalizing the tiles using the DTM</a></li>
+<li class="chapter" data-level="12.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>12.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
+<li class="chapter" data-level="12.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>12.3.4</b> Segmenting tiles</a></li>
+<li class="chapter" data-level="12.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>12.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
+<li class="chapter" data-level="12.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>12.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>12.4</b> Individual Tree Metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html"><i class="fa fa-check"></i><b>13</b> MicaSense Irradiance Correction</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#background"><i class="fa fa-check"></i><b>13.1</b> Background</a>
+<ul>
+<li class="chapter" data-level="13.1.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>13.1.1</b> Deriving Horizontal Irradiance</a></li>
+<li class="chapter" data-level="13.1.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>13.1.2</b> Calculating Reflectance</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#the-problem"><i class="fa fa-check"></i><b>13.2</b> The Problem</a></li>
+<li class="chapter" data-level="13.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#is-correction-needed"><i class="fa fa-check"></i><b>13.3</b> Is Correction Needed?</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>13.3.1</b> Do the sun sensor angles make sense?</a></li>
+<li class="chapter" data-level="13.3.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>13.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
+<li class="chapter" data-level="13.3.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>13.3.3</b> Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#DLS1-correction"><i class="fa fa-check"></i><b>13.4</b> Correcting Irradiance Values for MicaSense Cameras</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#reading-exif-data"><i class="fa fa-check"></i><b>13.4.1</b> Reading Exif Data</a></li>
+<li class="chapter" data-level="13.4.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#calculating-solar-zenith-anlge"><i class="fa fa-check"></i><b>13.4.2</b> Calculating Solar Zenith Anlge</a></li>
+<li class="chapter" data-level="13.4.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#SSA-correction"><i class="fa fa-check"></i><b>13.4.3</b> Caluclating Sun-Sensor Angles</a></li>
+<li class="chapter" data-level="13.4.4" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>13.4.4</b> Scattered:Direct Ratio Estimate</a></li>
+<li class="chapter" data-level="13.4.5" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#computing-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>13.4.5</b> Computing Horizontal (Corrected) Irradiance</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html"><i class="fa fa-check"></i><b>14</b> Thermal Conversion</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#folder-set-up"><i class="fa fa-check"></i><b>14.1</b> Folder Set-Up</a></li>
+<li class="chapter" data-level="14.2" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#weather-data"><i class="fa fa-check"></i><b>14.2</b> Weather Data</a></li>
+<li class="chapter" data-level="14.3" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#dji-thermal-sdk-temperature-conversion"><i class="fa fa-check"></i><b>14.3</b> DJI Thermal SDK: temperature conversion</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#parameters"><i class="fa fa-check"></i><b>14.3.1</b> Parameters</a></li>
+<li class="chapter" data-level="14.3.2" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#running-the-sdk"><i class="fa fa-check"></i><b>14.3.2</b> Running the SDK</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#convert-to-raster"><i class="fa fa-check"></i><b>14.4</b> Convert to Raster</a></li>
+<li class="chapter" data-level="14.5" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#examples"><i class="fa fa-check"></i><b>14.5</b> Examples</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-processing-software-and-hardware-costs-and-options" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Data Processing: Software and hardware costs and options<a href="data-processing-software-and-hardware-costs-and-options.html#data-processing-software-and-hardware-costs-and-options" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Software costs</strong>
+We chose open-source options where we could, but there are still significant software costs. Table <a href="data-processing-software-and-hardware-costs-and-options.html#tab:software-cost">6.1</a> outlines cost and explores options.</p>
+<table>
+<caption><span id="tab:software-cost">Table 6.1: </span>Purpose, cost, and notes on software that we have used for this project.</caption>
+<colgroup>
+<col width="8%" />
+<col width="10%" />
+<col width="9%" />
+<col width="71%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Software</th>
+<th align="left">Purpose</th>
+<th align="left">Cost</th>
+<th align="left">Options - notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">DJI Terra Pro</td>
+<td align="left">Raw LiDAR processing</td>
+<td align="left">$6,000 plus $500 yearly</td>
+<td align="left">None, DJI LiDAR can only be processed in DJI Terra, and the yearly updates have included significant improvements</td>
+</tr>
+<tr class="even">
+<td align="left">Agisoft Metashape Pro</td>
+<td align="left">Photogrammetry processing</td>
+<td align="left">$4,700</td>
+<td align="left">Agisoft is industry standard. Pix4D is often compared, but more for online processing. Open Drone map (ODM) is a free open-source alternative, but has not been tested by this team.</td>
+</tr>
+<tr class="odd">
+<td align="left">LasTools</td>
+<td align="left">LiDAR processing</td>
+<td align="left">$3,100</td>
+<td align="left">Excellent software that runs quickly, but most of the functions we used can be written in R.</td>
+</tr>
+<tr class="even">
+<td align="left">RedToolBox</td>
+<td align="left">PPK and geotagging</td>
+<td align="left">$300</td>
+<td align="left">PPK can be free in RTKLiB. Recently, the free Emlid Studio V1.8 update can PPK and geotag.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data management: Storage needs</strong></p>
+<p>Each project will have very different storage needs, but this will be a rough guide to help plan for the quantity of storage required and can be scaled according to project goals.</p>
+<p>One flight per sensor:</p>
+<p>L1 - 2Ha site produces ~510 pictures and approximately 8.5 GB of raw data total.</p>
+<p>P1 - 2Ha flight area produces ~500 photos and 12 GB of data.</p>
+<p>MS_P - 2Ha flight area produces around 12,000 photos equaling 42 GB.</p>
+<p>H20T - 2Ha flight area produces aproximately 1500 RGB and thermal images equaling ~20GB.</p>
+<p>We are keeping all intermediate products while we are developing processes. Processing more than doubles the raw data. Consider 250GB a conservative estimate for total data storage needs for the one day on site.</p>
+<p>A copy of the folder structure we use is available on GitHub</p>
+<p><strong>Computer Hardware:</strong></p>
+<p>The computer we are using has the following specifications</p>
+<p>Processor Intel(R) Xeon(R) Silver 4214R CPU @ 2.40GHz 2.39 GHz (2 processors)</p>
+<p>Installed RAM 256 GB</p>
+<p>System type 64-bit operating system, x64-based processor</p>
+<p>GPU NVIDIA RTX A4000Raw Data Collection</p>
+<p>2TB SSD for processing, we have found the processing is consistently faster and less prone to error if we process on the SSD rather than on the storage drives.</p>
+<p>For storage we use an 8bay QNAP RAID6 with 12 TB hard drives.</p>
+<p>We use 18Tb HDs for backups.</p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-collection-and-flights.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="processing-orthomosaics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/owaite/GenomeBC_BPG/edit/main/0_Data_Processing.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/owaite/GenomeBC_BPG/blob/main/0_Data_Processing.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
