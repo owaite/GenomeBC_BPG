@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="crown-delineation.html"/>
-<link rel="next" href="Vegetation-Indicies.html"/>
+<link rel="next" href="MicaSense-Irradiance-Correction.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -207,64 +207,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.4" data-path="crown-delineation.html"><a href="crown-delineation.html#manually-edit-crowns"><i class="fa fa-check"></i><b>9.4</b> Manually Edit Crowns</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="shadow-mask.html"><a href="shadow-mask.html"><i class="fa fa-check"></i><b>10</b> Shadow Masks</a></li>
-<li class="chapter" data-level="11" data-path="Vegetation-Indicies.html"><a href="Vegetation-Indicies.html"><i class="fa fa-check"></i><b>11</b> Crown-level Vegetation Indicies</a>
+<li class="chapter" data-level="11" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html"><i class="fa fa-check"></i><b>11</b> MicaSense Irradiance Correction</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="Vegetation-Indicies.html"><a href="Vegetation-Indicies.html#vi-workflow"><i class="fa fa-check"></i><b>11.1</b> VI Workflow</a></li>
+<li class="chapter" data-level="11.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#background"><i class="fa fa-check"></i><b>11.1</b> Background</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>11.1.1</b> Deriving Horizontal Irradiance</a></li>
+<li class="chapter" data-level="11.1.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>11.1.2</b> Calculating Reflectance</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>12</b> LiDAR Processing Workflow</a>
+<li class="chapter" data-level="11.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#the-problem"><i class="fa fa-check"></i><b>11.2</b> The Problem</a></li>
+<li class="chapter" data-level="11.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#is-correction-needed"><i class="fa fa-check"></i><b>11.3</b> Is Correction Needed?</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>12.1</b> DJI Terra</a></li>
-<li class="chapter" data-level="12.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>12.2</b> Register the LiDAR to the DAP point cloud</a>
-<ul>
-<li class="chapter" data-level="12.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>12.2.1</b> Prepare LiDAR for registration</a></li>
-<li class="chapter" data-level="12.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>12.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
-<li class="chapter" data-level="12.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>12.2.3</b> Rescale and tile the registered LiDAR:</a></li>
+<li class="chapter" data-level="11.3.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>11.3.1</b> Do the sun sensor angles make sense?</a></li>
+<li class="chapter" data-level="11.3.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>11.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
+<li class="chapter" data-level="11.3.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>11.3.3</b> Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
 </ul></li>
-<li class="chapter" data-level="12.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>12.3</b> Normalization and individual tree point clouds</a>
+<li class="chapter" data-level="11.4" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#DLS1-correction"><i class="fa fa-check"></i><b>11.4</b> Correcting Irradiance Values for MicaSense Cameras</a>
 <ul>
-<li class="chapter" data-level="12.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>12.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
-<li class="chapter" data-level="12.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>12.3.2</b> Normalizing the tiles using the DTM</a></li>
-<li class="chapter" data-level="12.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>12.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
-<li class="chapter" data-level="12.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>12.3.4</b> Segmenting tiles</a></li>
-<li class="chapter" data-level="12.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>12.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
-<li class="chapter" data-level="12.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>12.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
-</ul></li>
-<li class="chapter" data-level="12.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>12.4</b> Individual Tree Metrics</a></li>
-</ul></li>
-<li class="chapter" data-level="13" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html"><i class="fa fa-check"></i><b>13</b> MicaSense Irradiance Correction</a>
-<ul>
-<li class="chapter" data-level="13.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#background"><i class="fa fa-check"></i><b>13.1</b> Background</a>
-<ul>
-<li class="chapter" data-level="13.1.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#deriving-horizontal-irradiance"><i class="fa fa-check"></i><b>13.1.1</b> Deriving Horizontal Irradiance</a></li>
-<li class="chapter" data-level="13.1.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#calculating-reflectance"><i class="fa fa-check"></i><b>13.1.2</b> Calculating Reflectance</a></li>
-</ul></li>
-<li class="chapter" data-level="13.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#the-problem"><i class="fa fa-check"></i><b>13.2</b> The Problem</a></li>
-<li class="chapter" data-level="13.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#is-correction-needed"><i class="fa fa-check"></i><b>13.3</b> Is Correction Needed?</a>
-<ul>
-<li class="chapter" data-level="13.3.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#do-the-sun-sensor-angles-make-sense"><i class="fa fa-check"></i><b>13.3.1</b> Do the sun sensor angles make sense?</a></li>
-<li class="chapter" data-level="13.3.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#does-the-relationship-between-direct-and-horizontal-irradiance-make-sense"><i class="fa fa-check"></i><b>13.3.2</b> Does the relationship between direct and horizontal irradiance make sense?</a></li>
-<li class="chapter" data-level="13.3.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#does-the-scattered-direct-ratio-make-sense-for-the-lighting-conditions-of-that-day"><i class="fa fa-check"></i><b>13.3.3</b> Does the scattered: direct ratio make sense for the lighting conditions of that day?</a></li>
-</ul></li>
-<li class="chapter" data-level="13.4" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#DLS1-correction"><i class="fa fa-check"></i><b>13.4</b> Correcting Irradiance Values for MicaSense Cameras</a>
-<ul>
-<li class="chapter" data-level="13.4.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#reading-exif-data"><i class="fa fa-check"></i><b>13.4.1</b> Reading Exif Data</a></li>
-<li class="chapter" data-level="13.4.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#calculating-solar-zenith-anlge"><i class="fa fa-check"></i><b>13.4.2</b> Calculating Solar Zenith Anlge</a></li>
-<li class="chapter" data-level="13.4.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#SSA-correction"><i class="fa fa-check"></i><b>13.4.3</b> Caluclating Sun-Sensor Angles</a></li>
-<li class="chapter" data-level="13.4.4" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#scattereddirect-ratio-estimate"><i class="fa fa-check"></i><b>13.4.4</b> Scattered:Direct Ratio Estimate</a></li>
-<li class="chapter" data-level="13.4.5" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#computing-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>13.4.5</b> Computing Horizontal (Corrected) Irradiance</a></li>
+<li class="chapter" data-level="11.4.1" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#reading-exif-data"><i class="fa fa-check"></i><b>11.4.1</b> Reading Exif Data</a></li>
+<li class="chapter" data-level="11.4.2" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#calculating-solar-zenith-angle"><i class="fa fa-check"></i><b>11.4.2</b> Calculating Solar Zenith Angle</a></li>
+<li class="chapter" data-level="11.4.3" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#SSA-correction"><i class="fa fa-check"></i><b>11.4.3</b> Calculating Sun-Sensor Angles</a></li>
+<li class="chapter" data-level="11.4.4" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#scattered-direct-ratio-estimate"><i class="fa fa-check"></i><b>11.4.4</b> Scattered: Direct Ratio Estimate</a></li>
+<li class="chapter" data-level="11.4.5" data-path="MicaSense-Irradiance-Correction.html"><a href="MicaSense-Irradiance-Correction.html#computing-horizontal-corrected-irradiance"><i class="fa fa-check"></i><b>11.4.5</b> Computing Horizontal (Corrected) Irradiance</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html"><i class="fa fa-check"></i><b>14</b> Thermal Conversion</a>
+<li class="chapter" data-level="12" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html"><i class="fa fa-check"></i><b>12</b> Thermal Conversion</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#folder-set-up"><i class="fa fa-check"></i><b>14.1</b> Folder Set-Up</a></li>
-<li class="chapter" data-level="14.2" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#weather-data"><i class="fa fa-check"></i><b>14.2</b> Weather Data</a></li>
-<li class="chapter" data-level="14.3" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#dji-thermal-sdk-temperature-conversion"><i class="fa fa-check"></i><b>14.3</b> DJI Thermal SDK: temperature conversion</a>
+<li class="chapter" data-level="12.1" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#folder-set-up"><i class="fa fa-check"></i><b>12.1</b> Folder Set-Up</a></li>
+<li class="chapter" data-level="12.2" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#weather-data"><i class="fa fa-check"></i><b>12.2</b> Weather Data</a></li>
+<li class="chapter" data-level="12.3" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#dji-thermal-sdk-temperature-conversion"><i class="fa fa-check"></i><b>12.3</b> DJI Thermal SDK: temperature conversion</a>
 <ul>
-<li class="chapter" data-level="14.3.1" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#parameters"><i class="fa fa-check"></i><b>14.3.1</b> Parameters</a></li>
-<li class="chapter" data-level="14.3.2" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#running-the-sdk"><i class="fa fa-check"></i><b>14.3.2</b> Running the SDK</a></li>
+<li class="chapter" data-level="12.3.1" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#parameters"><i class="fa fa-check"></i><b>12.3.1</b> Parameters</a></li>
+<li class="chapter" data-level="12.3.2" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#running-the-sdk"><i class="fa fa-check"></i><b>12.3.2</b> Running the SDK</a></li>
 </ul></li>
-<li class="chapter" data-level="14.4" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#convert-to-raster"><i class="fa fa-check"></i><b>14.4</b> Convert to Raster</a></li>
-<li class="chapter" data-level="14.5" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#examples"><i class="fa fa-check"></i><b>14.5</b> Examples</a></li>
+<li class="chapter" data-level="12.4" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#convert-to-raster"><i class="fa fa-check"></i><b>12.4</b> Convert to Raster</a></li>
+<li class="chapter" data-level="12.5" data-path="Thermal-Conversion.html"><a href="Thermal-Conversion.html#examples"><i class="fa fa-check"></i><b>12.5</b> Examples</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="Vegetation-Indicies.html"><a href="Vegetation-Indicies.html"><i class="fa fa-check"></i><b>13</b> Crown-level Vegetation Indicies</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="Vegetation-Indicies.html"><a href="Vegetation-Indicies.html#vi-workflow"><i class="fa fa-check"></i><b>13.1</b> VI Workflow</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html"><i class="fa fa-check"></i><b>14</b> LiDAR Processing Workflow</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#dji-terra"><i class="fa fa-check"></i><b>14.1</b> DJI Terra</a></li>
+<li class="chapter" data-level="14.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-the-lidar-to-the-dap-point-cloud"><i class="fa fa-check"></i><b>14.2</b> Register the LiDAR to the DAP point cloud</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#prepare-lidar-for-registration"><i class="fa fa-check"></i><b>14.2.1</b> Prepare LiDAR for registration</a></li>
+<li class="chapter" data-level="14.2.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#register-lidar-to-dap-cloud-in-cloudcompare"><i class="fa fa-check"></i><b>14.2.2</b> Register LiDAR to DAP cloud in CloudCompare</a></li>
+<li class="chapter" data-level="14.2.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar"><i class="fa fa-check"></i><b>14.2.3</b> Rescale and tile the registered LiDAR:</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalization-and-individual-tree-point-clouds"><i class="fa fa-check"></i><b>14.3</b> Normalization and individual tree point clouds</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles"><i class="fa fa-check"></i><b>14.3.1</b> Creating a DTM from the registered LiDAR tiles</a></li>
+<li class="chapter" data-level="14.3.2" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#normalizing-the-tiles-using-the-dtm"><i class="fa fa-check"></i><b>14.3.2</b> Normalizing the tiles using the DTM</a></li>
+<li class="chapter" data-level="14.3.3" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#creating-a-4cm-chm-from-the-max-z-values"><i class="fa fa-check"></i><b>14.3.3</b> Creating a 4cm CHM from the max Z values</a></li>
+<li class="chapter" data-level="14.3.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#segmenting-tiles"><i class="fa fa-check"></i><b>14.3.4</b> Segmenting tiles</a></li>
+<li class="chapter" data-level="14.3.5" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree"><i class="fa fa-check"></i><b>14.3.5</b> Merging segmented tiles to create one large point cloud containing the top defined height % of each tree</a></li>
+<li class="chapter" data-level="14.3.6" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#clipping-the-point-cloud-into-individual-point-clouds-per-tree"><i class="fa fa-check"></i><b>14.3.6</b> Clipping the point cloud into individual point clouds per tree</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="lidar-processing-workflow.html"><a href="lidar-processing-workflow.html#individual-tree-metrics"><i class="fa fa-check"></i><b>14.4</b> Individual Tree Metrics</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -553,7 +553,7 @@ Click to show the code
         </div>
       </div>
 <a href="crown-delineation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="Vegetation-Indicies.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="MicaSense-Irradiance-Correction.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
