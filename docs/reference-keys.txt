@@ -128,7 +128,7 @@ segmenting-tiles
 merging-segmented-tiles-to-create-one-large-point-cloud-containing-the-top-defined-height-of-each-tree
 clipping-the-point-cloud-into-individual-point-clouds-per-tree
 individual-tree-metrics
-micaSense-irradiance-correction
+micasense-irradiance-correction
 background
 deriving-horizontal-irradiance
 calculating-reflectance

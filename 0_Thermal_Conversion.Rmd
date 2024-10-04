@@ -213,7 +213,7 @@ emissivity <- 0.98 # approximate value for trees
 
 The SDK is run using a batch script that calls the SDK in a for loop to iterate over the imagery. To set up, first we copy the original .bat file into the Merged_T folder. We do this so that the original script does not get edited and instead each flight will have their own edited .bat file. This allows you to go back and see what parameters were used if needed.
 
-The original [.bat file](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/DJI_SDK_loop.bat) can be found on GitHub and looks like this:
+The original [.bat file](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/H20T_thermal/DJI_SDK_loop.bat) can be found on GitHub and looks like this:
 
 <details>
 <summary>Click to show the code</summary>
@@ -239,7 +239,7 @@ This script makes a folder called DJI_SDK_raw in the directory the .bat is saved
 
 Before continuing to the next steps:
 
-1)  save the [.bat file](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/DJI_SDK_loop.bat) from GitHub and update the omp_dir path in the below R code to the folder where this file was saved to
+1)  save the [.bat file](https://github.com/owaite/GenomeBC_BPG/blob/main/Scripts/H20T_thermal/DJI_SDK_loop.bat) from GitHub and update the omp_dir path in the below R code to the folder where this file was saved to
 
 2)  download the dji thermal sdk [here](https://www.dji.com/ca/downloads/softwares/dji-thermal-sdk)
 
