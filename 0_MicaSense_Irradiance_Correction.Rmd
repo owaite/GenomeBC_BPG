@@ -1,4 +1,4 @@
-# MicaSense Irradiance Correction {#MicaSense-Irradiance-Correction}
+# MicaSense Irradiance Correction {#micaSense-irradiance-correction}
 
 ## Background
 

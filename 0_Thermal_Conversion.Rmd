@@ -1,4 +1,4 @@
-# Thermal Conversion {#Thermal-Conversion}
+# Thermal Conversion {#thermal-conversion}
 
 This method converts raw imagery from the Zenmuse H20T to single band temperature tiffs. We use this method to bypass the DJI thermal analysis tool app since we had thousands of images to process and the app would often crash when a few images were uploaded. This method uses the DJI thermal analysis tool's software developer kit (SDK) instead to loop through a folder of images and return temperature rasters.
 

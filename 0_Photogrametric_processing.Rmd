@@ -131,7 +131,7 @@ knitr::include_graphics(here("Photos_&_gifs\\cal_ref_metashape.png"))
 
 2. **Micasense Corrections outside of Agisoft(if necessary)** – R Script. 2 hours.
 
-  - We have encountered incorrect irradiance data in metadata of MicaSense imagery due to incorrect measurements by the DLS2. To correct the irradiance data prior to processing we use methods from MicaSense’s DLS1 system. See the chapter on [MicaSense Irradiance Correction](#MicaSense-Irradiance-Correction) for checks on whether your data needs correction and a detailed explanation of the correction process.
+  - We have encountered incorrect irradiance data in metadata of MicaSense imagery due to incorrect measurements by the DLS2. To correct the irradiance data prior to processing we use methods from MicaSense’s DLS1 system. See the chapter on [MicaSense Irradiance Correction](#micaSense-irradiance-correction) for checks on whether your data needs correction and a detailed explanation of the correction process.
 
 3.	**Visually Assess Flight Trajectory and Disable Outliers** – Manual. 10 minutes.
 

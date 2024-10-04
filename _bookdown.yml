@@ -18,10 +18,10 @@ rmd_files:
   - 0_Tree_Georeferencing.Rmd
   - 0_Crown_delineation.Rmd
   - 0_Shadow_Mask.Rmd
-  - 0_MicaSense_Irradiance_Correction.Rmd
-  - 0_Thermal_Conversion.Rmd
   - 0_Vegetation-Indicies.Rmd
   - 0_LiDAR_processing.Rmd
+  - 0_MicaSense_Irradiance_Correction.Rmd
+  - 0_Thermal_Conversion.Rmd
   
 
   
