@@ -303,73 +303,73 @@ The above parameters were added to describe each minimum found by the function s
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="shadow-mask.html#cb13-1" tabindex="-1"></a><span class="co"># This function finds local minimums and ranks how defined they are by the &#39;definition&#39; attribute</span></span>
-<span id="cb13-2"><a href="shadow-mask.html#cb13-2" tabindex="-1"></a>find_local_min <span class="ot">&lt;-</span> <span class="cf">function</span>(values) { <span class="co">#input &quot;values&quot; is a list of 1st derivatives of NIR values</span></span>
-<span id="cb13-3"><a href="shadow-mask.html#cb13-3" tabindex="-1"></a>  <span class="co">#initializing variables</span></span>
-<span id="cb13-4"><a href="shadow-mask.html#cb13-4" tabindex="-1"></a>  neg_slope <span class="ot">&lt;-</span> <span class="fu">numeric</span>() </span>
-<span id="cb13-5"><a href="shadow-mask.html#cb13-5" tabindex="-1"></a>  pos_slope <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
-<span id="cb13-6"><a href="shadow-mask.html#cb13-6" tabindex="-1"></a>  index_of_closest <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
-<span id="cb13-7"><a href="shadow-mask.html#cb13-7" tabindex="-1"></a>  definition <span class="ot">=</span> <span class="fu">numeric</span>()</span>
-<span id="cb13-8"><a href="shadow-mask.html#cb13-8" tabindex="-1"></a>  neg_sum <span class="ot">=</span> <span class="fu">numeric</span>()</span>
-<span id="cb13-9"><a href="shadow-mask.html#cb13-9" tabindex="-1"></a>  pos_sum <span class="ot">=</span> <span class="fu">numeric</span>()</span>
-<span id="cb13-10"><a href="shadow-mask.html#cb13-10" tabindex="-1"></a>  </span>
-<span id="cb13-11"><a href="shadow-mask.html#cb13-11" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co">#initializing iterator </span></span>
-<span id="cb13-12"><a href="shadow-mask.html#cb13-12" tabindex="-1"></a>  </span>
-<span id="cb13-13"><a href="shadow-mask.html#cb13-13" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(values)) { <span class="co">#skip index 1 so following &quot;values[i-1]...&quot; can properly index</span></span>
-<span id="cb13-14"><a href="shadow-mask.html#cb13-14" tabindex="-1"></a>    <span class="co">#print(i)</span></span>
-<span id="cb13-15"><a href="shadow-mask.html#cb13-15" tabindex="-1"></a>    <span class="cf">if</span> (values[i <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> values[i] <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> i <span class="sc">&gt;</span> <span class="dv">15</span>) { </span>
-<span id="cb13-16"><a href="shadow-mask.html#cb13-16" tabindex="-1"></a>      <span class="co">#finds a change from negative to positive 1st derivative (local min)</span></span>
-<span id="cb13-17"><a href="shadow-mask.html#cb13-17" tabindex="-1"></a>      <span class="co">#i&gt;15 because local min will not be in first 15 values and this stops an error occurring where a local min is found in the first 15 values and the def_positive indexing does not work</span></span>
-<span id="cb13-18"><a href="shadow-mask.html#cb13-18" tabindex="-1"></a>      def_positive <span class="ot">&lt;-</span> <span class="fu">c</span>(values[i<span class="sc">:</span>(i<span class="sc">+</span><span class="dv">15</span>)]) <span class="co"># vector of next 15 gradient values</span></span>
-<span id="cb13-19"><a href="shadow-mask.html#cb13-19" tabindex="-1"></a>      def_pos <span class="ot">&lt;-</span> def_positive[def_positive <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="co">#only taking positive 1st derivative values (aka positive slopes)</span></span>
-<span id="cb13-20"><a href="shadow-mask.html#cb13-20" tabindex="-1"></a>      pos_sum[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(def_pos) <span class="co">#adding up the positive 1st derivative values</span></span>
-<span id="cb13-21"><a href="shadow-mask.html#cb13-21" tabindex="-1"></a>      </span>
-<span id="cb13-22"><a href="shadow-mask.html#cb13-22" tabindex="-1"></a>      def_negative <span class="ot">&lt;-</span> <span class="fu">c</span>(values[(i <span class="sc">-</span> <span class="dv">15</span>)<span class="sc">:</span>i]) <span class="co"># vector of the 15 values to the left of the local min (negative 1st derivatives)</span></span>
-<span id="cb13-23"><a href="shadow-mask.html#cb13-23" tabindex="-1"></a>      def_neg <span class="ot">&lt;-</span> def_negative[def_negative <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="co">#only taking the negative slopes in the list</span></span>
-<span id="cb13-24"><a href="shadow-mask.html#cb13-24" tabindex="-1"></a>      neg_sum[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(def_neg) <span class="co">#adding up negative values</span></span>
-<span id="cb13-25"><a href="shadow-mask.html#cb13-25" tabindex="-1"></a>      </span>
-<span id="cb13-26"><a href="shadow-mask.html#cb13-26" tabindex="-1"></a>      neg_slope[k] <span class="ot">&lt;-</span> values[i <span class="sc">-</span> <span class="dv">1</span>] <span class="co">#1st derivative value at i-1 (right before sign change from neg to pos)</span></span>
-<span id="cb13-27"><a href="shadow-mask.html#cb13-27" tabindex="-1"></a>      pos_slope[k] <span class="ot">&lt;-</span> values[i] <span class="co">#1st derivative at i (at the switch from neg to positive)</span></span>
-<span id="cb13-28"><a href="shadow-mask.html#cb13-28" tabindex="-1"></a>      index_of_closest[k] <span class="ot">&lt;-</span> i <span class="sc">-</span> <span class="dv">1</span> <span class="co">#index value of the last neg 1st derivative before the local min</span></span>
-<span id="cb13-29"><a href="shadow-mask.html#cb13-29" tabindex="-1"></a>      definition[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">abs</span>(def_neg), <span class="fu">abs</span>(def_pos)) <span class="co"># higher the value, more pronounced the local min</span></span>
-<span id="cb13-30"><a href="shadow-mask.html#cb13-30" tabindex="-1"></a>      k <span class="ot">&lt;-</span> k <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb13-31"><a href="shadow-mask.html#cb13-31" tabindex="-1"></a>    }</span>
-<span id="cb13-32"><a href="shadow-mask.html#cb13-32" tabindex="-1"></a>  }</span>
-<span id="cb13-33"><a href="shadow-mask.html#cb13-33" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">neg_value =</span> neg_slope, <span class="at">pos_value =</span> pos_slope, <span class="at">Index =</span> index_of_closest, <span class="at">definition =</span> definition, <span class="at">neg_def =</span> neg_sum, <span class="at">pos_def =</span> pos_sum))</span>
-<span id="cb13-34"><a href="shadow-mask.html#cb13-34" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="shadow-mask.html#cb14-1" tabindex="-1"></a><span class="co"># This function finds local minimums and ranks how defined they are by the &#39;definition&#39; attribute</span></span>
+<span id="cb14-2"><a href="shadow-mask.html#cb14-2" tabindex="-1"></a>find_local_min <span class="ot">&lt;-</span> <span class="cf">function</span>(values) { <span class="co">#input &quot;values&quot; is a list of 1st derivatives of NIR values</span></span>
+<span id="cb14-3"><a href="shadow-mask.html#cb14-3" tabindex="-1"></a>  <span class="co">#initializing variables</span></span>
+<span id="cb14-4"><a href="shadow-mask.html#cb14-4" tabindex="-1"></a>  neg_slope <span class="ot">&lt;-</span> <span class="fu">numeric</span>() </span>
+<span id="cb14-5"><a href="shadow-mask.html#cb14-5" tabindex="-1"></a>  pos_slope <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
+<span id="cb14-6"><a href="shadow-mask.html#cb14-6" tabindex="-1"></a>  index_of_closest <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
+<span id="cb14-7"><a href="shadow-mask.html#cb14-7" tabindex="-1"></a>  definition <span class="ot">=</span> <span class="fu">numeric</span>()</span>
+<span id="cb14-8"><a href="shadow-mask.html#cb14-8" tabindex="-1"></a>  neg_sum <span class="ot">=</span> <span class="fu">numeric</span>()</span>
+<span id="cb14-9"><a href="shadow-mask.html#cb14-9" tabindex="-1"></a>  pos_sum <span class="ot">=</span> <span class="fu">numeric</span>()</span>
+<span id="cb14-10"><a href="shadow-mask.html#cb14-10" tabindex="-1"></a>  </span>
+<span id="cb14-11"><a href="shadow-mask.html#cb14-11" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co">#initializing iterator </span></span>
+<span id="cb14-12"><a href="shadow-mask.html#cb14-12" tabindex="-1"></a>  </span>
+<span id="cb14-13"><a href="shadow-mask.html#cb14-13" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(values)) { <span class="co">#skip index 1 so following &quot;values[i-1]...&quot; can properly index</span></span>
+<span id="cb14-14"><a href="shadow-mask.html#cb14-14" tabindex="-1"></a>    <span class="co">#print(i)</span></span>
+<span id="cb14-15"><a href="shadow-mask.html#cb14-15" tabindex="-1"></a>    <span class="cf">if</span> (values[i <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> values[i] <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> i <span class="sc">&gt;</span> <span class="dv">15</span>) { </span>
+<span id="cb14-16"><a href="shadow-mask.html#cb14-16" tabindex="-1"></a>      <span class="co">#finds a change from negative to positive 1st derivative (local min)</span></span>
+<span id="cb14-17"><a href="shadow-mask.html#cb14-17" tabindex="-1"></a>      <span class="co">#i&gt;15 because local min will not be in first 15 values and this stops an error occurring where a local min is found in the first 15 values and the def_positive indexing does not work</span></span>
+<span id="cb14-18"><a href="shadow-mask.html#cb14-18" tabindex="-1"></a>      def_positive <span class="ot">&lt;-</span> <span class="fu">c</span>(values[i<span class="sc">:</span>(i<span class="sc">+</span><span class="dv">15</span>)]) <span class="co"># vector of next 15 gradient values</span></span>
+<span id="cb14-19"><a href="shadow-mask.html#cb14-19" tabindex="-1"></a>      def_pos <span class="ot">&lt;-</span> def_positive[def_positive <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="co">#only taking positive 1st derivative values (aka positive slopes)</span></span>
+<span id="cb14-20"><a href="shadow-mask.html#cb14-20" tabindex="-1"></a>      pos_sum[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(def_pos) <span class="co">#adding up the positive 1st derivative values</span></span>
+<span id="cb14-21"><a href="shadow-mask.html#cb14-21" tabindex="-1"></a>      </span>
+<span id="cb14-22"><a href="shadow-mask.html#cb14-22" tabindex="-1"></a>      def_negative <span class="ot">&lt;-</span> <span class="fu">c</span>(values[(i <span class="sc">-</span> <span class="dv">15</span>)<span class="sc">:</span>i]) <span class="co"># vector of the 15 values to the left of the local min (negative 1st derivatives)</span></span>
+<span id="cb14-23"><a href="shadow-mask.html#cb14-23" tabindex="-1"></a>      def_neg <span class="ot">&lt;-</span> def_negative[def_negative <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="co">#only taking the negative slopes in the list</span></span>
+<span id="cb14-24"><a href="shadow-mask.html#cb14-24" tabindex="-1"></a>      neg_sum[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(def_neg) <span class="co">#adding up negative values</span></span>
+<span id="cb14-25"><a href="shadow-mask.html#cb14-25" tabindex="-1"></a>      </span>
+<span id="cb14-26"><a href="shadow-mask.html#cb14-26" tabindex="-1"></a>      neg_slope[k] <span class="ot">&lt;-</span> values[i <span class="sc">-</span> <span class="dv">1</span>] <span class="co">#1st derivative value at i-1 (right before sign change from neg to pos)</span></span>
+<span id="cb14-27"><a href="shadow-mask.html#cb14-27" tabindex="-1"></a>      pos_slope[k] <span class="ot">&lt;-</span> values[i] <span class="co">#1st derivative at i (at the switch from neg to positive)</span></span>
+<span id="cb14-28"><a href="shadow-mask.html#cb14-28" tabindex="-1"></a>      index_of_closest[k] <span class="ot">&lt;-</span> i <span class="sc">-</span> <span class="dv">1</span> <span class="co">#index value of the last neg 1st derivative before the local min</span></span>
+<span id="cb14-29"><a href="shadow-mask.html#cb14-29" tabindex="-1"></a>      definition[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">abs</span>(def_neg), <span class="fu">abs</span>(def_pos)) <span class="co"># higher the value, more pronounced the local min</span></span>
+<span id="cb14-30"><a href="shadow-mask.html#cb14-30" tabindex="-1"></a>      k <span class="ot">&lt;-</span> k <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb14-31"><a href="shadow-mask.html#cb14-31" tabindex="-1"></a>    }</span>
+<span id="cb14-32"><a href="shadow-mask.html#cb14-32" tabindex="-1"></a>  }</span>
+<span id="cb14-33"><a href="shadow-mask.html#cb14-33" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">neg_value =</span> neg_slope, <span class="at">pos_value =</span> pos_slope, <span class="at">Index =</span> index_of_closest, <span class="at">definition =</span> definition, <span class="at">neg_def =</span> neg_sum, <span class="at">pos_def =</span> pos_sum))</span>
+<span id="cb14-34"><a href="shadow-mask.html#cb14-34" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 <p>To begin, we load the necessary packages, the multispectral orthomosaic that contains the NIR (842nm) band, and the delineated crowns shapefile and create the folder where the shadow mask will be saved to:</p>
 <details>
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="shadow-mask.html#cb14-1" tabindex="-1"></a><span class="co">#Required Packages</span></span>
-<span id="cb14-2"><a href="shadow-mask.html#cb14-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co"># to plot </span></span>
-<span id="cb14-3"><a href="shadow-mask.html#cb14-3" tabindex="-1"></a><span class="fu">library</span>(terra) <span class="co"># to work with the orthomosaics (rasters)</span></span>
-<span id="cb14-4"><a href="shadow-mask.html#cb14-4" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co">#for data manipulation</span></span>
-<span id="cb14-5"><a href="shadow-mask.html#cb14-5" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># for data manipulation</span></span>
-<span id="cb14-6"><a href="shadow-mask.html#cb14-6" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="co"># to work with the delineated crown polygons</span></span>
-<span id="cb14-7"><a href="shadow-mask.html#cb14-7" tabindex="-1"></a><span class="fu">library</span>(pracma) <span class="co"># for gradient/ derivative function</span></span>
-<span id="cb14-8"><a href="shadow-mask.html#cb14-8" tabindex="-1"></a><span class="fu">library</span>(LaplacesDemon) <span class="co"># is.multimodal function</span></span>
-<span id="cb14-9"><a href="shadow-mask.html#cb14-9" tabindex="-1"></a></span>
-<span id="cb14-10"><a href="shadow-mask.html#cb14-10" tabindex="-1"></a><span class="co"># Setting directory </span></span>
-<span id="cb14-11"><a href="shadow-mask.html#cb14-11" tabindex="-1"></a>dir <span class="ot">=</span> <span class="st">&quot;Change to match your folder strucutre&quot;</span> <span class="co">#directory where shadow mask folder will be made. This dir is also used in path names for the orhtomosaics. Change up paths throughout the code to call your data.</span></span>
-<span id="cb14-12"><a href="shadow-mask.html#cb14-12" tabindex="-1"></a></span>
-<span id="cb14-13"><a href="shadow-mask.html#cb14-13" tabindex="-1"></a><span class="co"># Reading in the multispectral orthomosaic</span></span>
-<span id="cb14-14"><a href="shadow-mask.html#cb14-14" tabindex="-1"></a>ms_temp <span class="ot">=</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;metashape</span><span class="sc">\\</span><span class="st">3_MS_ORTHO</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">pattern =</span> <span class="st">&quot;.*MS_Calibrated.*_bestPanel.tif$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) <span class="co"># here we read in the ortho that is in the set directory and contains &quot;MS_Calibrated&quot; in the name and end in &quot;_bestPanel.tif&quot;. We had multiple orthos in this folder, so did this to ensure the proper one was called. Change to match your ortho name, or remove the pattern if you only have one ortho in the defined path.</span></span>
-<span id="cb14-15"><a href="shadow-mask.html#cb14-15" tabindex="-1"></a>  </span>
-<span id="cb14-16"><a href="shadow-mask.html#cb14-16" tabindex="-1"></a><span class="co"># Reading in the shapefile containing delineated crowns and buffering inward by 5cm to limit any mixed pixels from neighboring vegetation</span></span>
-<span id="cb14-17"><a href="shadow-mask.html#cb14-17" tabindex="-1"></a>dir_crowns <span class="ot">&lt;-</span> <span class="st">&quot;D:</span><span class="sc">\\</span><span class="st">Sync</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Crowns.shp&quot;</span> <span class="co">#path to crowns shapefile</span></span>
-<span id="cb14-18"><a href="shadow-mask.html#cb14-18" tabindex="-1"></a>pols_spat <span class="ot">=</span> <span class="fu">st_read</span>(<span class="fu">paste0</span>(dir_crowns)) <span class="sc">%&gt;%</span> <span class="co"># reading in crown shp</span></span>
-<span id="cb14-19"><a href="shadow-mask.html#cb14-19" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(.)) <span class="sc">%&gt;%</span> <span class="co">#removing empty</span></span>
-<span id="cb14-20"><a href="shadow-mask.html#cb14-20" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="at">dist =</span> <span class="sc">-</span>.<span class="dv">05</span>) <span class="sc">%&gt;%</span> <span class="co">#buffering inward by 5cm</span></span>
-<span id="cb14-21"><a href="shadow-mask.html#cb14-21" tabindex="-1"></a>  <span class="fu">vect</span>()</span>
-<span id="cb14-22"><a href="shadow-mask.html#cb14-22" tabindex="-1"></a></span>
-<span id="cb14-23"><a href="shadow-mask.html#cb14-23" tabindex="-1"></a><span class="co"># Creating a folder for shadow masks</span></span>
-<span id="cb14-24"><a href="shadow-mask.html#cb14-24" tabindex="-1"></a>Nir_shadow_folder_baseName <span class="ot">&lt;-</span> <span class="st">&quot;NIR_shadow_mask_localMinOrMax&quot;</span> <span class="co">#name of the folder shadow masks will be written to. We have the folder name defined outside the folder creation step below so that we could change the folder name once without having to change it throughout the code.</span></span>
-<span id="cb14-25"><a href="shadow-mask.html#cb14-25" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))) {</span>
-<span id="cb14-26"><a href="shadow-mask.html#cb14-26" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir,Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
-<span id="cb14-27"><a href="shadow-mask.html#cb14-27" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="shadow-mask.html#cb15-1" tabindex="-1"></a><span class="co">#Required Packages</span></span>
+<span id="cb15-2"><a href="shadow-mask.html#cb15-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co"># to plot </span></span>
+<span id="cb15-3"><a href="shadow-mask.html#cb15-3" tabindex="-1"></a><span class="fu">library</span>(terra) <span class="co"># to work with the orthomosaics (rasters)</span></span>
+<span id="cb15-4"><a href="shadow-mask.html#cb15-4" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co">#for data manipulation</span></span>
+<span id="cb15-5"><a href="shadow-mask.html#cb15-5" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># for data manipulation</span></span>
+<span id="cb15-6"><a href="shadow-mask.html#cb15-6" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="co"># to work with the delineated crown polygons</span></span>
+<span id="cb15-7"><a href="shadow-mask.html#cb15-7" tabindex="-1"></a><span class="fu">library</span>(pracma) <span class="co"># for gradient/ derivative function</span></span>
+<span id="cb15-8"><a href="shadow-mask.html#cb15-8" tabindex="-1"></a><span class="fu">library</span>(LaplacesDemon) <span class="co"># is.multimodal function</span></span>
+<span id="cb15-9"><a href="shadow-mask.html#cb15-9" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="shadow-mask.html#cb15-10" tabindex="-1"></a><span class="co"># Setting directory </span></span>
+<span id="cb15-11"><a href="shadow-mask.html#cb15-11" tabindex="-1"></a>dir <span class="ot">=</span> <span class="st">&quot;Change to match your folder strucutre&quot;</span> <span class="co">#directory where shadow mask folder will be made. This dir is also used in path names for the orhtomosaics. Change up paths throughout the code to call your data.</span></span>
+<span id="cb15-12"><a href="shadow-mask.html#cb15-12" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="shadow-mask.html#cb15-13" tabindex="-1"></a><span class="co"># Reading in the multispectral orthomosaic</span></span>
+<span id="cb15-14"><a href="shadow-mask.html#cb15-14" tabindex="-1"></a>ms_temp <span class="ot">=</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">paste0</span>(dir, <span class="st">&quot;metashape</span><span class="sc">\\</span><span class="st">3_MS_ORTHO</span><span class="sc">\\</span><span class="st">&quot;</span>), <span class="at">pattern =</span> <span class="st">&quot;.*MS_Calibrated.*_bestPanel.tif$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) <span class="co"># here we read in the ortho that is in the set directory and contains &quot;MS_Calibrated&quot; in the name and end in &quot;_bestPanel.tif&quot;. We had multiple orthos in this folder, so did this to ensure the proper one was called. Change to match your ortho name, or remove the pattern if you only have one ortho in the defined path.</span></span>
+<span id="cb15-15"><a href="shadow-mask.html#cb15-15" tabindex="-1"></a>  </span>
+<span id="cb15-16"><a href="shadow-mask.html#cb15-16" tabindex="-1"></a><span class="co"># Reading in the shapefile containing delineated crowns and buffering inward by 5cm to limit any mixed pixels from neighboring vegetation</span></span>
+<span id="cb15-17"><a href="shadow-mask.html#cb15-17" tabindex="-1"></a>dir_crowns <span class="ot">&lt;-</span> <span class="st">&quot;D:</span><span class="sc">\\</span><span class="st">Sync</span><span class="sc">\\</span><span class="st">Fdc_PR_Canoe</span><span class="sc">\\</span><span class="st">Crowns.shp&quot;</span> <span class="co">#path to crowns shapefile</span></span>
+<span id="cb15-18"><a href="shadow-mask.html#cb15-18" tabindex="-1"></a>pols_spat <span class="ot">=</span> <span class="fu">st_read</span>(<span class="fu">paste0</span>(dir_crowns)) <span class="sc">%&gt;%</span> <span class="co"># reading in crown shp</span></span>
+<span id="cb15-19"><a href="shadow-mask.html#cb15-19" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(.)) <span class="sc">%&gt;%</span> <span class="co">#removing empty</span></span>
+<span id="cb15-20"><a href="shadow-mask.html#cb15-20" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="at">dist =</span> <span class="sc">-</span>.<span class="dv">05</span>) <span class="sc">%&gt;%</span> <span class="co">#buffering inward by 5cm</span></span>
+<span id="cb15-21"><a href="shadow-mask.html#cb15-21" tabindex="-1"></a>  <span class="fu">vect</span>()</span>
+<span id="cb15-22"><a href="shadow-mask.html#cb15-22" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="shadow-mask.html#cb15-23" tabindex="-1"></a><span class="co"># Creating a folder for shadow masks</span></span>
+<span id="cb15-24"><a href="shadow-mask.html#cb15-24" tabindex="-1"></a>Nir_shadow_folder_baseName <span class="ot">&lt;-</span> <span class="st">&quot;NIR_shadow_mask_localMinOrMax&quot;</span> <span class="co">#name of the folder shadow masks will be written to. We have the folder name defined outside the folder creation step below so that we could change the folder name once without having to change it throughout the code.</span></span>
+<span id="cb15-25"><a href="shadow-mask.html#cb15-25" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))) {</span>
+<span id="cb15-26"><a href="shadow-mask.html#cb15-26" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(dir,Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>))</span>
+<span id="cb15-27"><a href="shadow-mask.html#cb15-27" tabindex="-1"></a>  }</span></code></pre></div>
 </details>
 <p>Next, the NIR band is selected from the multispectral orthomosaic. Here you can choose to:</p>
 <ol style="list-style-type: decimal">
@@ -381,21 +381,21 @@ Click to show the code
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="shadow-mask.html#cb15-1" tabindex="-1"></a><span class="co">#Create a vector of near-infrared (NIR) values from the 10th multispectral band (842nm)</span></span>
-<span id="cb15-2"><a href="shadow-mask.html#cb15-2" tabindex="-1"></a>NIR <span class="ot">=</span> ms_temp[[<span class="dv">10</span>]] <span class="sc">%&gt;%</span> <span class="co">#isolating the NIR (842nm) band</span></span>
-<span id="cb15-3"><a href="shadow-mask.html#cb15-3" tabindex="-1"></a>  <span class="fu">crop</span>(pols_spat) <span class="sc">%&gt;%</span> <span class="co">#cropping to the extent of the crown polygon shp</span></span>
-<span id="cb15-4"><a href="shadow-mask.html#cb15-4" tabindex="-1"></a>  <span class="fu">clamp</span>(<span class="at">upper =</span> <span class="dv">50000</span>, <span class="at">values =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-5"><a href="shadow-mask.html#cb15-5" tabindex="-1"></a>  <span class="fu">as.vector</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="shadow-mask.html#cb16-1" tabindex="-1"></a><span class="co">#Create a vector of near-infrared (NIR) values from the 10th multispectral band (842nm)</span></span>
+<span id="cb16-2"><a href="shadow-mask.html#cb16-2" tabindex="-1"></a>NIR <span class="ot">=</span> ms_temp[[<span class="dv">10</span>]] <span class="sc">%&gt;%</span> <span class="co">#isolating the NIR (842nm) band</span></span>
+<span id="cb16-3"><a href="shadow-mask.html#cb16-3" tabindex="-1"></a>  <span class="fu">crop</span>(pols_spat) <span class="sc">%&gt;%</span> <span class="co">#cropping to the extent of the crown polygon shp</span></span>
+<span id="cb16-4"><a href="shadow-mask.html#cb16-4" tabindex="-1"></a>  <span class="fu">clamp</span>(<span class="at">upper =</span> <span class="dv">50000</span>, <span class="at">values =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-5"><a href="shadow-mask.html#cb16-5" tabindex="-1"></a>  <span class="fu">as.vector</span>()</span></code></pre></div>
 </details>
 Density of the NIR values is calculated and plotted, after removing NA values.
 <details>
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="shadow-mask.html#cb16-1" tabindex="-1"></a>NIR_na <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(NIR) <span class="co">#remove NA values from the NIR vector</span></span>
-<span id="cb16-2"><a href="shadow-mask.html#cb16-2" tabindex="-1"></a>density_values <span class="ot">&lt;-</span> <span class="fu">density</span>(NIR_na) <span class="co"># calculates density of NIR values</span></span>
-<span id="cb16-3"><a href="shadow-mask.html#cb16-3" tabindex="-1"></a><span class="co"># Plot to see the distribution of NIR values</span></span>
-<span id="cb16-4"><a href="shadow-mask.html#cb16-4" tabindex="-1"></a><span class="fu">plot</span>(density_values) <span class="co"># check to see the distribution of NIR values (ie a visual check for whether or not a local min exists)</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="shadow-mask.html#cb17-1" tabindex="-1"></a>NIR_na <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(NIR) <span class="co">#remove NA values from the NIR vector</span></span>
+<span id="cb17-2"><a href="shadow-mask.html#cb17-2" tabindex="-1"></a>density_values <span class="ot">&lt;-</span> <span class="fu">density</span>(NIR_na) <span class="co"># calculates density of NIR values</span></span>
+<span id="cb17-3"><a href="shadow-mask.html#cb17-3" tabindex="-1"></a><span class="co"># Plot to see the distribution of NIR values</span></span>
+<span id="cb17-4"><a href="shadow-mask.html#cb17-4" tabindex="-1"></a><span class="fu">plot</span>(density_values) <span class="co"># check to see the distribution of NIR values (ie a visual check for whether or not a local min exists)</span></span></code></pre></div>
 </details>
 <p>At this point the threshold can be estimated manually from the graph however, this is not a feasible method when you have many data acquisitions, nor is it the most accurate method. Below we describe the method we used to create shadow masks for many acquisitions withouth having to visually inspect the NIR distributions. To computationally find the threshold we first need to decipher whether the NIR distribution is unimodal (one peak) or multimodal (more than one peak). To do so we use the <em>is.multimodal</em> function from the LaplacesDemon package.</p>
 <p>If the distribution was multimodal, we found the local minimum by:</p>
@@ -415,48 +415,48 @@ Click to show the code
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="shadow-mask.html#cb17-1" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">is.multimodal</span>(NIR_na)){ <span class="co"># if the NIR distribution is multimodal, continue to the below steps</span></span>
-<span id="cb17-2"><a href="shadow-mask.html#cb17-2" tabindex="-1"></a>    </span>
-<span id="cb17-3"><a href="shadow-mask.html#cb17-3" tabindex="-1"></a>    dy_dt <span class="ot">&lt;-</span> pracma<span class="sc">::</span><span class="fu">gradient</span>(density_values<span class="sc">$</span>y) <span class="co">#list of first derivatives of NIR vector</span></span>
-<span id="cb17-4"><a href="shadow-mask.html#cb17-4" tabindex="-1"></a>    </span>
-<span id="cb17-5"><a href="shadow-mask.html#cb17-5" tabindex="-1"></a>    zeros <span class="ot">&lt;-</span> <span class="fu">find_local_min</span>(dy_dt) <span class="co"># Finds index locations where slope switches from neg to post (local min) and ranks the intensity of each local min</span></span>
-<span id="cb17-6"><a href="shadow-mask.html#cb17-6" tabindex="-1"></a>    zeros_filtered <span class="ot">&lt;-</span> zeros[(zeros<span class="sc">$</span>pos_def <span class="sc">&gt;</span> <span class="dv">0</span>),] <span class="co"># Filters rows with pos_def &gt; 0, filtering out small minimums on negative slopes (not true local mins)</span></span>
-<span id="cb17-7"><a href="shadow-mask.html#cb17-7" tabindex="-1"></a>    </span>
-<span id="cb17-8"><a href="shadow-mask.html#cb17-8" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">nrow</span>(zeros_filtered)<span class="sc">==</span><span class="dv">0</span>){<span class="co">#if empty, then detected a false multimodal distribution and defaulting to max as threshold value</span></span>
-<span id="cb17-9"><a href="shadow-mask.html#cb17-9" tabindex="-1"></a>      <span class="fu">print</span>(<span class="st">&quot;It is a false multimodal&quot;</span>)</span>
-<span id="cb17-10"><a href="shadow-mask.html#cb17-10" tabindex="-1"></a>      max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb17-11"><a href="shadow-mask.html#cb17-11" tabindex="-1"></a>      threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
-<span id="cb17-12"><a href="shadow-mask.html#cb17-12" tabindex="-1"></a>      mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal (False Multi)&quot;</span></span>
-<span id="cb17-13"><a href="shadow-mask.html#cb17-13" tabindex="-1"></a>      thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
-<span id="cb17-14"><a href="shadow-mask.html#cb17-14" tabindex="-1"></a>      </span>
-<span id="cb17-15"><a href="shadow-mask.html#cb17-15" tabindex="-1"></a>      }<span class="cf">else</span>{ </span>
-<span id="cb17-16"><a href="shadow-mask.html#cb17-16" tabindex="-1"></a>      zeros_local_min <span class="ot">&lt;-</span> zeros_filtered[<span class="fu">which.max</span>(zeros_filtered<span class="sc">$</span>definition), ] <span class="co">#isolating the largest local min</span></span>
-<span id="cb17-17"><a href="shadow-mask.html#cb17-17" tabindex="-1"></a>      <span class="co"># x_zeros &lt;- density_values$x[zeros_local_min$Index] #selecting NIR (aka x_mid) value that corresponds to the index value of the most defined local min </span></span>
-<span id="cb17-18"><a href="shadow-mask.html#cb17-18" tabindex="-1"></a>      threshold <span class="ot">&lt;-</span> density_values<span class="sc">$</span>x[zeros_local_min<span class="sc">$</span>Index] <span class="co">#selecting NIR (aka x_mid) value that corresponds to the index value of the most defined local min </span></span>
-<span id="cb17-19"><a href="shadow-mask.html#cb17-19" tabindex="-1"></a>      </span>
-<span id="cb17-20"><a href="shadow-mask.html#cb17-20" tabindex="-1"></a>      <span class="co"># Catching cases of &quot;inf&quot; returns:</span></span>
-<span id="cb17-21"><a href="shadow-mask.html#cb17-21" tabindex="-1"></a>      <span class="cf">if</span> (threshold <span class="sc">&lt;=</span> <span class="fl">0.7</span> <span class="sc">&amp;</span> threshold <span class="sc">&gt;</span> <span class="dv">0</span>){<span class="co">#setting limits on the threshold to remove any thresholds from the tails of the distribution</span></span>
-<span id="cb17-22"><a href="shadow-mask.html#cb17-22" tabindex="-1"></a>        <span class="fu">print</span>(threshold)</span>
-<span id="cb17-23"><a href="shadow-mask.html#cb17-23" tabindex="-1"></a>        mode <span class="ot">&lt;-</span> <span class="st">&quot;Multimodal&quot;</span></span>
-<span id="cb17-24"><a href="shadow-mask.html#cb17-24" tabindex="-1"></a>        thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMin&quot;</span></span>
-<span id="cb17-25"><a href="shadow-mask.html#cb17-25" tabindex="-1"></a>        </span>
-<span id="cb17-26"><a href="shadow-mask.html#cb17-26" tabindex="-1"></a>        }<span class="cf">else</span>{</span>
-<span id="cb17-27"><a href="shadow-mask.html#cb17-27" tabindex="-1"></a>        <span class="fu">print</span>(<span class="st">&quot;Multimodal with org thresh &gt; 0.7&quot;</span>) <span class="co">#This output usually indicates an error in the function, make sure to look at the NIR distribution to confirm this is in fact correct or if the code needs modification for a special case</span></span>
-<span id="cb17-28"><a href="shadow-mask.html#cb17-28" tabindex="-1"></a>        <span class="co">#This often indicates a false multimodal as well, and therefore the NIR value with the max frequency in the NIR distribution with be used as the threshold</span></span>
-<span id="cb17-29"><a href="shadow-mask.html#cb17-29" tabindex="-1"></a>        max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb17-30"><a href="shadow-mask.html#cb17-30" tabindex="-1"></a>        threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
-<span id="cb17-31"><a href="shadow-mask.html#cb17-31" tabindex="-1"></a>        mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal (False Multi with org thresh &gt; 0.7)&quot;</span></span>
-<span id="cb17-32"><a href="shadow-mask.html#cb17-32" tabindex="-1"></a>        thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
-<span id="cb17-33"><a href="shadow-mask.html#cb17-33" tabindex="-1"></a>      }</span>
-<span id="cb17-34"><a href="shadow-mask.html#cb17-34" tabindex="-1"></a>    }</span>
-<span id="cb17-35"><a href="shadow-mask.html#cb17-35" tabindex="-1"></a>  }<span class="cf">else</span>{ <span class="co">#if the NIR vector is NOT multimodal, continue to the below steps</span></span>
-<span id="cb17-36"><a href="shadow-mask.html#cb17-36" tabindex="-1"></a>    <span class="co">#Finding NIR value with the greatest frequency in the distribution - this max value will be the threshold for unimodal distributions </span></span>
-<span id="cb17-37"><a href="shadow-mask.html#cb17-37" tabindex="-1"></a>    max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb17-38"><a href="shadow-mask.html#cb17-38" tabindex="-1"></a>    threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
-<span id="cb17-39"><a href="shadow-mask.html#cb17-39" tabindex="-1"></a>    <span class="fu">print</span>(threshold)</span>
-<span id="cb17-40"><a href="shadow-mask.html#cb17-40" tabindex="-1"></a>    thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
-<span id="cb17-41"><a href="shadow-mask.html#cb17-41" tabindex="-1"></a>    mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal&quot;</span></span>
-<span id="cb17-42"><a href="shadow-mask.html#cb17-42" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="shadow-mask.html#cb18-1" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">is.multimodal</span>(NIR_na)){ <span class="co"># if the NIR distribution is multimodal, continue to the below steps</span></span>
+<span id="cb18-2"><a href="shadow-mask.html#cb18-2" tabindex="-1"></a>    </span>
+<span id="cb18-3"><a href="shadow-mask.html#cb18-3" tabindex="-1"></a>    dy_dt <span class="ot">&lt;-</span> pracma<span class="sc">::</span><span class="fu">gradient</span>(density_values<span class="sc">$</span>y) <span class="co">#list of first derivatives of NIR vector</span></span>
+<span id="cb18-4"><a href="shadow-mask.html#cb18-4" tabindex="-1"></a>    </span>
+<span id="cb18-5"><a href="shadow-mask.html#cb18-5" tabindex="-1"></a>    zeros <span class="ot">&lt;-</span> <span class="fu">find_local_min</span>(dy_dt) <span class="co"># Finds index locations where slope switches from neg to post (local min) and ranks the intensity of each local min</span></span>
+<span id="cb18-6"><a href="shadow-mask.html#cb18-6" tabindex="-1"></a>    zeros_filtered <span class="ot">&lt;-</span> zeros[(zeros<span class="sc">$</span>pos_def <span class="sc">&gt;</span> <span class="dv">0</span>),] <span class="co"># Filters rows with pos_def &gt; 0, filtering out small minimums on negative slopes (not true local mins)</span></span>
+<span id="cb18-7"><a href="shadow-mask.html#cb18-7" tabindex="-1"></a>    </span>
+<span id="cb18-8"><a href="shadow-mask.html#cb18-8" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">nrow</span>(zeros_filtered)<span class="sc">==</span><span class="dv">0</span>){<span class="co">#if empty, then detected a false multimodal distribution and defaulting to max as threshold value</span></span>
+<span id="cb18-9"><a href="shadow-mask.html#cb18-9" tabindex="-1"></a>      <span class="fu">print</span>(<span class="st">&quot;It is a false multimodal&quot;</span>)</span>
+<span id="cb18-10"><a href="shadow-mask.html#cb18-10" tabindex="-1"></a>      max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-11"><a href="shadow-mask.html#cb18-11" tabindex="-1"></a>      threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
+<span id="cb18-12"><a href="shadow-mask.html#cb18-12" tabindex="-1"></a>      mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal (False Multi)&quot;</span></span>
+<span id="cb18-13"><a href="shadow-mask.html#cb18-13" tabindex="-1"></a>      thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
+<span id="cb18-14"><a href="shadow-mask.html#cb18-14" tabindex="-1"></a>      </span>
+<span id="cb18-15"><a href="shadow-mask.html#cb18-15" tabindex="-1"></a>      }<span class="cf">else</span>{ </span>
+<span id="cb18-16"><a href="shadow-mask.html#cb18-16" tabindex="-1"></a>      zeros_local_min <span class="ot">&lt;-</span> zeros_filtered[<span class="fu">which.max</span>(zeros_filtered<span class="sc">$</span>definition), ] <span class="co">#isolating the largest local min</span></span>
+<span id="cb18-17"><a href="shadow-mask.html#cb18-17" tabindex="-1"></a>      <span class="co"># x_zeros &lt;- density_values$x[zeros_local_min$Index] #selecting NIR (aka x_mid) value that corresponds to the index value of the most defined local min </span></span>
+<span id="cb18-18"><a href="shadow-mask.html#cb18-18" tabindex="-1"></a>      threshold <span class="ot">&lt;-</span> density_values<span class="sc">$</span>x[zeros_local_min<span class="sc">$</span>Index] <span class="co">#selecting NIR (aka x_mid) value that corresponds to the index value of the most defined local min </span></span>
+<span id="cb18-19"><a href="shadow-mask.html#cb18-19" tabindex="-1"></a>      </span>
+<span id="cb18-20"><a href="shadow-mask.html#cb18-20" tabindex="-1"></a>      <span class="co"># Catching cases of &quot;inf&quot; returns:</span></span>
+<span id="cb18-21"><a href="shadow-mask.html#cb18-21" tabindex="-1"></a>      <span class="cf">if</span> (threshold <span class="sc">&lt;=</span> <span class="fl">0.7</span> <span class="sc">&amp;</span> threshold <span class="sc">&gt;</span> <span class="dv">0</span>){<span class="co">#setting limits on the threshold to remove any thresholds from the tails of the distribution</span></span>
+<span id="cb18-22"><a href="shadow-mask.html#cb18-22" tabindex="-1"></a>        <span class="fu">print</span>(threshold)</span>
+<span id="cb18-23"><a href="shadow-mask.html#cb18-23" tabindex="-1"></a>        mode <span class="ot">&lt;-</span> <span class="st">&quot;Multimodal&quot;</span></span>
+<span id="cb18-24"><a href="shadow-mask.html#cb18-24" tabindex="-1"></a>        thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMin&quot;</span></span>
+<span id="cb18-25"><a href="shadow-mask.html#cb18-25" tabindex="-1"></a>        </span>
+<span id="cb18-26"><a href="shadow-mask.html#cb18-26" tabindex="-1"></a>        }<span class="cf">else</span>{</span>
+<span id="cb18-27"><a href="shadow-mask.html#cb18-27" tabindex="-1"></a>        <span class="fu">print</span>(<span class="st">&quot;Multimodal with org thresh &gt; 0.7&quot;</span>) <span class="co">#This output usually indicates an error in the function, make sure to look at the NIR distribution to confirm this is in fact correct or if the code needs modification for a special case</span></span>
+<span id="cb18-28"><a href="shadow-mask.html#cb18-28" tabindex="-1"></a>        <span class="co">#This often indicates a false multimodal as well, and therefore the NIR value with the max frequency in the NIR distribution with be used as the threshold</span></span>
+<span id="cb18-29"><a href="shadow-mask.html#cb18-29" tabindex="-1"></a>        max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-30"><a href="shadow-mask.html#cb18-30" tabindex="-1"></a>        threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
+<span id="cb18-31"><a href="shadow-mask.html#cb18-31" tabindex="-1"></a>        mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal (False Multi with org thresh &gt; 0.7)&quot;</span></span>
+<span id="cb18-32"><a href="shadow-mask.html#cb18-32" tabindex="-1"></a>        thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
+<span id="cb18-33"><a href="shadow-mask.html#cb18-33" tabindex="-1"></a>      }</span>
+<span id="cb18-34"><a href="shadow-mask.html#cb18-34" tabindex="-1"></a>    }</span>
+<span id="cb18-35"><a href="shadow-mask.html#cb18-35" tabindex="-1"></a>  }<span class="cf">else</span>{ <span class="co">#if the NIR vector is NOT multimodal, continue to the below steps</span></span>
+<span id="cb18-36"><a href="shadow-mask.html#cb18-36" tabindex="-1"></a>    <span class="co">#Finding NIR value with the greatest frequency in the distribution - this max value will be the threshold for unimodal distributions </span></span>
+<span id="cb18-37"><a href="shadow-mask.html#cb18-37" tabindex="-1"></a>    max_density <span class="ot">=</span> <span class="fu">max</span>(density_values<span class="sc">$</span>y, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-38"><a href="shadow-mask.html#cb18-38" tabindex="-1"></a>    threshold <span class="ot">=</span> density_values<span class="sc">$</span>x[<span class="fu">which</span>(density_values<span class="sc">$</span>y <span class="sc">==</span> max_density)]</span>
+<span id="cb18-39"><a href="shadow-mask.html#cb18-39" tabindex="-1"></a>    <span class="fu">print</span>(threshold)</span>
+<span id="cb18-40"><a href="shadow-mask.html#cb18-40" tabindex="-1"></a>    thresh_name <span class="ot">&lt;-</span> <span class="st">&quot;LocalMax&quot;</span></span>
+<span id="cb18-41"><a href="shadow-mask.html#cb18-41" tabindex="-1"></a>    mode <span class="ot">&lt;-</span> <span class="st">&quot;Unimodal&quot;</span></span>
+<span id="cb18-42"><a href="shadow-mask.html#cb18-42" tabindex="-1"></a>  }</span></code></pre></div>
 </details>
 <p>Next, we plot a histogram of the NIR values and annotate it to contain:</p>
 <ul>
@@ -468,22 +468,22 @@ Click to show the code
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="shadow-mask.html#cb18-1" tabindex="-1"></a>(<span class="at">hist =</span> NIR <span class="sc">%&gt;%</span> <span class="co">#plotting a histogram of NIR values with a vertical red line for the defined threshold value</span></span>
-<span id="cb18-2"><a href="shadow-mask.html#cb18-2" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb18-3"><a href="shadow-mask.html#cb18-3" tabindex="-1"></a>    <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb18-4"><a href="shadow-mask.html#cb18-4" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> NIR), <span class="at">bins =</span> <span class="dv">150</span>) <span class="sc">+</span>      </span>
-<span id="cb18-5"><a href="shadow-mask.html#cb18-5" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> threshold, <span class="at">color =</span> <span class="st">&quot;red3&quot;</span>) <span class="sc">+</span></span>
-<span id="cb18-6"><a href="shadow-mask.html#cb18-6" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(mode, <span class="st">&quot; , threshold: &quot;</span>,<span class="fu">round</span>(threshold, <span class="at">digits =</span> <span class="dv">2</span>)))<span class="sc">+</span></span>
-<span id="cb18-7"><a href="shadow-mask.html#cb18-7" tabindex="-1"></a>    <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb18-8"><a href="shadow-mask.html#cb18-8" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),           </span>
-<span id="cb18-9"><a href="shadow-mask.html#cb18-9" tabindex="-1"></a>          <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb18-10"><a href="shadow-mask.html#cb18-10" tabindex="-1"></a>          <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>,<span class="at">hjust =</span> <span class="fl">0.75</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">28</span>)))</span>
-<span id="cb18-11"><a href="shadow-mask.html#cb18-11" tabindex="-1"></a>  </span>
-<span id="cb18-12"><a href="shadow-mask.html#cb18-12" tabindex="-1"></a><span class="fu">ggsave</span>(hist, <span class="co">#saving out the plot</span></span>
-<span id="cb18-13"><a href="shadow-mask.html#cb18-13" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, date_list[x], <span class="st">&quot;_NIR_shadow_hist_localMin_orMax.jpeg&quot;</span>),</span>
-<span id="cb18-14"><a href="shadow-mask.html#cb18-14" tabindex="-1"></a>       <span class="at">device =</span> jpeg,</span>
-<span id="cb18-15"><a href="shadow-mask.html#cb18-15" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">8</span>,</span>
-<span id="cb18-16"><a href="shadow-mask.html#cb18-16" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">8</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="shadow-mask.html#cb19-1" tabindex="-1"></a>(<span class="at">hist =</span> NIR <span class="sc">%&gt;%</span> <span class="co">#plotting a histogram of NIR values with a vertical red line for the defined threshold value</span></span>
+<span id="cb19-2"><a href="shadow-mask.html#cb19-2" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="shadow-mask.html#cb19-3" tabindex="-1"></a>    <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb19-4"><a href="shadow-mask.html#cb19-4" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> NIR), <span class="at">bins =</span> <span class="dv">150</span>) <span class="sc">+</span>      </span>
+<span id="cb19-5"><a href="shadow-mask.html#cb19-5" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> threshold, <span class="at">color =</span> <span class="st">&quot;red3&quot;</span>) <span class="sc">+</span></span>
+<span id="cb19-6"><a href="shadow-mask.html#cb19-6" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(mode, <span class="st">&quot; , threshold: &quot;</span>,<span class="fu">round</span>(threshold, <span class="at">digits =</span> <span class="dv">2</span>)))<span class="sc">+</span></span>
+<span id="cb19-7"><a href="shadow-mask.html#cb19-7" tabindex="-1"></a>    <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb19-8"><a href="shadow-mask.html#cb19-8" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),           </span>
+<span id="cb19-9"><a href="shadow-mask.html#cb19-9" tabindex="-1"></a>          <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb19-10"><a href="shadow-mask.html#cb19-10" tabindex="-1"></a>          <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>,<span class="at">hjust =</span> <span class="fl">0.75</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">28</span>)))</span>
+<span id="cb19-11"><a href="shadow-mask.html#cb19-11" tabindex="-1"></a>  </span>
+<span id="cb19-12"><a href="shadow-mask.html#cb19-12" tabindex="-1"></a><span class="fu">ggsave</span>(hist, <span class="co">#saving out the plot</span></span>
+<span id="cb19-13"><a href="shadow-mask.html#cb19-13" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>, date_list[x], <span class="st">&quot;_NIR_shadow_hist_localMin_orMax.jpeg&quot;</span>),</span>
+<span id="cb19-14"><a href="shadow-mask.html#cb19-14" tabindex="-1"></a>       <span class="at">device =</span> jpeg,</span>
+<span id="cb19-15"><a href="shadow-mask.html#cb19-15" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">8</span>,</span>
+<span id="cb19-16"><a href="shadow-mask.html#cb19-16" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">8</span>)</span></code></pre></div>
 </details>
 <p><img src="Photos_&_gifs/multimodal_hist_canoe_2022_08_05.jfif" width="60%" style="display: block; margin: auto;" /></p>
 <p>We then isolate the NIR band from the multispectral orthomosaic and filter the raster to set pixels with NIR values greater than the threshold to NA and those that are less than or equal to the threshold to 1.</p>
@@ -491,13 +491,13 @@ Click to show the code
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="shadow-mask.html#cb19-1" tabindex="-1"></a>shadow_mask <span class="ot">=</span> ms_temp[[<span class="dv">10</span>]] <span class="co">#isolating the NIR band of the multispectral ortho</span></span>
-<span id="cb19-2"><a href="shadow-mask.html#cb19-2" tabindex="-1"></a>shadow_mask[shadow_mask <span class="sc">&gt;</span> threshold] <span class="ot">=</span> <span class="cn">NA</span> <span class="co">#for NIR values &gt; threshold, make them NA</span></span>
-<span id="cb19-3"><a href="shadow-mask.html#cb19-3" tabindex="-1"></a>shadow_mask[shadow_mask <span class="sc">&lt;=</span> threshold] <span class="ot">=</span> <span class="dv">1</span> <span class="co">#for NIR values &lt; or = to the threshold value, make them 1</span></span>
-<span id="cb19-4"><a href="shadow-mask.html#cb19-4" tabindex="-1"></a>  </span>
-<span id="cb19-5"><a href="shadow-mask.html#cb19-5" tabindex="-1"></a><span class="co"># Writing out the shadow mask that has values of 1 for all pixels that will be masked out</span></span>
-<span id="cb19-6"><a href="shadow-mask.html#cb19-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(shadow_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,  date_list[x], <span class="st">&quot;_NIR_shadow_thresh&quot;</span>,threshold ,<span class="st">&quot;_&quot;</span>,thresh_name, <span class="st">&quot;.tif&quot;</span>),</span>
-<span id="cb19-7"><a href="shadow-mask.html#cb19-7" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="shadow-mask.html#cb20-1" tabindex="-1"></a>shadow_mask <span class="ot">=</span> ms_temp[[<span class="dv">10</span>]] <span class="co">#isolating the NIR band of the multispectral ortho</span></span>
+<span id="cb20-2"><a href="shadow-mask.html#cb20-2" tabindex="-1"></a>shadow_mask[shadow_mask <span class="sc">&gt;</span> threshold] <span class="ot">=</span> <span class="cn">NA</span> <span class="co">#for NIR values &gt; threshold, make them NA</span></span>
+<span id="cb20-3"><a href="shadow-mask.html#cb20-3" tabindex="-1"></a>shadow_mask[shadow_mask <span class="sc">&lt;=</span> threshold] <span class="ot">=</span> <span class="dv">1</span> <span class="co">#for NIR values &lt; or = to the threshold value, make them 1</span></span>
+<span id="cb20-4"><a href="shadow-mask.html#cb20-4" tabindex="-1"></a>  </span>
+<span id="cb20-5"><a href="shadow-mask.html#cb20-5" tabindex="-1"></a><span class="co"># Writing out the shadow mask that has values of 1 for all pixels that will be masked out</span></span>
+<span id="cb20-6"><a href="shadow-mask.html#cb20-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(shadow_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,  date_list[x], <span class="st">&quot;_NIR_shadow_thresh&quot;</span>,threshold ,<span class="st">&quot;_&quot;</span>,thresh_name, <span class="st">&quot;.tif&quot;</span>),</span>
+<span id="cb20-7"><a href="shadow-mask.html#cb20-7" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </details>
 <p><img src="Photos_&_gifs/shadow_mask_example_no_filter_2022_08_05.PNG" width="100%" style="display: block; margin: auto;" /></p>
 Lastly, we apply the <em>clump</em> function to group adjacent pixels that represent shadows creating “clumps” a.k.a. shadow patches. These shadow patches are then converted into a dataframe containing a unique ID per shadow patch and the number of pixels within each patch.
@@ -505,13 +505,13 @@ Lastly, we apply the <em>clump</em> function to group adjacent pixels that repre
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="shadow-mask.html#cb20-1" tabindex="-1"></a><span class="co"># Grouping adjacent pixels with the same value (i.e. representing shadowed areas) into distinct patches or clumps</span></span>
-<span id="cb20-2"><a href="shadow-mask.html#cb20-2" tabindex="-1"></a>shadow_patches <span class="ot">=</span> raster<span class="sc">::</span><span class="fu">clump</span>(raster<span class="sc">::</span><span class="fu">raster</span>(shadow_mask), <span class="at">directions =</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-3"><a href="shadow-mask.html#cb20-3" tabindex="-1"></a>  <span class="fu">rast</span>()</span>
-<span id="cb20-4"><a href="shadow-mask.html#cb20-4" tabindex="-1"></a><span class="co"># Summarizing the clumps obtained from the shadow patches raster. It contains two columns: </span></span>
-<span id="cb20-5"><a href="shadow-mask.html#cb20-5" tabindex="-1"></a><span class="co">#1. value: representing the unique ID of each clump:</span></span>
-<span id="cb20-6"><a href="shadow-mask.html#cb20-6" tabindex="-1"></a><span class="co">#2. count: representing the number of pixels within each clump</span></span>
-<span id="cb20-7"><a href="shadow-mask.html#cb20-7" tabindex="-1"></a>clumps <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">freq</span>(shadow_patches))</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="shadow-mask.html#cb21-1" tabindex="-1"></a><span class="co"># Grouping adjacent pixels with the same value (i.e. representing shadowed areas) into distinct patches or clumps</span></span>
+<span id="cb21-2"><a href="shadow-mask.html#cb21-2" tabindex="-1"></a>shadow_patches <span class="ot">=</span> raster<span class="sc">::</span><span class="fu">clump</span>(raster<span class="sc">::</span><span class="fu">raster</span>(shadow_mask), <span class="at">directions =</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="shadow-mask.html#cb21-3" tabindex="-1"></a>  <span class="fu">rast</span>()</span>
+<span id="cb21-4"><a href="shadow-mask.html#cb21-4" tabindex="-1"></a><span class="co"># Summarizing the clumps obtained from the shadow patches raster. It contains two columns: </span></span>
+<span id="cb21-5"><a href="shadow-mask.html#cb21-5" tabindex="-1"></a><span class="co">#1. value: representing the unique ID of each clump:</span></span>
+<span id="cb21-6"><a href="shadow-mask.html#cb21-6" tabindex="-1"></a><span class="co">#2. count: representing the number of pixels within each clump</span></span>
+<span id="cb21-7"><a href="shadow-mask.html#cb21-7" tabindex="-1"></a>clumps <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">freq</span>(shadow_patches))</span></code></pre></div>
 </details>
 <p>Here we filter the shadow patches by a threshold to remove insignificant patches and write out the cleaned shadow mask for future use.</p>
 <p>The threshold <strong>num_pix</strong> is calculated by:</p>
@@ -524,18 +524,18 @@ Click to show the code
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="shadow-mask.html#cb21-1" tabindex="-1"></a><span class="co"># Calculating the threshold for the number of pixels that a clump must contain to be considered significant</span></span>
-<span id="cb21-2"><a href="shadow-mask.html#cb21-2" tabindex="-1"></a><span class="co"># It is calculated based on the desired area threshold (200 cm²) divided by the area of a single pixel</span></span>
-<span id="cb21-3"><a href="shadow-mask.html#cb21-3" tabindex="-1"></a>num_pix <span class="ot">=</span> <span class="fl">0.02</span> <span class="sc">/</span> (<span class="fu">res</span>(shadow_patches)[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>) <span class="co">#0.02 represents 200cm² in meters</span></span>
-<span id="cb21-4"><a href="shadow-mask.html#cb21-4" tabindex="-1"></a>flecks <span class="ot">=</span> clumps[clumps<span class="sc">$</span>count <span class="sc">&gt;</span> num_pix,] <span class="co"># remove clump observations with frequency smaller than the threshold</span></span>
-<span id="cb21-5"><a href="shadow-mask.html#cb21-5" tabindex="-1"></a>flecks <span class="ot">=</span> <span class="fu">as.vector</span>(flecks<span class="sc">$</span>value) <span class="co"># record IDs from clumps which met the criteria in previous step</span></span>
-<span id="cb21-6"><a href="shadow-mask.html#cb21-6" tabindex="-1"></a>  </span>
-<span id="cb21-7"><a href="shadow-mask.html#cb21-7" tabindex="-1"></a>new_mask <span class="ot">=</span> shadow_patches <span class="sc">%in%</span> flecks <span class="co">#keep clumps that have IDS in flecks</span></span>
-<span id="cb21-8"><a href="shadow-mask.html#cb21-8" tabindex="-1"></a>new_mask[new_mask <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">=</span> <span class="cn">NA</span> <span class="co"># make clumps that are zero, NA</span></span>
-<span id="cb21-9"><a href="shadow-mask.html#cb21-9" tabindex="-1"></a>  </span>
-<span id="cb21-10"><a href="shadow-mask.html#cb21-10" tabindex="-1"></a><span class="co">#writing out a &#39;cleaned&#39; shadow mask  </span></span>
-<span id="cb21-11"><a href="shadow-mask.html#cb21-11" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(new_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,  date_list[x], <span class="st">&quot;_NIR_shadow_thresh&quot;</span>,threshold ,<span class="st">&quot;_&quot;</span>,thresh_name, <span class="st">&quot;_mask2.tif&quot;</span>),</span>
-<span id="cb21-12"><a href="shadow-mask.html#cb21-12" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="shadow-mask.html#cb22-1" tabindex="-1"></a><span class="co"># Calculating the threshold for the number of pixels that a clump must contain to be considered significant</span></span>
+<span id="cb22-2"><a href="shadow-mask.html#cb22-2" tabindex="-1"></a><span class="co"># It is calculated based on the desired area threshold (200 cm²) divided by the area of a single pixel</span></span>
+<span id="cb22-3"><a href="shadow-mask.html#cb22-3" tabindex="-1"></a>num_pix <span class="ot">=</span> <span class="fl">0.02</span> <span class="sc">/</span> (<span class="fu">res</span>(shadow_patches)[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>) <span class="co">#0.02 represents 200cm² in meters</span></span>
+<span id="cb22-4"><a href="shadow-mask.html#cb22-4" tabindex="-1"></a>flecks <span class="ot">=</span> clumps[clumps<span class="sc">$</span>count <span class="sc">&gt;</span> num_pix,] <span class="co"># remove clump observations with frequency smaller than the threshold</span></span>
+<span id="cb22-5"><a href="shadow-mask.html#cb22-5" tabindex="-1"></a>flecks <span class="ot">=</span> <span class="fu">as.vector</span>(flecks<span class="sc">$</span>value) <span class="co"># record IDs from clumps which met the criteria in previous step</span></span>
+<span id="cb22-6"><a href="shadow-mask.html#cb22-6" tabindex="-1"></a>  </span>
+<span id="cb22-7"><a href="shadow-mask.html#cb22-7" tabindex="-1"></a>new_mask <span class="ot">=</span> shadow_patches <span class="sc">%in%</span> flecks <span class="co">#keep clumps that have IDS in flecks</span></span>
+<span id="cb22-8"><a href="shadow-mask.html#cb22-8" tabindex="-1"></a>new_mask[new_mask <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">=</span> <span class="cn">NA</span> <span class="co"># make clumps that are zero, NA</span></span>
+<span id="cb22-9"><a href="shadow-mask.html#cb22-9" tabindex="-1"></a>  </span>
+<span id="cb22-10"><a href="shadow-mask.html#cb22-10" tabindex="-1"></a><span class="co">#writing out a &#39;cleaned&#39; shadow mask  </span></span>
+<span id="cb22-11"><a href="shadow-mask.html#cb22-11" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeRaster</span>(new_mask, <span class="fu">paste0</span>(dir, Nir_shadow_folder_baseName,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,  date_list[x], <span class="st">&quot;_NIR_shadow_thresh&quot;</span>,threshold ,<span class="st">&quot;_&quot;</span>,thresh_name, <span class="st">&quot;_mask2.tif&quot;</span>),</span>
+<span id="cb22-12"><a href="shadow-mask.html#cb22-12" tabindex="-1"></a>                     <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </details>
 <p>Below you can see that in this case the filter did not result in a large change in the shadow mask as there were minimal small patches to begin with. Here the white areas in the filtered mask image on the right are areas that will not be masked given that the mask did not contain enough pixels. This will result in a less patchy shadow mask.</p>
 <p><img src="Photos_&_gifs/shadow_mask_example_filtered_2022_08_05.PNG" width="100%" style="display: block; margin: auto;" /></p>
