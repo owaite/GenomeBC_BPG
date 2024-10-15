@@ -4,7 +4,7 @@ Vegetation indices (VIs) are important tools for near-real time monitoring and f
 
 Below we describe a few commonly used VIs that will be calculated in this workflow: 
 
-- **Normalized Difference Vegetation Index (NDVI)** is of the oldest vegetation indices established in vegetation monitoring and is used as a metric of greenness. However, due to saturation of the chlorophyll absorption peak around 660-680nm at moderately low chlorophyll levels, NDVI is often not able to tease out small differences between healthy plants (Sims & Gamon, 2002). To solve this issue, the red reflectance band can be replaced with a red edge reflectance band creating the normalized difference red edge index mentioned below. 
+- **Normalized Difference Vegetation Index (NDVI)** is one of the oldest vegetation indices established in vegetation monitoring and is used as a metric of greenness. However, due to saturation of the chlorophyll absorption peak around 660-680nm at moderately low chlorophyll levels, NDVI is often not able to tease out small differences between healthy plants (Sims & Gamon, 2002). To solve this issue, the red reflectance band can be replaced with a red edge reflectance band creating the normalized difference red edge index mentioned below. 
 
 - **Normalized Difference Red Edge index (NDRE)** normalizes a reflectance band in the red edge to a reflectance band in the near-infrared region to estimate chlorophyll content. This index is a derivative of NDVI that is sensitive to shifts in chlorophyll content at high concentrations (Clevers & Gitelson, 2013; Evangelides & Nobajas, 2020). 
 

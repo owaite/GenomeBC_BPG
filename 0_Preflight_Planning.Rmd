@@ -45,7 +45,7 @@ In these situations, we rely on image-to-image registration where high quality d
 
 GCPs are fixed points on the ground of known position that can be seen in the imagery.
 With RTK/PPK procedures GCPs are not necessary to attain centimeter level spatial precision, however without GCPs we don’t have a centimeter precise gauge to measure the accuracy of data registration.
-We used 4-6 GCPs per site and built them ourselves using 2-foot square heavy-duty plywood painted as a four-quadrant checkerboard with black and white (Figure X).
+We used 4-6 GCPs per site and built them ourselves using 2-foot square heavy-duty plywood painted as a four-quadrant checkerboard with black and white as seen in Figure \@ref(fig:GCP-figure).
 Our aim was for them to be left on site and be long lasting, but lightweight versions can be purchased or made.
 GCPs are used in photogrammetry data processing to tie images to known points, to aid in alignment and registration and to verify the accuracy of the results.
 To use a GCP as a tiepoint, it needs to have a precisely surveyed location.
@@ -57,7 +57,6 @@ This alternative method is not as precise as using surveyed GCPs but nevertheles
 Without GCPs, especially on sites where canopy closure has occurred, it becomes difficult to measure the precision of the registered images.
 Some sites do have natural features such as rocks that can be used to estimate error.
 
-Here in Figure \@ref(fig:GCP-figure)
 
 ```{r GCP-figure, echo=FALSE, out.width="100%", fig.cap = "Aerial view of a GCP at the 12-year old Western redcedar Sandcut site taken with the P1 sensor."}
 knitr::include_graphics(here("Photos_&_gifs\\Tree_tops_GCP.png"))
@@ -108,8 +107,6 @@ Figure \@ref(fig:terrain-following-figure) depicts the difference between a flig
 The blue lines represent the field of view of the drone mounted sensor.
 Note the red ovals where the overlap decreases as the ground rises on the top image when the flight elevation remains constant to takeoff.
 
-Figure \@ref(fig:terrain-following-figure)
-
 ```{r terrain-following-figure, echo=FALSE, out.width="100%", fig.cap = "Terrain following on variable topography."}
 knitr::include_graphics(here("Photos_&_gifs\\Terrain_following.PNG"))
 ```
@@ -130,8 +127,6 @@ knitr::include_graphics(here("Photos_&_gifs\\ideal_sites.png"))
 **Effects of topography: Warning to take extra care**
 
 -   Sites on ground with significant elevation change require extra care registering imagery and may require repeated alignment steps with manual intervention. Figure \@ref(fig:GCP-elevation) below show processed orthomosaic imagery from a multispectral camera with GCP points. The left is from a relatively flat site where all 4 GCPs were within 5cm of the template. The right side shows data collected with the same parameters in similar conditions and processed with the same settings on a sister site with an elevation change of 25m across the site. We flew the site with terrain following enabled to maintain consistant height above the canopy, but the initial error was measured at 28cm. Repeated alignment steps were able to reduce this error to within 10cm for the final product, but this required hours of reprocessing and manual intervention.
-
-Figure \@ref(fig:GCP-elevation)
 
 ```{r GCP-elevation, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Effect of topograghy on alignment. Left: GCP alignment on flat ground (Error ~4cm). Right: GCP alignment on ground with elevation change (Error ~28cm)"}
 # Include the pre-brushing and post-brushing images

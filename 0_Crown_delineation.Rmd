@@ -1,6 +1,6 @@
 # Crown Delineation {#crown-delineation}
 
-[Supercells](https://jakubnowosad.com/supercells/) work to spatially group pixels with similar characteristics making it a great tool for crown delineation. The follow workflow shows how to create and filter supercells into delineated crowns and requires:
+[Supercells](https://jakubnowosad.com/supercells/) work to spatially group pixels with similar characteristics making it a great tool for crown delineation. The following workflow shows how to create and filter supercells into delineated crowns and requires:
 
 1)  A shapefile (.shp) with a grid of tree locations derived by georeferencing the census data to the imagery. This will be referred to as the “grid”. Detailed steps for creating the grid can be found in the chapter on [georeferencing plot trees](#georeferencing-plot-trees).
 

@@ -19,7 +19,7 @@ Convention is generally to register DAP to LiDAR however for this specific proje
 
 - We were flying biweekly multispectral and RGB imagery and only 2-3 LiDAR acquisitions a year. 
 
-- We could not load the LiDAR point cloud into Agisoft Metashape to use as a reference for registration however could register all DAP clouds to a reference DAP cloud in Agisoft.
+- We could not load the LiDAR point cloud into Agisoft Metashape to use as a reference for registration using version 1.8.  However, we could register all DAP clouds to a reference DAP cloud in Agisoft. Version 2+ allows LiDAR point cloud operations, but we have yet to test this application.
 
 - This allowed us to more easily register the many multispectral and RGB acquisitions to a defined template in Agisoft Metashape and use the exported point cloud of the template DAP to register the LiDAR in CloudCompare.
 
@@ -28,7 +28,7 @@ Convention is generally to register DAP to LiDAR however for this specific proje
 
 ### Prepare LiDAR for registration
 
-Below are snipets of a script written in LAStools that is used to ensure the LiDAR and DAP clouds are in the proper projection, filters out points in the LiDAR that are above a defined threshold, and clips the LiDAR to a boundary polygon to speed up registration by avoiding working with excess data in CloudCompare.
+Below are snippets of a script written in LAStools that is used to ensure the LiDAR and DAP clouds are in the proper projection, filters out points in the LiDAR that are above a defined threshold, and clips the LiDAR to a boundary polygon to speed up registration by avoiding working with excess data in CloudCompare.
 
 The unparsed script can be found on the project GitHub, see [GitHub link](index.html#github-link) 
 
@@ -172,7 +172,7 @@ Save out the registered LiDAR point clouds at the highest resolution
 
 ### Rescale and tile the registered LiDAR: 
 
-Below are snipets of a script written in LAStools that is used to project, rescale and tile the registered LiDAR point cloud.
+Below are snippets of a script written in LAStools that is used to project, rescale and tile the registered LiDAR point cloud.
 
 The unparsed script can be found on the project GitHub, see [GitHub link](index.html#github-link)
 
@@ -262,7 +262,7 @@ Note: The full code that can be found on the project [GitHub](index.html#github-
 
 ### Creating a DTM from the registered LiDAR tiles 
 
-To being, when working with LiDAR data in R, an incredibly useful package is the lidR package. We highly recommend taking a look at the [lidR bookdown](https://r-lidar.github.io/lidRbook/) for useful tips and examples on using the package. 
+When working with LiDAR data in R, an incredibly useful package is the lidR package. We highly recommend taking a look at the [lidR bookdown](https://r-lidar.github.io/lidRbook/) for useful tips and examples on using the package. 
 
 The packages required for our workflow are:
 <details>

@@ -10,7 +10,7 @@
 
   <div class="mySlides fade">
     <img src="Photos_&_gifs/genetic_layout_P1.png" style="width:100%">
-    <div class="slide-title">High Res RGB</div>
+    <div class="slide-title">High Resolution RGB</div>
   </div>
 
   <div class="mySlides fade">
@@ -113,7 +113,7 @@ function showSlides() {
 <style>
 .slideshow-container {
   max-width: 1000px;
-  height: 50vh; /* Take up half of the screen */
+  height: 40vh; /* Take up 40 percent of the screen */
   position: relative;
   margin: hidden;
 }
@@ -130,7 +130,7 @@ img {
 }
 
 .text-container {
-  height: 50vh; /* Bottom half of the screen */
+  height: 60vh; /* Bottom 60 percent of the screen */
   overflow-y: auto; /* Allows scrolling through text if necessary */
   padding: 20px;
   font-family: Arial, sans-serif;

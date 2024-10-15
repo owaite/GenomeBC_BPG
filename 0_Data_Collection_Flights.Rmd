@@ -52,7 +52,7 @@ knitr::include_graphics(here("Photos_&_gifs\\P1_flight_plan.png"))
 
 ## Data Collection: Sensors, Parameters, and Ideal Conditions
 
-The parameters we have listed for each sensor are based on collecting data on gridded 1.5 - 2 Ha closed canopy coastal Douglas fir and Western redcedar sites. The parameters are conservative and should allow for less than ideal flight conditions.
+The parameters we have listed for each sensor are based on our experience collecting data on gridded 1.5 - 2 Ha open and closed canopy coastal Douglas fir and Western redcedar sites. The parameters are conservative and should allow for less than ideal flight conditions.  More detailed paramaterization tests are ongoing and will be included in further edits.
 
 ### MicaSense: 10-Band Spectral Sensor for Vegetative Indices
 
@@ -67,8 +67,6 @@ Multispectral sensors also require calibration photos to be taken at the start a
 As seen in Figure \@ref(fig:DLS-Micasense-connection) the MicaSense Dual cameras are two sets of cameras, each captures 5 unique wavebands. The cameras write images as .tif with an \_(x) for each of (x) wavelengths and organizes the images into folders with 1000 images per folder, in as many folders as needed. Image capture rate can be set as high as one image per second. A 25–30-minute flight that covers a 1.5-2 Ha site using the flight parameters outlined below will yield 5-6 folders per camera system producing 10-12 thousand images.
 
 The MS sensors are particularly prone to difficulties writing to data cards and the data must be carefully checked and reflown if necessary. We keep a spare set of SD cards for each sensor and will not overwrite any cards until the data has been confirmed by loading into the processing software. For the MS sensors, ensure SD cards used are formatted FAT32, they will not work in EXFAT32 or other formats. Formatting cards should be done through the MicaSense wireless connection using the built in format card button.
-
-Figure \@ref(fig:DLS-Micasense-connection)
 
 ```{r DLS-Micasense-connection, echo=FALSE, out.width="100%", fig.cap = "Micasense RedEdge-MX Dual and the DLS2 mounted on the M300. Here we are connecting the DLS2 to the Micasense camera."}
 knitr::include_graphics(here("Photos_&_gifs\\DLS2_Micasense_connection.png"))
@@ -177,8 +175,6 @@ kable(data, col.names = c("Band Name", "Center Wavelength (nm)","Bandwidth (nm)"
 
     -   The DLS calibration helps to reduce the effect changing light conditions, but extreme changes in light conditions will leave residual effects that are difficult to process out. Figure \@ref(fig:drone-variable-light) below shows a flight in variable conditions (left) in which the calibration has failed to correct the changing light conditions. The flight on the right was flown on an ideal day with even diffuse light.
 
-Figure \@ref(fig:drone-variable-light)
-
 ```{r drone-variable-light, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "Left: MS orthomosaic in variable light. Right: MS orthomosaic in even diffuse light."}
 knitr::include_graphics(c(here("Photos_&_gifs\\variable_light.png"),
                           here("Photos_&_gifs\\diffuse_light.png"))
@@ -228,8 +224,6 @@ The P1 is RTK/PPK enabled and has the highest resolution and positional accuracy
 -   **Wind Conditions:** Ideal on days with little or no wind; \<10 km/h for coastal species (e.g., western redcedar, Douglas-fir); up to 20 km/h may be suitable for other species (e.g., juvenile interior spruce).
 
 -   **Lighting:** Best results are achieved on overcast days due to diffuse lighting conditions which reduces shadows and enhances detail. We have found that of full sun days using the “Auto” settings will produce oversaturated imagery. The [sunny 16 rule](https://en.wikipedia.org/wiki/Sunny_16_rule) of photography does help with the P1 on full sun days.
-
-Figure \@ref(fig:P1-RGB)
 
 ```{r P1-RGB, echo=FALSE, fig.show="hold",fig.align='center', out.width="50%", fig.cap = "These images are the same area, the left was taken with the above parameters with the P1 before greenup. The right was taken with the wide angle RGB on the Zenmuse H20T, a lower resolution camera, mid-August."}
 knitr::include_graphics(c(here("Photos_&_gifs\\P1_pre_greenup.png"),

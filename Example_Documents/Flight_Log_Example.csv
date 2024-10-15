@@ -1,6 +1,0 @@
-Date,Flight,Site,A/C ,Payload,Pilot,Observer,Site location,Remarks,Landings,Flight time (total),Sky,Wind (m/s),Altitude (m),Side overlap %,Front overlap %,Speed (m/s),Course (deg),Target distance (m),Margin
-yyyy-mm-dd,start time,Sp_Loc_Rd,M300,sensor,in command,name,area,notes,/Appr.,h:mm,visual,wind m/s,m,side %,front%,speed m/s,coursedeg,dist,margin
-2022-03-31,14:57,CW_JR_East,NRCAN-1,L1,Eric,Jake,JR,2 flight cross hatch,2,:36,Clear skies,7,40,20,NA,4.6,180,NA,20
-2022-03-31,14:15,CW_JR_East,NRCAN-1,H20T,Eric,Jake,JR,,2,:42,Clear skies,8,60,70,80,2,180,NA,10
-2022-03-31,11:56,FDC_JR_East,NRCAN-1,H20T,Eric,Jake,JR,Coast patrol choppers regularly fly low ,2,:39,Clear skies,6,70,70,80,2,270,NA,25
-2022-03-31,12:32,FDC_JR_East,NRCAN-1,L1,Eric,Jake,JR,Coast patrol choppers regularly fly low ,2,:42,Clear skies,6,40,30,NA,3,270,NA,0

@@ -324,7 +324,7 @@ In these situations, we rely on image-to-image registration where high quality d
 <h3><span class="header-section-number">4.1.2</span> Ground Control Points (GCP)<a href="preflight-planning.html#ground-control-points-gcp" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>GCPs are fixed points on the ground of known position that can be seen in the imagery.
 With RTK/PPK procedures GCPs are not necessary to attain centimeter level spatial precision, however without GCPs we don’t have a centimeter precise gauge to measure the accuracy of data registration.
-We used 4-6 GCPs per site and built them ourselves using 2-foot square heavy-duty plywood painted as a four-quadrant checkerboard with black and white (Figure X).
+We used 4-6 GCPs per site and built them ourselves using 2-foot square heavy-duty plywood painted as a four-quadrant checkerboard with black and white as seen in Figure <a href="preflight-planning.html#fig:GCP-figure">4.1</a>.
 Our aim was for them to be left on site and be long lasting, but lightweight versions can be purchased or made.
 GCPs are used in photogrammetry data processing to tie images to known points, to aid in alignment and registration and to verify the accuracy of the results.
 To use a GCP as a tiepoint, it needs to have a precisely surveyed location.
@@ -335,7 +335,6 @@ When a closed canopy prevents this, GCP coordinates can be leveraged from an RGB
 This alternative method is not as precise as using surveyed GCPs but nevertheless provides check points to measure error during imagery alignment and registry.
 Without GCPs, especially on sites where canopy closure has occurred, it becomes difficult to measure the precision of the registered images.
 Some sites do have natural features such as rocks that can be used to estimate error.</p>
-<p>Here in Figure <a href="preflight-planning.html#fig:GCP-figure">4.1</a></p>
 <div class="figure"><span style="display:block;" id="fig:GCP-figure"></span>
 <img src="Photos_&_gifs/Tree_tops_GCP.png" alt="Aerial view of a GCP at the 12-year old Western redcedar Sandcut site taken with the P1 sensor." width="100%" />
 <p class="caption">
@@ -387,7 +386,6 @@ We have made our own DTMs for approximately half of the sites we have flown.
 Figure <a href="preflight-planning.html#fig:terrain-following-figure">4.2</a> depicts the difference between a flight plan referencing the takeoff point, and a flight plan using terrain following.
 The blue lines represent the field of view of the drone mounted sensor.
 Note the red ovals where the overlap decreases as the ground rises on the top image when the flight elevation remains constant to takeoff.</p>
-<p>Figure <a href="preflight-planning.html#fig:terrain-following-figure">4.2</a></p>
 <div class="figure"><span style="display:block;" id="fig:terrain-following-figure"></span>
 <img src="Photos_&_gifs/Terrain_following.PNG" alt="Terrain following on variable topography." width="100%" />
 <p class="caption">
@@ -413,7 +411,6 @@ Figure 4.3: Aerial view of a 5 year old Douglas fir trial.
 <ul>
 <li>Sites on ground with significant elevation change require extra care registering imagery and may require repeated alignment steps with manual intervention. Figure <a href="preflight-planning.html#fig:GCP-elevation">4.4</a> below show processed orthomosaic imagery from a multispectral camera with GCP points. The left is from a relatively flat site where all 4 GCPs were within 5cm of the template. The right side shows data collected with the same parameters in similar conditions and processed with the same settings on a sister site with an elevation change of 25m across the site. We flew the site with terrain following enabled to maintain consistant height above the canopy, but the initial error was measured at 28cm. Repeated alignment steps were able to reduce this error to within 10cm for the final product, but this required hours of reprocessing and manual intervention.</li>
 </ul>
-<p>Figure <a href="preflight-planning.html#fig:GCP-elevation">4.4</a></p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:GCP-elevation"></span>
 <img src="Photos_&_gifs/GCP_flat_ground.png" alt="Effect of topograghy on alignment. Left: GCP alignment on flat ground (Error ~4cm). Right: GCP alignment on ground with elevation change (Error ~28cm)" width="50%" /><img src="Photos_&_gifs/GCP_elevation_change_terrain.png" alt="Effect of topograghy on alignment. Left: GCP alignment on flat ground (Error ~4cm). Right: GCP alignment on ground with elevation change (Error ~28cm)" width="50%" />
 <p class="caption">

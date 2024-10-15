@@ -287,7 +287,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="crown-delineation" class="section level1 hasAnchor" number="9">
 <h1><span class="header-section-number">Chapter 9</span> Crown Delineation<a href="crown-delineation.html#crown-delineation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><a href="https://jakubnowosad.com/supercells/">Supercells</a> work to spatially group pixels with similar characteristics making it a great tool for crown delineation. The follow workflow shows how to create and filter supercells into delineated crowns and requires:</p>
+<p><a href="https://jakubnowosad.com/supercells/">Supercells</a> work to spatially group pixels with similar characteristics making it a great tool for crown delineation. The following workflow shows how to create and filter supercells into delineated crowns and requires:</p>
 <ol style="list-style-type: decimal">
 <li><p>A shapefile (.shp) with a grid of tree locations derived by georeferencing the census data to the imagery. This will be referred to as the “grid”. Detailed steps for creating the grid can be found in the chapter on <a href="georeferencing-plot-trees.html#georeferencing-plot-trees">georeferencing plot trees</a>.</p></li>
 <li><p>Co-registered CHM made from normalized maximum elevation (Z) values, MicaSense orthomosaic, and P1 orthomosaic, ideally from around the same date.</p></li>
@@ -309,61 +309,61 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="crown-delineation.html#cb5-1" tabindex="-1"></a>unique_id <span class="ot">&lt;-</span> <span class="st">&quot;TAG&quot;</span> <span class="co"># change this to the unique ID you have per tree that was used to create the grid</span></span>
-<span id="cb5-2"><a href="crown-delineation.html#cb5-2" tabindex="-1"></a>crown_dir <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;path to save crown delineation producst to&quot;</span>)<span class="co"># This was a path to a folder called Crowns for us</span></span>
-<span id="cb5-3"><a href="crown-delineation.html#cb5-3" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="crown-delineation.html#cb5-4" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;path to your grid&quot;</span>)<span class="co"># read in the treetops as an sp object</span></span>
-<span id="cb5-5"><a href="crown-delineation.html#cb5-5" tabindex="-1"></a>ttops<span class="ot">&lt;-</span> ttops<span class="sc">%&gt;%</span></span>
-<span id="cb5-6"><a href="crown-delineation.html#cb5-6" tabindex="-1"></a>  <span class="fu">st_centroid</span>()</span>
-<span id="cb5-7"><a href="crown-delineation.html#cb5-7" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="crown-delineation.html#cb5-8" tabindex="-1"></a><span class="co"># Buffering circles around grid points to get heights for each tree:</span></span>
-<span id="cb5-9"><a href="crown-delineation.html#cb5-9" tabindex="-1"></a>buffer_radius <span class="ot">&lt;-</span> <span class="fl">0.1</span>  <span class="co"># buffer radius in meters</span></span>
-<span id="cb5-10"><a href="crown-delineation.html#cb5-10" tabindex="-1"></a>ttops_buffered <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(ttops, <span class="at">dist =</span> buffer_radius)<span class="co"># Create a buffer around each centroid with a radius of 10cm (0.1 meters)</span></span>
-<span id="cb5-11"><a href="crown-delineation.html#cb5-11" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="crown-delineation.html#cb5-12" tabindex="-1"></a><span class="co">#Check geometries, this should be  = 0</span></span>
-<span id="cb5-13"><a href="crown-delineation.html#cb5-13" tabindex="-1"></a><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">st_is_valid</span>(ttops_buffered))</span>
-<span id="cb5-14"><a href="crown-delineation.html#cb5-14" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="crown-delineation.html#cb5-15" tabindex="-1"></a>ttops_buffered <span class="ot">&lt;-</span> ttops_buffered[<span class="sc">!</span><span class="fu">st_is_empty</span>(ttops_buffered), ]</span>
-<span id="cb5-16"><a href="crown-delineation.html#cb5-16" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="crown-delineation.html#cb5-17" tabindex="-1"></a><span class="co"># Height Quantile from CHM</span></span>
-<span id="cb5-18"><a href="crown-delineation.html#cb5-18" tabindex="-1"></a>CHM_L1 <span class="ot">&lt;-</span> <span class="st">&quot;path to CHM&quot;</span> <span class="co">#path to CHM</span></span>
-<span id="cb5-19"><a href="crown-delineation.html#cb5-19" tabindex="-1"></a>CHM_max_L1 <span class="ot">&lt;-</span> <span class="fu">rast</span>(CHM_L1) <span class="co">#read in CHM as a raster</span></span>
-<span id="cb5-20"><a href="crown-delineation.html#cb5-20" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="crown-delineation.html#cb5-21" tabindex="-1"></a>extracted_values <span class="ot">=</span> ttops_buffered <span class="sc">%&gt;%</span> <span class="co">#extract height percentiles</span></span>
-<span id="cb5-22"><a href="crown-delineation.html#cb5-22" tabindex="-1"></a>  <span class="fu">exact_extract</span>(<span class="at">x =</span> CHM_max_L1,</span>
-<span id="cb5-23"><a href="crown-delineation.html#cb5-23" tabindex="-1"></a>                <span class="at">y =</span> .,</span>
-<span id="cb5-24"><a href="crown-delineation.html#cb5-24" tabindex="-1"></a>                <span class="at">fun =</span> <span class="st">&quot;quantile&quot;</span>,</span>
-<span id="cb5-25"><a href="crown-delineation.html#cb5-25" tabindex="-1"></a>                <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="fl">0.975</span>, <span class="fl">0.99</span>),</span>
-<span id="cb5-26"><a href="crown-delineation.html#cb5-26" tabindex="-1"></a>                <span class="at">force_df =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb5-27"><a href="crown-delineation.html#cb5-27" tabindex="-1"></a>                <span class="at">append_cols =</span> <span class="fu">c</span>(unique_id)) </span>
-<span id="cb5-28"><a href="crown-delineation.html#cb5-28" tabindex="-1"></a></span>
-<span id="cb5-29"><a href="crown-delineation.html#cb5-29" tabindex="-1"></a>ttops_zq99 <span class="ot">&lt;-</span> <span class="fu">left_join</span>(ttops_buffered, extracted_values, <span class="at">by =</span> <span class="fu">c</span>(unique_id)) <span class="co"># Assign the pixel IDs to each polygon</span></span>
-<span id="cb5-30"><a href="crown-delineation.html#cb5-30" tabindex="-1"></a></span>
-<span id="cb5-31"><a href="crown-delineation.html#cb5-31" tabindex="-1"></a><span class="co"># Saving out shp of buffered points</span></span>
-<span id="cb5-32"><a href="crown-delineation.html#cb5-32" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(crown_dir,<span class="st">&quot;Buffer_radius_ttops_&quot;</span>,buffer_radius))){</span>
-<span id="cb5-33"><a href="crown-delineation.html#cb5-33" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(crown_dir,<span class="st">&quot;Buffer_radius_ttops_&quot;</span>,buffer_radius))</span>
-<span id="cb5-34"><a href="crown-delineation.html#cb5-34" tabindex="-1"></a>}</span>
-<span id="cb5-35"><a href="crown-delineation.html#cb5-35" tabindex="-1"></a><span class="fu">st_write</span>(ttops_zq99, <span class="fu">paste0</span>(crown_dir,<span class="st">&quot;Buffer_radius_ttops_&quot;</span>,buffer_radius,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,site,<span class="st">&quot;_ttops_&quot;</span>,buffer_radius,<span class="st">&quot;mBuffers_.shp&quot;</span>), <span class="at">append =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-36"><a href="crown-delineation.html#cb5-36" tabindex="-1"></a></span>
-<span id="cb5-37"><a href="crown-delineation.html#cb5-37" tabindex="-1"></a><span class="co"># Proportional hulls based on 10% of the 99th percentile height value</span></span>
-<span id="cb5-38"><a href="crown-delineation.html#cb5-38" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb5-39"><a href="crown-delineation.html#cb5-39" tabindex="-1"></a>(buffer_dist <span class="ot">&lt;-</span> ttops_zq99<span class="sc">$</span>q99 <span class="sc">*</span> (percent<span class="sc">/</span><span class="dv">100</span>)<span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb5-40"><a href="crown-delineation.html#cb5-40" tabindex="-1"></a></span>
-<span id="cb5-41"><a href="crown-delineation.html#cb5-41" tabindex="-1"></a>buffer_dist[<span class="fu">is.na</span>(buffer_dist)] <span class="ot">&lt;-</span> <span class="dv">0</span> </span>
-<span id="cb5-42"><a href="crown-delineation.html#cb5-42" tabindex="-1"></a></span>
-<span id="cb5-43"><a href="crown-delineation.html#cb5-43" tabindex="-1"></a>prop_hulls <span class="ot">&lt;-</span> ttops_zq99<span class="sc">%&gt;%</span></span>
-<span id="cb5-44"><a href="crown-delineation.html#cb5-44" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">crs =</span> <span class="dv">26910</span>)<span class="sc">%&gt;%</span> <span class="co">#change to match your CRS</span></span>
-<span id="cb5-45"><a href="crown-delineation.html#cb5-45" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="at">dist =</span> buffer_dist)<span class="sc">%&gt;%</span> <span class="co">#value here is the radius</span></span>
-<span id="cb5-46"><a href="crown-delineation.html#cb5-46" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">buff =</span> buffer_dist)</span>
-<span id="cb5-47"><a href="crown-delineation.html#cb5-47" tabindex="-1"></a></span>
-<span id="cb5-48"><a href="crown-delineation.html#cb5-48" tabindex="-1"></a>(prop_hulls<span class="sc">$</span>crownArea <span class="ot">&lt;-</span> <span class="fu">st_area</span>(prop_hulls))</span>
-<span id="cb5-49"><a href="crown-delineation.html#cb5-49" tabindex="-1"></a></span>
-<span id="cb5-50"><a href="crown-delineation.html#cb5-50" tabindex="-1"></a><span class="co">#Below we remove columns with mainly NAs as they will cause errors for the segmentation raster</span></span>
-<span id="cb5-51"><a href="crown-delineation.html#cb5-51" tabindex="-1"></a>prop_hulls_forSEG <span class="ot">&lt;-</span> prop_hulls <span class="sc">%&gt;%</span></span>
-<span id="cb5-52"><a href="crown-delineation.html#cb5-52" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(TAG, row, col, q99, q97, crownArea)) <span class="co">#select columns you would like to keep in your crown shapefile, if the columns contain NA values, remove them for the following segmentation steps and re-join the columns at the end</span></span>
-<span id="cb5-53"><a href="crown-delineation.html#cb5-53" tabindex="-1"></a></span>
-<span id="cb5-54"><a href="crown-delineation.html#cb5-54" tabindex="-1"></a></span>
-<span id="cb5-55"><a href="crown-delineation.html#cb5-55" tabindex="-1"></a><span class="fu">st_write</span>(prop_hulls_forSEG, <span class="fu">paste0</span>(crown_dir,<span class="st">&quot;Buffer_radius_ttops_&quot;</span>,buffer_radius,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,site,<span class="st">&quot;_proportional_Hulls_Diam&quot;</span>,percent,<span class="st">&quot;percent_zq99_forSEG_.shp&quot;</span>), <span class="at">append =</span> <span class="cn">FALSE</span>) <span class="co">#Save shapefile of circles proportional to height for each tree</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="crown-delineation.html#cb4-1" tabindex="-1"></a>unique_id <span class="ot">&lt;-</span> <span class="st">&quot;TAG&quot;</span> <span class="co"># change this to the unique ID you have per tree that was used to create the grid</span></span>
+<span id="cb4-2"><a href="crown-delineation.html#cb4-2" tabindex="-1"></a>crown_dir <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;path to save crown delineation producst to&quot;</span>)<span class="co"># This was a path to a folder called Crowns for us</span></span>
+<span id="cb4-3"><a href="crown-delineation.html#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="crown-delineation.html#cb4-4" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;path to your grid&quot;</span>)<span class="co"># read in the treetops as an sp object</span></span>
+<span id="cb4-5"><a href="crown-delineation.html#cb4-5" tabindex="-1"></a>ttops<span class="ot">&lt;-</span> ttops<span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="crown-delineation.html#cb4-6" tabindex="-1"></a>  <span class="fu">st_centroid</span>()</span>
+<span id="cb4-7"><a href="crown-delineation.html#cb4-7" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="crown-delineation.html#cb4-8" tabindex="-1"></a><span class="co"># Buffering circles around grid points to get heights for each tree:</span></span>
+<span id="cb4-9"><a href="crown-delineation.html#cb4-9" tabindex="-1"></a>buffer_radius <span class="ot">&lt;-</span> <span class="fl">0.1</span>  <span class="co"># buffer radius in meters</span></span>
+<span id="cb4-10"><a href="crown-delineation.html#cb4-10" tabindex="-1"></a>ttops_buffered <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(ttops, <span class="at">dist =</span> buffer_radius)<span class="co"># Create a buffer around each centroid with a radius of 10cm (0.1 meters)</span></span>
+<span id="cb4-11"><a href="crown-delineation.html#cb4-11" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="crown-delineation.html#cb4-12" tabindex="-1"></a><span class="co">#Check geometries, this should be  = 0</span></span>
+<span id="cb4-13"><a href="crown-delineation.html#cb4-13" tabindex="-1"></a><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">st_is_valid</span>(ttops_buffered))</span>
+<span id="cb4-14"><a href="crown-delineation.html#cb4-14" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="crown-delineation.html#cb4-15" tabindex="-1"></a>ttops_buffered <span class="ot">&lt;-</span> ttops_buffered[<span class="sc">!</span><span class="fu">st_is_empty</span>(ttops_buffered), ]</span>
+<span id="cb4-16"><a href="crown-delineation.html#cb4-16" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="crown-delineation.html#cb4-17" tabindex="-1"></a><span class="co"># Height Quantile from CHM</span></span>
+<span id="cb4-18"><a href="crown-delineation.html#cb4-18" tabindex="-1"></a>CHM_L1 <span class="ot">&lt;-</span> <span class="st">&quot;path to CHM&quot;</span> <span class="co">#path to CHM</span></span>
+<span id="cb4-19"><a href="crown-delineation.html#cb4-19" tabindex="-1"></a>CHM_max_L1 <span class="ot">&lt;-</span> <span class="fu">rast</span>(CHM_L1) <span class="co">#read in CHM as a raster</span></span>
+<span id="cb4-20"><a href="crown-delineation.html#cb4-20" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="crown-delineation.html#cb4-21" tabindex="-1"></a>extracted_values <span class="ot">=</span> ttops_buffered <span class="sc">%&gt;%</span> <span class="co">#extract height percentiles</span></span>
+<span id="cb4-22"><a href="crown-delineation.html#cb4-22" tabindex="-1"></a>  <span class="fu">exact_extract</span>(<span class="at">x =</span> CHM_max_L1,</span>
+<span id="cb4-23"><a href="crown-delineation.html#cb4-23" tabindex="-1"></a>                <span class="at">y =</span> .,</span>
+<span id="cb4-24"><a href="crown-delineation.html#cb4-24" tabindex="-1"></a>                <span class="at">fun =</span> <span class="st">&quot;quantile&quot;</span>,</span>
+<span id="cb4-25"><a href="crown-delineation.html#cb4-25" tabindex="-1"></a>                <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="fl">0.975</span>, <span class="fl">0.99</span>),</span>
+<span id="cb4-26"><a href="crown-delineation.html#cb4-26" tabindex="-1"></a>                <span class="at">force_df =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-27"><a href="crown-delineation.html#cb4-27" tabindex="-1"></a>                <span class="at">append_cols =</span> <span class="fu">c</span>(unique_id)) </span>
+<span id="cb4-28"><a href="crown-delineation.html#cb4-28" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="crown-delineation.html#cb4-29" tabindex="-1"></a>ttops_zq99 <span class="ot">&lt;-</span> <span class="fu">left_join</span>(ttops_buffered, extracted_values, <span class="at">by =</span> <span class="fu">c</span>(unique_id)) <span class="co"># Assign the pixel IDs to each polygon</span></span>
+<span id="cb4-30"><a href="crown-delineation.html#cb4-30" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="crown-delineation.html#cb4-31" tabindex="-1"></a><span class="co"># Saving out shp of buffered points</span></span>
+<span id="cb4-32"><a href="crown-delineation.html#cb4-32" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(crown_dir,<span class="st">&quot;Buffer_radius_ttops_&quot;</span>,buffer_radius))){</span>
+<span id="cb4-33"><a href="crown-delineation.html#cb4-33" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(crown_dir,<span class="st">&quot;Buffer_radius_ttops_&quot;</span>,buffer_radius))</span>
+<span id="cb4-34"><a href="crown-delineation.html#cb4-34" tabindex="-1"></a>}</span>
+<span id="cb4-35"><a href="crown-delineation.html#cb4-35" tabindex="-1"></a><span class="fu">st_write</span>(ttops_zq99, <span class="fu">paste0</span>(crown_dir,<span class="st">&quot;Buffer_radius_ttops_&quot;</span>,buffer_radius,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,site,<span class="st">&quot;_ttops_&quot;</span>,buffer_radius,<span class="st">&quot;mBuffers_.shp&quot;</span>), <span class="at">append =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-36"><a href="crown-delineation.html#cb4-36" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="crown-delineation.html#cb4-37" tabindex="-1"></a><span class="co"># Proportional hulls based on 10% of the 99th percentile height value</span></span>
+<span id="cb4-38"><a href="crown-delineation.html#cb4-38" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb4-39"><a href="crown-delineation.html#cb4-39" tabindex="-1"></a>(buffer_dist <span class="ot">&lt;-</span> ttops_zq99<span class="sc">$</span>q99 <span class="sc">*</span> (percent<span class="sc">/</span><span class="dv">100</span>)<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb4-40"><a href="crown-delineation.html#cb4-40" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="crown-delineation.html#cb4-41" tabindex="-1"></a>buffer_dist[<span class="fu">is.na</span>(buffer_dist)] <span class="ot">&lt;-</span> <span class="dv">0</span> </span>
+<span id="cb4-42"><a href="crown-delineation.html#cb4-42" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="crown-delineation.html#cb4-43" tabindex="-1"></a>prop_hulls <span class="ot">&lt;-</span> ttops_zq99<span class="sc">%&gt;%</span></span>
+<span id="cb4-44"><a href="crown-delineation.html#cb4-44" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">crs =</span> <span class="dv">26910</span>)<span class="sc">%&gt;%</span> <span class="co">#change to match your CRS</span></span>
+<span id="cb4-45"><a href="crown-delineation.html#cb4-45" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="at">dist =</span> buffer_dist)<span class="sc">%&gt;%</span> <span class="co">#value here is the radius</span></span>
+<span id="cb4-46"><a href="crown-delineation.html#cb4-46" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">buff =</span> buffer_dist)</span>
+<span id="cb4-47"><a href="crown-delineation.html#cb4-47" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="crown-delineation.html#cb4-48" tabindex="-1"></a>(prop_hulls<span class="sc">$</span>crownArea <span class="ot">&lt;-</span> <span class="fu">st_area</span>(prop_hulls))</span>
+<span id="cb4-49"><a href="crown-delineation.html#cb4-49" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="crown-delineation.html#cb4-50" tabindex="-1"></a><span class="co">#Below we remove columns with mainly NAs as they will cause errors for the segmentation raster</span></span>
+<span id="cb4-51"><a href="crown-delineation.html#cb4-51" tabindex="-1"></a>prop_hulls_forSEG <span class="ot">&lt;-</span> prop_hulls <span class="sc">%&gt;%</span></span>
+<span id="cb4-52"><a href="crown-delineation.html#cb4-52" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(TAG, row, col, q99, q97, crownArea)) <span class="co">#select columns you would like to keep in your crown shapefile, if the columns contain NA values, remove them for the following segmentation steps and re-join the columns at the end</span></span>
+<span id="cb4-53"><a href="crown-delineation.html#cb4-53" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="crown-delineation.html#cb4-54" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="crown-delineation.html#cb4-55" tabindex="-1"></a><span class="fu">st_write</span>(prop_hulls_forSEG, <span class="fu">paste0</span>(crown_dir,<span class="st">&quot;Buffer_radius_ttops_&quot;</span>,buffer_radius,<span class="st">&quot;</span><span class="sc">\\</span><span class="st">&quot;</span>,site,<span class="st">&quot;_proportional_Hulls_Diam&quot;</span>,percent,<span class="st">&quot;percent_zq99_forSEG_.shp&quot;</span>), <span class="at">append =</span> <span class="cn">FALSE</span>) <span class="co">#Save shapefile of circles proportional to height for each tree</span></span></code></pre></div>
 </details>
 <p>See Figure <a href="crown-delineation.html#fig:prop-circle-crowns">9.1</a> below for an example of the above output.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:prop-circle-crowns"></span>
@@ -380,65 +380,65 @@ Figure 9.1: A section of the P1 orthomosaic with red circles outlining the circl
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="crown-delineation.html#cb6-1" tabindex="-1"></a><span class="fu">library</span>(future) </span>
-<span id="cb6-2"><a href="crown-delineation.html#cb6-2" tabindex="-1"></a><span class="fu">library</span>(supercells)</span>
-<span id="cb6-3"><a href="crown-delineation.html#cb6-3" tabindex="-1"></a><span class="fu">library</span>(RStoolbox)</span>
-<span id="cb6-4"><a href="crown-delineation.html#cb6-4" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="crown-delineation.html#cb6-5" tabindex="-1"></a>crown_dir_folder <span class="ot">&lt;-</span> <span class="st">&quot;directory to save files to&quot;</span> <span class="co">#change to match yours</span></span>
-<span id="cb6-6"><a href="crown-delineation.html#cb6-6" tabindex="-1"></a>ms_path <span class="ot">&lt;-</span> <span class="st">&quot;path to MicaSense orthomosaic&quot;</span></span>
-<span id="cb6-7"><a href="crown-delineation.html#cb6-7" tabindex="-1"></a>p1_path <span class="ot">&lt;-</span> <span class="st">&quot;path to P1&quot;</span></span>
-<span id="cb6-8"><a href="crown-delineation.html#cb6-8" tabindex="-1"></a>prop_hulls <span class="ot">&lt;-</span> prop_hulls_forSEG <span class="co">#created in the step above</span></span>
-<span id="cb6-9"><a href="crown-delineation.html#cb6-9" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="crown-delineation.html#cb6-10" tabindex="-1"></a>Hulls <span class="ot">=</span> prop_hulls</span>
-<span id="cb6-11"><a href="crown-delineation.html#cb6-11" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="crown-delineation.html#cb6-12" tabindex="-1"></a>bound <span class="ot">=</span> Hulls <span class="sc">%&gt;%</span> <span class="co">#buffer hulls by 5m to get a bounding box to trim rasters with</span></span>
-<span id="cb6-13"><a href="crown-delineation.html#cb6-13" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="dv">5</span>)</span>
-<span id="cb6-14"><a href="crown-delineation.html#cb6-14" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="crown-delineation.html#cb6-15" tabindex="-1"></a><span class="co"># Reading in CHM, MS, and P1 rasters to make supercells</span></span>
-<span id="cb6-16"><a href="crown-delineation.html#cb6-16" tabindex="-1"></a>CHM_max_L1 <span class="ot">=</span> <span class="fu">rast</span>(CHM_L1) <span class="sc">%&gt;%</span></span>
-<span id="cb6-17"><a href="crown-delineation.html#cb6-17" tabindex="-1"></a>  <span class="fu">crop</span>(bound) <span class="sc">%&gt;%</span></span>
-<span id="cb6-18"><a href="crown-delineation.html#cb6-18" tabindex="-1"></a>  <span class="fu">trim</span>()</span>
-<span id="cb6-19"><a href="crown-delineation.html#cb6-19" tabindex="-1"></a>ms_ortho <span class="ot">=</span> <span class="fu">rast</span>(ms_path)[[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">9</span>)]] <span class="sc">%&gt;%</span> </span>
-<span id="cb6-20"><a href="crown-delineation.html#cb6-20" tabindex="-1"></a>  <span class="fu">resample</span>(CHM_max_L1, <span class="at">method =</span> <span class="st">&quot;near&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-21"><a href="crown-delineation.html#cb6-21" tabindex="-1"></a>  <span class="fu">crop</span>(bound)<span class="sc">%&gt;%</span></span>
-<span id="cb6-22"><a href="crown-delineation.html#cb6-22" tabindex="-1"></a>  trim</span>
-<span id="cb6-23"><a href="crown-delineation.html#cb6-23" tabindex="-1"></a>rgb <span class="ot">=</span> <span class="fu">rast</span>(p1_path)[[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]] <span class="sc">%&gt;%</span> </span>
-<span id="cb6-24"><a href="crown-delineation.html#cb6-24" tabindex="-1"></a>  <span class="fu">resample</span>(CHM_max_L1,<span class="at">method =</span> <span class="st">&quot;near&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-25"><a href="crown-delineation.html#cb6-25" tabindex="-1"></a>  <span class="fu">crop</span>(bound) <span class="sc">%&gt;%</span></span>
-<span id="cb6-26"><a href="crown-delineation.html#cb6-26" tabindex="-1"></a>  trim</span>
-<span id="cb6-27"><a href="crown-delineation.html#cb6-27" tabindex="-1"></a></span>
-<span id="cb6-28"><a href="crown-delineation.html#cb6-28" tabindex="-1"></a><span class="co"># Ensure crs match between rasters prior to stacking</span></span>
-<span id="cb6-29"><a href="crown-delineation.html#cb6-29" tabindex="-1"></a><span class="fu">crs</span>(ms_ortho) <span class="ot">&lt;-</span> <span class="fu">crs</span>(CHM_max_L1) </span>
-<span id="cb6-30"><a href="crown-delineation.html#cb6-30" tabindex="-1"></a><span class="fu">crs</span>(rgb)<span class="ot">&lt;-</span> <span class="fu">crs</span>(CHM_max_L1) </span>
-<span id="cb6-31"><a href="crown-delineation.html#cb6-31" tabindex="-1"></a><span class="fu">crs</span>(CHM_max_L1) <span class="sc">==</span> <span class="fu">crs</span>(ms_ortho)</span>
-<span id="cb6-32"><a href="crown-delineation.html#cb6-32" tabindex="-1"></a></span>
-<span id="cb6-33"><a href="crown-delineation.html#cb6-33" tabindex="-1"></a>use <span class="ot">=</span> <span class="fu">c</span>( <span class="co"># Creating a SpatRaster, crs must match for this step</span></span>
-<span id="cb6-34"><a href="crown-delineation.html#cb6-34" tabindex="-1"></a>  CHM_max_L1,</span>
-<span id="cb6-35"><a href="crown-delineation.html#cb6-35" tabindex="-1"></a>  ms_ortho,</span>
-<span id="cb6-36"><a href="crown-delineation.html#cb6-36" tabindex="-1"></a>  rgb)</span>
-<span id="cb6-37"><a href="crown-delineation.html#cb6-37" tabindex="-1"></a></span>
-<span id="cb6-38"><a href="crown-delineation.html#cb6-38" tabindex="-1"></a>use[use <span class="sc">&gt;</span> <span class="dv">60000</span>] <span class="ot">=</span> <span class="cn">NA</span> <span class="co"># Filtering out noisy data</span></span>
-<span id="cb6-39"><a href="crown-delineation.html#cb6-39" tabindex="-1"></a></span>
-<span id="cb6-40"><a href="crown-delineation.html#cb6-40" tabindex="-1"></a>use2 <span class="ot">=</span> terra<span class="sc">::</span><span class="fu">scale</span>(use)</span>
-<span id="cb6-41"><a href="crown-delineation.html#cb6-41" tabindex="-1"></a></span>
-<span id="cb6-42"><a href="crown-delineation.html#cb6-42" tabindex="-1"></a><span class="fu">writeRaster</span>(use2, <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;scaled_for_segments.tif&quot;</span>),</span>
-<span id="cb6-43"><a href="crown-delineation.html#cb6-43" tabindex="-1"></a>            <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-44"><a href="crown-delineation.html#cb6-44" tabindex="-1"></a></span>
-<span id="cb6-45"><a href="crown-delineation.html#cb6-45" tabindex="-1"></a>use3 <span class="ot">=</span> use2 <span class="sc">%&gt;%</span> </span>
-<span id="cb6-46"><a href="crown-delineation.html#cb6-46" tabindex="-1"></a>  <span class="fu">ifel</span>(CHM_max_L1 <span class="sc">&lt;</span> .<span class="dv">25</span> , </span>
-<span id="cb6-47"><a href="crown-delineation.html#cb6-47" tabindex="-1"></a>       <span class="cn">NA</span>, .)</span>
-<span id="cb6-48"><a href="crown-delineation.html#cb6-48" tabindex="-1"></a></span>
-<span id="cb6-49"><a href="crown-delineation.html#cb6-49" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> 6L)</span>
-<span id="cb6-50"><a href="crown-delineation.html#cb6-50" tabindex="-1"></a></span>
-<span id="cb6-51"><a href="crown-delineation.html#cb6-51" tabindex="-1"></a>seg <span class="ot">=</span> <span class="fu">supercells</span>(use3, <span class="at">step =</span> <span class="dv">6</span>, <span class="at">compactness =</span> <span class="dv">5</span>, <span class="at">iter =</span> <span class="dv">50</span>)</span>
-<span id="cb6-52"><a href="crown-delineation.html#cb6-52" tabindex="-1"></a></span>
-<span id="cb6-53"><a href="crown-delineation.html#cb6-53" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;HULLS&quot;</span>))){ <span class="co">#creating &quot;HULLS&quot; folder to save the below supercell .shp to</span></span>
-<span id="cb6-54"><a href="crown-delineation.html#cb6-54" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;HULLS&quot;</span>))</span>
-<span id="cb6-55"><a href="crown-delineation.html#cb6-55" tabindex="-1"></a>}</span>
-<span id="cb6-56"><a href="crown-delineation.html#cb6-56" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> dplyr<span class="sc">::</span><span class="fu">select</span>(seg, supercells, geometry), </span>
-<span id="cb6-57"><a href="crown-delineation.html#cb6-57" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;HULLS</span><span class="sc">\\</span><span class="st">&quot;</span>,site,<span class="st">&quot;_SEGS_step6_c5.shp&quot;</span>),</span>
-<span id="cb6-58"><a href="crown-delineation.html#cb6-58" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
-<span id="cb6-59"><a href="crown-delineation.html#cb6-59" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="crown-delineation.html#cb5-1" tabindex="-1"></a><span class="fu">library</span>(future) </span>
+<span id="cb5-2"><a href="crown-delineation.html#cb5-2" tabindex="-1"></a><span class="fu">library</span>(supercells)</span>
+<span id="cb5-3"><a href="crown-delineation.html#cb5-3" tabindex="-1"></a><span class="fu">library</span>(RStoolbox)</span>
+<span id="cb5-4"><a href="crown-delineation.html#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="crown-delineation.html#cb5-5" tabindex="-1"></a>crown_dir_folder <span class="ot">&lt;-</span> <span class="st">&quot;directory to save files to&quot;</span> <span class="co">#change to match yours</span></span>
+<span id="cb5-6"><a href="crown-delineation.html#cb5-6" tabindex="-1"></a>ms_path <span class="ot">&lt;-</span> <span class="st">&quot;path to MicaSense orthomosaic&quot;</span></span>
+<span id="cb5-7"><a href="crown-delineation.html#cb5-7" tabindex="-1"></a>p1_path <span class="ot">&lt;-</span> <span class="st">&quot;path to P1&quot;</span></span>
+<span id="cb5-8"><a href="crown-delineation.html#cb5-8" tabindex="-1"></a>prop_hulls <span class="ot">&lt;-</span> prop_hulls_forSEG <span class="co">#created in the step above</span></span>
+<span id="cb5-9"><a href="crown-delineation.html#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="crown-delineation.html#cb5-10" tabindex="-1"></a>Hulls <span class="ot">=</span> prop_hulls</span>
+<span id="cb5-11"><a href="crown-delineation.html#cb5-11" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="crown-delineation.html#cb5-12" tabindex="-1"></a>bound <span class="ot">=</span> Hulls <span class="sc">%&gt;%</span> <span class="co">#buffer hulls by 5m to get a bounding box to trim rasters with</span></span>
+<span id="cb5-13"><a href="crown-delineation.html#cb5-13" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="dv">5</span>)</span>
+<span id="cb5-14"><a href="crown-delineation.html#cb5-14" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="crown-delineation.html#cb5-15" tabindex="-1"></a><span class="co"># Reading in CHM, MS, and P1 rasters to make supercells</span></span>
+<span id="cb5-16"><a href="crown-delineation.html#cb5-16" tabindex="-1"></a>CHM_max_L1 <span class="ot">=</span> <span class="fu">rast</span>(CHM_L1) <span class="sc">%&gt;%</span></span>
+<span id="cb5-17"><a href="crown-delineation.html#cb5-17" tabindex="-1"></a>  <span class="fu">crop</span>(bound) <span class="sc">%&gt;%</span></span>
+<span id="cb5-18"><a href="crown-delineation.html#cb5-18" tabindex="-1"></a>  <span class="fu">trim</span>()</span>
+<span id="cb5-19"><a href="crown-delineation.html#cb5-19" tabindex="-1"></a>ms_ortho <span class="ot">=</span> <span class="fu">rast</span>(ms_path)[[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">9</span>)]] <span class="sc">%&gt;%</span> </span>
+<span id="cb5-20"><a href="crown-delineation.html#cb5-20" tabindex="-1"></a>  <span class="fu">resample</span>(CHM_max_L1, <span class="at">method =</span> <span class="st">&quot;near&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-21"><a href="crown-delineation.html#cb5-21" tabindex="-1"></a>  <span class="fu">crop</span>(bound)<span class="sc">%&gt;%</span></span>
+<span id="cb5-22"><a href="crown-delineation.html#cb5-22" tabindex="-1"></a>  trim</span>
+<span id="cb5-23"><a href="crown-delineation.html#cb5-23" tabindex="-1"></a>rgb <span class="ot">=</span> <span class="fu">rast</span>(p1_path)[[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]] <span class="sc">%&gt;%</span> </span>
+<span id="cb5-24"><a href="crown-delineation.html#cb5-24" tabindex="-1"></a>  <span class="fu">resample</span>(CHM_max_L1,<span class="at">method =</span> <span class="st">&quot;near&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-25"><a href="crown-delineation.html#cb5-25" tabindex="-1"></a>  <span class="fu">crop</span>(bound) <span class="sc">%&gt;%</span></span>
+<span id="cb5-26"><a href="crown-delineation.html#cb5-26" tabindex="-1"></a>  trim</span>
+<span id="cb5-27"><a href="crown-delineation.html#cb5-27" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="crown-delineation.html#cb5-28" tabindex="-1"></a><span class="co"># Ensure crs match between rasters prior to stacking</span></span>
+<span id="cb5-29"><a href="crown-delineation.html#cb5-29" tabindex="-1"></a><span class="fu">crs</span>(ms_ortho) <span class="ot">&lt;-</span> <span class="fu">crs</span>(CHM_max_L1) </span>
+<span id="cb5-30"><a href="crown-delineation.html#cb5-30" tabindex="-1"></a><span class="fu">crs</span>(rgb)<span class="ot">&lt;-</span> <span class="fu">crs</span>(CHM_max_L1) </span>
+<span id="cb5-31"><a href="crown-delineation.html#cb5-31" tabindex="-1"></a><span class="fu">crs</span>(CHM_max_L1) <span class="sc">==</span> <span class="fu">crs</span>(ms_ortho)</span>
+<span id="cb5-32"><a href="crown-delineation.html#cb5-32" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="crown-delineation.html#cb5-33" tabindex="-1"></a>use <span class="ot">=</span> <span class="fu">c</span>( <span class="co"># Creating a SpatRaster, crs must match for this step</span></span>
+<span id="cb5-34"><a href="crown-delineation.html#cb5-34" tabindex="-1"></a>  CHM_max_L1,</span>
+<span id="cb5-35"><a href="crown-delineation.html#cb5-35" tabindex="-1"></a>  ms_ortho,</span>
+<span id="cb5-36"><a href="crown-delineation.html#cb5-36" tabindex="-1"></a>  rgb)</span>
+<span id="cb5-37"><a href="crown-delineation.html#cb5-37" tabindex="-1"></a></span>
+<span id="cb5-38"><a href="crown-delineation.html#cb5-38" tabindex="-1"></a>use[use <span class="sc">&gt;</span> <span class="dv">60000</span>] <span class="ot">=</span> <span class="cn">NA</span> <span class="co"># Filtering out noisy data</span></span>
+<span id="cb5-39"><a href="crown-delineation.html#cb5-39" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="crown-delineation.html#cb5-40" tabindex="-1"></a>use2 <span class="ot">=</span> terra<span class="sc">::</span><span class="fu">scale</span>(use)</span>
+<span id="cb5-41"><a href="crown-delineation.html#cb5-41" tabindex="-1"></a></span>
+<span id="cb5-42"><a href="crown-delineation.html#cb5-42" tabindex="-1"></a><span class="fu">writeRaster</span>(use2, <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;scaled_for_segments.tif&quot;</span>),</span>
+<span id="cb5-43"><a href="crown-delineation.html#cb5-43" tabindex="-1"></a>            <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-44"><a href="crown-delineation.html#cb5-44" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="crown-delineation.html#cb5-45" tabindex="-1"></a>use3 <span class="ot">=</span> use2 <span class="sc">%&gt;%</span> </span>
+<span id="cb5-46"><a href="crown-delineation.html#cb5-46" tabindex="-1"></a>  <span class="fu">ifel</span>(CHM_max_L1 <span class="sc">&lt;</span> .<span class="dv">25</span> , </span>
+<span id="cb5-47"><a href="crown-delineation.html#cb5-47" tabindex="-1"></a>       <span class="cn">NA</span>, .)</span>
+<span id="cb5-48"><a href="crown-delineation.html#cb5-48" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="crown-delineation.html#cb5-49" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> 6L)</span>
+<span id="cb5-50"><a href="crown-delineation.html#cb5-50" tabindex="-1"></a></span>
+<span id="cb5-51"><a href="crown-delineation.html#cb5-51" tabindex="-1"></a>seg <span class="ot">=</span> <span class="fu">supercells</span>(use3, <span class="at">step =</span> <span class="dv">6</span>, <span class="at">compactness =</span> <span class="dv">5</span>, <span class="at">iter =</span> <span class="dv">50</span>)</span>
+<span id="cb5-52"><a href="crown-delineation.html#cb5-52" tabindex="-1"></a></span>
+<span id="cb5-53"><a href="crown-delineation.html#cb5-53" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;HULLS&quot;</span>))){ <span class="co">#creating &quot;HULLS&quot; folder to save the below supercell .shp to</span></span>
+<span id="cb5-54"><a href="crown-delineation.html#cb5-54" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;HULLS&quot;</span>))</span>
+<span id="cb5-55"><a href="crown-delineation.html#cb5-55" tabindex="-1"></a>}</span>
+<span id="cb5-56"><a href="crown-delineation.html#cb5-56" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> dplyr<span class="sc">::</span><span class="fu">select</span>(seg, supercells, geometry), </span>
+<span id="cb5-57"><a href="crown-delineation.html#cb5-57" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;HULLS</span><span class="sc">\\</span><span class="st">&quot;</span>,site,<span class="st">&quot;_SEGS_step6_c5.shp&quot;</span>),</span>
+<span id="cb5-58"><a href="crown-delineation.html#cb5-58" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
+<span id="cb5-59"><a href="crown-delineation.html#cb5-59" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
 <p>Figure <a href="crown-delineation.html#fig:seg-parts">9.2</a> shows the supercells (outlined in green) created by the above R code. These outlined areas indicate groups of pixels that the supercell algorithm has deemed similar between the CHM, MicaSense and P1 orthomosaics.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:seg-parts"></span>
@@ -455,34 +455,34 @@ Figure 9.2: Supercells shown in green, with circles proportional to the 99th hei
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="crown-delineation.html#cb7-1" tabindex="-1"></a><span class="fu">library</span>(smoothr) <span class="co">#for fill_holes</span></span>
-<span id="cb7-2"><a href="crown-delineation.html#cb7-2" tabindex="-1"></a><span class="co">#Creating a folder to save files to, this was set up so that multiple tests could be run with different &quot;percent&quot; values </span></span>
-<span id="cb7-3"><a href="crown-delineation.html#cb7-3" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99&quot;</span>))){</span>
-<span id="cb7-4"><a href="crown-delineation.html#cb7-4" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99&quot;</span>))</span>
-<span id="cb7-5"><a href="crown-delineation.html#cb7-5" tabindex="-1"></a>}</span>
-<span id="cb7-6"><a href="crown-delineation.html#cb7-6" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="crown-delineation.html#cb7-7" tabindex="-1"></a>chm_dat <span class="ot">=</span> <span class="fu">c</span>(CHM_max_L1)</span>
-<span id="cb7-8"><a href="crown-delineation.html#cb7-8" tabindex="-1"></a><span class="fu">names</span>(chm_dat) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;CHM_max_L1&quot;</span>)</span>
-<span id="cb7-9"><a href="crown-delineation.html#cb7-9" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="crown-delineation.html#cb7-10" tabindex="-1"></a>seg_extract <span class="ot">=</span> seg <span class="sc">%&gt;%</span> </span>
-<span id="cb7-11"><a href="crown-delineation.html#cb7-11" tabindex="-1"></a>  <span class="fu">exact_extract</span>(<span class="at">x =</span> chm_dat,</span>
-<span id="cb7-12"><a href="crown-delineation.html#cb7-12" tabindex="-1"></a>                <span class="at">y =</span> .,</span>
-<span id="cb7-13"><a href="crown-delineation.html#cb7-13" tabindex="-1"></a>                <span class="at">fun =</span> <span class="st">&quot;max&quot;</span>,</span>
-<span id="cb7-14"><a href="crown-delineation.html#cb7-14" tabindex="-1"></a>                <span class="at">force_df =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb7-15"><a href="crown-delineation.html#cb7-15" tabindex="-1"></a>                <span class="at">append_cols =</span> <span class="fu">c</span>(<span class="st">&quot;supercells&quot;</span>))</span>
-<span id="cb7-16"><a href="crown-delineation.html#cb7-16" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="crown-delineation.html#cb7-17" tabindex="-1"></a><span class="fu">class</span>(seg_extract)</span>
-<span id="cb7-18"><a href="crown-delineation.html#cb7-18" tabindex="-1"></a></span>
-<span id="cb7-19"><a href="crown-delineation.html#cb7-19" tabindex="-1"></a>seg1 <span class="ot">=</span> <span class="fu">st_join</span>(seg, prop_hulls_forSEG) <span class="sc">%&gt;%</span> <span class="co">#joins supercells that are within or intersect circles to the circle dataset</span></span>
-<span id="cb7-20"><a href="crown-delineation.html#cb7-20" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb7-21"><a href="crown-delineation.html#cb7-21" tabindex="-1"></a>  <span class="fu">left_join</span>(seg_extract, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;supercells&quot;</span>))</span>
-<span id="cb7-22"><a href="crown-delineation.html#cb7-22" tabindex="-1"></a></span>
-<span id="cb7-23"><a href="crown-delineation.html#cb7-23" tabindex="-1"></a><span class="fu">saveRDS</span>(seg1, <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEG_intersection.rds&quot;</span>))</span>
-<span id="cb7-24"><a href="crown-delineation.html#cb7-24" tabindex="-1"></a></span>
-<span id="cb7-25"><a href="crown-delineation.html#cb7-25" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg1, </span>
-<span id="cb7-26"><a href="crown-delineation.html#cb7-26" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEG_intersection.shp&quot;</span>),</span>
-<span id="cb7-27"><a href="crown-delineation.html#cb7-27" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
-<span id="cb7-28"><a href="crown-delineation.html#cb7-28" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="crown-delineation.html#cb6-1" tabindex="-1"></a><span class="fu">library</span>(smoothr) <span class="co">#for fill_holes</span></span>
+<span id="cb6-2"><a href="crown-delineation.html#cb6-2" tabindex="-1"></a><span class="co">#Creating a folder to save files to, this was set up so that multiple tests could be run with different &quot;percent&quot; values </span></span>
+<span id="cb6-3"><a href="crown-delineation.html#cb6-3" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99&quot;</span>))){</span>
+<span id="cb6-4"><a href="crown-delineation.html#cb6-4" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99&quot;</span>))</span>
+<span id="cb6-5"><a href="crown-delineation.html#cb6-5" tabindex="-1"></a>}</span>
+<span id="cb6-6"><a href="crown-delineation.html#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="crown-delineation.html#cb6-7" tabindex="-1"></a>chm_dat <span class="ot">=</span> <span class="fu">c</span>(CHM_max_L1)</span>
+<span id="cb6-8"><a href="crown-delineation.html#cb6-8" tabindex="-1"></a><span class="fu">names</span>(chm_dat) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;CHM_max_L1&quot;</span>)</span>
+<span id="cb6-9"><a href="crown-delineation.html#cb6-9" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="crown-delineation.html#cb6-10" tabindex="-1"></a>seg_extract <span class="ot">=</span> seg <span class="sc">%&gt;%</span> </span>
+<span id="cb6-11"><a href="crown-delineation.html#cb6-11" tabindex="-1"></a>  <span class="fu">exact_extract</span>(<span class="at">x =</span> chm_dat,</span>
+<span id="cb6-12"><a href="crown-delineation.html#cb6-12" tabindex="-1"></a>                <span class="at">y =</span> .,</span>
+<span id="cb6-13"><a href="crown-delineation.html#cb6-13" tabindex="-1"></a>                <span class="at">fun =</span> <span class="st">&quot;max&quot;</span>,</span>
+<span id="cb6-14"><a href="crown-delineation.html#cb6-14" tabindex="-1"></a>                <span class="at">force_df =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-15"><a href="crown-delineation.html#cb6-15" tabindex="-1"></a>                <span class="at">append_cols =</span> <span class="fu">c</span>(<span class="st">&quot;supercells&quot;</span>))</span>
+<span id="cb6-16"><a href="crown-delineation.html#cb6-16" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="crown-delineation.html#cb6-17" tabindex="-1"></a><span class="fu">class</span>(seg_extract)</span>
+<span id="cb6-18"><a href="crown-delineation.html#cb6-18" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="crown-delineation.html#cb6-19" tabindex="-1"></a>seg1 <span class="ot">=</span> <span class="fu">st_join</span>(seg, prop_hulls_forSEG) <span class="sc">%&gt;%</span> <span class="co">#joins supercells that are within or intersect circles to the circle dataset</span></span>
+<span id="cb6-20"><a href="crown-delineation.html#cb6-20" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-21"><a href="crown-delineation.html#cb6-21" tabindex="-1"></a>  <span class="fu">left_join</span>(seg_extract, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;supercells&quot;</span>))</span>
+<span id="cb6-22"><a href="crown-delineation.html#cb6-22" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="crown-delineation.html#cb6-23" tabindex="-1"></a><span class="fu">saveRDS</span>(seg1, <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEG_intersection.rds&quot;</span>))</span>
+<span id="cb6-24"><a href="crown-delineation.html#cb6-24" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="crown-delineation.html#cb6-25" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg1, </span>
+<span id="cb6-26"><a href="crown-delineation.html#cb6-26" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEG_intersection.shp&quot;</span>),</span>
+<span id="cb6-27"><a href="crown-delineation.html#cb6-27" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
+<span id="cb6-28"><a href="crown-delineation.html#cb6-28" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:seg-intersection"></span>
 <img src="Photos_&_gifs/seg_intersection_Crowndelin.PNG" alt="Supercells (outlined in green) filtered to only retain those that are within or intersect the cirlces propotional to height (red)" width="100%" />
@@ -496,20 +496,20 @@ Figure 9.3: Supercells (outlined in green) filtered to only retain those that ar
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="crown-delineation.html#cb8-1" tabindex="-1"></a>seg2 <span class="ot">=</span> seg1 <span class="sc">%&gt;%</span> </span>
-<span id="cb8-2"><a href="crown-delineation.html#cb8-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">z50_L2 =</span> q99 <span class="sc">*</span> .<span class="dv">5</span>) <span class="sc">%&gt;%</span> <span class="co">#filtering out supercells where the CHM value in that super cell as less than 50% of the 99th percentile (~50th height percentile)</span></span>
-<span id="cb8-3"><a href="crown-delineation.html#cb8-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TAG_archive =</span> TAG,</span>
-<span id="cb8-4"><a href="crown-delineation.html#cb8-4" tabindex="-1"></a>    <span class="at">TAG =</span> <span class="fu">if_else</span>(</span>
-<span id="cb8-5"><a href="crown-delineation.html#cb8-5" tabindex="-1"></a>    max <span class="sc">&gt;</span> z50_L2, </span>
-<span id="cb8-6"><a href="crown-delineation.html#cb8-6" tabindex="-1"></a>    TAG, <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-7"><a href="crown-delineation.html#cb8-7" tabindex="-1"></a>  <span class="fu">group_by</span>(supercells) <span class="sc">%&gt;%</span> <span class="co">#group by supercells so you can filter for supercells within two circles</span></span>
-<span id="cb8-8"><a href="crown-delineation.html#cb8-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span>  <span class="co">#number of rows in each supercell - this value should be 1, if it is two it means that the supercell intersected two circles </span></span>
-<span id="cb8-9"><a href="crown-delineation.html#cb8-9" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TAG =</span> <span class="fu">if_else</span>(count <span class="sc">&gt;</span> <span class="dv">1</span>, <span class="dv">0</span>, TAG))</span>
-<span id="cb8-10"><a href="crown-delineation.html#cb8-10" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="crown-delineation.html#cb8-11" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg2, </span>
-<span id="cb8-12"><a href="crown-delineation.html#cb8-12" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEGS_initial.shp&quot;</span>),</span>
-<span id="cb8-13"><a href="crown-delineation.html#cb8-13" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
-<span id="cb8-14"><a href="crown-delineation.html#cb8-14" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="crown-delineation.html#cb7-1" tabindex="-1"></a>seg2 <span class="ot">=</span> seg1 <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="crown-delineation.html#cb7-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">z50_L2 =</span> q99 <span class="sc">*</span> .<span class="dv">5</span>) <span class="sc">%&gt;%</span> <span class="co">#filtering out supercells where the CHM value in that super cell as less than 50% of the 99th percentile (~50th height percentile)</span></span>
+<span id="cb7-3"><a href="crown-delineation.html#cb7-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TAG_archive =</span> TAG,</span>
+<span id="cb7-4"><a href="crown-delineation.html#cb7-4" tabindex="-1"></a>    <span class="at">TAG =</span> <span class="fu">if_else</span>(</span>
+<span id="cb7-5"><a href="crown-delineation.html#cb7-5" tabindex="-1"></a>    max <span class="sc">&gt;</span> z50_L2, </span>
+<span id="cb7-6"><a href="crown-delineation.html#cb7-6" tabindex="-1"></a>    TAG, <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-7"><a href="crown-delineation.html#cb7-7" tabindex="-1"></a>  <span class="fu">group_by</span>(supercells) <span class="sc">%&gt;%</span> <span class="co">#group by supercells so you can filter for supercells within two circles</span></span>
+<span id="cb7-8"><a href="crown-delineation.html#cb7-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span>  <span class="co">#number of rows in each supercell - this value should be 1, if it is two it means that the supercell intersected two circles </span></span>
+<span id="cb7-9"><a href="crown-delineation.html#cb7-9" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TAG =</span> <span class="fu">if_else</span>(count <span class="sc">&gt;</span> <span class="dv">1</span>, <span class="dv">0</span>, TAG))</span>
+<span id="cb7-10"><a href="crown-delineation.html#cb7-10" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="crown-delineation.html#cb7-11" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg2, </span>
+<span id="cb7-12"><a href="crown-delineation.html#cb7-12" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEGS_initial.shp&quot;</span>),</span>
+<span id="cb7-13"><a href="crown-delineation.html#cb7-13" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
+<span id="cb7-14"><a href="crown-delineation.html#cb7-14" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:seg-initial"></span>
 <img src="Photos_&_gifs/seg_filter_count.PNG" alt="Supercells belonging to one proportional circle (purple) or two proportional circles (red). Those belonging to two proportional circles are highlighted in red and will be removed in the next step." width="100%" />
@@ -522,26 +522,26 @@ Figure 9.4: Supercells belonging to one proportional circle (purple) or two prop
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="crown-delineation.html#cb9-1" tabindex="-1"></a>seg3 <span class="ot">=</span> seg2 <span class="sc">%&gt;%</span> </span>
-<span id="cb9-2"><a href="crown-delineation.html#cb9-2" tabindex="-1"></a>  <span class="fu">filter</span>(TAG <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-3"><a href="crown-delineation.html#cb9-3" tabindex="-1"></a>  <span class="fu">st_centroid</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb9-4"><a href="crown-delineation.html#cb9-4" tabindex="-1"></a>  <span class="fu">st_join</span>(<span class="at">y =</span> prop_hulls_forSEG, <span class="at">join =</span> st_within) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-5"><a href="crown-delineation.html#cb9-5" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb9-6"><a href="crown-delineation.html#cb9-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(supercells, geometry)</span>
-<span id="cb9-7"><a href="crown-delineation.html#cb9-7" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="crown-delineation.html#cb9-8" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg3, </span>
-<span id="cb9-9"><a href="crown-delineation.html#cb9-9" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEGS_centroids.shp&quot;</span>),</span>
-<span id="cb9-10"><a href="crown-delineation.html#cb9-10" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
-<span id="cb9-11"><a href="crown-delineation.html#cb9-11" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb9-12"><a href="crown-delineation.html#cb9-12" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="crown-delineation.html#cb9-13" tabindex="-1"></a>seg4 <span class="ot">=</span> seg2 <span class="sc">%&gt;%</span> </span>
-<span id="cb9-14"><a href="crown-delineation.html#cb9-14" tabindex="-1"></a>  <span class="fu">st_join</span>(seg3) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-15"><a href="crown-delineation.html#cb9-15" tabindex="-1"></a>  <span class="fu">drop_na</span>() </span>
-<span id="cb9-16"><a href="crown-delineation.html#cb9-16" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="crown-delineation.html#cb9-17" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg4, </span>
-<span id="cb9-18"><a href="crown-delineation.html#cb9-18" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEGS_keep.shp&quot;</span>),</span>
-<span id="cb9-19"><a href="crown-delineation.html#cb9-19" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
-<span id="cb9-20"><a href="crown-delineation.html#cb9-20" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="crown-delineation.html#cb8-1" tabindex="-1"></a>seg3 <span class="ot">=</span> seg2 <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="crown-delineation.html#cb8-2" tabindex="-1"></a>  <span class="fu">filter</span>(TAG <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="crown-delineation.html#cb8-3" tabindex="-1"></a>  <span class="fu">st_centroid</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="crown-delineation.html#cb8-4" tabindex="-1"></a>  <span class="fu">st_join</span>(<span class="at">y =</span> prop_hulls_forSEG, <span class="at">join =</span> st_within) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-5"><a href="crown-delineation.html#cb8-5" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-6"><a href="crown-delineation.html#cb8-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(supercells, geometry)</span>
+<span id="cb8-7"><a href="crown-delineation.html#cb8-7" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="crown-delineation.html#cb8-8" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg3, </span>
+<span id="cb8-9"><a href="crown-delineation.html#cb8-9" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEGS_centroids.shp&quot;</span>),</span>
+<span id="cb8-10"><a href="crown-delineation.html#cb8-10" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
+<span id="cb8-11"><a href="crown-delineation.html#cb8-11" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-12"><a href="crown-delineation.html#cb8-12" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="crown-delineation.html#cb8-13" tabindex="-1"></a>seg4 <span class="ot">=</span> seg2 <span class="sc">%&gt;%</span> </span>
+<span id="cb8-14"><a href="crown-delineation.html#cb8-14" tabindex="-1"></a>  <span class="fu">st_join</span>(seg3) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-15"><a href="crown-delineation.html#cb8-15" tabindex="-1"></a>  <span class="fu">drop_na</span>() </span>
+<span id="cb8-16"><a href="crown-delineation.html#cb8-16" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="crown-delineation.html#cb8-17" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg4, </span>
+<span id="cb8-18"><a href="crown-delineation.html#cb8-18" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEGS_keep.shp&quot;</span>),</span>
+<span id="cb8-19"><a href="crown-delineation.html#cb8-19" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
+<span id="cb8-20"><a href="crown-delineation.html#cb8-20" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
 <!--  ```{r seg-centroids, echo=FALSE,fig.align = 'center',out.width="100%", fig.cap= "                 "} -->
 <!--  knitr::include_graphics(here("Photos_&_gifs\\seg_centroids_Crowndelin.PNG")) -->
@@ -557,13 +557,13 @@ Figure 9.5: Filtered supercells (green outline) that do not have a centroid that
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="crown-delineation.html#cb10-1" tabindex="-1"></a>seg5 <span class="ot">=</span> seg4 <span class="sc">%&gt;%</span> </span>
-<span id="cb10-2"><a href="crown-delineation.html#cb10-2" tabindex="-1"></a>  <span class="fu">group_by</span>(TAG) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-3"><a href="crown-delineation.html#cb10-3" tabindex="-1"></a>  <span class="fu">summarise</span>()</span>
-<span id="cb10-4"><a href="crown-delineation.html#cb10-4" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg5, </span>
-<span id="cb10-5"><a href="crown-delineation.html#cb10-5" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEGS_merge.shp&quot;</span>),</span>
-<span id="cb10-6"><a href="crown-delineation.html#cb10-6" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
-<span id="cb10-7"><a href="crown-delineation.html#cb10-7" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="crown-delineation.html#cb9-1" tabindex="-1"></a>seg5 <span class="ot">=</span> seg4 <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="crown-delineation.html#cb9-2" tabindex="-1"></a>  <span class="fu">group_by</span>(TAG) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="crown-delineation.html#cb9-3" tabindex="-1"></a>  <span class="fu">summarise</span>()</span>
+<span id="cb9-4"><a href="crown-delineation.html#cb9-4" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg5, </span>
+<span id="cb9-5"><a href="crown-delineation.html#cb9-5" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEGS_merge.shp&quot;</span>),</span>
+<span id="cb9-6"><a href="crown-delineation.html#cb9-6" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
+<span id="cb9-7"><a href="crown-delineation.html#cb9-7" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:seg-merge"></span>
 <img src="Photos_&_gifs/seg_merge_Crowndelin.PNG" alt="Retained supercells (orange) merged to form crown boundaries (yellow)." width="100%" />
@@ -576,13 +576,13 @@ Figure 9.6: Retained supercells (orange) merged to form crown boundaries (yellow
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="crown-delineation.html#cb11-1" tabindex="-1"></a>seg5_smooth <span class="ot">&lt;-</span> seg5 <span class="sc">%&gt;%</span> </span>
-<span id="cb11-2"><a href="crown-delineation.html#cb11-2" tabindex="-1"></a>  <span class="fu">fill_holes</span>(<span class="at">threshold =</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">2000</span>, <span class="st">&quot;cm^2&quot;</span>))</span>
-<span id="cb11-3"><a href="crown-delineation.html#cb11-3" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="crown-delineation.html#cb11-4" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg5_smooth, </span>
-<span id="cb11-5"><a href="crown-delineation.html#cb11-5" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEGS_merge_smooth.shp&quot;</span>),</span>
-<span id="cb11-6"><a href="crown-delineation.html#cb11-6" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
-<span id="cb11-7"><a href="crown-delineation.html#cb11-7" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="crown-delineation.html#cb10-1" tabindex="-1"></a>seg5_smooth <span class="ot">&lt;-</span> seg5 <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="crown-delineation.html#cb10-2" tabindex="-1"></a>  <span class="fu">fill_holes</span>(<span class="at">threshold =</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">2000</span>, <span class="st">&quot;cm^2&quot;</span>))</span>
+<span id="cb10-3"><a href="crown-delineation.html#cb10-3" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="crown-delineation.html#cb10-4" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg5_smooth, </span>
+<span id="cb10-5"><a href="crown-delineation.html#cb10-5" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">SEGS_merge_smooth.shp&quot;</span>),</span>
+<span id="cb10-6"><a href="crown-delineation.html#cb10-6" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
+<span id="cb10-7"><a href="crown-delineation.html#cb10-7" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:seg-merge-smooth"></span>
 <img src="Photos_&_gifs/seg_merge_smooth_Crowndelin.PNG" alt="Yellow crown boundaries are overlaid on top of crowns that have been edited to remove holes smaller than 2000 cm² (red). In this portion of the plot, no holes were present within the crowns, resulting in no visible differences between the original crowns (yellow) and those that have been refined through hole filling (red)." width="100%" />
@@ -595,12 +595,12 @@ Figure 9.7: Yellow crown boundaries are overlaid on top of crowns that have been
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="crown-delineation.html#cb12-1" tabindex="-1"></a>seg5_smooth_NM <span class="ot">&lt;-</span> <span class="fu">st_cast</span>(seg5_smooth, <span class="st">&quot;POLYGON&quot;</span>)</span>
-<span id="cb12-2"><a href="crown-delineation.html#cb12-2" tabindex="-1"></a><span class="fu">unique</span>(<span class="fu">st_geometry_type</span>(seg5_smooth_NM)) <span class="co"># CHECK: should only have &quot;Polygon&quot; no more multipolygons</span></span>
-<span id="cb12-3"><a href="crown-delineation.html#cb12-3" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg5_smooth_NM, <span class="co">#saving out the crowns for manual editing</span></span>
-<span id="cb12-4"><a href="crown-delineation.html#cb12-4" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">HULLS</span><span class="sc">\\</span><span class="st">SEGS_merge_smooth_NoMultipolygon.shp&quot;</span>),</span>
-<span id="cb12-5"><a href="crown-delineation.html#cb12-5" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
-<span id="cb12-6"><a href="crown-delineation.html#cb12-6" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="crown-delineation.html#cb11-1" tabindex="-1"></a>seg5_smooth_NM <span class="ot">&lt;-</span> <span class="fu">st_cast</span>(seg5_smooth, <span class="st">&quot;POLYGON&quot;</span>)</span>
+<span id="cb11-2"><a href="crown-delineation.html#cb11-2" tabindex="-1"></a><span class="fu">unique</span>(<span class="fu">st_geometry_type</span>(seg5_smooth_NM)) <span class="co"># CHECK: should only have &quot;Polygon&quot; no more multipolygons</span></span>
+<span id="cb11-3"><a href="crown-delineation.html#cb11-3" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg5_smooth_NM, <span class="co">#saving out the crowns for manual editing</span></span>
+<span id="cb11-4"><a href="crown-delineation.html#cb11-4" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">HULLS</span><span class="sc">\\</span><span class="st">SEGS_merge_smooth_NoMultipolygon.shp&quot;</span>),</span>
+<span id="cb11-5"><a href="crown-delineation.html#cb11-5" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
+<span id="cb11-6"><a href="crown-delineation.html#cb11-6" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:seg-smooth-np"></span>
 <img src="Photos_&_gifs/seg_merge_smooth_NMP_Crowndelin.PNG" alt="Blue dotted lines represent crowns that have been converted to polygon class, overlaid on the original crowns in yellow and those with holes removed in red. In the upper center of the figure, a polygon (highlighted in red and yellow) that was initially part of a multipolygon within its proportional circle has been removed during the conversion to polygon in this step." width="100%" />
@@ -613,16 +613,16 @@ Figure 9.8: Blue dotted lines represent crowns that have been converted to polyg
 <summary>
 Click to show the code
 </summary>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="crown-delineation.html#cb13-1" tabindex="-1"></a>att <span class="ot">&lt;-</span> ttops <span class="sc">%&gt;%</span></span>
-<span id="cb13-2"><a href="crown-delineation.html#cb13-2" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()<span class="sc">%&gt;%</span></span>
-<span id="cb13-3"><a href="crown-delineation.html#cb13-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(geometry))</span>
-<span id="cb13-4"><a href="crown-delineation.html#cb13-4" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="crown-delineation.html#cb13-5" tabindex="-1"></a>(seg5_smooth_NM_attributes <span class="ot">&lt;-</span> <span class="fu">left_join</span>(seg5_smooth_NM,att, <span class="at">by =</span> unique_id )) <span class="do">## adding in attributes back</span></span>
-<span id="cb13-6"><a href="crown-delineation.html#cb13-6" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="crown-delineation.html#cb13-7" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg5_smooth_NM_attributes, </span>
-<span id="cb13-8"><a href="crown-delineation.html#cb13-8" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">HULLS</span><span class="sc">\\</span><span class="st">SEGS_merge_smooth_NoMultipolygon_Attributes.shp&quot;</span>),</span>
-<span id="cb13-9"><a href="crown-delineation.html#cb13-9" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
-<span id="cb13-10"><a href="crown-delineation.html#cb13-10" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="crown-delineation.html#cb12-1" tabindex="-1"></a>att <span class="ot">&lt;-</span> ttops <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="crown-delineation.html#cb12-2" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()<span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="crown-delineation.html#cb12-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(geometry))</span>
+<span id="cb12-4"><a href="crown-delineation.html#cb12-4" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="crown-delineation.html#cb12-5" tabindex="-1"></a>(seg5_smooth_NM_attributes <span class="ot">&lt;-</span> <span class="fu">left_join</span>(seg5_smooth_NM,att, <span class="at">by =</span> unique_id )) <span class="do">## adding in attributes back</span></span>
+<span id="cb12-6"><a href="crown-delineation.html#cb12-6" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="crown-delineation.html#cb12-7" tabindex="-1"></a><span class="fu">st_write</span>(<span class="at">obj =</span> seg5_smooth_NM_attributes, </span>
+<span id="cb12-8"><a href="crown-delineation.html#cb12-8" tabindex="-1"></a>         <span class="at">dsn =</span> <span class="fu">paste0</span>(crown_dir_folder,<span class="st">&quot;Prop_Diameter&quot;</span>,percent,<span class="st">&quot;%OfZq99</span><span class="sc">\\</span><span class="st">HULLS</span><span class="sc">\\</span><span class="st">SEGS_merge_smooth_NoMultipolygon_Attributes.shp&quot;</span>),</span>
+<span id="cb12-9"><a href="crown-delineation.html#cb12-9" tabindex="-1"></a>         <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>,</span>
+<span id="cb12-10"><a href="crown-delineation.html#cb12-10" tabindex="-1"></a>         <span class="at">append =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
 </div>
 <div id="manually-edit-crowns" class="section level2 hasAnchor" number="9.4">

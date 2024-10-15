@@ -8,7 +8,7 @@
 
 **Crown polygon** - a delineated boundary that represents the outer edge or perimeter of a tree's canopy when viewed from above.
 
-**DAP** – Digital Aerial Photogrammetry is the process of using overlapping aerial images to generate three-dimensional point clouds and orthorectified imagery (orthomosaics
+**DAP** – Digital Aerial Photogrammetry is the process of using overlapping aerial images to generate three-dimensional point clouds and orthorectified imagery (orthomosaics)
 
 **DEM** - Digital Elevation Models are 2-dimensional, single-channel rasters that represent elevation.  Lower values in a DEM correspond to lower elevations, while higher values correspond to higher elevations.  We reference three types of DEMs:
 
@@ -26,7 +26,7 @@
 
 **GIS** – Geographic Information System.  A system designed to view, manage and analyze spatial data.  QGIS and ArcGIS are two commonly used GIS.
 
-**GNSS** – global navigation satellite system. A broad term for all satellite-based navigation systems, including GPS, GLONASS, Galileo, and BeiDou, providing global positioning and timing data by combining signals from multiple satellite constellations.
+**GNSS** – Global Navigation Satellite System. A broad term for all satellite-based navigation systems, including GPS, GLONASS, Galileo, and BeiDou, providing global positioning and timing data by combining signals from multiple satellite constellations.
 
 **GPS** – Global Positioning System. A satellite-based navigation system developed by the U.S. government that provides location and timing information, using a network of satellites.
 
