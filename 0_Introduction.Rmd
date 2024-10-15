@@ -19,7 +19,7 @@
   </div>
   
   <div class="mySlides fade">
-    <img src="Photos_&_gifs/seg_crowns_Crowndelin.png" style="width:100%">
+    <img src="Photos_&_gifs/seg_crowns_Crowndelin.PNG" style="width:100%">
     <div class="slide-title">Delineated crowns: mature Douglas fir</div>
   </div>
   
@@ -64,7 +64,7 @@
   </div>
     
       <div class="mySlides fade">
-    <img src="Photos_&_gifs/Thermal_RGB_crowns.png" style="width:100%">
+    <img src="Photos_&_gifs/Thermal_RGB_crowns.PNG" style="width:100%">
     <div class="slide-title">Thermal</div>
   </div>
   
