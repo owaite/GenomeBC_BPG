@@ -268,6 +268,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
 </ul>
 
       </nav>
@@ -295,6 +296,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Below are the settings we use to process the point cloud:
 <ul>
 <li>We use the deafult settings set by DJI with the exception of setting the DEM resolution to 10cm</li>
+<li>This will also classify ground points at the default settings listed below</li>
 </ul></li>
 </ul>
 <p><img src="Photos_&_gifs/DJI_settings.png" width="60%" style="display: block; margin: auto;" /></p>
@@ -311,7 +313,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="prepare-lidar-for-registration" class="section level3 hasAnchor" number="12.2.1">
 <h3><span class="header-section-number">12.2.1</span> Prepare LiDAR for registration<a href="lidar-processing-workflow.html#prepare-lidar-for-registration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below are snippets of a script written in LAStools that is used to ensure the LiDAR and DAP clouds are in the proper projection, filters out points in the LiDAR that are above a defined threshold, and clips the LiDAR to a boundary polygon to speed up registration by avoiding working with excess data in CloudCompare.</p>
-<p>The unparsed script can be found on the project GitHub, see <a href="index.html#github-link">GitHub link</a></p>
+<p>The unparsed script can be found on the project GitHub, see <a href="https://github.com/owaite/GenomeBC_BPG">GitHub link</a></p>
 <ol style="list-style-type: decimal">
 <li>Ensures both the DAP point cloud and LiDAR file are in the proper projection (NAD83 UTM 10N in our case)
 <ul>
@@ -399,7 +401,8 @@ Figure 12.1: Left: Apply all for this initial CloudCompare popup setting. Right:
 </div>
 <div id="rough-alignment" class="section level4 hasAnchor" number="12.2.2.2">
 <h4><span class="header-section-number">12.2.2.2</span> Rough Alignment<a href="lidar-processing-workflow.html#rough-alignment" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>The goal is to roughly align (move) the LiDAR to our reference “template” DAP dense cloud ahead of the ICP fine adjustment algorithm.</p>
+<p>The goal is to roughly align (move) the LiDAR to our reference “template” DAP dense cloud ahead of the ICP fine adjustment algorithm.
+This is required if the DAP and LiDAR collections have been taken from different base points. If a known point has been used for both acquisitions it should not be necessary, but should be confirmed.</p>
 <p>Problem: Manually moving the LiDAR cloud to roughly align with the DAP cloud caused Cloud Compare to crash or hang when working with larger data sets.</p>
 <p>Solution: Use the Apply Transformation function in CloudCompare – Highlight the LiDAR layer in the DB tree - Hit ctrl T or Apply Transformation in the Edit menu.</p>
 <p>In this example the LiDAR is the lower.
@@ -428,7 +431,7 @@ Figure 12.2: Left: . Right: .
 <div id="rescale-and-tile-the-registered-lidar" class="section level3 hasAnchor" number="12.2.3">
 <h3><span class="header-section-number">12.2.3</span> Rescale and tile the registered LiDAR:<a href="lidar-processing-workflow.html#rescale-and-tile-the-registered-lidar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below are snippets of a script written in LAStools that is used to project, rescale and tile the registered LiDAR point cloud.</p>
-<p>The unparsed script can be found on the project GitHub, see <a href="index.html#github-link">GitHub link</a></p>
+<p>The unparsed script can be found on the project GitHub, see <a href="https://github.com/owaite/GenomeBC_BPG">GitHub link</a></p>
 <ol style="list-style-type: decimal">
 <li>Projecting the registered LiDAR to the proper projection (NAD83 UTM 10N).
 <ul>
@@ -514,7 +517,7 @@ lastile -i path_to_write\02_rescaled\*.laz ^
 <li><p>Merging segmented tiles to create one large point cloud containing the top 25% of each tree</p></li>
 <li><p>Clipping the point cloud into individual point clouds per tree</p></li>
 </ol>
-<p>Note: The full code that can be found on the project <a href="index.html#github-link">GitHub</a> runs through the above steps in a for loop. For sake of this guide we have rearranged the ordering of some steps (i.e. functions will be defined as we go in this guide, however are defined at the beginning in the full R script to allow the for loop to run).</p>
+<p>Note: The full code that can be found on the project <a href="https://github.com/owaite/GenomeBC_BPG">GitHub</a> runs through the above steps in a for loop. For sake of this guide we have rearranged the ordering of some steps (i.e. functions will be defined as we go in this guide, however are defined at the beginning in the full R script to allow the for loop to run).</p>
 <div id="creating-a-dtm-from-the-registered-lidar-tiles" class="section level3 hasAnchor" number="12.3.1">
 <h3><span class="header-section-number">12.3.1</span> Creating a DTM from the registered LiDAR tiles<a href="lidar-processing-workflow.html#creating-a-dtm-from-the-registered-lidar-tiles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>When working with LiDAR data in R, an incredibly useful package is the lidR package. We highly recommend taking a look at the <a href="https://r-lidar.github.io/lidRbook/">lidR bookdown</a> for useful tips and examples on using the package.</p>
@@ -558,7 +561,7 @@ Click to show the code
 <span id="cb36-7"><a href="lidar-processing-workflow.html#cb36-7" tabindex="-1"></a>  <span class="fu">opt_output_files</span>(TILES) <span class="ot">=</span> <span class="st">&quot;&quot;</span>   <span class="co"># set output file options for the LAScatalog object to empty</span></span>
 <span id="cb36-8"><a href="lidar-processing-workflow.html#cb36-8" tabindex="-1"></a>  <span class="fu">opt_progress</span>(TILES) <span class="ot">=</span> <span class="cn">TRUE</span> <span class="co"># enable progress tracking for processing</span></span></code></pre></div>
 </details>
-<p>Next we create a 10cm DTM using the tin() algorithm and smooth the raster by using the mean focal statistic and a focal window of 25 by 25 cells over the DTM. As the focal window shifts over the raster, it updates the pixel that sits at its center to the mean value within the 25 x 25 cell window. We then assigned the proper CRS and exported the raster as a tif.</p>
+<p>Next we create a 10cm DTM using the tin() algorithm and smooth the raster by using the mean focal statistic and a focal window of 25 by 25 cells over the DTM. As the focal window shifts over the raster, it updates the pixel that sits at its center to the mean value within the 25 x 25 cell window. We then assigned the proper CRS and exported the raster as a tif. In this case we are using the ground classification from the DJI Terra output, but alternative classification could be run here. The DTM produced by DJI Terra has not been extensively tested by us, so we build one in the lidR package.</p>
 <details>
 <summary>
 Click to show the code
@@ -913,6 +916,9 @@ gitbook.start({
 },
 "toc": {
 "collapse": "subsection"
+},
+"includes": {
+"in_header": "analytics.html"
 }
 });
 });

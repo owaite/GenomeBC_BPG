@@ -6,3 +6,5 @@ bookdown::gitbook:
         <li><a href="./">Drone Based Phenotyping for Research Trials</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+    includes:
+      in_header: "analytics.html"
