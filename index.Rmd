@@ -1,19 +1,20 @@
 ---
 title: "Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials"
 author: "Jake King*, Olivia Waite, Miriam Isaac-Renton, Nicholas C. Coops, Samuel Grubinger, Liam Irwin, Lise Van Der Merwe, Jon Degner, Alex Liu"
-output: bookdown::gitbook
+output: 
+  bookdown::gitbook
+header-includes:
+  - |
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9F83PJKF0S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9F83PJKF0S');
+    </script>
 ---
-<!--html_preserve-->
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9F83PJKF0S"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-9F83PJKF0S');
-</script>
-<!--html_preserve-->
+
 # Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials {-}
 
 <!-- ```{r echo=FALSE,out.width="100%", fig.align = 'center'} -->
