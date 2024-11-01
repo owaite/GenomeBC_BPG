@@ -22,8 +22,10 @@ rmd_files:
   - 0_LiDAR_processing.Rmd
   - 0_MicaSense_Irradiance_Correction.Rmd
   - 0_Thermal_Conversion.Rmd
-  
-
+output:
+  bookdown::gitbook:
+    includes:
+      in_header: "analytics.html"
   
 #bookdown::render_book("index.Rmd")
 #Check what book looks like: broswURL("docs/index.html")

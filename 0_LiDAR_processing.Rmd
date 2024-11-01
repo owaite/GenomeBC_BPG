@@ -7,6 +7,7 @@
 - Import the flight files, including imagery if you would like a colorized point cloud
 - Below are the settings we use to process the point cloud:
   - We use the deafult settings set by DJI with the exception of setting the DEM resolution to 10cm
+  - This will also classify ground points at the default settings listed below
   
 ```{r echo=FALSE, fig.align = 'center',out.width="60%"}
 knitr::include_graphics(here("Photos_&_gifs\\DJI_settings.PNG"))
@@ -30,7 +31,7 @@ Convention is generally to register DAP to LiDAR however for this specific proje
 
 Below are snippets of a script written in LAStools that is used to ensure the LiDAR and DAP clouds are in the proper projection, filters out points in the LiDAR that are above a defined threshold, and clips the LiDAR to a boundary polygon to speed up registration by avoiding working with excess data in CloudCompare.
 
-The unparsed script can be found on the project GitHub, see [GitHub link](index.html#github-link) 
+The unparsed script can be found on the project GitHub, see [GitHub link](https://github.com/owaite/GenomeBC_BPG) 
 
 1. Ensures both the DAP point cloud and LiDAR file are in the proper projection (NAD83 UTM 10N in our case) 
     - path_to_L1_las is the path to the LiDAR .las file from DJI terra.
@@ -122,8 +123,9 @@ knitr::include_graphics(here("Photos_&_gifs\\CC_cross_section_tool_poly.png"))
 
 #### Rough Alignment 
 
-The goal is to roughly align (move) the LiDAR to our reference “template” DAP dense cloud ahead of the ICP fine adjustment algorithm.  
-
+The goal is to roughly align (move) the LiDAR to our reference “template” DAP dense cloud ahead of the ICP fine adjustment algorithm. 
+This is required if the DAP and LiDAR collections have been taken from different base points.  If a known point has been used for both acquisitions it should not be necessary, but should be confirmed.
+ 
 Problem: Manually moving the LiDAR cloud to roughly align with the DAP cloud caused Cloud Compare to crash or hang when working with larger data sets.   
 
 Solution: Use the Apply Transformation function in CloudCompare – Highlight the LiDAR layer in the DB tree - Hit ctrl T or Apply Transformation in the Edit menu. 
@@ -174,7 +176,7 @@ Save out the registered LiDAR point clouds at the highest resolution
 
 Below are snippets of a script written in LAStools that is used to project, rescale and tile the registered LiDAR point cloud.
 
-The unparsed script can be found on the project GitHub, see [GitHub link](index.html#github-link)
+The unparsed script can be found on the project GitHub, see [GitHub link](https://github.com/owaite/GenomeBC_BPG)
 
 1. Projecting the registered LiDAR to the proper projection (NAD83 UTM 10N). 
     - Change "path_to_registered_lidar" to the path to the registered LiDAR data exported from CloudCompare.
@@ -258,7 +260,7 @@ The below workflow includes explanations and code where applicable for each of t
 
 6. Clipping the point cloud into individual point clouds per tree
 
-Note: The full code that can be found on the project [GitHub](index.html#github-link) runs through the above steps in a for loop. For sake of this guide we have rearranged the ordering of some steps (i.e. functions will be defined as we go in this guide, however are defined at the beginning in the full R script to allow the for loop to run). 
+Note: The full code that can be found on the project [GitHub](https://github.com/owaite/GenomeBC_BPG) runs through the above steps in a for loop. For sake of this guide we have rearranged the ordering of some steps (i.e. functions will be defined as we go in this guide, however are defined at the beginning in the full R script to allow the for loop to run). 
 
 ### Creating a DTM from the registered LiDAR tiles 
 
@@ -307,7 +309,7 @@ Here we are reading in the output tiles from the [tiling and rescaling step abov
 ```
 </details>
 
-Next we create a 10cm DTM using the tin() algorithm and smooth the raster by using the mean focal statistic and a focal window of 25 by 25 cells over the DTM. As the focal window shifts over the raster, it updates the pixel that sits at its center to the mean value within the 25 x 25 cell window. We then assigned the proper CRS and exported the raster as a tif. 
+Next we create a 10cm DTM using the tin() algorithm and smooth the raster by using the mean focal statistic and a focal window of 25 by 25 cells over the DTM. As the focal window shifts over the raster, it updates the pixel that sits at its center to the mean value within the 25 x 25 cell window. We then assigned the proper CRS and exported the raster as a tif.  In this case we are using the ground classification from the DJI Terra output, but alternative classification could be run here. The DTM produced by DJI Terra has not been extensively tested by us, so we build one in the lidR package.
 
 <details>
 <summary>Click to show the code</summary>
