@@ -66,4 +66,10 @@ cat(html)
 These guidelines were made possible thanks for project funding from Genome British Columbia’s GeneSolve program, the Canadian Forest Service’s Fibre Solutions, 2 Billion Tree programs, and Assistant Deputy Minister’s Innovation Fund. For administrative assistance, we thank Adam Dick, Olivier van Lier, Marlene Francis, Annick Pelletier, Lise Carron, Guy Smith and Amélie Roberge. For practical input, we thank Bill Lakeland, Alec Wilson, Eric Saczuk, Keenan Rudichuk and David Huntley. 
 
 ## How to cite this report:{-}
-Jake King^1^, Olivia Waite^1^, Samuel Grubinger^2^, Alex Liu^1^, Miriam Isaac-Renton^1^, Nicholas C. Coops^2^, Liam Irwin^2^, Lise Van Der Merwe^3^, Jon Degner^3^, Alvin Yanchuk^3^.^1^ Natural Resources Canada, Canadian Forest Services, Canadian Wood Fibre Center, 506 Burnside Road West, Victoria, British Columbia, V8Z 1MZ.  ^2^ Integrated Remote Sensing Studio, Faculty of Forestry, University of British Columbia,2424 Main Mall, Vancouver, BC V6T 1Z4, Canada.^3^ BC Ministry of Forests, Cowichan Lake Research Station, 7060 Forestry Rd, Mesachie Lake, BC V0R 2N0.
+Jake King^1^, Olivia Waite^1^, Samuel Grubinger^2^, Alex Liu^1^, Miriam Isaac-Renton^1^, Nicholas C. Coops^2^, Liam Irwin^2^, Lise Van Der Merwe^3^, Jon Degner^3^, Alvin Yanchuk^3^.Guidelines and Procedures for Drone Based Phenotyping in Forest Research Trials. https://owaite.github.io/GenomeBC_BPG/
+
+^1^ Natural Resources Canada, Canadian Forest Services, Canadian Wood Fibre Center, 506 Burnside Road West, Victoria, British Columbia, V8Z 1MZ.  
+
+^2^ Integrated Remote Sensing Studio, Faculty of Forestry, University of British Columbia,2424 Main Mall, Vancouver, BC V6T 1Z4, Canada.
+
+^3^ BC Ministry of Forests, Cowichan Lake Research Station, 7060 Forestry Rd, Mesachie Lake, BC V0R 2N0.
