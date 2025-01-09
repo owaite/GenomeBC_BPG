@@ -1,7 +1,3 @@
-
-OW will add a description of the BPG here
-
-
 *This repo was initially generated from a bookdown template available here: https://github.com/jtr13/bookdown-template.*
 
 ### Demo Video
